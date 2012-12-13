@@ -59,7 +59,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    Task SendGroupCommand(string command, int group = 0);
+    Task SendGroupCommand(LampCommand command, int group = 0);
 
   }
 }

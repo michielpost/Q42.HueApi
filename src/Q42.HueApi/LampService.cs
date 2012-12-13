@@ -207,7 +207,20 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    public Task SendGroupCommand(string command, int group = 0)
+    public Task SendGroupCommand(LampCommand command, int group = 0)
+    {
+      string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+      return SendGroupCommand(jsonCommand, group);
+    }
+
+    /// <summary>
+    /// Send command to a group
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="group"></param>
+    /// <returns></returns>
+    private Task SendGroupCommand(string command, int group = 0)
     {
       return Task.Run(async () =>
       {
