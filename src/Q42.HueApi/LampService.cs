@@ -159,12 +159,7 @@ namespace Q42.HueApi
     {
       if (lampList == null || lampList.Count() == 0)
       {
-        return Task.Run(async () =>
-        {
-          HttpClient client = new HttpClient();
-          await client.PutAsync(new Uri(ApiBase + "groups/0/action"), new StringContent(command));
-
-        });
+        return SendGroupCommand(command);
       }
       else if (lampList.Count() == 1 || !_useGroups)
       {
@@ -199,10 +194,26 @@ namespace Q42.HueApi
           await client.PostAsync(new Uri(ApiBase + "groups"), new StringContent("{\"lights\":" + lampString + "}"));
 
           //Send command to group 1
-          await client.PutAsync(new Uri(ApiBase + "groups/1/action"), new StringContent(command));
+          //await client.PutAsync(new Uri(ApiBase + "groups/1/action"), new StringContent(command));
+          await SendGroupCommand(command, 1);
         });
 
       }
+    }
+
+    /// <summary>
+    /// Send command to a group
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="group"></param>
+    /// <returns></returns>
+    public Task SendGroupCommand(string command, int group = 0)
+    {
+      return Task.Run(async () =>
+      {
+        HttpClient client = new HttpClient();
+        await client.PutAsync(new Uri(ApiBase + string.Format("groups/{0}/action", group)), new StringContent(command));
+      });
     }
 
 

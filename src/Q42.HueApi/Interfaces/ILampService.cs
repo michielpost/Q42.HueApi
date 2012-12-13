@@ -53,5 +53,13 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task SendCommand(LampCommand command, IEnumerable<string> lampList = null);
 
+    /// <summary>
+    /// Send command to a group
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="group"></param>
+    /// <returns></returns>
+    Task SendGroupCommand(string command, int group = 0);
+
   }
 }
