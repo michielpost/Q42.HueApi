@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Q42.HueApi</id>
+    <version>1.0.0.42</version>
+    <summary>Open source library for interaction with the Philips Hue Bridge.</summary>
+    <description><![CDATA[Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#]]></description>
+    <authors>Q42</authors>
+    <tags>philips hue lights</tags>
+    <language>en-US</language> 
+    <projectUrl>https://github.com/Q42/Q42.HueApi</projectUrl>
+    <iconUrl>http://a0.twimg.com/profile_images/2142700938/q42-logo-big-square.png</iconUrl>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" />
+    </dependencies>  
+  </metadata>
+  <files>
+    <file src="lib\Q42.HueApi.dll" target="lib\" />
+    <file src="lib\Q42.HueApi.xml" target="lib\" />
+  </files>
+</package>
+
