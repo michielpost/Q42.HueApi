@@ -38,14 +38,10 @@
     <DocumentationFile>bin\Release\Q42.HueApi.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BridgeService.cs" />
-    <Compile Include="ColorService.cs" />
-    <Compile Include="EffectService.cs" />
+    <Compile Include="HueColorConverter.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Interfaces\IBridgeService.cs" />
-    <Compile Include="Interfaces\IEffectService.cs" />
-    <Compile Include="Interfaces\ILampService.cs" />
-    <Compile Include="LampService.cs" />
+    <Compile Include="Interfaces\IHueClient.cs" />
+    <Compile Include="HueClient.cs" />
     <Compile Include="Models\Bridge.cs" />
     <Compile Include="Models\Lamp.cs" />
     <Compile Include="Models\LampCommand.cs" />

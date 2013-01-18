@@ -11,11 +11,12 @@ Some basic usage examples
 ### Bridge
 Before you can communicate with the Philips Hue Bridge, you need to register your application.
 	
-	BridgeService.Register("mypersonalappname");
+	HueClient client = new HueClient("ip");
+	client.Register("mypersonalappname");
 	
-Now you can create an instance of the LampService with the IP of the bridge and your appname	
+If you already registered an appname, you can initialize the HueClient with the appname	
 
-	new LampService("192.168.1.10", "mypersonalappname")
+	client.Initialize("mypersonalappname");
 
 ### Control the lamps
 Main usage of this library is to be able to control your lamps. We use a LampCommand for that. A LampCommand can be send to one or more / multiple lamps. A LampCommand can hold a color, effect, on/off etc.
@@ -38,11 +39,11 @@ LampCommands also support Effects and Alerts
 	
 Once you have composed your command, send it to one or more lamps
 
-	LampService.SendCommand(command, new List<string> { "1" });
+	client.SendCommand(command, new List<string> { "1" });
 	
 Or send it to all lamps
 
-	LampService.SendCommand(command);
+	client.SendCommand(command);
 
 ## How To install?
 Download the source from GitHub or get the compiled assembly from NuGet [Q42.WinRT on NuGet](https://nuget.org/packages/Q42.WinRT).

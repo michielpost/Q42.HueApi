@@ -28,23 +28,44 @@ namespace Q42.HueApi.Models
     [JsonConverter(typeof(StringEnumConverter))]
     public Alerts alert { get; set; }
 
+    /// <summary>
+    /// In 1/10 of a second
+    /// </summary>
     public int? transitiontime { get; set; }
 
   }
 
   public enum Alerts
   {
+    /// <summary>
+    /// Stop alert
+    /// </summary>
     none,
+    /// <summary>
+    /// Alert once
+    /// </summary>
     select,
+    /// <summary>
+    /// Alert multiple times
+    /// </summary>
     lselect
   }
 
   public enum Effects
   {
+    /// <summary>
+    /// Stop current effect
+    /// </summary>
     none,
+    /// <summary>
+    /// Colorloop
+    /// </summary>
     colorloop
   }
 
+  /// <summary>
+  /// Extension methods to compose a lamp command
+  /// </summary>
   public static class LampCommandExtensions
   {
     /// <summary>
@@ -85,7 +106,7 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand SetColor(this LampCommand lampCommand, int red, int green, int blue)
     {
-      var point = ColorService.XyFromColor(red, green, blue);
+      var point = HueColorConverter.XyFromColor(red, green, blue);
       return lampCommand.SetColor(point.x, point.y);
     }
 

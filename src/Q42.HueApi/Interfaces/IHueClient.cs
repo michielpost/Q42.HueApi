@@ -7,23 +7,29 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Interfaces
 {
-  public interface ILampService
+  public interface IHueClient
   {
     string ApiBase { get; }
 
     /// <summary>
-    /// Turns all lamps on
+    /// Initialize the client with your app key
     /// </summary>
-    /// <param name="lampList">if null, send to all lamps</param>
-    /// <returns></returns>
-    Task SetOn(IEnumerable<string> lampList = null);
+    /// <param name="appKey"></param>
+    void Initialize(string appKey);
 
     /// <summary>
-    /// Turns all lamps off
+    /// Register application name at the bridge to be able to send commands
     /// </summary>
-    /// <param name="lampList">if null, send to all lamps</param>
+    /// <param name="appName"></param>
     /// <returns></returns>
-    Task SetOff(IEnumerable<string> lampList = null);
+    Task<bool> Register(string appName);
+
+    /// <summary>
+    /// Set the next Hue color
+    /// </summary>
+    /// <param name="lampList"></param>
+    /// <returns></returns>
+    Task SetNextHueColor(IEnumerable<string> lampList = null);
 
     /// <summary>
     /// Get all lamps known to the bridge
@@ -43,7 +49,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command">json</param>
     /// <param name="lampList">if null, send to all lamps</param>
     /// <returns></returns>
-    Task SendCommand(string command, IEnumerable<string> lampList = null);
+    Task SendCommandRaw(string command, IEnumerable<string> lampList = null);
 
     /// <summary>
     /// Send a lamp command

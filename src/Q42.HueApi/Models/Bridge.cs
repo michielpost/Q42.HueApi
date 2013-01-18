@@ -71,7 +71,7 @@ namespace Q42.HueApi.Models
 
     public string ToHex()
     {
-      return ColorService.HexFromState(this);
+      return HueColorConverter.HexFromState(this);
     }
   }
 

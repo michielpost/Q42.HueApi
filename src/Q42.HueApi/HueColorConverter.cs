@@ -10,7 +10,7 @@ namespace Q42.HueApi
 {
 
   /// <summary>
-  /// Helper class, holds XY
+  /// Internal helper class, holds XY
   /// </summary>
   internal struct CGPoint
   {
@@ -29,7 +29,7 @@ namespace Q42.HueApi
   /// Used to convert colors between XY and RGB
   /// internal: Do not expose
   /// </summary>
-  internal static class ColorService
+  internal static class HueColorConverter
   {
     private static CGPoint Red = new CGPoint(0.675F, 0.322F);
     private static CGPoint Lime = new CGPoint(0.4091F, 0.518F);
@@ -84,7 +84,7 @@ namespace Q42.HueApi
 
       //Check if the given XY value is within the colourreach of our lamps.
       CGPoint xyPoint = new CGPoint(cx, cy);
-      bool inReachOfLamps = ColorService.checkPointInLampsReach(xyPoint);
+      bool inReachOfLamps = HueColorConverter.checkPointInLampsReach(xyPoint);
 
       if (!inReachOfLamps)
       {
@@ -92,14 +92,14 @@ namespace Q42.HueApi
         //let's find the closes colour we can produce with our lamp and send this XY value out.
 
         //Find the closest point on each line in the triangle.
-        CGPoint pAB = ColorService.getClosestPointToPoint(Red, Lime, xyPoint);
-        CGPoint pAC = ColorService.getClosestPointToPoint(Blue, Red, xyPoint);
-        CGPoint pBC = ColorService.getClosestPointToPoint(Lime, Blue, xyPoint);
+        CGPoint pAB = HueColorConverter.getClosestPointToPoint(Red, Lime, xyPoint);
+        CGPoint pAC = HueColorConverter.getClosestPointToPoint(Blue, Red, xyPoint);
+        CGPoint pBC = HueColorConverter.getClosestPointToPoint(Lime, Blue, xyPoint);
 
         //Get the distances per point and see which point is closer to our Point.
-        double dAB = ColorService.getDistanceBetweenTwoPoints(xyPoint, pAB);
-        double dAC = ColorService.getDistanceBetweenTwoPoints(xyPoint, pAC);
-        double dBC = ColorService.getDistanceBetweenTwoPoints(xyPoint, pBC);
+        double dAB = HueColorConverter.getDistanceBetweenTwoPoints(xyPoint, pAB);
+        double dAC = HueColorConverter.getDistanceBetweenTwoPoints(xyPoint, pAC);
+        double dBC = HueColorConverter.getDistanceBetweenTwoPoints(xyPoint, pBC);
 
         double lowest = dAB;
         CGPoint closestPoint = pAB;
@@ -138,8 +138,8 @@ namespace Q42.HueApi
 
       CGPoint q = new CGPoint(p.x - Red.x, p.y - Red.y);
 
-      double s = ColorService.crossProduct(q, v2) / ColorService.crossProduct(v1, v2);
-      double t = ColorService.crossProduct(v1, q) / ColorService.crossProduct(v1, v2);
+      double s = HueColorConverter.crossProduct(q, v2) / HueColorConverter.crossProduct(v1, v2);
+      double t = HueColorConverter.crossProduct(v1, q) / HueColorConverter.crossProduct(v1, v2);
 
       if ((s >= 0.0f) && (t >= 0.0f) && (s + t <= 1.0f))
       {
