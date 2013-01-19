@@ -55,6 +55,14 @@ Download the source from GitHub or get the compiled assembly from NuGet [Q42.Win
 
 * Newtonsoft.Json is used for object serialization
 
+## License
+
+Q42.HueApi is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form"). Refer to [license.txt](https://github.com/Q42/Q42.HueApi/blob/master/LICENSE.txt) for more information.
+
+## Contributions
+
+Contributions are welcome. Fork this repository and send a pull request if you have something useful to add.
+
 
 ## Related Projects
 Other useful Philips Hue projects.
