@@ -48,6 +48,9 @@ namespace Q42.HueApi
     /// <param name="ip"></param>
     public HueClient(string ip)
     {
+      if (ip == null)
+        throw new ArgumentNullException ("ip");
+
       _ip = ip;
     }
 
@@ -58,6 +61,9 @@ namespace Q42.HueApi
     /// <param name="appKey"></param>
     public HueClient(string ip, string appKey)
     {
+      if (ip == null)
+	      throw new ArgumentNullException ("ip");
+
       _ip = ip;
 
       //Direct initialization
@@ -71,6 +77,9 @@ namespace Q42.HueApi
     /// <param name="appKey"></param>
     public void Initialize(string appKey)
     {
+      if (appKey == null)
+        throw new ArgumentNullException ("appKey");
+
       _appKey = appKey;
 
       IsInitialized = true;
@@ -92,7 +101,9 @@ namespace Q42.HueApi
     /// <returns>Exception if the link button is not pressed. True if ok. False for other errors</returns>
     public async Task<bool> Register(string appKey)
     {
-      if (appKey.Length < 10)
+      if (appKey == null)
+        throw new ArgumentNullException ("appKey");
+      if (appKey.Length < 10 || appKey.Trim() == String.Empty)
         throw new ArgumentException("Must be at least 10 characters.", "appName");
 
       if (appKey.Contains(" "))
@@ -187,6 +198,9 @@ namespace Q42.HueApi
     /// <returns></returns>
     public Task SendCommand(LampCommand command, IEnumerable<string> lampList = null)
     {
+      if (command == null)
+        throw new ArgumentNullException ("command");
+
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       return SendCommandRaw(jsonCommand, lampList);
@@ -200,6 +214,9 @@ namespace Q42.HueApi
     /// <returns></returns>
     public Task SendCommandRaw(string command, IEnumerable<string> lampList = null)
     {
+      if (command == null)
+        throw new ArgumentNullException ("command");
+
       CheckInitialized();
 
       if (lampList == null || lampList.Count() == 0)
@@ -254,6 +271,9 @@ namespace Q42.HueApi
     /// <returns></returns>
     public Task SendGroupCommand(LampCommand command, int group = 0)
     {
+      if (command == null)
+        throw new ArgumentNullException ("command");
+
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       return SendGroupCommand(jsonCommand, group);
@@ -267,6 +287,9 @@ namespace Q42.HueApi
     /// <returns></returns>
     private Task SendGroupCommand(string command, int group = 0)
     {
+      if (command == null)
+        throw new ArgumentNullException ("command");
+
       CheckInitialized();
 
       HttpClient client = new HttpClient();

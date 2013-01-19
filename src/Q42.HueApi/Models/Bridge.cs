@@ -19,6 +19,9 @@ namespace Q42.HueApi.Models
   {
     public Bridge(BridgeBridge bridge)
     {
+      if (bridge == null)
+        throw new ArgumentNullException ("bridge");
+
       config = bridge.config;
       foreach (var light in bridge.lights)
         light.Value.id = light.Key;
