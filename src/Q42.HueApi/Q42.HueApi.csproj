@@ -43,8 +43,12 @@
     <Compile Include="Interfaces\IHueClient.cs" />
     <Compile Include="HueClient.cs" />
     <Compile Include="Models\Bridge.cs" />
+    <Compile Include="Models\BridgeConfig.cs" />
     <Compile Include="Models\Lamp.cs" />
     <Compile Include="Models\LampCommand.cs" />
+    <Compile Include="Models\Light.cs" />
+    <Compile Include="Models\SoftwareUpdate.cs" />
+    <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransitionTimeConverter.cs" />
   </ItemGroup>
