@@ -141,12 +141,19 @@ namespace Q42.HueApi.Models
     }
   }
 
-  public class Swupdate
+  [DataContract]
+  public class SoftwareUpdate
   {
-    public int updatestate { get; set; }
-    public string url { get; set; }
-    public string text { get; set; }
-    public bool notify { get; set; }
-  }
+    [DataMember (Name = "updatestate")]
+    public int UpdateState { get; set; }
 
+    [DataMember (Name = "url")]
+    public string Url { get; set; }
+
+    [DataMember (Name = "text")]
+    public string Text { get; set; }
+
+    [DataMember (Name = "notify")]
+    public bool Notify { get; set; }
+  }
 }
