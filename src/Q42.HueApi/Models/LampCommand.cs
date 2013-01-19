@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Q42.HueApi.Models
+namespace Q42.HueApi
 {
 
   /// <summary>

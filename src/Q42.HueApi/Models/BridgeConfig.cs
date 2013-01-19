@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Q42.HueApi.Models
+namespace Q42.HueApi
 {
   [DataContract]
   public class BridgeConfig

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Q42.HueApi.Models
+namespace Q42.HueApi
 {
   [DataContract]
   public class State
