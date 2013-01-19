@@ -76,6 +76,11 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand SetColor(this LampCommand lampCommand, string hexColor)
     {
+      if (lampCommand == null)
+        throw new ArgumentNullException ("lampCommand");
+      if (hexColor == null)
+        throw new ArgumentNullException ("hexColor");
+
       int red = int.Parse(hexColor.Substring(0, 2), NumberStyles.AllowHexSpecifier);
       int green = int.Parse(hexColor.Substring(2, 2), NumberStyles.AllowHexSpecifier);
       int blue = int.Parse(hexColor.Substring(4, 2), NumberStyles.AllowHexSpecifier);
@@ -93,6 +98,9 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand SetColor(this LampCommand lampCommand, string red, string green, string blue)
     {
+      if (lampCommand == null)
+        throw new ArgumentNullException ("lampCommand");
+
       return lampCommand.SetColor(int.Parse(red), int.Parse(green), int.Parse(blue));
     }
 
@@ -106,6 +114,9 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand SetColor(this LampCommand lampCommand, int red, int green, int blue)
     {
+      if (lampCommand == null)
+        throw new ArgumentNullException ("lampCommand");
+
       var point = HueColorConverter.XyFromColor(red, green, blue);
       return lampCommand.SetColor(point.x, point.y);
     }
@@ -119,6 +130,9 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand SetColor(this LampCommand lampCommand, double x, double y)
     {
+      if (lampCommand == null)
+        throw new ArgumentNullException ("lampCommand");
+
       lampCommand.xy = new List<double>();
       lampCommand.xy.Add(x);
       lampCommand.xy.Add(y);
@@ -134,6 +148,9 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand SetColor(this LampCommand lampCommand, int ct)
     {
+      if (lampCommand == null)
+        throw new ArgumentNullException ("lampCommand");
+
       lampCommand.ct = ct;
       return lampCommand;
     }
@@ -145,6 +162,9 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand TurnOn(this LampCommand lampCommand)
     {
+      if (lampCommand == null)
+        throw new ArgumentNullException ("lampCommand");
+
       lampCommand.on = true;
       return lampCommand;
     }
@@ -156,6 +176,9 @@ namespace Q42.HueApi.Models
     /// <returns></returns>
     public static LampCommand TurnOff(this LampCommand lampCommand)
     {
+      if (lampCommand == null)
+        throw new ArgumentNullException ("lampCommand");
+
       lampCommand.on = false;
       return lampCommand;
     }
