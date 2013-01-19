@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Q42.HueApi.Models
 {
@@ -32,14 +35,26 @@ namespace Q42.HueApi.Models
     public Config config { get; set; }
   }
 
+  [DataContract]
   public class Light
   {
-    public string id { get; set; }
-    public State state { get; set; }
-    public string type { get; set; }
-    public string name { get; set; }
-    public string modelid { get; set; }
-    public string swversion { get; set; }
+    [DataMember (Name = "id")]
+    public string Id { get; set; }
+
+    [DataMember (Name = "state")]
+    public State State { get; set; }
+
+    [DataMember (Name = "type")]
+    public string Type { get; set; }
+
+    [DataMember (Name = "name")]
+    public string Name { get; set; }
+
+    [DataMember (Name = "modelid")]
+    public string ModelId { get; set; }
+
+    [DataMember (Name = "swversion")]
+    public string SoftwareVersion { get; set; }
   }
 
   public class Config
