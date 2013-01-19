@@ -57,35 +57,83 @@ namespace Q42.HueApi.Models
     public string SoftwareVersion { get; set; }
   }
 
-  public class Config
+  [DataContract]
+  public class BridgeConfig
   {
-    public string name { get; set; }
-    public string mac { get; set; }
-    public bool dhcp { get; set; }
-    public string ipaddress { get; set; }
-    public string netmask { get; set; }
-    public string gateway { get; set; }
-    public string proxyaddress { get; set; }
-    public int proxyport { get; set; }
-    public string UTC { get; set; }
-    public string swversion { get; set; }
-    public Swupdate swupdate { get; set; }
-    public bool linkbutton { get; set; }
-    public bool portalservices { get; set; }
+    [DataMember (Name = "name")]
+    public string Name { get; set; }
+
+    [DataMember (Name = "mac")]
+    public string MacAddress { get; set; }
+
+    [DataMember (Name = "dhcp")]
+    public bool Dhcp { get; set; }
+
+    [DataMember (Name = "ipaddress")]
+    public string IpAddress { get; set; }
+
+    [DataMember (Name = "netmask")]
+    public string NetMask { get; set; }
+
+    [DataMember (Name = "gateway")]
+    public string Gateway { get; set; }
+
+    [DataMember (Name = "proxyaddress")]
+    public string ProxyAddress { get; set; }
+
+    [DataMember (Name = "proxyport")]
+    public int ProxyPort { get; set; }
+
+    [DataMember (Name = "UTC")]
+    public string Utc { get; set; }
+
+    [DataMember (Name = "swversion")]
+    public string SoftwareVersion { get; set; }
+
+    [DataMember (Name = "swupdate")]
+    public SoftwareUpdate SoftwareUpdate { get; set; }
+
+    [DataMember (Name = "linkbutton")]
+    public bool LinkButton { get; set; }
+
+    [DataMember (Name = "portalservices")]
+    public bool PortalServices { get; set; }
   }
 
+  [DataContract]
   public class State
   {
-    public bool on { get; set; }
-    public int bri { get; set; }
-    public int hue { get; set; }
-    public int sat { get; set; }
-    public List<double> xy { get; set; }
-    public int ct { get; set; }
-    public string alert { get; set; }
-    public string effect { get; set; }
-    public string colormode { get; set; }
-    public bool reachable { get; set; }
+    [DataMember (Name = "on")]
+    public bool On { get; set; }
+
+    [DataMember (Name = "bri")]
+    public byte Brightness { get; set; }
+
+    [DataMember (Name = "hue")]
+    public int Hue { get; set; }
+
+    [DataMember (Name = "sat")]
+    public int Saturation { get; set; }
+
+    [DataMember (Name = "xy")]
+    public double[] ColorCoordinates { get; set; }
+
+    [DataMember (Name = "ct")]
+    public int ColorTemperature { get; set; }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    [DataMember (Name = "alert")]
+    public Alerts Alert { get; set; }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    [DataMember (Name = "effect")]
+    public Effects Effect { get; set; }
+
+    [DataMember (Name = "colormode")]
+    public string ColorMode { get; set; }
+
+    [DataMember (Name = "reachable")]
+    public bool IsReachable { get; set; }
 
     public string ToHex()
     {
