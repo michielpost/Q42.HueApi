@@ -113,8 +113,8 @@ namespace Q42.HueApi
       var jsonRequest = "{\"username\": \"" + appKey + "\", \"devicetype\":\"" + appKey + "\"}";
 
       HttpClient client = new HttpClient();
-      var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new StringContent(jsonRequest));
-      var stringResponse = await response.Content.ReadAsStringAsync();
+      var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new StringContent(jsonRequest)).ConfigureAwait(false);
+      var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       if (stringResponse.Contains("link button not pressed"))
       {
