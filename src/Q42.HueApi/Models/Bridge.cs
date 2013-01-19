@@ -12,27 +12,27 @@ namespace Q42.HueApi.Models
   /// <summary>
   /// Status data returned from the bridge
   /// </summary>
-  public class BridgeBridge
+  internal class BridgeBridge
   {
     public Dictionary<string, Light> lights { get; set; }
-    public Config config { get; set; }
+    public BridgeConfig config { get; set; }
   }
 
   public class Bridge
   {
-    public Bridge(BridgeBridge bridge)
+    internal Bridge(BridgeBridge bridge)
     {
       if (bridge == null)
         throw new ArgumentNullException ("bridge");
 
-      config = bridge.config;
+      Config = bridge.config;
       foreach (var light in bridge.lights)
-        light.Value.id = light.Key;
-      lights = bridge.lights.Select(l => l.Value).ToList();
+        light.Value.Id = light.Key;
+      Lights = bridge.lights.Select(l => l.Value).ToList();
     }
 
-    public List<Light> lights { get; set; }
-    public Config config { get; set; }
+    public IEnumerable<Light> Lights { get; private set; }
+    public BridgeConfig Config { get; private set; }
   }
 
   [DataContract]
