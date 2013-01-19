@@ -46,6 +46,7 @@
     <Compile Include="Models\Lamp.cs" />
     <Compile Include="Models\LampCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransitionTimeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
