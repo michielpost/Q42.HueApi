@@ -99,7 +99,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="appKey">Secret key for your app. Must be at least 10 characters.</param>
     /// <returns>Exception if the link button is not pressed. True if ok. False for other errors</returns>
-    public async Task<bool> Register(string appKey)
+    public async Task<bool> RegisterAsync(string appKey)
     {
       if (appKey == null)
         throw new ArgumentNullException ("appKey");
@@ -137,12 +137,12 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="lampList"></param>
     /// <returns></returns>
-    public Task SetNextHueColor(IEnumerable<string> lampList = null)
+    public Task SetNextHueColorAsync(IEnumerable<string> lampList = null)
     {
       //Invalid JSON, but it works
       string command = "{\"hue\":+10000,\"sat\":255}";
 
-      return SendCommandRaw(command, lampList);
+      return SendCommandRawAsync(command, lampList);
 
     }
 
@@ -150,7 +150,7 @@ namespace Q42.HueApi
     /// Get all lamps registered at the bridge
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Lamp>> GetLamps()
+    public async Task<List<Lamp>> GetLampsAsync()
     {
       CheckInitialized();
 
@@ -177,7 +177,7 @@ namespace Q42.HueApi
     /// Get bridge info
     /// </summary>
     /// <returns></returns>
-    public async Task<Bridge> GetBridge()
+    public async Task<Bridge> GetBridgeAsync()
     {
       CheckInitialized();
 
@@ -196,14 +196,14 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="lampList">if null, send command to all lamps</param>
     /// <returns></returns>
-    public Task SendCommand(LampCommand command, IEnumerable<string> lampList = null)
+    public Task SendCommandAsync(LampCommand command, IEnumerable<string> lampList = null)
     {
       if (command == null)
         throw new ArgumentNullException ("command");
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      return SendCommandRaw(jsonCommand, lampList);
+      return SendCommandRawAsync(jsonCommand, lampList);
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="lampList">if null, send command to all lamps</param>
     /// <returns></returns>
-    public Task SendCommandRaw(string command, IEnumerable<string> lampList = null)
+    public Task SendCommandRawAsync(string command, IEnumerable<string> lampList = null)
     {
       if (command == null)
         throw new ArgumentNullException ("command");
@@ -221,7 +221,7 @@ namespace Q42.HueApi
 
       if (lampList == null || lampList.Count() == 0)
       {
-        return SendGroupCommand(command);
+        return SendGroupCommandAsync(command);
       }
       else if (lampList.Count() == 1 || !_useGroups)
       {
@@ -257,7 +257,7 @@ namespace Q42.HueApi
 
           //Send command to group 1
           //await client.PutAsync(new Uri(ApiBase + "groups/1/action"), new StringContent(command));
-          await SendGroupCommand(command, 1).ConfigureAwait(false);
+          await SendGroupCommandAsync(command, 1).ConfigureAwait(false);
         });
 
       }
@@ -269,14 +269,14 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    public Task SendGroupCommand(LampCommand command, int group = 0)
+    public Task SendGroupCommandAsync(LampCommand command, int group = 0)
     {
       if (command == null)
         throw new ArgumentNullException ("command");
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      return SendGroupCommand(jsonCommand, group);
+      return SendGroupCommandAsync(jsonCommand, group);
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    private Task SendGroupCommand(string command, int group = 0)
+    private Task SendGroupCommandAsync(string command, int group = 0)
     {
       if (command == null)
         throw new ArgumentNullException ("command");
