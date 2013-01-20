@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.Models
+namespace Q42.HueApi
 {
   /// <summary>
   /// Lamp object returned from bridge

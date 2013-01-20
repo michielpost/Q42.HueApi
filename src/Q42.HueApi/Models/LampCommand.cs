@@ -1,66 +1,111 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-namespace Q42.HueApi.Models
+namespace Q42.HueApi
 {
 
   /// <summary>
   /// Compose a lamp command to send to a lamp
   /// </summary>
+  [DataContract]
   public class LampCommand
   {
-    public List<double> xy { get; set; }
-    public int? bri { get; set; }
-    public string hue { get; set; }
-    public int? sat { get; set; }
-    public int? ct { get; set; }
-    public bool? on { get; set; }
-
-    [JsonConverter(typeof(StringEnumConverter))]
-    public Effects effect { get; set; }
-    
-    [JsonConverter(typeof(StringEnumConverter))]
-    public Alerts alert { get; set; }
+    /// <summary>
+    /// Gets or sets the colors based on CIE 1931 Color coordinates.
+    /// </summary>
+    [DataMember (Name = "xy")]
+    public double[] ColorCoordinates { get; set; }
 
     /// <summary>
-    /// In 1/10 of a second
+    /// Gets or sets the brightness 0-255.
     /// </summary>
-    public int? transitiontime { get; set; }
+    [DataMember (Name = "bri")]
+    public byte? Brightness { get; set; }
+
+    /// <summary>
+    /// Gets or sets the hue for Hue and <see cref="Saturation"/> mode.
+    /// </summary>
+    [DataMember (Name = "hue")]
+    public int? Hue { get; set; }
+
+    /// <summary>
+    /// Gets or sets the saturation for <see cref="Hue"/> and Saturation mode.
+    /// </summary>
+    [DataMember (Name = "sat")]
+    public int? Saturation { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Color Temperature
+    /// </summary>
+    [DataMember (Name = "ct")]
+    public int? ColorTemperature { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the lamp is on.
+    /// </summary>
+    [DataMember (Name = "on")]
+    public bool? On { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current effect for the lamp.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    [DataMember (Name = "effect")]
+    public Effect Effect { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current alert for the lamp.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    [DataMember (Name = "alert")]
+    public Alert Alert { get; set; }
+
+    /// <summary>
+    /// Gets or sets the transition time for the lamp.
+    /// </summary>
+    [DataMember (Name = "transitiontime")]
+    [JsonConverter (typeof(TransitionTimeConverter))]
+    public TimeSpan? TransitionTime { get; set; }
 
   }
 
-  public enum Alerts
+  public enum Alert
   {
     /// <summary>
     /// Stop alert
     /// </summary>
-    none,
+    [EnumMember (Value = "none")]
+    None,
+
     /// <summary>
     /// Alert once
     /// </summary>
-    select,
+    [EnumMember (Value = "select")]
+    Once,
+
     /// <summary>
     /// Alert multiple times
     /// </summary>
-    lselect
+    [EnumMember (Value = "lselect")]
+    Multiple
   }
 
-  public enum Effects
+  public enum Effect
   {
     /// <summary>
     /// Stop current effect
     /// </summary>
-    none,
+    [EnumMember (Value = "none")]
+    None,
+
     /// <summary>
-    /// Colorloop
+    /// Color loop
     /// </summary>
-    colorloop
+    [EnumMember (Value = "colorloop")]
+    ColorLoop
   }
 
   /// <summary>
@@ -133,9 +178,7 @@ namespace Q42.HueApi.Models
       if (lampCommand == null)
         throw new ArgumentNullException ("lampCommand");
 
-      lampCommand.xy = new List<double>();
-      lampCommand.xy.Add(x);
-      lampCommand.xy.Add(y);
+      lampCommand.ColorCoordinates = new[] { x, y };
       return lampCommand;
     }
 
@@ -151,7 +194,7 @@ namespace Q42.HueApi.Models
       if (lampCommand == null)
         throw new ArgumentNullException ("lampCommand");
 
-      lampCommand.ct = ct;
+      lampCommand.ColorTemperature = ct;
       return lampCommand;
     }
 
@@ -165,7 +208,7 @@ namespace Q42.HueApi.Models
       if (lampCommand == null)
         throw new ArgumentNullException ("lampCommand");
 
-      lampCommand.on = true;
+      lampCommand.On = true;
       return lampCommand;
     }
 
@@ -179,7 +222,7 @@ namespace Q42.HueApi.Models
       if (lampCommand == null)
         throw new ArgumentNullException ("lampCommand");
 
-      lampCommand.on = false;
+      lampCommand.On = false;
       return lampCommand;
     }
 
