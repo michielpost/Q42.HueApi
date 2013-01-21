@@ -38,6 +38,7 @@
     <DocumentationFile>bin\Release\Q42.HueApi.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="HttpBridgeLocator.cs" />
     <Compile Include="HueColorConverter.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Interfaces\IBridgeLocator.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Models\Lamp.cs" />
     <Compile Include="Models\LampCommand.cs" />
     <Compile Include="Models\Light.cs" />
+    <Compile Include="Models\NuPnPResponse.cs" />
     <Compile Include="Models\SoftwareUpdate.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
