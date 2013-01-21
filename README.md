@@ -12,17 +12,17 @@ Some basic usage examples
 Before you can communicate with the Philips Hue Bridge, you need to register your application.
 	
 	HueClient client = new HueClient("ip");
-	client.Register("mypersonalappname");
+	client.RegisterAsync("mypersonalappname");
 	
 If you already registered an appname, you can initialize the HueClient with the appname	
 
-	client.Initialize("mypersonalappname");
+	client.InitializeAsync("mypersonalappname");
 
 ### Control the lamps
 Main usage of this library is to be able to control your lamps. We use a LampCommand for that. A LampCommand can be send to one or more / multiple lamps. A LampCommand can hold a color, effect, on/off etc.
 
 	var command = new LampCommand();
-	command.on = true;
+	command.On = true;
 	
 There are some helpers to set a color on a command:
 	
@@ -32,18 +32,18 @@ There are some helpers to set a color on a command:
 LampCommands also support Effects and Alerts
 
 	//Blink once
-	command.alert = Alerts.select;
+	command.Alert = Alerts.Once;
 	
 	//Or start a colorloop
-	command.effect = Effects.colorloop
+	command.Effect = Effects.ColorLoop;
 	
 Once you have composed your command, send it to one or more lamps
 
-	client.SendCommand(command, new List<string> { "1" });
+	client.SendCommandAsync(command, new List<string> { "1" });
 	
 Or send it to all lamps
 
-	client.SendCommand(command);
+	client.SendCommandAsync(command);
 
 ## How To install?
 Download the source from GitHub or get the compiled assembly from NuGet [Q42.WinRT on NuGet](https://nuget.org/packages/Q42.WinRT).
