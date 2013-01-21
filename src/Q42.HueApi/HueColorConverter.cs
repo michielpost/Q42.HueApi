@@ -1,5 +1,4 @@
 ﻿using Q42.HueApi.Interfaces;
-using Q42.HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -211,15 +210,11 @@ namespace Q42.HueApi
 
     public static string HexFromState(State state)
     {
-      if (state.on == false || state.bri <= 5)
+      if (state == null)
+        throw new ArgumentNullException("state");
+      if (state.On == false || state.Brightness <= 5)
         return "000000";
-      return HexFromXy(state.xy);
-    }
-
-    public static string HexFromXy(List<double> list)
-    {
-      var c = HexFromXY(list.First(), list.Last());
-      return c;
+      return HexFromXy(state.ColorCoordinates[0], state.ColorCoordinates[1]);
     }
 
     /// <summary>
@@ -228,7 +223,7 @@ namespace Q42.HueApi
     /// <param name="xNumber"></param>
     /// <param name="yNumber"></param>
     /// <returns></returns>
-    public static string HexFromXY(double xNumber, double yNumber)
+    public static string HexFromXy(double xNumber, double yNumber)
     {
 
       if (xNumber == 0 && yNumber == 0)

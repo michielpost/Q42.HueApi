@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Q42.HueApi.Extensions;
 using Q42.HueApi.Interfaces;
-using Q42.HueApi.Models;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Net.Http;
