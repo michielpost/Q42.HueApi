@@ -49,7 +49,9 @@ Or send it to all lamps
 Download the source from GitHub or get the compiled assembly from NuGet [Q42.WinRT on NuGet](https://nuget.org/packages/Q42.WinRT).
 
 ## Credits
+This library is made possible by contributions from:
 * [Q42](http://www.q42.nl) ([@q42](http://twitter.com/q42))
+* [@ermau](https://github.com/ermau/Q42.HueApi)
 
 ### Open Source Project Credits
 
