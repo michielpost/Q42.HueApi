@@ -11,6 +11,9 @@ namespace Q42.HueApi
   /// </summary>
   public class BridgeLamp
   {
+    /// <summary>
+    /// Lamp name
+    /// </summary>
     public string Name { get; set; }
   }
 
@@ -19,10 +22,25 @@ namespace Q42.HueApi
   /// </summary>
   public class Lamp
   {
+    /// <summary>
+    /// LampId
+    /// </summary>
     public string Id { get; set; }
+
+    /// <summary>
+    /// Name
+    /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// Current color
+    /// </summary>
     public string ColorHex { get; set; }
 
+    /// <summary>
+    /// ToString
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
       return this.Id + ": " + this.Name;

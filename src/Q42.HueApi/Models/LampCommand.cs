@@ -72,6 +72,9 @@ namespace Q42.HueApi
 
   }
 
+  /// <summary>
+  /// Possible light alerts
+  /// </summary>
   public enum Alert
   {
     /// <summary>
@@ -93,6 +96,9 @@ namespace Q42.HueApi
     Multiple
   }
 
+  /// <summary>
+  /// Possible light effects
+  /// </summary>
   public enum Effect
   {
     /// <summary>
@@ -186,8 +192,7 @@ namespace Q42.HueApi
     /// Helper to set the color based on the lamp's built in CT color scheme
     /// </summary>
     /// <param name="lampCommand"></param>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
+    /// <param name="ct"></param>
     /// <returns></returns>
     public static LampCommand SetColor(this LampCommand lampCommand, int ct)
     {

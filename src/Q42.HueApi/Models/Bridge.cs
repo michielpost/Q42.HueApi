@@ -15,6 +15,9 @@ namespace Q42.HueApi
     public BridgeConfig config { get; set; }
   }
 
+  /// <summary>
+  /// Hue Bridge
+  /// </summary>
   public class Bridge
   {
     internal Bridge(BridgeBridge bridge)
@@ -28,7 +31,14 @@ namespace Q42.HueApi
       Lights = bridge.lights.Select(l => l.Value).ToList();
     }
 
+    /// <summary>
+    /// Light info from the bridge
+    /// </summary>
     public IEnumerable<Light> Lights { get; private set; }
+
+    /// <summary>
+    /// Bridge config info
+    /// </summary>
     public BridgeConfig Config { get; private set; }
   }
 }

@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Interfaces
 {
+  /// <summary>
+  /// Hue Client for interaction with the bridge
+  /// </summary>
   public interface IHueClient
   {
+    /// <summary>
+    /// Base address url
+    /// </summary>
     string ApiBase { get; }
 
     /// <summary>

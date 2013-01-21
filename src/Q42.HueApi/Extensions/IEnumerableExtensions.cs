@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Extensions
 {
+  /// <summary>
+  /// IEnumerable Helpers
+  /// </summary>
   public static class IEnumerableExtensions
   {
 
