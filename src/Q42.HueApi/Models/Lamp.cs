@@ -33,11 +33,6 @@ namespace Q42.HueApi
     public string Name { get; set; }
 
     /// <summary>
-    /// Current color
-    /// </summary>
-    public string ColorHex { get; set; }
-
-    /// <summary>
     /// ToString
     /// </summary>
     /// <returns></returns>
