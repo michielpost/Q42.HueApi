@@ -61,7 +61,7 @@ namespace Q42.HueApi
     public HueClient(string ip, string appKey)
     {
       if (ip == null)
-	      throw new ArgumentNullException ("ip");
+        throw new ArgumentNullException ("ip");
 
       _ip = ip;
 
