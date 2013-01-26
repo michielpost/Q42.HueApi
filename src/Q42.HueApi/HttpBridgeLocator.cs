@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Q42.HueApi.Interfaces;
-using Q42.HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

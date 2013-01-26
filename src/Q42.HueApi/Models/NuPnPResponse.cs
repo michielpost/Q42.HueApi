@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.Models
+namespace Q42.HueApi
 {
   /// <summary>
   /// Model for response from http://www.meethue.com/api/nupnp
