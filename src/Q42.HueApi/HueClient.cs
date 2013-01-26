@@ -218,13 +218,15 @@ namespace Q42.HueApi
 
       CheckInitialized();
 
-      if (lampList == null || lampList.Count() == 0)
+      string[] lamps = lampList.ToArray();
+
+      if (lampList == null || lamps.Length == 0)
       {
         return SendGroupCommandAsync(command);
       }
-      else if (lampList.Count() == 1 || !_useGroups)
+      else if (lamps.Length == 1 || !_useGroups)
       {
-        return lampList.ForEachAsync(_parallelRequests, async (lampId) =>
+        return lamps.ForEachAsync(_parallelRequests, async (lampId) =>
         {
           HttpClient client = new HttpClient();
           await client.PutAsync(new Uri(ApiBase + string.Format("lights/{0}/state", lampId)), new StringContent(command)).ConfigureAwait(false);
@@ -241,7 +243,7 @@ namespace Q42.HueApi
           //Create string of all the lamps 
           string lampString = string.Empty;
           lampString += "[";
-          foreach (var lamp in lampList)
+          foreach (var lamp in lamps)
           {
             lampString += "\"" + lamp + "\",";
           }
