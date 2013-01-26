@@ -28,7 +28,7 @@ namespace Q42.HueApi
     /// <summary>
     /// Indicates the HueClient is initialized with an AppKey
     /// </summary>
-    public bool IsInitialized { get; set; }
+    public bool IsInitialized { get; private set; }
 
 
     /// <summary>
