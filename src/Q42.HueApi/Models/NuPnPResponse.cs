@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.Models
+namespace Q42.HueApi
 {
   /// <summary>
   /// Model for response from http://www.meethue.com/api/nupnp
   /// </summary>
-  public class NuPnPResponse
+  internal class NuPnPResponse
   {
     public string Id { get; set; }
     public string InternalIpAddress { get; set; }
