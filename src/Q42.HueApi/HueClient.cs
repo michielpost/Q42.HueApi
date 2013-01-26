@@ -218,7 +218,9 @@ namespace Q42.HueApi
 
       CheckInitialized();
 
-      string[] lamps = lampList.ToArray();
+      string[] lamps = null;
+      if (lampList != null)
+        lamps = lampList.ToArray();
 
       if (lampList == null || lamps.Length == 0)
       {
