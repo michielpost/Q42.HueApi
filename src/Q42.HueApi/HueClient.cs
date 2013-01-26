@@ -91,7 +91,7 @@ namespace Q42.HueApi
     private void CheckInitialized()
     {
       if (!IsInitialized)
-        throw new Exception("HueClient not Initialized. First call Register or Initialize.");
+        throw new InvalidOperationException ("HueClient is not initialized. First call RegisterAsync or Initialize.");
     }
 
     /// <summary>
