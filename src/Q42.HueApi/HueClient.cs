@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Q42.HueApi.Extensions;
 using Q42.HueApi.Interfaces;
 using Newtonsoft.Json;
@@ -146,30 +147,48 @@ namespace Q42.HueApi
     }
 
     /// <summary>
-    /// Get all lamps registered at the bridge
+    /// Asynchronously retrieves an individual light.
     /// </summary>
-    /// <returns></returns>
-    public async Task<List<Lamp>> GetLampsAsync()
+    /// <param name="id">The light's Id.</param>
+    /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
+    public async Task<Light> GetLightAsync (string id)
     {
+      if (id == null)
+        throw new ArgumentNullException ("id");
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException ("id can not be empty or a blank string", "id");
+
       CheckInitialized();
 
       HttpClient client = new HttpClient();
-      var stringResult = await client.GetStringAsync(new Uri(ApiBase + "lights")).ConfigureAwait(false);
+      string stringResult = await client.GetStringAsync (new Uri (String.Format ("{0}lights/{1}", ApiBase, id))).ConfigureAwait (false);
 
-      Dictionary<string, BridgeLamp> jsonResult = JsonConvert.DeserializeObject<Dictionary<string, BridgeLamp>>(stringResult);
-
-      List<Lamp> lampList = new List<Lamp>();
-
-      foreach (var dic in jsonResult)
+      JToken token = JToken.Parse (stringResult);
+      if (token.Type == JTokenType.Array)
       {
-        Lamp newLamp = new Lamp();
-        newLamp.Id = dic.Key;
-        newLamp.Name = dic.Value.Name;
+        // Hue gives back errors in an array for this request
+        JObject error = (JObject)token.First["error"];
+        if (error["type"].Value<int>() == 3) // Light not found
+          return null;
 
-        lampList.Add(newLamp);
+        throw new Exception (error["description"].Value<string>());
       }
 
-      return lampList;
+      return token.ToObject<Light>();
+    }
+
+    /// <summary>
+    /// Asynchronously gets all lights registered with the bridge.
+    /// </summary>
+    /// <returns>An enumerable of <see cref="Light"/>s registered with the bridge.</returns>
+    public async Task<IEnumerable<Light>> GetLightsAsync()
+    {
+      CheckInitialized();
+
+      Bridge bridge = await GetBridgeAsync().ConfigureAwait (false);
+      return bridge.Lights;
     }
 
     /// <summary>

@@ -37,10 +37,19 @@ namespace Q42.HueApi.Interfaces
     Task SetNextHueColorAsync(IEnumerable<string> lampList = null);
 
     /// <summary>
-    /// Get all lamps known to the bridge
+    /// Asynchronously gets all lights registered with the bridge.
     /// </summary>
-    /// <returns></returns>
-    Task<List<Lamp>> GetLampsAsync();
+    /// <returns>An enumerable of <see cref="Light"/>s registered with the bridge.</returns>
+    Task<IEnumerable<Light>> GetLightsAsync();
+
+    /// <summary>
+    /// Asynchronously retrieves an individual light.
+    /// </summary>
+    /// <param name="id">The light's Id.</param>
+    /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
+    Task<Light> GetLightAsync (string id);
 
     /// <summary>
     /// Get bridge info
