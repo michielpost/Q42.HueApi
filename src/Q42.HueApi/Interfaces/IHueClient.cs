@@ -23,11 +23,14 @@ namespace Q42.HueApi.Interfaces
     void Initialize(string appKey);
 
     /// <summary>
-    /// Register application name at the bridge to be able to send commands
+    /// Register your <paramref name="appName"/> and <paramref name="appKey"/> at the Hue Bridge.
     /// </summary>
-    /// <param name="appName"></param>
-    /// <returns></returns>
-    Task<bool> RegisterAsync(string appName);
+    /// <param name="appKey">Secret key for your app. Must be at least 10 characters.</param>
+    /// <param name="appName">The name of your app or device.</param>
+    /// <returns><c>true</c> if success, <c>false</c> if the link button hasn't been pressed.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="appName"/> or <paramref name="appKey"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="appName"/> or <paramref name="appKey"/> aren't long enough, are empty or contains spaces.</exception>
+    Task<bool> RegisterAsync(string appName, string appKey);
 
     /// <summary>
     /// Set the next Hue color

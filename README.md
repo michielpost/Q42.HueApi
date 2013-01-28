@@ -9,14 +9,14 @@ Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q4
 Some basic usage examples
 
 ### Bridge
-Before you can communicate with the Philips Hue Bridge, you need to register your application.
+Before you can communicate with the Philips Hue Bridge, you need to register your application:
 	
 	HueClient client = new HueClient("ip");
-	client.RegisterAsync("mypersonalappname");
+	client.RegisterAsync("mypersonalappname", "mypersonalappkey");
 	
-If you already registered an appname, you can initialize the HueClient with the appname	
+If you already registered an appname, you can initialize the HueClient with the app's key:	
 
-	client.InitializeAsync("mypersonalappname");
+	client.Initialize("mypersonalappkey");
 
 ### Control the lamps
 Main usage of this library is to be able to control your lamps. We use a LampCommand for that. A LampCommand can be send to one or more / multiple lamps. A LampCommand can hold a color, effect, on/off etc.
