@@ -10,7 +10,7 @@ namespace Q42.HueApi.Extensions
   /// <summary>
   /// IEnumerable Helpers
   /// </summary>
-  public static class IEnumerableExtensions
+  internal static class IEnumerableExtensions
   {
 
     /// <summary>
