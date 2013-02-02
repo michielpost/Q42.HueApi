@@ -143,14 +143,14 @@ namespace Q42.HueApi
     /// <summary>
     /// Set the next Hue color
     /// </summary>
-    /// <param name="lampList"></param>
+    /// <param name="lightList"></param>
     /// <returns></returns>
-    public Task SetNextHueColorAsync(IEnumerable<string> lampList = null)
+    public Task SetNextHueColorAsync(IEnumerable<string> lightList = null)
     {
       //Invalid JSON, but it works
       string command = "{\"hue\":+10000,\"sat\":255}";
 
-      return SendCommandRawAsync(command, lampList);
+      return SendCommandRawAsync(command, lightList);
 
     }
 
@@ -217,48 +217,48 @@ namespace Q42.HueApi
 
 
     /// <summary>
-    /// Send a LampCommand to a list of lamps
+    /// Send a lightCommand to a list of lights
     /// </summary>
     /// <param name="command"></param>
-    /// <param name="lampList">if null, send command to all lamps</param>
+    /// <param name="lightList">if null, send command to all lights</param>
     /// <returns></returns>
-    public Task SendCommandAsync(LampCommand command, IEnumerable<string> lampList = null)
+    public Task SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null)
     {
       if (command == null)
         throw new ArgumentNullException ("command");
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      return SendCommandRawAsync(jsonCommand, lampList);
+      return SendCommandRawAsync(jsonCommand, lightList);
     }
 
     /// <summary>
-    /// Send a json command to a list of lamps
+    /// Send a json command to a list of lights
     /// </summary>
     /// <param name="command"></param>
-    /// <param name="lampList">if null, send command to all lamps</param>
+    /// <param name="lightList">if null, send command to all lights</param>
     /// <returns></returns>
-    public Task SendCommandRawAsync(string command, IEnumerable<string> lampList = null)
+    public Task SendCommandRawAsync(string command, IEnumerable<string> lightList = null)
     {
       if (command == null)
         throw new ArgumentNullException ("command");
 
       CheckInitialized();
 
-      string[] lamps = null;
-      if (lampList != null)
-        lamps = lampList.ToArray();
+      string[] lights = null;
+      if (lightList != null)
+        lights = lightList.ToArray();
 
-      if (lampList == null || lamps.Length == 0)
+      if (lightList == null || lights.Length == 0)
       {
         return SendGroupCommandAsync(command);
       }
-      else if (lamps.Length == 1 || !_useGroups)
+      else if (lights.Length == 1 || !_useGroups)
       {
-        return lamps.ForEachAsync(_parallelRequests, async (lampId) =>
+        return lights.ForEachAsync(_parallelRequests, async (lightId) =>
         {
           HttpClient client = new HttpClient();
-          await client.PutAsync(new Uri(ApiBase + string.Format("lights/{0}/state", lampId)), new StringContent(command)).ConfigureAwait(false);
+          await client.PutAsync(new Uri(ApiBase + string.Format("lights/{0}/state", lightId)), new StringContent(command)).ConfigureAwait(false);
 
         });
       }
@@ -269,21 +269,21 @@ namespace Q42.HueApi
         //Maybe when bridge firmware is updated
         return Task.Run(async () =>
         {
-          //Create string of all the lamps 
-          string lampString = string.Empty;
-          lampString += "[";
-          foreach (var lamp in lamps)
+          //Create string of all the lights
+          string lightString = string.Empty;
+          lightString += "[";
+          foreach (var light in lights)
           {
-            lampString += "\"" + lamp + "\",";
+            lightString += "\"" + light + "\",";
           }
-          lampString = lampString.Substring(0, lampString.Length - 1) + "]";
+          lightString = lightString.Substring(0, lightString.Length - 1) + "]";
 
           HttpClient client = new HttpClient();
           //Delete group 1
           await client.DeleteAsync(new Uri(ApiBase + "groups/1")).ConfigureAwait(false);
 
-          //Create group (will be group 1) with the lamps we want to target
-          await client.PostAsync(new Uri(ApiBase + "groups"), new StringContent("{\"lights\":" + lampString + "}")).ConfigureAwait(false);
+          //Create group (will be group 1) with the lights we want to target
+          await client.PostAsync(new Uri(ApiBase + "groups"), new StringContent("{\"lights\":" + lightString + "}")).ConfigureAwait(false);
 
           //Send command to group 1
           //await client.PutAsync(new Uri(ApiBase + "groups/1/action"), new StringContent(command));
@@ -299,7 +299,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    public Task SendGroupCommandAsync(LampCommand command, int group = 0)
+    public Task SendGroupCommandAsync(LightCommand command, int group = 0)
     {
       if (command == null)
         throw new ArgumentNullException ("command");
