@@ -35,9 +35,9 @@ namespace Q42.HueApi.Interfaces
     /// <summary>
     /// Set the next Hue color
     /// </summary>
-    /// <param name="lampList"></param>
+    /// <param name="lightList"></param>
     /// <returns></returns>
-    Task SetNextHueColorAsync(IEnumerable<string> lampList = null);
+    Task SetNextHueColorAsync(IEnumerable<string> lightList = null);
 
     /// <summary>
     /// Asynchronously gets all lights registered with the bridge.
@@ -64,17 +64,17 @@ namespace Q42.HueApi.Interfaces
     /// Send a raw string / json command
     /// </summary>
     /// <param name="command">json</param>
-    /// <param name="lampList">if null, send to all lamps</param>
+    /// <param name="lightList">if null, send to all lights</param>
     /// <returns></returns>
-    Task SendCommandRawAsync(string command, IEnumerable<string> lampList = null);
+    Task SendCommandRawAsync(string command, IEnumerable<string> lightList = null);
 
     /// <summary>
-    /// Send a lamp command
+    /// Send a light command
     /// </summary>
-    /// <param name="command">Compose a new LampCommand()</param>
-    /// <param name="lampList">if null, send to all lamps</param>
+    /// <param name="command">Compose a new lightCommand()</param>
+    /// <param name="lightList">if null, send to all lights</param>
     /// <returns></returns>
-    Task SendCommandAsync(LampCommand command, IEnumerable<string> lampList = null);
+    Task SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null);
 
     /// <summary>
     /// Send command to a group
@@ -82,7 +82,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    Task SendGroupCommandAsync(LampCommand command, int group = 0);
+    Task SendGroupCommandAsync(LightCommand command, int group = 0);
 
   }
 }
