@@ -46,6 +46,12 @@ namespace Q42.HueApi.Interfaces
     Task<IEnumerable<Light>> GetLightsAsync();
 
     /// <summary>
+    /// Asynchronously gets all lights registered with the bridge.
+    /// </summary>
+    /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
+    Task<IEnumerable<WhiteList>> GetWhiteListAsync();
+
+    /// <summary>
     /// Asynchronously retrieves an individual light.
     /// </summary>
     /// <param name="id">The light's Id.</param>
@@ -59,6 +65,13 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <returns></returns>
     Task<Bridge> GetBridgeAsync();
+     
+    /// <summary>
+    /// Deletes a whitelist entry
+    /// </summary>
+    /// <returns></returns>
+    Task<bool> DeleteWhiteListEntryAsync(string entry);
+
 
     /// <summary>
     /// Send a raw string / json command
