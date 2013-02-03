@@ -8,10 +8,10 @@ namespace Q42.HueApi
 {
 
   /// <summary>
-  /// Compose a lamp command to send to a lamp
+  /// Compose a light command to send to a light
   /// </summary>
   [DataContract]
-  public class LampCommand
+  public class LightCommand
   {
     /// <summary>
     /// Gets or sets the colors based on CIE 1931 Color coordinates.
@@ -44,27 +44,27 @@ namespace Q42.HueApi
     public int? ColorTemperature { get; set; }
 
     /// <summary>
-    /// Gets or sets whether the lamp is on.
+    /// Gets or sets whether the light is on.
     /// </summary>
     [DataMember (Name = "on")]
     public bool? On { get; set; }
 
     /// <summary>
-    /// Gets or sets the current effect for the lamp.
+    /// Gets or sets the current effect for the light.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     [DataMember (Name = "effect")]
     public Effect Effect { get; set; }
 
     /// <summary>
-    /// Gets or sets the current alert for the lamp.
+    /// Gets or sets the current alert for the light.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     [DataMember (Name = "alert")]
     public Alert Alert { get; set; }
 
     /// <summary>
-    /// Gets or sets the transition time for the lamp.
+    /// Gets or sets the transition time for the light.
     /// </summary>
     [DataMember (Name = "transitiontime")]
     [JsonConverter (typeof(TransitionTimeConverter))]
@@ -115,20 +115,20 @@ namespace Q42.HueApi
   }
 
   /// <summary>
-  /// Extension methods to compose a lamp command
+  /// Extension methods to compose a light command
   /// </summary>
-  public static class LampCommandExtensions
+  public static class lightCommandExtensions
   {
     /// <summary>
     /// Helper to set the color based on a HEX value
     /// </summary>
-    /// <param name="lampCommand"></param>
+    /// <param name="lightCommand"></param>
     /// <param name="hexColor"></param>
     /// <returns></returns>
-    public static LampCommand SetColor(this LampCommand lampCommand, string hexColor)
+    public static LightCommand SetColor(this LightCommand lightCommand, string hexColor)
     {
-      if (lampCommand == null)
-        throw new ArgumentNullException ("lampCommand");
+      if (lightCommand == null)
+        throw new ArgumentNullException ("lightCommand");
       if (hexColor == null)
         throw new ArgumentNullException ("hexColor");
 
@@ -136,99 +136,99 @@ namespace Q42.HueApi
       int green = int.Parse(hexColor.Substring(2, 2), NumberStyles.AllowHexSpecifier);
       int blue = int.Parse(hexColor.Substring(4, 2), NumberStyles.AllowHexSpecifier);
 
-      return lampCommand.SetColor(red, green, blue);
+      return lightCommand.SetColor(red, green, blue);
     }
 
     /// <summary>
     /// Helper to set the color based on RGB strings
     /// </summary>
-    /// <param name="lampCommand"></param>
+    /// <param name="lightCommand"></param>
     /// <param name="red"></param>
     /// <param name="green"></param>
     /// <param name="blue"></param>
     /// <returns></returns>
-    public static LampCommand SetColor(this LampCommand lampCommand, string red, string green, string blue)
+    public static LightCommand SetColor(this LightCommand lightCommand, string red, string green, string blue)
     {
-      if (lampCommand == null)
-        throw new ArgumentNullException ("lampCommand");
+      if (lightCommand == null)
+        throw new ArgumentNullException ("lightCommand");
 
-      return lampCommand.SetColor(int.Parse(red), int.Parse(green), int.Parse(blue));
+      return lightCommand.SetColor(int.Parse(red), int.Parse(green), int.Parse(blue));
     }
 
     /// <summary>
     /// Helper to set the color based on RGB
     /// </summary>
-    /// <param name="lampCommand"></param>
+    /// <param name="lightCommand"></param>
     /// <param name="red"></param>
     /// <param name="green"></param>
     /// <param name="blue"></param>
     /// <returns></returns>
-    public static LampCommand SetColor(this LampCommand lampCommand, int red, int green, int blue)
+    public static LightCommand SetColor(this LightCommand lightCommand, int red, int green, int blue)
     {
-      if (lampCommand == null)
-        throw new ArgumentNullException ("lampCommand");
+      if (lightCommand == null)
+        throw new ArgumentNullException ("lightCommand");
 
       var point = HueColorConverter.XyFromColor(red, green, blue);
-      return lampCommand.SetColor(point.x, point.y);
+      return lightCommand.SetColor(point.x, point.y);
     }
 
     /// <summary>
-    /// Helper to set the color based on the lamp's built in XY color schema
+    /// Helper to set the color based on the light's built in XY color schema
     /// </summary>
-    /// <param name="lampCommand"></param>
+    /// <param name="lightCommand"></param>
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public static LampCommand SetColor(this LampCommand lampCommand, double x, double y)
+    public static LightCommand SetColor(this LightCommand lightCommand, double x, double y)
     {
-      if (lampCommand == null)
-        throw new ArgumentNullException ("lampCommand");
+      if (lightCommand == null)
+        throw new ArgumentNullException ("lightCommand");
 
-      lampCommand.ColorCoordinates = new[] { x, y };
-      return lampCommand;
+      lightCommand.ColorCoordinates = new[] { x, y };
+      return lightCommand;
     }
 
     /// <summary>
-    /// Helper to set the color based on the lamp's built in CT color scheme
+    /// Helper to set the color based on the light's built in CT color scheme
     /// </summary>
-    /// <param name="lampCommand"></param>
+    /// <param name="lightCommand"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public static LampCommand SetColor(this LampCommand lampCommand, int ct)
+    public static LightCommand SetColor(this LightCommand lightCommand, int ct)
     {
-      if (lampCommand == null)
-        throw new ArgumentNullException ("lampCommand");
+      if (lightCommand == null)
+        throw new ArgumentNullException ("lightCommand");
 
-      lampCommand.ColorTemperature = ct;
-      return lampCommand;
+      lightCommand.ColorTemperature = ct;
+      return lightCommand;
     }
 
     /// <summary>
     /// Helper to create turn on command
     /// </summary>
-    /// <param name="lampCommand"></param>
+    /// <param name="lightCommand"></param>
     /// <returns></returns>
-    public static LampCommand TurnOn(this LampCommand lampCommand)
+    public static LightCommand TurnOn(this LightCommand lightCommand)
     {
-      if (lampCommand == null)
-        throw new ArgumentNullException ("lampCommand");
+      if (lightCommand == null)
+        throw new ArgumentNullException ("lightCommand");
 
-      lampCommand.On = true;
-      return lampCommand;
+      lightCommand.On = true;
+      return lightCommand;
     }
 
     /// <summary>
     /// Helper to create turn off command
     /// </summary>
-    /// <param name="lampCommand"></param>
+    /// <param name="lightCommand"></param>
     /// <returns></returns>
-    public static LampCommand TurnOff(this LampCommand lampCommand)
+    public static LightCommand TurnOff(this LightCommand lightCommand)
     {
-      if (lampCommand == null)
-        throw new ArgumentNullException ("lampCommand");
+      if (lightCommand == null)
+        throw new ArgumentNullException ("lightCommand");
 
-      lampCommand.On = false;
-      return lampCommand;
+      lightCommand.On = false;
+      return lightCommand;
     }
 
   }
