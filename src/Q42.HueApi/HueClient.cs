@@ -49,7 +49,7 @@ namespace Q42.HueApi
     public HueClient(string ip)
     {
       if (ip == null)
-        throw new ArgumentNullException ("ip");
+        throw new ArgumentNullException("ip");
 
       _ip = ip;
     }
@@ -62,7 +62,7 @@ namespace Q42.HueApi
     public HueClient(string ip, string appKey)
     {
       if (ip == null)
-        throw new ArgumentNullException ("ip");
+        throw new ArgumentNullException("ip");
 
       _ip = ip;
 
@@ -78,7 +78,7 @@ namespace Q42.HueApi
     public void Initialize(string appKey)
     {
       if (appKey == null)
-        throw new ArgumentNullException ("appKey");
+        throw new ArgumentNullException("appKey");
 
       _appKey = appKey;
 
@@ -91,7 +91,7 @@ namespace Q42.HueApi
     private void CheckInitialized()
     {
       if (!IsInitialized)
-        throw new InvalidOperationException ("HueClient is not initialized. First call RegisterAsync or Initialize.");
+        throw new InvalidOperationException("HueClient is not initialized. First call RegisterAsync or Initialize.");
     }
 
     /// <summary>
@@ -105,14 +105,14 @@ namespace Q42.HueApi
     public async Task<bool> RegisterAsync(string appName, string appKey)
     {
       if (appName == null)
-        throw new ArgumentNullException ("appName");
+        throw new ArgumentNullException("appName");
       if (appName.Trim() == String.Empty)
         throw new ArgumentException("appName must not be empty", "appName");
       if (appKey == null)
-        throw new ArgumentNullException ("appKey");
+        throw new ArgumentNullException("appKey");
       if (appKey.Length < 10 || appKey.Trim() == String.Empty)
         throw new ArgumentException("appKey must be at least 10 characters.", "appKey");
-      if (appKey.Contains (" "))
+      if (appKey.Contains(" "))
         throw new ArgumentException("Cannot contain spaces.", "appName");
 
       JObject obj = new JObject();
@@ -123,19 +123,19 @@ namespace Q42.HueApi
       var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new StringContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      JArray jresponse = JArray.Parse (stringResponse);
+      JArray jresponse = JArray.Parse(stringResponse);
       JObject result = (JObject)jresponse.First;
 
       JToken error;
-      if (result.TryGetValue ("error", out error))
+      if (result.TryGetValue("error", out error))
       {
         if (error["type"].Value<int>() == 101) // link button not pressed
           return false;
         else
-          throw new Exception (error["description"].Value<string>());
+          throw new Exception(error["description"].Value<string>());
       }
 
-      Initialize (result["success"]["username"].Value<string>());
+      Initialize(result["success"]["username"].Value<string>());
       return true;
     }
 
@@ -161,19 +161,19 @@ namespace Q42.HueApi
     /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
-    public async Task<Light> GetLightAsync (string id)
+    public async Task<Light> GetLightAsync(string id)
     {
       if (id == null)
-        throw new ArgumentNullException ("id");
+        throw new ArgumentNullException("id");
       if (id.Trim() == String.Empty)
-        throw new ArgumentException ("id can not be empty or a blank string", "id");
+        throw new ArgumentException("id can not be empty or a blank string", "id");
 
       CheckInitialized();
 
       HttpClient client = new HttpClient();
-      string stringResult = await client.GetStringAsync (new Uri (String.Format ("{0}lights/{1}", ApiBase, id))).ConfigureAwait (false);
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id))).ConfigureAwait(false);
 
-      JToken token = JToken.Parse (stringResult);
+      JToken token = JToken.Parse(stringResult);
       if (token.Type == JTokenType.Array)
       {
         // Hue gives back errors in an array for this request
@@ -181,7 +181,7 @@ namespace Q42.HueApi
         if (error["type"].Value<int>() == 3) // Light not found
           return null;
 
-        throw new Exception (error["description"].Value<string>());
+        throw new Exception(error["description"].Value<string>());
       }
 
       return token.ToObject<Light>();
@@ -195,7 +195,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      Bridge bridge = await GetBridgeAsync().ConfigureAwait (false);
+      Bridge bridge = await GetBridgeAsync().ConfigureAwait(false);
       return bridge.Lights;
     }
     /// <summary>
@@ -204,10 +204,10 @@ namespace Q42.HueApi
     /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
     public async Task<IEnumerable<WhiteList>> GetWhiteListAsync()
     {
-        CheckInitialized();
+      CheckInitialized();
 
-        Bridge bridge = await GetBridgeAsync().ConfigureAwait(false);
-        return bridge.WhiteList;
+      Bridge bridge = await GetBridgeAsync().ConfigureAwait(false);
+      return bridge.WhiteList;
     }
 
 
@@ -233,26 +233,26 @@ namespace Q42.HueApi
     /// <returns></returns>
     public async Task<bool> DeleteWhiteListEntryAsync(string entry)
     {
-        CheckInitialized();
+      CheckInitialized();
 
-        HttpClient client = new HttpClient();
+      HttpClient client = new HttpClient();
 
-        var response = await client.DeleteAsync(new Uri(string.Format("{0}config/whitelist/{1}", ApiBase,entry))).ConfigureAwait(false);
-        var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+      var response = await client.DeleteAsync(new Uri(string.Format("{0}config/whitelist/{1}", ApiBase, entry))).ConfigureAwait(false);
+      var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-        JArray jresponse = JArray.Parse(stringResponse);
-        JObject result = (JObject)jresponse.First;
+      JArray jresponse = JArray.Parse(stringResponse);
+      JObject result = (JObject)jresponse.First;
 
-        JToken error;
-        if (result.TryGetValue("error", out error))
-        {
-            if (error["type"].Value<int>() == 3) // entry not available
-                return false;
-            else
-                throw new Exception(error["description"].Value<string>());
-        }
+      JToken error;
+      if (result.TryGetValue("error", out error))
+      {
+        if (error["type"].Value<int>() == 3) // entry not available
+          return false;
+        else
+          throw new Exception(error["description"].Value<string>());
+      }
 
-        return true;
+      return true;
 
     }
 
@@ -265,7 +265,7 @@ namespace Q42.HueApi
     public Task SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null)
     {
       if (command == null)
-        throw new ArgumentNullException ("command");
+        throw new ArgumentNullException("command");
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -281,7 +281,7 @@ namespace Q42.HueApi
     public Task SendCommandRawAsync(string command, IEnumerable<string> lightList = null)
     {
       if (command == null)
-        throw new ArgumentNullException ("command");
+        throw new ArgumentNullException("command");
 
       CheckInitialized();
 
@@ -342,7 +342,7 @@ namespace Q42.HueApi
     public Task SendGroupCommandAsync(LightCommand command, int group = 0)
     {
       if (command == null)
-        throw new ArgumentNullException ("command");
+        throw new ArgumentNullException("command");
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -358,7 +358,7 @@ namespace Q42.HueApi
     private Task SendGroupCommandAsync(string command, int group = 0)
     {
       if (command == null)
-        throw new ArgumentNullException ("command");
+        throw new ArgumentNullException("command");
 
       CheckInitialized();
 
@@ -366,6 +366,6 @@ namespace Q42.HueApi
       return client.PutAsync(new Uri(ApiBase + string.Format("groups/{0}/action", group)), new StringContent(command));
     }
 
-    
+
   }
 }

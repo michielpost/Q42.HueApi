@@ -58,14 +58,14 @@ namespace Q42.HueApi.Interfaces
     /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
-    Task<Light> GetLightAsync (string id);
+    Task<Light> GetLightAsync(string id);
 
     /// <summary>
     /// Get bridge info
     /// </summary>
     /// <returns></returns>
     Task<Bridge> GetBridgeAsync();
-     
+
     /// <summary>
     /// Deletes a whitelist entry
     /// </summary>
