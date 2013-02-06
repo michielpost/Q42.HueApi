@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="HttpBridgeLocator.cs" />
+    <Compile Include="HueColorConverter-Arrays.cs" />
     <Compile Include="HueColorConverter.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Interfaces\IBridgeLocator.cs" />
