@@ -20,18 +20,18 @@ If you already registered an appname, you can initialize the HueClient with the 
 
 	client.Initialize("mypersonalappkey");
 
-### Control the lamps
-Main usage of this library is to be able to control your lamps. We use a LampCommand for that. A LampCommand can be send to one or more / multiple lamps. A LampCommand can hold a color, effect, on/off etc.
+### Control the lights
+Main usage of this library is to be able to control your lights. We use a LightCommand for that. A LightCommand can be send to one or more / multiple lights. A LightCommand can hold a color, effect, on/off etc.
 
-	var command = new LampCommand();
+	var command = new LightCommand();
 	command.On = true;
 	
 There are some helpers to set a color on a command:
 	
-	//Turn the lamp on and set a Hex color for the command
+	//Turn the light on and set a Hex color for the command
 	command.TurnOn().SetColor("FF00AA")
 	
-LampCommands also support Effects and Alerts
+LightCommands also support Effects and Alerts
 
 	//Blink once
 	command.Alert = Alerts.Once;
@@ -39,11 +39,11 @@ LampCommands also support Effects and Alerts
 	//Or start a colorloop
 	command.Effect = Effects.ColorLoop;
 	
-Once you have composed your command, send it to one or more lamps
+Once you have composed your command, send it to one or more lights
 
 	client.SendCommandAsync(command, new List<string> { "1" });
 	
-Or send it to all lamps
+Or send it to all lights
 
 	client.SendCommandAsync(command);
 
