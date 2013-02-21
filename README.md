@@ -3,6 +3,8 @@ Q42.HueApi
 
 Open source library for communication with the Philips Hue bridge.
 
+This Portable Library is compatible with: .Net, Windows 8 and Windows Phone 8
+
 Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
 
 ## How to use?
