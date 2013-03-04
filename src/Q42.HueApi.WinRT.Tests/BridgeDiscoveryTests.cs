@@ -16,10 +16,10 @@ namespace Q42.HueApi.WinRT.Tests
     {
       IBridgeLocator locator = new SSDPBridgeLocator();
 
-      var bridgIps = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+			var bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
 
-      Assert.IsNotNull(bridgIps);
-      Assert.IsTrue(bridgIps.Count() > 0);
+			Assert.IsNotNull(bridgeIPs);
+			Assert.IsTrue(bridgeIPs.Count() > 0);
 
     }
 
@@ -29,10 +29,10 @@ namespace Q42.HueApi.WinRT.Tests
     {
       IBridgeLocator locator = new HttpBridgeLocator();
 
-      var bridgIps = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+			var bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
 
-      Assert.IsNotNull(bridgIps);
-      Assert.IsTrue(bridgIps.Count() > 0);
+			Assert.IsNotNull(bridgeIPs);
+			Assert.IsTrue(bridgeIPs.Count() > 0);
 
     }
   }

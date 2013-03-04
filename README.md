@@ -11,7 +11,13 @@ Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q4
 Some basic usage examples
 
 ### Bridge
-Before you can communicate with the Philips Hue Bridge, you need to register your application:
+Before you can communicate with the Philips Hue Bridge, you need to find the bridge and register your application:
+
+	IBridgeLocator locator = new HttpBridgeLocator();
+	//For Windows 8 you can use the SSDPBridgeLocator which actually scans your network. See the included BridgeDiscoveryTests
+    IEnumerable<string> bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+	
+Register your application
 	
 	HueClient client = new HueClient("ip");
 	client.RegisterAsync("mypersonalappname", "mypersonalappkey");
