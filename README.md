@@ -54,7 +54,7 @@ Or send it to all lights
 	client.SendCommandAsync(command);
 
 ## How To install?
-Download the source from GitHub or get the compiled assembly from NuGet [Q42.WinRT on NuGet](https://nuget.org/packages/Q42.WinRT).
+Download the source from GitHub or get the compiled assembly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
 
 ## Credits
 This library is made possible by contributions from:
