@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="3d005407-9534-4b69-9f93-c8e72f247204" Publisher="CN=Michiel" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>Q42.HueApi.WinRT.Sample</DisplayName>
+    <PublisherDisplayName>Michiel</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Q42.HueApi.WinRT.Sample.App">
+      <VisualElements DisplayName="Q42.HueApi.WinRT.Sample" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Q42.HueApi.WinRT.Sample" ForegroundText="light" BackgroundColor="#464646">
+        <DefaultTile ShowName="allLogos" />
+        <SplashScreen Image="Assets\SplashScreen.png" />
+      </VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClientServer" />
+    <Capability Name="privateNetworkClientServer" />
+  </Capabilities>
+</Package>
