@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Q42.HueApi.WinRT.Sample.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,6 +35,27 @@ namespace Q42.HueApi.WinRT.Sample.Views
 		/// property is typically used to configure the page.</param>
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+		}
+
+		private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+		{
+			byte R, G, B, A;
+
+			A = 255;
+			R = Convert.ToByte(RSlider.Value);
+			G = Convert.ToByte(GSlider.Value);
+			B = Convert.ToByte(BSlider.Value);
+
+			Color myColor = new Color();
+			myColor = Color.FromArgb(A, R, G, B);
+
+			showColor.Fill = new SolidColorBrush(myColor);
+		}
+
+		private void ColorButton_Click(object sender, RoutedEventArgs e)
+		{
+			((MainViewModel)this.DataContext).SetColor((int)RSlider.Value, (int)GSlider.Value, (int)BSlider.Value);
+
 		}
 	}
 }

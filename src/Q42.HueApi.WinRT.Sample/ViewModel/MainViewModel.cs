@@ -37,6 +37,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 			public RelayCommand GreenCommand { get; set; }
 			public RelayCommand RedCommand { get; set; }
 			public RelayCommand ColorloopCommand { get; set; }
+			public RelayCommand FlashCommand { get; set; }
 
 
 
@@ -116,6 +117,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 					GreenCommand = new RelayCommand(GreenAction);
 					RedCommand = new RelayCommand(RedAction);
 					ColorloopCommand = new RelayCommand(ColorloopAction);
+					FlashCommand = new RelayCommand(FlashAction);
         }
 
 				
@@ -197,6 +199,24 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 					LightCommand command = new LightCommand();
 					command.TurnOn();
 					command.Effect = Effect.ColorLoop;
+
+					_hueClient.SendCommandAsync(command);
+				}
+
+				private void FlashAction()
+				{
+					LightCommand command = new LightCommand();
+					command.TurnOn();
+					command.Alert = Alert.Once;
+
+					_hueClient.SendCommandAsync(command);
+				}
+
+				public void SetColor(int r, int g, int b)
+				{
+					LightCommand command = new LightCommand();
+					command.TurnOn();
+					command.SetColor(r, g, b);
 
 					_hueClient.SendCommandAsync(command);
 				}

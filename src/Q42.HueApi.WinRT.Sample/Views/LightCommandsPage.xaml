@@ -15,7 +15,19 @@
             <Button Command="{Binding RedCommand}">All red</Button>
             <Button Command="{Binding GreenCommand}">All green</Button>
             <Button Command="{Binding ColorloopCommand}">All ColorLoop</Button>
-            
+            <Button Command="{Binding FlashCommand}">Flash</Button>
+
+            <Grid x:Name="ColorPicker" Margin="20" Width="420" HorizontalAlignment="Left" Background="#3f000000">
+                <StackPanel>
+                    <Slider x:Name="RSlider" LargeChange="5" Maximum="255" ValueChanged="Slider_ValueChanged"  >
+                    </Slider>
+                    <Slider x:Name="GSlider" LargeChange="5" Maximum="255" ValueChanged="Slider_ValueChanged" ></Slider>
+                    <Slider x:Name="BSlider" LargeChange="5" Maximum="255" ValueChanged="Slider_ValueChanged" ></Slider>
+                    <Rectangle x:Name="showColor" Height="84" />
+                    <Button Click="ColorButton_Click">Set Color</Button>
+                </StackPanel>
+            </Grid>
+
         </StackPanel>
     </Grid>
 </Page>
