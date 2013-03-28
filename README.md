@@ -14,7 +14,9 @@ Some basic usage examples
 Before you can communicate with the Philips Hue Bridge, you need to find the bridge and register your application:
 
 	IBridgeLocator locator = new HttpBridgeLocator();
-	//For Windows 8 you can use the SSDPBridgeLocator which actually scans your network. See the included BridgeDiscoveryTests
+	
+	//For Windows 8 and .NET45 projects you can use the SSDPBridgeLocator which actually scans your network. 
+	//See the included BridgeDiscoveryTests and the specific .NET and .WinRT projects
     IEnumerable<string> bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
 	
 Register your application
