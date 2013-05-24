@@ -1,2 +1,2 @@
 @echo off
-..\..\.nuget\NuGet.exe pack Package\Q42.HueApi.nuspec
+..\..\.nuget\NuGet.exe pack ..\Q42.HueApi.csproj -Prop Configuration=Release

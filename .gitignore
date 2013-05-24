@@ -109,3 +109,4 @@ UpgradeLog*.XML
 /src/Q42.HueApi/NuGet/Package/lib/Q42.HueApi.XML
 /src/Q42.HueApi/NuGet/Package/lib/Q42.HueApi.dll
 /src/Q42.HueApi/NuGet/*.nupkg
+*.nupkg

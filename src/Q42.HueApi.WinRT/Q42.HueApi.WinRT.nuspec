@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Q42.HueApi.WinRT</id>
+    <version>1.5.0</version>
+    <summary>Open source library for interaction with the Philips Hue Bridge (Includes WinRT specific SSDP Bridge Locator).</summary>
+    <description><![CDATA[Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Portable library works with .Net, Windows 8 and Windows Phone 8]]></description>
+    <authors>Q42</authors>
+    <tags>philips hue lights</tags>
+    <language>en-US</language> 
+    <projectUrl>https://github.com/Q42/Q42.HueApi</projectUrl>
+    <iconUrl>http://a0.twimg.com/profile_images/2142700938/q42-logo-big-square.png</iconUrl>
+    <dependencies>
+	  <dependency id="Q42.HueApi" />
+    </dependencies>  
+  </metadata>
+</package>
+
