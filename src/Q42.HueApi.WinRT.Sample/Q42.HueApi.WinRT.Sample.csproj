@@ -179,6 +179,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.5\lib\netcore45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Q42.WinRT">
       <HintPath>..\packages\Q42.WinRT.1.0.11.42\lib\win\Q42.WinRT.dll</HintPath>
@@ -191,6 +192,7 @@
     <ProjectReference Include="..\Q42.HueApi.WinRT\Q42.HueApi.WinRT.csproj">
       <Project>{0a49146a-6cf7-4074-827e-be32e24b0445}</Project>
       <Name>Q42.HueApi.WinRT</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
       <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>

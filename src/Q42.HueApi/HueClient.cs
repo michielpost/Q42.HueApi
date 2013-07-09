@@ -21,7 +21,7 @@ namespace Q42.HueApi
 
     private readonly string _ip;
     private readonly int _parallelRequests = 5;
-    private readonly bool _useGroups = false;
+    private readonly bool _useGroups = true;
 
     private string _appKey;
 
@@ -304,9 +304,9 @@ namespace Q42.HueApi
       }
       else
       {
-        //This does not always work
-        //Most of the time it does not, that's why _useGroups = false by default, so this code is not used yet.
-        //Maybe when bridge firmware is updated
+        //Bridge firmware is updated, this should work. Can be disabled by setting _useGroups = false
+        //Create a group (1) with the lights you want to set and update that group. most of the time faster than updating all individual lights
+        //And lights change color at the same time.
         return Task.Run(async () =>
         {
           //Create string of all the lights
@@ -324,6 +324,9 @@ namespace Q42.HueApi
 
           //Create group (will be group 1) with the lights we want to target
           await client.PostAsync(new Uri(ApiBase + "groups"), new StringContent("{\"lights\":" + lightString + "}")).ConfigureAwait(false);
+
+          //Wait for 2 seconds so each lamp knows about the group (2 seconds is based on testing, can 
+          await Task.Delay(2000);
 
           //Send command to group 1
           //await client.PutAsync(new Uri(ApiBase + "groups/1/action"), new StringContent(command));
