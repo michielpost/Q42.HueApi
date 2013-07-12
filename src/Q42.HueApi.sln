@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi.NET", "Q42.HueAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi.NET.Tests", "Q42.HueApi.NET.Tests\Q42.HueApi.NET.Tests.csproj", "{2114B768-86CF-4687-BCFD-2B7916C85CD9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi.Tests", "Q42.HueApi.Tests\Q42.HueApi.Tests.csproj", "{0B96BC44-0006-46C2-BA96-CD63C123FD49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,16 @@ Global
 		{2114B768-86CF-4687-BCFD-2B7916C85CD9}.Release|ARM.ActiveCfg = Release|Any CPU
 		{2114B768-86CF-4687-BCFD-2B7916C85CD9}.Release|x64.ActiveCfg = Release|Any CPU
 		{2114B768-86CF-4687-BCFD-2B7916C85CD9}.Release|x86.ActiveCfg = Release|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Release|ARM.ActiveCfg = Release|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Release|x64.ActiveCfg = Release|Any CPU
+		{0B96BC44-0006-46C2-BA96-CD63C123FD49}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

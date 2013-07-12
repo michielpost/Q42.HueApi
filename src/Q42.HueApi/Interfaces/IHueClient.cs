@@ -95,7 +95,20 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    Task SendGroupCommandAsync(LightCommand command, int group = 0);
+    Task SendGroupCommandAsync(LightCommand command, string group = "0");
 
+    /// <summary>
+    /// Creates a group for a set of lights
+    /// </summary>
+    /// <param name="lights"></param>
+    /// <returns></returns>
+    Task<string> CreateGroup(IEnumerable<string> lights);
+
+    /// <summary>
+    /// Deletes a single group
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <returns></returns>
+    Task DeleteGroup(string groupId);
   }
 }

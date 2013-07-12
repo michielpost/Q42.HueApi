@@ -39,6 +39,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="HttpBridgeLocator.cs" />
+    <Compile Include="HueClient-Api.cs" />
+    <Compile Include="HueClient-Config.cs" />
+    <Compile Include="HueClient-Groups.cs" />
+    <Compile Include="HueClient-Lights.cs" />
+    <Compile Include="HueClient-Schedules.cs" />
     <Compile Include="HueColorConverter-Arrays.cs" />
     <Compile Include="HueColorConverter.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
@@ -47,6 +52,7 @@
     <Compile Include="HueClient.cs" />
     <Compile Include="Models\Bridge.cs" />
     <Compile Include="Models\BridgeConfig.cs" />
+    <Compile Include="Models\Groups\GroupPutResult.cs" />
     <Compile Include="Models\LightCommand.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\NuPnPResponse.cs" />
@@ -74,6 +80,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
