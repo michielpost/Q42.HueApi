@@ -49,6 +49,27 @@ namespace Q42.HueApi
     }
 
     /// <summary>
+    /// Sets the light name
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public async Task SetLightNameAsync(string id, string name)
+    {
+      if (id == null)
+        throw new ArgumentNullException("id");
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id can not be empty or a blank string", "id");
+
+      CheckInitialized();
+
+      string command = JsonConvert.SerializeObject(new { name = name});
+
+      HttpClient client = new HttpClient();
+      await client.PutAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id)), new StringContent(command)).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Asynchronously gets all lights registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="Light"/>s registered with the bridge.</returns>

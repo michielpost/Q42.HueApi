@@ -61,6 +61,14 @@ namespace Q42.HueApi.Interfaces
     Task<Light> GetLightAsync(string id);
 
     /// <summary>
+    /// Sets the light name
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    Task SetLightNameAsync(string id, string name);
+
+    /// <summary>
     /// Get bridge info
     /// </summary>
     /// <returns></returns>
