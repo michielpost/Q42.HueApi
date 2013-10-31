@@ -165,5 +165,57 @@ namespace Q42.HueApi
       return SendCommandRawAsync(command, lightList);
 
     }
+
+
+    /// <summary>
+    /// Start searching for new lights
+    /// </summary>
+    /// <returns></returns>
+    public async Task SearchNewLightsAsync()
+    {
+      CheckInitialized();
+
+      HttpClient client = new HttpClient();
+      var response = await client.PostAsync(new Uri(String.Format("{0}lights", ApiBase)), null).ConfigureAwait(false);
+
+
+    }
+
+    /// <summary>
+    /// Gets a list of lights that were discovered the last time a search for new lights was performed. The list of new lights is always deleted when a new search is started.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<List<Light>> GetNewLightsAsync()
+    {
+      CheckInitialized();
+
+      HttpClient client = new HttpClient();
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/new", ApiBase))).ConfigureAwait(false);
+
+      //stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
+
+      List<Light> results = new List<Light>();
+
+      JToken token = JToken.Parse(stringResult);
+      if (token.Type == JTokenType.Object)
+      {
+        //Each property is a light
+        var jsonResult = (JObject)token;
+
+        foreach(var prop in jsonResult.Properties())
+        {
+          if (prop.Name != "lastscan")
+          {
+            Light newLight = new Light();
+            newLight.Id = prop.Name;
+          }
+        }
+       
+      }
+
+      return results;
+
+    }
   }
 }

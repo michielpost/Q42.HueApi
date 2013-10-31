@@ -34,7 +34,23 @@ namespace Q42.HueApi.Tests
       result = await _client.GetLightAsync("1");
       Assert.AreEqual("test change", result.Name);
 
+
     }
+
+    [TestMethod]
+    public async Task GetNewLightsTest()
+    {
+      //Search for new lights
+      //await _client.SearchNewLightsAsync();
+
+      //Get new lights found
+      var newLights = await _client.GetNewLightsAsync();
+
+      Assert.AreEqual(0, newLights.Count);
+
+    }
+
+   
 
   
   }

@@ -118,5 +118,17 @@ namespace Q42.HueApi.Interfaces
     /// <param name="groupId"></param>
     /// <returns></returns>
     Task DeleteGroup(string groupId);
+
+    /// <summary>
+    /// Start searching for new lights
+    /// </summary>
+    /// <returns></returns>
+    Task SearchNewLightsAsync();
+
+    /// <summary>
+    /// Gets a list of lights that were discovered the last time a search for new lights was performed.
+    /// </summary>
+    /// <returns></returns>
+    Task<List<Light>> GetNewLightsAsync();
   }
 }
