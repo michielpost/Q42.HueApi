@@ -193,7 +193,7 @@ namespace Q42.HueApi
       HttpClient client = new HttpClient();
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/new", ApiBase))).ConfigureAwait(false);
 
-      //stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
+      stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
 
       List<Light> results = new List<Light>();
 
@@ -209,6 +209,10 @@ namespace Q42.HueApi
           {
             Light newLight = new Light();
             newLight.Id = prop.Name;
+            newLight.Name = prop.First["name"].ToString();
+
+            results.Add(newLight);
+
           }
         }
        

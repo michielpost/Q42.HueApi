@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Q42.HueApi.Models.Groups;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -118,6 +119,12 @@ namespace Q42.HueApi.Interfaces
     /// <param name="groupId"></param>
     /// <returns></returns>
     Task DeleteGroup(string groupId);
+
+    /// <summary>
+    /// Get all groups
+    /// </summary>
+    /// <returns></returns>
+    Task<List<Group>> GetGroups();
 
     /// <summary>
     /// Start searching for new lights

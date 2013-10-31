@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,40 @@ namespace Q42.HueApi
 
       HttpClient client = new HttpClient();
       return client.PutAsync(new Uri(ApiBase + string.Format("groups/{0}/action", group)), new StringContent(command));
+    }
+
+    /// <summary>
+    /// Get all groups
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<Group>> GetGroups()
+    {
+      CheckInitialized();
+
+      HttpClient client = new HttpClient();
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}groups", ApiBase))).ConfigureAwait(false);
+
+      List<Group> results = new List<Group>();
+
+      JToken token = JToken.Parse(stringResult);
+      if (token.Type == JTokenType.Object)
+      {
+        //Each property is a light
+        var jsonResult = (JObject)token;
+
+        foreach (var prop in jsonResult.Properties())
+        {
+          Group newGroup = new Group();
+          newGroup.Id = prop.Name;
+          newGroup.Name = prop.First["name"].ToString();
+
+          results.Add(newGroup);
+        }
+
+      }
+
+      return results;
+
     }
   }
 }

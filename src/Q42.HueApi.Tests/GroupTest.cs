@@ -24,15 +24,11 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task CreateGroup()
     {
-      List<string> lights = new List<string>() {"1", "2" };
+      List<string> lights = new List<string>() { "1", "2" };
 
-      try
-      {
-        string groupId = await _client.CreateGroup(lights);
-      }
-      catch (Exception e)
-      {
-      }
+      string groupId = await _client.CreateGroup(lights);
+
+      Assert.IsFalse(string.IsNullOrEmpty(groupId));
     }
 
     [TestMethod]
@@ -47,6 +43,15 @@ namespace Q42.HueApi.Tests
       catch (Exception e)
       {
       }
+    }
+
+    [TestMethod]
+    public async Task GetGroups()
+    {
+       var groups = await _client.GetGroups();
+
+       Assert.AreEqual(1, groups.Count);
+     
     }
   }
 }
