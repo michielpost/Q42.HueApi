@@ -127,6 +127,13 @@ namespace Q42.HueApi.Interfaces
     Task<List<Group>> GetGroups();
 
     /// <summary>
+    /// Get the state of a single group
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<Group> GetGroup(string id);
+
+    /// <summary>
     /// Start searching for new lights
     /// </summary>
     /// <returns></returns>

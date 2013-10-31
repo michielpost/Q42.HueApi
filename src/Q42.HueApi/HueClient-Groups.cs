@@ -123,5 +123,25 @@ namespace Q42.HueApi
       return results;
 
     }
+
+    /// <summary>
+    /// Get the state of a single group
+    /// </summary>
+    /// <returns></returns>
+    public async Task<Group> GetGroup(string id)
+    {
+      CheckInitialized();
+
+      HttpClient client = new HttpClient();
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id))).ConfigureAwait(false);
+
+      stringResult = "{    \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
+
+      Group group = JsonConvert.DeserializeObject<Group>(stringResult);
+
+      return group;
+
+
+    }
   }
 }

@@ -53,5 +53,15 @@ namespace Q42.HueApi.Tests
        Assert.AreEqual(1, groups.Count);
      
     }
+
+    [TestMethod]
+    public async Task GetGroupTest()
+    {
+      var group = await _client.GetGroup("1");
+
+      Assert.IsNotNull(group);
+
+
+    }
   }
 }
