@@ -135,10 +135,10 @@ namespace Q42.HueApi
 
           HttpClient client = new HttpClient();
           //Delete group 1
-          await DeleteGroup("1").ConfigureAwait(false);
+          await DeleteGroupAsync("1").ConfigureAwait(false);
 
           //Create group (will be group 1) with the lights we want to target
-          string groupId = await CreateGroup(lightList).ConfigureAwait(false);
+          string groupId = await CreateGroupAsync(lightList).ConfigureAwait(false);
 
           //Wait for 2 seconds so each lamp knows about the group (2 seconds is based on testing, can 
           await Task.Delay(2000);

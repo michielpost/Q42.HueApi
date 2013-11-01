@@ -111,27 +111,36 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="lights"></param>
     /// <returns></returns>
-    Task<string> CreateGroup(IEnumerable<string> lights);
+    Task<string> CreateGroupAsync(IEnumerable<string> lights);
 
     /// <summary>
     /// Deletes a single group
     /// </summary>
     /// <param name="groupId"></param>
     /// <returns></returns>
-    Task DeleteGroup(string groupId);
+    Task DeleteGroupAsync(string groupId);
 
     /// <summary>
     /// Get all groups
     /// </summary>
     /// <returns></returns>
-    Task<List<Group>> GetGroups();
+    Task<List<Group>> GetGroupsAsync();
 
     /// <summary>
     /// Get the state of a single group
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Group> GetGroup(string id);
+    Task<Group> GetGroupAsync(string id);
+
+    /// <summary>
+    /// Update a group
+    /// </summary>
+    /// <param name="id">Group ID</param>
+    /// <param name="lights">List of light IDs</param>
+    /// <param name="name">Group Name (optional)</param>
+    /// <returns></returns>
+    Task UpdateGroupAsync(string id, List<string> lights, string name = null);
 
     /// <summary>
     /// Start searching for new lights

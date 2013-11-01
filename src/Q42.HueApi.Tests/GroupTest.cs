@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Q42.HueApi.Tests
     {
       List<string> lights = new List<string>() { "1", "2" };
 
-      string groupId = await _client.CreateGroup(lights);
+      string groupId = await _client.CreateGroupAsync(lights);
 
       Assert.IsFalse(string.IsNullOrEmpty(groupId));
     }
@@ -38,7 +39,7 @@ namespace Q42.HueApi.Tests
 
       try
       {
-        await _client.DeleteGroup(groupId);
+        await _client.DeleteGroupAsync(groupId);
       }
       catch (Exception e)
       {
@@ -48,7 +49,7 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task GetGroups()
     {
-       var groups = await _client.GetGroups();
+      var groups = await _client.GetGroupsAsync();
 
        Assert.AreEqual(1, groups.Count);
      
@@ -57,7 +58,26 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task GetGroupTest()
     {
-      var group = await _client.GetGroup("1");
+      var group = await _client.GetGroupAsync("1");
+
+      Assert.IsNotNull(group);
+
+
+    }
+
+    [TestMethod]
+    public async Task UpdateGroupTest()
+    {
+      var lights = await _client.GetLightsAsync();
+
+      List<string> newLights = new List<string>();
+      newLights.Add(lights.First().Id);
+      newLights.Add(lights.Last().Id);
+
+      await _client.UpdateGroupAsync("1", newLights, "test update");
+
+      var group = await _client.GetGroupAsync("1");
+
 
       Assert.IsNotNull(group);
 

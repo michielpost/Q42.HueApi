@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -20,7 +21,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="lightList"></param>
     /// <returns></returns>
-    public async Task<string> CreateGroup(IEnumerable<string> lightList)
+    public async Task<string> CreateGroupAsync(IEnumerable<string> lightList)
     {
       if (lightList == null)
         throw new ArgumentNullException("lightList");
@@ -50,7 +51,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="groupId"></param>
     /// <returns></returns>
-    public Task DeleteGroup(string groupId)
+    public Task DeleteGroupAsync(string groupId)
     {
       HttpClient client = new HttpClient();
       //Delete group 1
@@ -94,7 +95,7 @@ namespace Q42.HueApi
     /// Get all groups
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Group>> GetGroups()
+    public async Task<List<Group>> GetGroupsAsync()
     {
       CheckInitialized();
 
@@ -128,7 +129,7 @@ namespace Q42.HueApi
     /// Get the state of a single group
     /// </summary>
     /// <returns></returns>
-    public async Task<Group> GetGroup(string id)
+    public async Task<Group> GetGroupAsync(string id)
     {
       CheckInitialized();
 
@@ -141,9 +142,45 @@ namespace Q42.HueApi
 
       Group group = JsonConvert.DeserializeObject<Group>(stringResult);
 
+      if (string.IsNullOrEmpty(group.Id))
+        group.Id = id;
+
       return group;
 
 
+    }
+
+    /// <summary>
+    /// Update a group
+    /// </summary>
+    /// <param name="id">Group ID</param>
+    /// <param name="lights">List of light IDs</param>
+    /// <param name="name">Group Name</param>
+    /// <returns></returns>
+    public async Task UpdateGroupAsync(string id, List<string> lights, string name = null)
+    {
+      if (id == null)
+        throw new ArgumentNullException("id");
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id must not be empty", "id");
+      if (lights == null)
+        throw new ArgumentNullException("lights");
+      if (!lights.Any())
+        throw new ArgumentException("At least one light id must be provided", "lights");
+
+      dynamic jsonObj = new ExpandoObject();
+      jsonObj.lights = lights;
+
+      if(!string.IsNullOrEmpty(name))
+        jsonObj.name = name;
+
+      string jsonString = JsonConvert.SerializeObject(jsonObj);
+
+      HttpClient client = new HttpClient();
+      var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+      var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      //TODO: Parse response
     }
   }
 }
