@@ -9,7 +9,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Status data returned from the bridge
   /// </summary>
-  internal class BridgeBridge
+  internal class BridgeState
   {
     public Dictionary<string, Light> lights { get; set; }
     public BridgeConfig config { get; set; }
@@ -21,7 +21,7 @@ namespace Q42.HueApi
   /// </summary>
   public class Bridge
   {
-    internal Bridge(BridgeBridge bridge)
+    internal Bridge(BridgeState bridge)
     {
       if (bridge == null)
         throw new ArgumentNullException("bridge");

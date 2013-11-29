@@ -53,10 +53,11 @@
     <Compile Include="Models\Bridge.cs" />
     <Compile Include="Models\BridgeConfig.cs" />
     <Compile Include="Models\Groups\Group.cs" />
-    <Compile Include="Models\Groups\GroupPutResult.cs" />
+    <Compile Include="Models\Groups\DefaultPutResult.cs" />
     <Compile Include="Models\LightCommand.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\NuPnPResponse.cs" />
+    <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\SoftwareUpdate.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\WhiteList.cs" />

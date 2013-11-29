@@ -69,9 +69,24 @@ namespace Q42.HueApi
       HttpClient client = new HttpClient();
       var stringResult = await client.GetStringAsync(new Uri(ApiBase)).ConfigureAwait(false);
 
-      BridgeBridge jsonResult = JsonConvert.DeserializeObject<BridgeBridge>(stringResult);
+      BridgeState jsonResult = JsonConvert.DeserializeObject<BridgeState>(stringResult);
 
       return new Bridge(jsonResult);
+    }
+
+    /// <summary>
+    /// Update bridge config
+    /// </summary>
+    /// <param name="update"></param>
+    /// <returns></returns>
+    public async Task UpdateBridgeConfigAsync(BridgeConfig update)
+    {
+      CheckInitialized();
+
+      string command = JsonConvert.SerializeObject(update, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+      HttpClient client = new HttpClient();
+      var stringResult = await client.PutAsync(new Uri(string.Format("{0}config", ApiBase)), new StringContent(command)).ConfigureAwait(false);
     }
   }
 }

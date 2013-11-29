@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models.Groups
 {
-  public class GroupPutResult
+  public class DefaultPutResult
   {
     public SuccessResult Success { get; set; }
     public ErrorResult Error { get; set; }

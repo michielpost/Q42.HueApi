@@ -23,6 +23,8 @@ namespace Q42.HueApi
     /// <returns></returns>
     public async Task<string> CreateGroupAsync(IEnumerable<string> lightList)
     {
+      CheckInitialized();
+
       if (lightList == null)
         throw new ArgumentNullException("lightList");
 
@@ -35,7 +37,7 @@ namespace Q42.HueApi
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      GroupPutResult[] groupResult = JsonConvert.DeserializeObject<GroupPutResult[]>(jsonResult);
+      DefaultPutResult[] groupResult = JsonConvert.DeserializeObject<DefaultPutResult[]>(jsonResult);
 
       if (groupResult.Length > 0 && groupResult[0].Success != null && !string.IsNullOrEmpty(groupResult[0].Success.Id))
       {
@@ -53,6 +55,8 @@ namespace Q42.HueApi
     /// <returns></returns>
     public Task DeleteGroupAsync(string groupId)
     {
+      CheckInitialized();
+
       HttpClient client = new HttpClient();
       //Delete group 1
       return client.DeleteAsync(new Uri(ApiBase + string.Format("groups/{0}", groupId)));
