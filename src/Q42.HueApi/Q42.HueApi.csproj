@@ -51,6 +51,7 @@
     <Compile Include="Interfaces\IHueClient.cs" />
     <Compile Include="HueClient.cs" />
     <Compile Include="Models\Bridge.cs" />
+    <Compile Include="Models\BridgeConfigUpdate.cs" />
     <Compile Include="Models\BridgeConfig.cs" />
     <Compile Include="Models\Groups\Group.cs" />
     <Compile Include="Models\Groups\DefaultPutResult.cs" />

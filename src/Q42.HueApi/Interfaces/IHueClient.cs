@@ -81,7 +81,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="update"></param>
     /// <returns></returns>
-    Task UpdateBridgeConfigAsync(BridgeConfig update);
+    Task UpdateBridgeConfigAsync(BridgeConfigUpdate update);
 
     /// <summary>
     /// Deletes a whitelist entry

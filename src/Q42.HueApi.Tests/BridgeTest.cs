@@ -33,11 +33,11 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task ChangeConfig()
     {
-      var newName = Guid.NewGuid().ToString();
+      var newName = "test" + DateTime.Now.Second;
 
       var bridge = await _client.GetBridgeAsync();
-      BridgeConfig update = bridge.Config;
-      update.Name = "test1";
+      BridgeConfigUpdate update = new BridgeConfigUpdate();
+      update.Name = newName;
 
       await _client.UpdateBridgeConfigAsync(update);
 

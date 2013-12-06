@@ -79,7 +79,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="update"></param>
     /// <returns></returns>
-    public async Task UpdateBridgeConfigAsync(BridgeConfig update)
+    public async Task UpdateBridgeConfigAsync(BridgeConfigUpdate update)
     {
       CheckInitialized();
 
