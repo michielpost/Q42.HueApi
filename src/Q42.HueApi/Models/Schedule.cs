@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -23,10 +25,11 @@ namespace Q42.HueApi.Models
     public ScheduleCommand Command { get; set; }
 
     [DataMember(Name = "time")]
-    public string Time { get; set; }
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime Time { get; set; }
 
     [DataMember(Name = "created")]
-    public string Created { get; set; }
+    public DateTime? Created { get; set; }
 
   }
 

@@ -79,7 +79,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      string command = JsonConvert.SerializeObject(schedule);
+      string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
      
       HttpClient client = new HttpClient();
 
