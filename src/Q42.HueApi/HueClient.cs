@@ -22,7 +22,6 @@ namespace Q42.HueApi
 
     private readonly string _ip;
     private readonly int _parallelRequests = 5;
-    private readonly bool _useGroups = true;
 
     private string _appKey;
 
