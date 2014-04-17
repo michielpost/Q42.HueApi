@@ -9,7 +9,7 @@
     <tags>philips hue lights</tags>
     <language>en-US</language> 
     <projectUrl>https://github.com/Q42/Q42.HueApi</projectUrl>
-    <iconUrl>http://a0.twimg.com/profile_images/2142700938/q42-logo-big-square.png</iconUrl>
+    <iconUrl>https://nugetgallery.blob.core.windows.net/icons/DotLessMinification.0.42.1.png</iconUrl>
     <dependencies>
     </dependencies>  
   </metadata>

@@ -2,34 +2,39 @@
 <package>
   <metadata>
     <id>Q42.HueApi</id>
-    <version>1.4.2.42</version>
+    <version>1.4.5.42</version>
     <summary>Open source library for interaction with the Philips Hue Bridge.</summary>
     <description><![CDATA[Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Portable library works with .Net45, Windows 8 and Windows Phone 8]]></description>
     <authors>Q42</authors>
     <tags>philips hue lights</tags>
     <language>en-US</language> 
     <projectUrl>https://github.com/Q42/Q42.HueApi</projectUrl>
-    <iconUrl>http://a0.twimg.com/profile_images/2142700938/q42-logo-big-square.png</iconUrl>
+    <iconUrl>https://nugetgallery.blob.core.windows.net/icons/DotLessMinification.0.42.1.png</iconUrl>
     <dependencies>
-	  <group targetFramework="portable-net45+wp80+win81">
-	    	<dependency id="Newtonsoft.Json" />
-		<dependency id="Microsoft.Net.Http" version="2.1.10" />
+	  <group targetFramework="portable-net45+wp80+win81+wpa81">
+	    <dependency id="Newtonsoft.Json" />
+		<dependency id="Microsoft.Net.Http" version="2.2.20" />
 	  </group>
-          <group targetFramework="win81">
+      <group targetFramework="win81">
 	  	<dependency id="Newtonsoft.Json" />
-		<dependency id="Microsoft.Net.Http" version="2.1.10" />
-		<dependency id="Q42.HueApi.WinRT" />
+		<dependency id="Microsoft.Net.Http" version="2.2.20" />
+		<dependency id="Q42.HueApi.WinRT" version="1.4.3.42" />
+	  </group>
+	  <group targetFramework="wpa81">
+	  	<dependency id="Newtonsoft.Json" />
+		<dependency id="Microsoft.Net.Http" version="2.2.20" />
+		<dependency id="Q42.HueApi.WinRT" version="1.4.3.42" />
 	  </group>
 	  <group targetFramework="net45">
-        	<dependency id="Newtonsoft.Json" />
-		<dependency id="Microsoft.Net.Http" version="2.1.10" />
+        <dependency id="Newtonsoft.Json" />
+		<dependency id="Microsoft.Net.Http" version="2.2.20" />
 		<dependency id="Q42.HueApi.NET" />
 	  </group>
     </dependencies>  
   </metadata>
   <files>
-		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.dll" target="lib\portable-net45+wp80+win81" />
-		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.XML" target="lib\portable-net45+wp80+win81" />
+		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.dll" target="lib\portable-net45+wp80+win81+wpa81" />
+		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.XML" target="lib\portable-net45+wp80+win81+wpa81" />
   </files>
 </package>
 

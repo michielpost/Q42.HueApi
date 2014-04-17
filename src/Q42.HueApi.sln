@@ -1,13 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{044AB304-7940-4269-8D9D-AED1A1E97238}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi", "Q42.HueApi\Q42.HueApi.csproj", "{E59A16B4-6756-4576-AB63-6A9B2CF2892B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi.WinRT", "Q42.HueApi.WinRT\Q42.HueApi.WinRT.csproj", "{0A49146A-6CF7-4074-827E-BE32E24B0445}"
@@ -21,6 +16,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi.NET.Tests", "Q42.HueApi.NET.Tests\Q42.HueApi.NET.Tests.csproj", "{2114B768-86CF-4687-BCFD-2B7916C85CD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi.Tests", "Q42.HueApi.Tests\Q42.HueApi.Tests.csproj", "{0B96BC44-0006-46C2-BA96-CD63C123FD49}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{498E70EF-A094-4A9E-B474-BF3DC01435AD}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
