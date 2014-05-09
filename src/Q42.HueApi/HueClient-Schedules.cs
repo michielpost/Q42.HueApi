@@ -61,7 +61,7 @@ namespace Q42.HueApi
       HttpClient client = new HttpClient();
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules/{1}", ApiBase, id))).ConfigureAwait(false);
 
-      Schedule schedule = JsonConvert.DeserializeObject<Schedule>(stringResult);
+      Schedule schedule = DeserializeResult<Schedule>(stringResult);
 
       if (string.IsNullOrEmpty(schedule.Id))
         schedule.Id = id;
@@ -88,7 +88,7 @@ namespace Q42.HueApi
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      DefaultPutResult[] scheduleResult = JsonConvert.DeserializeObject<DefaultPutResult[]>(jsonResult);
+      DefaultHueResult[] scheduleResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
 
       if (scheduleResult.Length > 0 && scheduleResult[0].Success != null && !string.IsNullOrEmpty(scheduleResult[0].Success.Id))
       {
@@ -115,6 +115,10 @@ namespace Q42.HueApi
       //Create schedule
       var result = await client.PutAsync(new Uri(string.Format("{0}schedules/{1}", ApiBase, id)), new StringContent(command)).ConfigureAwait(false);
 
+      var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      CheckErrors(jsonResult);
+
     }
 
     /// <summary>
@@ -122,11 +126,15 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Task DeleteScheduleAsync(string id)
+    public async Task DeleteScheduleAsync(string id)
     {
       HttpClient client = new HttpClient();
       //Delete schedule
-      return client.DeleteAsync(new Uri(ApiBase + string.Format("schedules/{0}", id)));
+      var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("schedules/{0}", id))).ConfigureAwait(false);
+
+      string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      CheckErrors(jsonResult);
     }
   }
 }

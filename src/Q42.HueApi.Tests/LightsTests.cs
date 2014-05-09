@@ -50,6 +50,22 @@ namespace Q42.HueApi.Tests
 
     }
 
+    [TestMethod]
+    public async Task SearchNewLightsAsyncTest()
+    {
+      //Search for new lights
+      await _client.SearchNewLightsAsync();
+
+    }
+
+    [TestMethod]
+    public async Task GetLightsAsyncTest()
+    {
+      //Search for new lights
+      await _client.GetLightsAsync();
+
+    }
+
    
 
   

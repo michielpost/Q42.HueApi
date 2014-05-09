@@ -37,7 +37,7 @@ namespace Q42.HueApi
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      DefaultPutResult[] groupResult = JsonConvert.DeserializeObject<DefaultPutResult[]>(jsonResult);
+      DefaultHueResult[] groupResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
 
       if (groupResult.Length > 0 && groupResult[0].Success != null && !string.IsNullOrEmpty(groupResult[0].Success.Id))
       {
@@ -53,13 +53,18 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="groupId"></param>
     /// <returns></returns>
-    public Task DeleteGroupAsync(string groupId)
+    public async Task DeleteGroupAsync(string groupId)
     {
       CheckInitialized();
 
       HttpClient client = new HttpClient();
       //Delete group 1
-      return client.DeleteAsync(new Uri(ApiBase + string.Format("groups/{0}", groupId)));
+      var result =  await client.DeleteAsync(new Uri(ApiBase + string.Format("groups/{0}", groupId))).ConfigureAwait(false);
+
+      string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      CheckErrors(jsonResult);
+
     }
 
     /// <summary>
@@ -84,7 +89,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    private Task SendGroupCommandAsync(string command, string group = "0")
+    private async Task SendGroupCommandAsync(string command, string group = "0")
     {
       if (command == null)
         throw new ArgumentNullException("command");
@@ -92,7 +97,12 @@ namespace Q42.HueApi
       CheckInitialized();
 
       HttpClient client = new HttpClient();
-      return client.PutAsync(new Uri(ApiBase + string.Format("groups/{0}/action", group)), new StringContent(command));
+      var result = await client.PutAsync(new Uri(ApiBase + string.Format("groups/{0}/action", group)), new StringContent(command)).ConfigureAwait(false);
+
+      string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      CheckErrors(jsonResult);
+
     }
 
     /// <summary>
@@ -144,7 +154,7 @@ namespace Q42.HueApi
       //stringResult = "{    \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
 #endif
 
-      Group group = JsonConvert.DeserializeObject<Group>(stringResult);
+      Group group = DeserializeResult<Group>(stringResult);
 
       if (string.IsNullOrEmpty(group.Id))
         group.Id = id;
@@ -182,9 +192,10 @@ namespace Q42.HueApi
 
       HttpClient client = new HttpClient();
       var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
-      var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      //TODO: Parse response
+      CheckErrors(jsonResult);
+
     }
   }
 }

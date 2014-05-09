@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using System.Globalization;
 using System.Net.Http;
 using Q42.HueApi.Models.Groups;
+using Q42.HueApi.Models;
+using Newtonsoft.Json.Serialization;
 
 namespace Q42.HueApi
 {
@@ -112,6 +114,54 @@ namespace Q42.HueApi
       }
       lightString = lightString.Substring(0, lightString.Length - 1) + "]";
       return lightString;
+    }
+
+    /// <summary>
+    /// Deserialization helper that can also check for errors
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="json"></param>
+    /// <returns></returns>
+    private static T DeserializeResult<T>(string json) where T : class
+    {
+      try
+      {
+        T objResult = JsonConvert.DeserializeObject<T>(json);
+
+        return objResult;
+
+      }
+      catch (Exception ex)
+      {
+        var errors = CheckErrors(json);
+
+        //We expect an actual object, it was unsuccesful, show error why
+        if (errors != null && errors.Any())
+          throw new Exception(errors.First().Error.Description);
+      }
+
+      return null;
+    }
+
+    /// <summary>
+    /// Checks if the json contains errors
+    /// </summary>
+    /// <param name="json"></param>
+    private static IEnumerable<ErrorResult> CheckErrors(string json)
+    {
+      List<ErrorResult> errorResult = null;
+
+      try
+      {
+        errorResult = JsonConvert.DeserializeObject<List<ErrorResult>>(json);
+      }
+      catch (JsonSerializationException ex)
+      {
+        //Ignore JsonSerializationException, errors are optional and this might fail
+      }
+
+      return errorResult;
+
     }
 
   }

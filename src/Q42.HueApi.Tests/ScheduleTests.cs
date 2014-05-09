@@ -36,6 +36,10 @@ namespace Q42.HueApi.Tests
     public async Task GetSingle()
     {
       var all = await _client.GetSchedulesAsync();
+
+      Assert.IsNotNull(all);
+      Assert.IsTrue(all.Any());
+
       var single = await _client.GetScheduleAsync(all.Skip(1).First().Id);
 
       Assert.IsNotNull(single);

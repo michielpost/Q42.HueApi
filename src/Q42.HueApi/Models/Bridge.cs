@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Q42.HueApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

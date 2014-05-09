@@ -54,8 +54,9 @@
     <Compile Include="Models\Bridge.cs" />
     <Compile Include="Models\BridgeConfigUpdate.cs" />
     <Compile Include="Models\BridgeConfig.cs" />
+    <Compile Include="Models\ErrorResult.cs" />
     <Compile Include="Models\Groups\Group.cs" />
-    <Compile Include="Models\Groups\DefaultPutResult.cs" />
+    <Compile Include="Models\Groups\DefaultHueResult.cs" />
     <Compile Include="Models\LightCommand.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\NuPnPResponse.cs" />

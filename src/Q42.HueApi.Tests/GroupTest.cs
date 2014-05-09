@@ -37,13 +37,8 @@ namespace Q42.HueApi.Tests
     {
       string groupId = "16";
 
-      try
-      {
-        await _client.DeleteGroupAsync(groupId);
-      }
-      catch (Exception e)
-      {
-      }
+      await _client.DeleteGroupAsync(groupId);
+
     }
 
     [TestMethod]
@@ -51,7 +46,7 @@ namespace Q42.HueApi.Tests
     {
       var groups = await _client.GetGroupsAsync();
 
-       Assert.AreEqual(1, groups.Count);
+       Assert.IsTrue(groups.Any());
      
     }
 
