@@ -24,7 +24,7 @@ namespace Q42.HueApi.Tests
     }
 
     [TestMethod]
-    public async Task SetLightNameGroup()
+    public async Task SetLightNameTest()
     {
       await _client.SetLightNameAsync("1", "test");
       var result = await _client.GetLightAsync("1");

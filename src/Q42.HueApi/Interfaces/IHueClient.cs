@@ -39,7 +39,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="lightList"></param>
     /// <returns></returns>
-    Task SetNextHueColorAsync(IEnumerable<string> lightList = null);
+    Task<HueResults> SetNextHueColorAsync(IEnumerable<string> lightList = null);
 
     /// <summary>
     /// Asynchronously gets all lights registered with the bridge.
@@ -68,7 +68,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="id"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    Task SetLightNameAsync(string id, string name);
+    Task<HueResults> SetLightNameAsync(string id, string name);
 
     /// <summary>
     /// Get bridge info
@@ -81,7 +81,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="update"></param>
     /// <returns></returns>
-    Task UpdateBridgeConfigAsync(BridgeConfigUpdate update);
+    Task<HueResults> UpdateBridgeConfigAsync(BridgeConfigUpdate update);
 
     /// <summary>
     /// Deletes a whitelist entry
@@ -96,7 +96,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command">json</param>
     /// <param name="lightList">if null, send to all lights</param>
     /// <returns></returns>
-    Task SendCommandRawAsync(string command, IEnumerable<string> lightList = null);
+    Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string> lightList = null);
 
     /// <summary>
     /// Send a light command
@@ -104,7 +104,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command">Compose a new lightCommand()</param>
     /// <param name="lightList">if null, send to all lights</param>
     /// <returns></returns>
-    Task SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null);
+    Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null);
 
     /// <summary>
     /// Send command to a group
@@ -112,7 +112,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    Task SendGroupCommandAsync(LightCommand command, string group = "0");
+    Task<HueResults> SendGroupCommandAsync(LightCommand command, string group = "0");
 
     /// <summary>
     /// Creates a group for a set of lights
@@ -126,7 +126,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="groupId"></param>
     /// <returns></returns>
-    Task DeleteGroupAsync(string groupId);
+    Task<HueResults> DeleteGroupAsync(string groupId);
 
     /// <summary>
     /// Get all groups
@@ -148,13 +148,13 @@ namespace Q42.HueApi.Interfaces
     /// <param name="lights">List of light IDs</param>
     /// <param name="name">Group Name (optional)</param>
     /// <returns></returns>
-    Task UpdateGroupAsync(string id, List<string> lights, string name = null);
+    Task<HueResults> UpdateGroupAsync(string id, List<string> lights, string name = null);
 
     /// <summary>
     /// Start searching for new lights
     /// </summary>
     /// <returns></returns>
-    Task SearchNewLightsAsync();
+    Task<HueResults> SearchNewLightsAsync();
 
     /// <summary>
     /// Gets a list of lights that were discovered the last time a search for new lights was performed.
@@ -193,7 +193,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="id"></param>
     /// <param name="schedule"></param>
     /// <returns></returns>
-    Task UpdateScheduleAsync(string id, Schedule schedule);
+    Task<HueResults> UpdateScheduleAsync(string id, Schedule schedule);
 
 
     /// <summary>
@@ -201,7 +201,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task DeleteScheduleAsync(string id);
+    Task<HueResults> DeleteScheduleAsync(string id);
    
 
     #endregion

@@ -133,34 +133,35 @@ namespace Q42.HueApi
       }
       catch (Exception ex)
       {
-        var errors = CheckErrors(json);
+        var defaultResult = DeserializeDefaultHueResult(json);
 
         //We expect an actual object, it was unsuccesful, show error why
-        if (errors != null && errors.Any())
-          throw new Exception(errors.First().Error.Description);
+        if (defaultResult.HasErrors())
+          throw new Exception(defaultResult.Errors.First().Error.Description);
       }
 
       return null;
     }
 
+
     /// <summary>
     /// Checks if the json contains errors
     /// </summary>
     /// <param name="json"></param>
-    private static IEnumerable<ErrorResult> CheckErrors(string json)
+    private static HueResults DeserializeDefaultHueResult(string json)
     {
-      List<ErrorResult> errorResult = null;
+      HueResults result = null;
 
       try
       {
-        errorResult = JsonConvert.DeserializeObject<List<ErrorResult>>(json);
+        result = JsonConvert.DeserializeObject<HueResults>(json);
       }
       catch (JsonSerializationException ex)
       {
-        //Ignore JsonSerializationException, errors are optional and this might fail
+        //Ignore JsonSerializationException
       }
 
-      return errorResult;
+      return result;
 
     }
 

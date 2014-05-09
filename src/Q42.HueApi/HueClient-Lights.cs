@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Q42.HueApi.Extensions;
 using Newtonsoft.Json;
+using Q42.HueApi.Models.Groups;
 
 namespace Q42.HueApi
 {
@@ -54,7 +55,7 @@ namespace Q42.HueApi
     /// <param name="id"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public async Task SetLightNameAsync(string id, string name)
+    public async Task<HueResults> SetLightNameAsync(string id, string name)
     {
       if (id == null)
         throw new ArgumentNullException("id");
@@ -70,7 +71,7 @@ namespace Q42.HueApi
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
     }
 
     /// <summary>
@@ -91,7 +92,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="lightList">if null, send command to all lights</param>
     /// <returns></returns>
-    public Task SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null)
+    public Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null)
     {
       if (command == null)
         throw new ArgumentNullException("command");
@@ -108,7 +109,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="lightList">if null, send command to all lights</param>
     /// <returns></returns>
-    public Task SendCommandRawAsync(string command, IEnumerable<string> lightList = null)
+    public async Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string> lightList = null)
     {
       if (command == null)
         throw new ArgumentNullException("command");
@@ -117,16 +118,21 @@ namespace Q42.HueApi
 
       if (lightList == null || !lightList.Any())
       {
-        return SendGroupCommandAsync(command);
+        //Group 0 always contains all the lights
+        return await SendGroupCommandAsync(command).ConfigureAwait(false);
       }
       else
       {
-        return lightList.ForEachAsync(_parallelRequests, async (lightId) =>
+        HueResults results = new HueResults();
+
+        await lightList.ForEachAsync(_parallelRequests, async (lightId) =>
         {
           HttpClient client = new HttpClient();
           await client.PutAsync(new Uri(ApiBase + string.Format("lights/{0}/state", lightId)), new StringContent(command)).ConfigureAwait(false);
 
-        });
+        }).ConfigureAwait(false);
+
+        return results;
       }
     }
 
@@ -136,7 +142,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="lightList"></param>
     /// <returns></returns>
-    public Task SetNextHueColorAsync(IEnumerable<string> lightList = null)
+    public Task<HueResults> SetNextHueColorAsync(IEnumerable<string> lightList = null)
     {
       //Invalid JSON, but it works
       string command = "{\"hue\":+10000,\"sat\":255}";
@@ -150,7 +156,7 @@ namespace Q42.HueApi
     /// Start searching for new lights
     /// </summary>
     /// <returns></returns>
-    public async Task SearchNewLightsAsync()
+    public async Task<HueResults> SearchNewLightsAsync()
     {
       CheckInitialized();
 
@@ -159,7 +165,7 @@ namespace Q42.HueApi
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
 
     }
 

@@ -53,7 +53,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="groupId"></param>
     /// <returns></returns>
-    public async Task DeleteGroupAsync(string groupId)
+    public async Task<HueResults> DeleteGroupAsync(string groupId)
     {
       CheckInitialized();
 
@@ -63,7 +63,7 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
 
     }
 
@@ -73,7 +73,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    public Task SendGroupCommandAsync(LightCommand command, string group = "0")
+    public Task<HueResults> SendGroupCommandAsync(LightCommand command, string group = "0")
     {
       if (command == null)
         throw new ArgumentNullException("command");
@@ -89,7 +89,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    private async Task SendGroupCommandAsync(string command, string group = "0")
+    private async Task<HueResults> SendGroupCommandAsync(string command, string group = "0") //Group 0 contains all the lights
     {
       if (command == null)
         throw new ArgumentNullException("command");
@@ -101,7 +101,7 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
 
     }
 
@@ -171,7 +171,7 @@ namespace Q42.HueApi
     /// <param name="lights">List of light IDs</param>
     /// <param name="name">Group Name</param>
     /// <returns></returns>
-    public async Task UpdateGroupAsync(string id, List<string> lights, string name = null)
+    public async Task<HueResults> UpdateGroupAsync(string id, List<string> lights, string name = null)
     {
       if (id == null)
         throw new ArgumentNullException("id");
@@ -194,7 +194,7 @@ namespace Q42.HueApi
       var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
 
     }
   }

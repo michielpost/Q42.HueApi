@@ -104,7 +104,7 @@ namespace Q42.HueApi
     /// <param name="id"></param>
     /// <param name="schedule"></param>
     /// <returns></returns>
-    public async Task UpdateScheduleAsync(string id, Schedule schedule)
+    public async Task<HueResults> UpdateScheduleAsync(string id, Schedule schedule)
     {
       CheckInitialized();
 
@@ -117,7 +117,7 @@ namespace Q42.HueApi
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
 
     }
 
@@ -126,7 +126,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task DeleteScheduleAsync(string id)
+    public async Task<HueResults> DeleteScheduleAsync(string id)
     {
       HttpClient client = new HttpClient();
       //Delete schedule
@@ -134,7 +134,7 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
     }
   }
 }

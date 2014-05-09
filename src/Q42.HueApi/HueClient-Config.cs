@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +80,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="update"></param>
     /// <returns></returns>
-    public async Task UpdateBridgeConfigAsync(BridgeConfigUpdate update)
+    public async Task<HueResults> UpdateBridgeConfigAsync(BridgeConfigUpdate update)
     {
       CheckInitialized();
 
@@ -90,7 +91,7 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      CheckErrors(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
     }
   }
 }
