@@ -30,6 +30,14 @@ namespace Q42.HueApi.Tests
       string groupId = await _client.CreateGroupAsync(lights);
 
       Assert.IsFalse(string.IsNullOrEmpty(groupId));
+
+      //Get group and check lights
+      var group = await _client.GetGroupAsync(groupId);
+
+      await _client.DeleteGroupAsync(groupId);
+
+
+      Assert.IsTrue(group.Lights.Any());
     }
 
     [TestMethod]
@@ -75,6 +83,7 @@ namespace Q42.HueApi.Tests
 
 
       Assert.IsNotNull(group);
+      Assert.IsTrue(group.Lights.Count == 2);
 
 
     }

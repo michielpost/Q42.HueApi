@@ -37,12 +37,15 @@ namespace Q42.HueApi
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      DefaultHueResult[] groupResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
+      HueResults groupResult = DeserializeDefaultHueResult(jsonResult);
 
-      if (groupResult.Length > 0 && groupResult[0].Success != null && !string.IsNullOrEmpty(groupResult[0].Success.Id))
+      if (groupResult.Count > 0 && groupResult[0].Success != null && !string.IsNullOrEmpty(groupResult[0].Success.Id))
       {
         return groupResult[0].Success.Id.Replace("/groups/", string.Empty);
       }
+
+      if (groupResult.HasErrors())
+        throw new Exception(groupResult.Errors.First().Error.Description);
 
       return null;
 
