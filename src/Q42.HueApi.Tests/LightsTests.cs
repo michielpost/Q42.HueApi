@@ -66,6 +66,23 @@ namespace Q42.HueApi.Tests
 
     }
 
+
+    [TestMethod]
+    public async Task SendCommandAsync()
+    {
+      //Create command
+      var command = new LightCommand();
+      command.TurnOn();
+      command.SetColor("#225566");
+
+      List<string> lights = new List<string>();
+
+      //Send Command
+      await _client.SendCommandAsync(command);
+      await _client.SendCommandAsync(command, lights);
+
+    }
+
    
 
   

@@ -131,6 +131,12 @@ namespace Q42.HueApi
         throw new ArgumentNullException ("lightCommand");
       if (hexColor == null)
         throw new ArgumentNullException ("hexColor");
+     
+      //Clean hexColor value, remove the #
+      hexColor = hexColor.Replace("#", string.Empty);
+
+      if(hexColor.Length != 6)
+        throw new ArgumentException("hexColor should contains 6 characters", "hexColor");
 
       int red = int.Parse(hexColor.Substring(0, 2), NumberStyles.AllowHexSpecifier);
       int green = int.Parse(hexColor.Substring(2, 2), NumberStyles.AllowHexSpecifier);
