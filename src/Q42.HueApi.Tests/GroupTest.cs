@@ -85,7 +85,6 @@ namespace Q42.HueApi.Tests
       Assert.IsNotNull(group);
       Assert.IsTrue(group.Lights.Count == 2);
 
-
     }
   }
 }
