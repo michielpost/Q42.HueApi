@@ -76,6 +76,8 @@ Q42.HueApi is licensed under [MIT](http://www.opensource.org/licenses/mit-licens
 
 Contributions are welcome. Fork this repository and send a pull request if you have something useful to add.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/k12ortcvy3t5bmy7)](https://ci.appveyor.com/project/michielpost/q42-hueapi)
+
 
 ## Related Projects
 
