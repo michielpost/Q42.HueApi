@@ -55,7 +55,6 @@ namespace Q42.HueApi.Tests
       var groups = await _client.GetGroupsAsync();
 
        Assert.IsTrue(groups.Any());
-     
     }
 
     [TestMethod]
