@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using Q42.HueApi.Models;
+using System;
 
 namespace Q42.HueApi
 {
@@ -34,8 +35,10 @@ namespace Q42.HueApi
     [DataMember(Name = "proxyport")]
     public int ProxyPort { get; set; }
 
+    //Cant be a DateTime? because when value is not available, HueBridge sends value "none"
+    //TODO: Create custom json deserializer
     [DataMember(Name = "UTC")]
-    public System.DateTime Utc { get; set; }
+    public string Utc { get; set; }
 
     [DataMember(Name = "swversion")]
     public string SoftwareVersion { get; set; }
@@ -58,8 +61,10 @@ namespace Q42.HueApi
     [DataMember(Name = "apiversion")]
     public string ApiVersion { get; set; }
 
+    //Cant be a DateTime? because when value is not available, HueBridge sends value "none"
+    //TODO: Create custom json deserializer
     [DataMember(Name = "localtime")]
-    public System.DateTime Localtime { get; set; }
+    public string LocalTime { get; set; }
 
     [DataMember(Name = "timezone")]
     public string TimeZone { get; set; }
