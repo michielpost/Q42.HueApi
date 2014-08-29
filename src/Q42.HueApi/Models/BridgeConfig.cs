@@ -35,7 +35,7 @@ namespace Q42.HueApi
     public int ProxyPort { get; set; }
 
     [DataMember(Name = "UTC")]
-    public string Utc { get; set; }
+    public System.DateTime Utc { get; set; }
 
     [DataMember(Name = "swversion")]
     public string SoftwareVersion { get; set; }
@@ -51,5 +51,24 @@ namespace Q42.HueApi
 
     [DataMember(Name = "portalservices")]
     public bool PortalServices { get; set; }
+
+    [DataMember(Name = "portalconnection")]
+    public string PortalConnection { get; set; }
+
+    [DataMember(Name = "apiversion")]
+    public string ApiVersion { get; set; }
+
+    [DataMember(Name = "localtime")]
+    public System.DateTime Localtime { get; set; }
+
+    [DataMember(Name = "timezone")]
+    public string TimeZone { get; set; }
+
+    [DataMember(Name = "portalstate")]
+    public PortalState PortalState { get; set; }
+
+    [DataMember(Name = "zigbeechannel")]
+    public int ZigbeeChannel { get; set; }
   }
+
 }

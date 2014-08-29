@@ -71,6 +71,7 @@
     <Compile Include="Models\NuPnPResponse.cs" />
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\SoftwareUpdate.cs" />
+    <Compile Include="Models\PortalState.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\WhiteList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
