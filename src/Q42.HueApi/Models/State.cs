@@ -14,16 +14,16 @@ namespace Q42.HueApi
     public byte Brightness { get; set; }
 
     [DataMember (Name = "hue")]
-    public int Hue { get; set; }
+    public int? Hue { get; set; }
 
     [DataMember (Name = "sat")]
-    public int Saturation { get; set; }
+    public int? Saturation { get; set; }
 
     [DataMember (Name = "xy")]
     public double[] ColorCoordinates { get; set; }
 
     [DataMember (Name = "ct")]
-    public int ColorTemperature { get; set; }
+    public int? ColorTemperature { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
     [DataMember (Name = "alert")]
