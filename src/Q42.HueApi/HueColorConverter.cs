@@ -205,9 +205,12 @@ namespace Q42.HueApi
     {
       if (state == null)
         throw new ArgumentNullException("state");
-      if (state.On == false || state.Brightness <= 5)
+      if (state.On == false || state.Brightness <= 5) //Off or low brightness
         return "000000";
-      return HexFromXy(state.ColorCoordinates[0], state.ColorCoordinates[1]);
+      if(state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
+        return HexFromXy(state.ColorCoordinates[0], state.ColorCoordinates[1]);
+
+      return "FFFFFF"; //White
     }
 
     /// <summary>
