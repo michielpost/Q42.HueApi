@@ -118,8 +118,9 @@ namespace Q42.HueApi.Interfaces
     /// Creates a group for a set of lights
     /// </summary>
     /// <param name="lights"></param>
+    /// <param name="name">Group Name (optional)</param>
     /// <returns></returns>
-    Task<string> CreateGroupAsync(IEnumerable<string> lights);
+    Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null);
 
     /// <summary>
     /// Deletes a single group
@@ -169,7 +170,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <returns></returns>
     Task<List<Schedule>> GetSchedulesAsync();
-   
+
 
     /// <summary>
     /// Get a single schedule
@@ -177,7 +178,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="id"></param>
     /// <returns></returns>
     Task<Schedule> GetScheduleAsync(string id);
- 
+
 
     /// <summary>
     /// Create a schedule
@@ -185,7 +186,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="schedule"></param>
     /// <returns></returns>
     Task<string> CreateScheduleAsync(Schedule schedule);
-   
+
 
     /// <summary>
     /// Update a schedule
@@ -202,7 +203,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="id"></param>
     /// <returns></returns>
     Task<HueResults> DeleteScheduleAsync(string id);
-   
+
 
     #endregion
   }

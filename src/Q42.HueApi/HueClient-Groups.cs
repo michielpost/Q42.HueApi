@@ -19,23 +19,27 @@ namespace Q42.HueApi
     /// <summary>
     /// Create a group for a list of lights
     /// </summary>
-    /// <param name="lightList"></param>
+    /// <param name="lights"></param>
     /// <returns></returns>
-    public async Task<string> CreateGroupAsync(IEnumerable<string> lightList)
+    public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null)
     {
       CheckInitialized();
 
-      if (lightList == null)
-        throw new ArgumentNullException("lightList");
+      if (lights == null)
+        throw new ArgumentNullException("lights");
+      
+      dynamic jsonObj = new ExpandoObject();
+      jsonObj.lights = lights;
 
-      string lightString = CreateLightList(lightList);
+      if (!string.IsNullOrEmpty(name))
+        jsonObj.name = name;
+
+      string jsonString = JsonConvert.SerializeObject(jsonObj);
 
       HttpClient client = new HttpClient();
-
       //Create group with the lights we want to target
-      var result = await client.PostAsync(new Uri(ApiBase + "groups"), new StringContent("{\"lights\":" + lightString + "}")).ConfigureAwait(false);
-
-      var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri(String.Format("{0}groups", ApiBase)), new StringContent(jsonString)).ConfigureAwait(false);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       HueResults groupResult = DeserializeDefaultHueResult(jsonResult);
 
