@@ -181,9 +181,7 @@ namespace Q42.HueApi
       if (id.Trim() == String.Empty)
         throw new ArgumentException("id must not be empty", "id");
       if (lights == null)
-        throw new ArgumentNullException("lights");
-      if (!lights.Any())
-        throw new ArgumentException("At least one light id must be provided", "lights");
+        throw new ArgumentNullException("lights");      
 
       dynamic jsonObj = new ExpandoObject();
       jsonObj.lights = lights;

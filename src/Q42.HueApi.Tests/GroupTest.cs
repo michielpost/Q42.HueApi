@@ -82,5 +82,21 @@ namespace Q42.HueApi.Tests
       Assert.IsTrue(group.Lights.Count == 2);
 
     }
+
+    [TestMethod]
+    public async Task UpdateEmptyGroupTest()
+    {
+      var oldGroup = await _client.GetGroupAsync("1");
+
+      List<string> newLights = new List<string>();
+    
+      await _client.UpdateGroupAsync("1", newLights, "test update");
+
+      var group = await _client.GetGroupAsync("1");
+
+      Assert.IsNotNull(group);
+      Assert.IsTrue(group.Lights.Count == 0);
+
+    }
   }
 }
