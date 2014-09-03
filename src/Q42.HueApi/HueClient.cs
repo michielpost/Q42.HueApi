@@ -96,26 +96,6 @@ namespace Q42.HueApi
         throw new InvalidOperationException("HueClient is not initialized. First call RegisterAsync or Initialize.");
     }
 
-
-    /// <summary>
-    /// Create string of all the lights
-    /// </summary>
-    /// <param name="lights"></param>
-    /// <returns></returns>
-    private static string CreateLightList(IEnumerable<string> lights)
-    {
-      //TODO: Can this be replaced by json.net serializer?
-
-      string lightString = string.Empty;
-      lightString += "[";
-      foreach (var light in lights)
-      {
-        lightString += "\"" + light + "\",";
-      }
-      lightString = lightString.Substring(0, lightString.Length - 1) + "]";
-      return lightString;
-    }
-
     /// <summary>
     /// Deserialization helper that can also check for errors
     /// </summary>
