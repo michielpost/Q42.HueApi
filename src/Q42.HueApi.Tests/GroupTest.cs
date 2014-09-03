@@ -59,7 +59,8 @@ namespace Q42.HueApi.Tests
       await _client.DeleteGroupAsync(groupId);
 
       Assert.IsTrue(group.Lights.Any());
-      Assert.IsNotNull(group.Name);
+      Assert.AreEqual<int>(lights.Count, group.Lights.Count, "Should have the same number of lights");
+      Assert.IsNotNull(group.Name);      
       Assert.AreEqual<string>(groupName, group.Name, "Name should be the same");
     }
 
