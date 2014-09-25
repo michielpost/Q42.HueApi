@@ -30,13 +30,13 @@ namespace Q42.HueApi.Models
     public string Status { get; set; }
 
     [DataMember(Name = "conditions")]
-    public List<Condition> Conditions { get; set; }
+    public List<RuleCondition> Conditions { get; set; }
 
     [DataMember(Name = "actions")]
-    public List<Action> Actions { get; set; }
+    public List<RuleAction> Actions { get; set; }
   }
 
-  public class Condition
+  public class RuleCondition
   {
     [DataMember(Name = "address")]
     public string Address { get; set; }
@@ -48,13 +48,13 @@ namespace Q42.HueApi.Models
     public string Value { get; set; }
   }
 
-  public class Body
+  public class RuleBody
   {
     [DataMember(Name = "scene")]
     public string Scene { get; set; }
   }
 
-  public class Action
+  public class RuleAction
   {
     [DataMember(Name = "address")]
     public string Address { get; set; }
@@ -63,7 +63,7 @@ namespace Q42.HueApi.Models
     public string Method { get; set; }
 
     [DataMember(Name = "body")]
-    public Body Body { get; set; }
+    public RuleBody Body { get; set; }
   }
 
   
