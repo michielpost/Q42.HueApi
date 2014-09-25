@@ -11,7 +11,7 @@ using System.Globalization;
 namespace Q42.HueApi.Tests
 {
   [TestClass]
-  public class InfoTests
+  public class SceneTests
   {
     private IHueClient _client;
 
@@ -27,9 +27,25 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task GetAll()
     {
-      var result = await _client.GetTimeZonesAsync();
+      var result = await _client.GetScenesAsync();
 
       Assert.AreNotEqual(0, result.Count());
+    }
+
+    [TestMethod]
+    public async Task CreateOrUpdate()
+    {
+      var result = await _client.CreateOrUpdateSceneAsync("scene1", "test", new List<string> { "2" });
+
+      Assert.AreNotEqual(0, result.Count);
+    }
+
+    [TestMethod]
+    public async Task ModifyScene()
+    {
+      var result = await _client.ModifySceneAsync("scene1", "2", new LightCommand().TurnOn());
+
+      Assert.AreNotEqual(0, result.Count);
     }
 
   }

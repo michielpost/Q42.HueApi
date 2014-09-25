@@ -209,8 +209,15 @@ namespace Q42.HueApi.Interfaces
 
     #region Info
 
-    Task<IEnumerable<string>> GetTimeZones();
+    Task<IEnumerable<string>> GetTimeZonesAsync();
 
+    #endregion
+
+    #region Scenes
+
+    Task<IEnumerable<Scene>> GetScenesAsync();
+    Task<HueResults> CreateOrUpdateSceneAsync(string id, string name, IEnumerable<string> lights);
+    Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command);
     #endregion
   }
 }
