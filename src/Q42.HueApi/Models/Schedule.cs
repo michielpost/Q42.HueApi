@@ -30,6 +30,27 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "created")]
     public DateTime? Created { get; set; }
 
+    /// <summary>
+    /// UTC time that the timer was started. Only provided for timers.
+    /// </summary>
+    [DataMember(Name = "starttime")]
+    public DateTime? StartTime { get; set; }
+
+    //TODO: Create Enum with enabled and disabled option
+    /// <summary>
+    /// "enabled"  Schedule is enabled
+    /// "disabled"  Schedule is disabled by user.
+    /// Application is only allowed to set “enabled” or “disabled”. Disabled causes a timer to reset when activated (i.e. stop & reset). “enabled” when not provided on creation.
+    /// </summary>
+    [DataMember(Name = "status")]
+    public string Status { get; set; }
+
+    /// <summary>
+    /// If set to true, the schedule will be removed automatically if expired, if set to false it will be disabled. Default is true
+    /// </summary>
+    [DataMember(Name = "autodelete")]
+    public bool? AutoDelete { get; set; }
+
   }
 
   [DataContract]

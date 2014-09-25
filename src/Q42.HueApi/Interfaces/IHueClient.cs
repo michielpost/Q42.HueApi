@@ -206,5 +206,11 @@ namespace Q42.HueApi.Interfaces
 
 
     #endregion
+
+    #region Info
+
+    Task<IEnumerable<string>> GetTimeZones();
+
+    #endregion
   }
 }
