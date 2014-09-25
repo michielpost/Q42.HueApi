@@ -14,7 +14,7 @@ using System.Dynamic;
 namespace Q42.HueApi
 {
   /// <summary>
-  /// Partial HueClient, contains requests to the /lights/ url
+  /// Partial HueClient, contains requests to the /scenes/ url
   /// </summary>
   public partial class HueClient
   {

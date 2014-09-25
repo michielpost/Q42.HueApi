@@ -219,5 +219,11 @@ namespace Q42.HueApi.Interfaces
     Task<HueResults> CreateOrUpdateSceneAsync(string id, string name, IEnumerable<string> lights);
     Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command);
     #endregion
+
+    #region Rules
+
+    Task<IEnumerable<Rule>> GetRulesAsync();
+
+    #endregion
   }
 }
