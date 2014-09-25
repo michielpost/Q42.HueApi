@@ -25,8 +25,7 @@ namespace Q42.HueApi.Models
     public ScheduleCommand Command { get; set; }
 
     [DataMember(Name = "time")]
-    [JsonConverter(typeof(DateTimeConverter))]
-    public DateTime Time { get; set; }
+    public string Time { get; set; }
 
     [DataMember(Name = "created")]
     public DateTime? Created { get; set; }
