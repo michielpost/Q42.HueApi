@@ -57,5 +57,42 @@ namespace Q42.HueApi
 
     }
 
+    /// <summary>
+    /// Asynchronously gets single rule
+    /// </summary>
+    /// <returns><see cref="Rule"/></returns>
+    public async Task<Rule> GetRuleAsync(string id)
+    {
+      if (id == null)
+        throw new ArgumentNullException("id");
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id can not be empty or a blank string", "id");
+
+      CheckInitialized();
+
+      HttpClient client = new HttpClient();
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}rules/{1}", ApiBase, id))).ConfigureAwait(false);
+
+#if DEBUG
+      stringResult = "{    \"name\": \"Wall Switch Rule\",    \"owner\": \"ruleOwner\",    \"created\": \"2014-07-23T15:02:56\",    \"lasttriggered\": \"none\",    \"timestriggered\": 0,    \"status\": \"enabled\",    \"conditions\": [        {            \"address\": \"/sensors/2/state/buttonevent\",            \"operator\": \"eq\",            \"value\": \"16\"        },        {            \"address\": \"/sensors/2/state/lastupdated\",            \"operator\": \"dx\"        }    ],    \"actions\": [        {            \"address\": \"/groups/0/action\",            \"method\": \"PUT\",            \"body\": {                \"scene\": \"S3\"            }        }    ]}";
+#endif
+
+      JToken token = JToken.Parse(stringResult);
+      if (token.Type == JTokenType.Array)
+      {
+        // Hue gives back errors in an array for this request
+        JObject error = (JObject)token.First["error"];
+        if (error["type"].Value<int>() == 3) // Rule not found
+          return null;
+
+        throw new Exception(error["description"].Value<string>());
+      }
+
+      var rule = token.ToObject<Rule>();
+      rule.Id = id;
+
+      return rule;
+    }
+
   }
 }

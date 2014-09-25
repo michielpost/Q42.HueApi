@@ -223,6 +223,7 @@ namespace Q42.HueApi.Interfaces
     #region Rules
 
     Task<IEnumerable<Rule>> GetRulesAsync();
+    Task<Rule> GetRuleAsync(string id);
 
     #endregion
   }

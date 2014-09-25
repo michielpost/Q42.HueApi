@@ -32,6 +32,15 @@ namespace Q42.HueApi.Tests
       Assert.AreNotEqual(0, result.Count());
     }
 
+    [TestMethod]
+    public async Task GetSingle()
+    {
+      var result = await _client.GetRuleAsync("1");
+
+      Assert.IsNotNull(result);
+    }
+
+
   
   }
 }

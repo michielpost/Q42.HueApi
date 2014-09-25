@@ -15,7 +15,7 @@ namespace Q42.HueApi.Models
     public string Name { get; set; }
 
     [DataMember(Name = "Lasttriggered")]
-    public DateTime? LastTriggered { get; set; }
+    public string LastTriggered { get; set; } //Can be "none", so don't convert to DateTime
 
     [DataMember(Name = "creationtime")]
     public DateTime? CreationTime { get; set; }
