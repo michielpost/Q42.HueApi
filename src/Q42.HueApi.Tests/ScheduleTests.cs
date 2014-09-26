@@ -40,7 +40,7 @@ namespace Q42.HueApi.Tests
       Assert.IsNotNull(all);
       Assert.IsTrue(all.Any());
 
-      var single = await _client.GetScheduleAsync(all.Skip(1).First().Id);
+      var single = await _client.GetScheduleAsync(all.First().Id);
 
       Assert.IsNotNull(single);
     }

@@ -48,6 +48,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Converters\HueDateTimeConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="HttpBridgeLocator.cs" />
     <Compile Include="HueClient-Api.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Models\BridgeConfig.cs" />
     <Compile Include="Models\Groups\Group.cs" />
     <Compile Include="Models\Groups\DefaultHueResult.cs" />
+    <Compile Include="Models\HueDateTime.cs" />
     <Compile Include="Models\LightCommand.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\NuPnPResponse.cs" />
