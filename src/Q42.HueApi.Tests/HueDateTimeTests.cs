@@ -15,6 +15,8 @@ namespace Q42.HueApi.Tests
   [TestClass]
   public class HueDateTimeTests
   {
+
+		//Deserializiation Tests
     [TestMethod]
     public void AbsoluteTimeHueDateTimeType()
     {
@@ -103,7 +105,7 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public void RecurringTimerDateTimeType()
     {
-      string json = "{ \"name\": \"some name\",\"description\": \"\",\"time\": \"R[65]/PT19:45:00\"}";
+      string json = "{ \"name\": \"some name\",\"description\": \"\",\"time\": \"R65/PT19:45:00\"}";
 
       Schedule schedule = JsonConvert.DeserializeObject<Schedule>(json);
 
@@ -120,7 +122,7 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public void RecurringTimerRandomizedDateTimeType()
     {
-      string json = "{ \"name\": \"some name\",\"description\": \"\",\"time\": \"R[65]/PT19:45:00A00:30:00\"}";
+      string json = "{ \"name\": \"some name\",\"description\": \"\",\"time\": \"R65/PT19:45:00A00:30:00\"}";
 
       Schedule schedule = JsonConvert.DeserializeObject<Schedule>(json);
 
@@ -131,6 +133,23 @@ namespace Q42.HueApi.Tests
 			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.HueTime.TimerTime.Value);
 			Assert.AreEqual<int?>(65, schedule.HueTime.NumberOfRecurrences.Value);
 			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.HueTime.RandomizedTime);
-    }		
+    }
+		
+		//SerializationTests
+		[TestMethod]
+		public void SerializeRecurringTimerRandomizedDateTimeType()
+		{
+			string expectedResult = "\"R65/PT19:45:00A00:30:00\"";
+
+			HueDateTime hueDateTime = new HueDateTime();
+			hueDateTime.NumberOfRecurrences = 65;
+			hueDateTime.TimerTime = new TimeSpan(19, 45, 00);
+			hueDateTime.RandomizedTime = new TimeSpan(00, 30, 00);
+
+			string result = JsonConvert.SerializeObject(hueDateTime, new JsonConverter[]{new HueDateTimeConverter()});
+
+			Assert.IsNotNull(result);
+			Assert.AreEqual(expectedResult, result);
+		}
   }
 }
