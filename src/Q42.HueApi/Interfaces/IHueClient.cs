@@ -229,5 +229,11 @@ namespace Q42.HueApi.Interfaces
     Task<HueResults> UpdateRule(string id, string name, IEnumerable<RuleCondition> conditions, IEnumerable<RuleAction> actions);
 
     #endregion
+
+    #region Sensors
+
+    Task<IEnumerable<Sensor>> GetSensorsAsync();
+
+    #endregion
   }
 }

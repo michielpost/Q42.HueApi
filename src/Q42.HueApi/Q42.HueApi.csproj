@@ -56,6 +56,7 @@
     <Compile Include="HueClient-Config.cs" />
     <Compile Include="HueClient-Groups.cs" />
     <Compile Include="HueClient-Rules.cs" />
+    <Compile Include="HueClient-Sensors.cs" />
     <Compile Include="HueClient-Scenes.cs" />
     <Compile Include="HueClient-Lights.cs" />
     <Compile Include="HueClient-Schedules.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\NuPnPResponse.cs" />
     <Compile Include="Models\Rule.cs" />
+    <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\Scene.cs" />
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\SoftwareUpdate.cs" />
