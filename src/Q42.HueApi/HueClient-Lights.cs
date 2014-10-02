@@ -180,7 +180,6 @@ namespace Q42.HueApi
     /// <summary>
     /// Gets a list of lights that were discovered the last time a search for new lights was performed. The list of new lights is always deleted when a new search is started.
     /// </summary>
-    /// <param name="id"></param>
     /// <returns></returns>
     public async Task<List<Light>> GetNewLightsAsync()
     {

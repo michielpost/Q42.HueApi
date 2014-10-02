@@ -44,6 +44,12 @@ namespace Q42.HueApi.Models
 
     [DataMember(Name = "lastupdated")]
     public string Lastupdated { get; set; }
+
+    [DataMember(Name = "presence")]
+    public bool Presence { get; set; }
+
+    [DataMember(Name = "buttonevent")]
+    public int? ButtonEvent { get; set; }
   }
 
   public class SensorConfig
@@ -58,10 +64,19 @@ namespace Q42.HueApi.Models
     public string Lat { get; set; }
 
     [DataMember(Name = "sunriseoffset")]
-    public int SunriseOffset { get; set; }
+    public int? SunriseOffset { get; set; }
 
     [DataMember(Name = "sunsetoffset")]
-    public int SunsetOffset { get; set; }
+    public int? SunsetOffset { get; set; }
+
+    [DataMember(Name = "url")]
+    public string Url { get; set; }
+
+    [DataMember(Name = "reachable")]
+    public bool Reachable { get; set; }
+
+    [DataMember(Name = "battery")]
+    public int? Battery { get; set; }
   }
 
   
