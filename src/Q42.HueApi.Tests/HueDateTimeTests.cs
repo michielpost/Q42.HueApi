@@ -27,11 +27,11 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsTrue(schedule.HueTime.DateTime.HasValue);
-			Assert.AreEqual(new DateTime(2014, 9, 20, 19, 35, 26), schedule.HueTime.DateTime.Value);
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsTrue(schedule.Time.DateTime.HasValue);
+			Assert.AreEqual(new DateTime(2014, 9, 20, 19, 35, 26), schedule.Time.DateTime.Value);
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 		}
@@ -45,12 +45,12 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsTrue(schedule.HueTime.DateTime.HasValue);
-			Assert.AreEqual(new DateTime(2014, 9, 20, 19, 35, 26), schedule.HueTime.DateTime.Value);
-			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.HueTime.RandomizedTime);
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsTrue(schedule.Time.DateTime.HasValue);
+			Assert.AreEqual(new DateTime(2014, 9, 20, 19, 35, 26), schedule.Time.DateTime.Value);
+			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.Time.RandomizedTime);
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 		}
@@ -64,13 +64,13 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsNull(schedule.HueTime.RandomizedTime);
-			Assert.IsTrue(schedule.HueTime.TimerTime.HasValue);
-			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.HueTime.TimerTime.Value);
-			Assert.AreEqual(RecurringDay.RecurringTuesday, schedule.HueTime.RecurringDay); //W32
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsNull(schedule.Time.RandomizedTime);
+			Assert.IsTrue(schedule.Time.TimerTime.HasValue);
+			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.Time.TimerTime.Value);
+			Assert.AreEqual(RecurringDay.RecurringTuesday, schedule.Time.RecurringDay); //W32
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 		}
@@ -84,13 +84,13 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsTrue(schedule.HueTime.TimerTime.HasValue);
-			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.HueTime.TimerTime.Value);
-			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.HueTime.RandomizedTime);
-			Assert.AreEqual(RecurringDay.RecurringAlldays, schedule.HueTime.RecurringDay); //W127
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsTrue(schedule.Time.TimerTime.HasValue);
+			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.Time.TimerTime.Value);
+			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.Time.RandomizedTime);
+			Assert.AreEqual(RecurringDay.RecurringAlldays, schedule.Time.RecurringDay); //W127
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 		}
@@ -104,12 +104,12 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsNull(schedule.HueTime.RandomizedTime);
-			Assert.IsTrue(schedule.HueTime.TimerTime.HasValue);
-			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.HueTime.TimerTime.Value);
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsNull(schedule.Time.RandomizedTime);
+			Assert.IsTrue(schedule.Time.TimerTime.HasValue);
+			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.Time.TimerTime.Value);
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 		}
@@ -123,12 +123,12 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsTrue(schedule.HueTime.TimerTime.HasValue);
-			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.HueTime.TimerTime.Value);
-			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.HueTime.RandomizedTime);
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsTrue(schedule.Time.TimerTime.HasValue);
+			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.Time.TimerTime.Value);
+			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.Time.RandomizedTime);
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 		}
@@ -142,14 +142,14 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsNull(schedule.HueTime.RandomizedTime);
-			Assert.IsTrue(schedule.HueTime.TimerTime.HasValue);
-			Assert.IsTrue(schedule.HueTime.NumberOfRecurrences.HasValue);
-			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.HueTime.TimerTime.Value);
-			Assert.AreEqual<int?>(65, schedule.HueTime.NumberOfRecurrences.Value);
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsNull(schedule.Time.RandomizedTime);
+			Assert.IsTrue(schedule.Time.TimerTime.HasValue);
+			Assert.IsTrue(schedule.Time.NumberOfRecurrences.HasValue);
+			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.Time.TimerTime.Value);
+			Assert.AreEqual<int?>(65, schedule.Time.NumberOfRecurrences.Value);
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 
@@ -164,14 +164,14 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
 			Assert.IsNotNull(schedule);
-			Assert.IsNotNull(schedule.HueTime);
-			Assert.IsTrue(schedule.HueTime.TimerTime.HasValue);
-			Assert.IsTrue(schedule.HueTime.NumberOfRecurrences.HasValue);
-			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.HueTime.TimerTime.Value);
-			Assert.AreEqual<int?>(65, schedule.HueTime.NumberOfRecurrences.Value);
-			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.HueTime.RandomizedTime);
+			Assert.IsNotNull(schedule.Time);
+			Assert.IsTrue(schedule.Time.TimerTime.HasValue);
+			Assert.IsTrue(schedule.Time.NumberOfRecurrences.HasValue);
+			Assert.AreEqual(new TimeSpan(19, 45, 00), schedule.Time.TimerTime.Value);
+			Assert.AreEqual<int?>(65, schedule.Time.NumberOfRecurrences.Value);
+			Assert.AreEqual(new TimeSpan(0, 30, 0), schedule.Time.RandomizedTime);
 
-			string result = JsonConvert.SerializeObject(schedule.HueTime, new JsonConverter[] { new HueDateTimeConverter() });
+			string result = JsonConvert.SerializeObject(schedule.Time, new JsonConverter[] { new HueDateTimeConverter() });
 			Assert.IsNotNull(result);
 			Assert.AreEqual(timeValue, result);
 		}

@@ -24,14 +24,10 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "command")]
     public ScheduleCommand Command { get; set; }
 
-    //[DataMember(Name = "time")]
-    //[JsonConverter(typeof(DateTimeConverter))]
-    public DateTime Time { get; set; }
-
     [DataMember(Name = "time")]
-    [JsonConverter(typeof(HueDateTimeConverter))]
-    public HueDateTime HueTime { get; set; }
-
+		[JsonConverter(typeof(HueDateTimeConverter))]
+		public HueDateTime Time { get; set; }
+    
     [DataMember(Name = "created")]
     public DateTime? Created { get; set; }
 

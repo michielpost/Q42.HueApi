@@ -51,7 +51,10 @@ namespace Q42.HueApi.Tests
       Schedule schedule = new Schedule();
       schedule.Name = "t1";
       schedule.Description = "test";
-      schedule.Time = DateTime.Now.AddDays(1);
+			schedule.Time = new HueDateTime()
+			{
+				DateTime = DateTime.Now.AddDays(1)
+			};
       schedule.Command = new ScheduleCommand();
       schedule.Command.Body = new LightCommand();
       schedule.Command.Body.Alert = Alert.Once;
@@ -69,7 +72,10 @@ namespace Q42.HueApi.Tests
       Schedule schedule = new Schedule();
       schedule.Name = "t1";
       schedule.Description = "test";
-      schedule.Time = DateTime.UtcNow.AddDays(1);
+			schedule.Time = new HueDateTime
+			{
+				DateTime = DateTime.UtcNow.AddDays(1)
+			};
       schedule.Command = new ScheduleCommand();
       schedule.Command.Body = new LightCommand();
       schedule.Command.Body.Alert = Alert.Once;
@@ -96,7 +102,10 @@ namespace Q42.HueApi.Tests
       Schedule schedule = new Schedule();
       schedule.Name = "t1";
       schedule.Description = "test";
-      schedule.Time = DateTime.UtcNow.AddDays(1);
+			schedule.Time = new HueDateTime()
+			{
+				DateTime = DateTime.UtcNow.AddDays(1)
+			};
       schedule.Command = new ScheduleCommand();
       schedule.Command.Body = new LightCommand();
       schedule.Command.Body.Alert = Alert.Once;
