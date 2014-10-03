@@ -36,11 +36,15 @@ namespace Q42.HueApi
       }
 
 			HueDateTime hueDateTimeValue = value as HueDateTime;
+			if (hueDateTimeValue==null)
+			{
+				return;
+			}
 			
 			//DateTime
 			if (hueDateTimeValue.DateTime!=null && hueDateTimeValue.DateTime.HasValue)
 			{
-				dateTimeValue = hueDateTimeValue.DateTime.Value.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture);
+				dateTimeValue = hueDateTimeValue.DateTime.Value.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
 			}
 			//RandomTime
 			if (hueDateTimeValue.RandomizedTime!=null && hueDateTimeValue.RandomizedTime.HasValue)
@@ -96,7 +100,7 @@ namespace Q42.HueApi
 
 			string rawValue = reader.Value.ToString();
 
-			//normal datetimes (optional randomtime)
+			//normal datetimes (optional random time)
 			{
 				var groups = Regex.Match(rawValue, @"(?<date>[0-9\-]+)T(?<time>[0-9:]+)(A(?<randomtime>[0-9:]+))?").Groups;
 				if (groups.Count != 1)
@@ -111,7 +115,7 @@ namespace Q42.HueApi
 				}
 			}
 
-			//days recurring (optional randomtime)
+			//days recurring (optional random time)
 			{
 				var groups = Regex.Match(rawValue, @"W(?<daysrecurring>\d{1,3})/T(?<time>[0-9:]+)(A(?<randomtime>[0-9:]+))?").Groups;
 				if (groups.Count != 1)
@@ -128,7 +132,7 @@ namespace Q42.HueApi
 				}
 			}
 
-			//timers (optional recurrences and randomtime)
+			//timers (optional recurrences and random time)
 			{
 				var groups = Regex.Match(rawValue, @"(R(?<recurrence>\d{2})/)?PT(?<timertime>[0-9:]+)(A(?<randomtime>[0-9:]+))?").Groups;
 				hueValueDate.TimerTime = TimeSpan.ParseExact(groups["timertime"].Value, "hh\\:mm\\:ss", (IFormatProvider)base.Culture);
