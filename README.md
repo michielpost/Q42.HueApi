@@ -62,7 +62,8 @@ Download the source from GitHub or get the compiled assembly from NuGet [Q42.Hue
 This library is made possible by contributions from:
 * [Michiel Post](http://www.michielpost.nl) ([@michielpostnl](http://twitter.com/michielpostnl)) - core contributor
 * [Q42](http://www.q42.nl) ([@q42](http://twitter.com/q42))
-* [@ermau](https://github.com/ermau/Q42.HueApi)
+* [@ermau](https://github.com/ermau)
+* [@koenvanderlinden](https://github.com/koenvanderlinden)
 
 ### Open Source Project Credits
 
