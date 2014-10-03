@@ -25,8 +25,9 @@ namespace Q42.HueApi.Models
     public ScheduleCommand Command { get; set; }
 
     [DataMember(Name = "time")]
-    public string Time { get; set; }
-
+		[JsonConverter(typeof(HueDateTimeConverter))]
+		public HueDateTime Time { get; set; }
+    
     [DataMember(Name = "created")]
     public DateTime? Created { get; set; }
 
@@ -50,6 +51,7 @@ namespace Q42.HueApi.Models
     /// </summary>
     [DataMember(Name = "autodelete")]
     public bool? AutoDelete { get; set; }
+
 
   }
 
