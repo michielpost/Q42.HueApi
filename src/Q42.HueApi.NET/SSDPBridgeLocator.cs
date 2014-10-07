@@ -69,12 +69,20 @@ namespace Q42.HueApi.NET
           var response = new byte[8000];
           EndPoint ep = new IPEndPoint(IPAddress.Any, multicastPort);
           socket.ReceiveFrom(response, ref ep);
-          var receivedString = Encoding.UTF8.GetString(response);
 
-          var location = receivedString.Substring(receivedString.ToLower().IndexOf("location:", System.StringComparison.Ordinal) + 9);
-          receivedString = location.Substring(0, location.IndexOf("\r", System.StringComparison.Ordinal)).Trim();
+          try
+          {
+            var receivedString = Encoding.UTF8.GetString(response);
 
-          _discoveredDevices.Add(receivedString);
+            var location = receivedString.Substring(receivedString.ToLower().IndexOf("location:", System.StringComparison.Ordinal) + 9);
+            receivedString = location.Substring(0, location.IndexOf("\r", System.StringComparison.Ordinal)).Trim();
+
+            _discoveredDevices.Add(receivedString);
+          }
+          catch
+          {
+            //Not a UTF8 string, ignore this response.
+          }
         }
       }
       catch
