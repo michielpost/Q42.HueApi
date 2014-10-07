@@ -124,11 +124,18 @@ namespace Q42.HueApi.NET
     private async Task<bool> IsHue(string discoveryUrl)
     {
       var http = new HttpClient { Timeout = TimeSpan.FromMilliseconds(2000) };
-      var res = await http.GetStringAsync(discoveryUrl);
-      if (!string.IsNullOrWhiteSpace(res))
+      try
       {
-        if (res.ToLower().Contains("philips hue bridge"))
-          return true;
+        var res = await http.GetStringAsync(discoveryUrl);
+        if (!string.IsNullOrWhiteSpace(res))
+        {
+          if (res.ToLower().Contains("philips hue bridge"))
+            return true;
+        }
+      }
+      catch
+      {
+        //Not a UTF8 string, ignore this response.
       }
       return false;
     }
