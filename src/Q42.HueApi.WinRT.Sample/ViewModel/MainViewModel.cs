@@ -4,6 +4,7 @@ using Q42.HueApi.Interfaces;
 using Q42.WinRT.Data;
 using Q42.WinRT.Portable.Data;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Q42.HueApi.WinRT.Sample.ViewModel
@@ -135,6 +136,9 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 				private async void SsdpLocateBridgeAction()
 				{
 					var result = await SsdpLocateBridgeDataLoader.LoadAsync(() => ssdpLocator.LocateBridgesAsync(TimeSpan.FromSeconds(5)));
+
+          if (result == null)
+            result = new List<string>();
 
 					SsdpBridges = string.Join(", ", result.ToArray());
 
