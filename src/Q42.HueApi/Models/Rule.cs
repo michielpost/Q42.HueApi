@@ -48,10 +48,15 @@ namespace Q42.HueApi.Models
     public string Value { get; set; }
   }
 
-  public class RuleBody
+  /// <summary>
+  /// Supports all LightCommands OR a Scene ID
+  /// </summary>
+  public class RuleBody : LightCommand
   {
     [DataMember(Name = "scene")]
     public string Scene { get; set; }
+
+
   }
 
   public class RuleAction
