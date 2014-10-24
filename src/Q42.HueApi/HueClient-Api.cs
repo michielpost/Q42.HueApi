@@ -38,7 +38,7 @@ namespace Q42.HueApi
       obj["username"] = appKey;
       obj["devicetype"] = appName;
 
-      HttpClient client = new HttpClient();
+      HttpClient client = HueClient.GetHttpClient();
       var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new StringContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 

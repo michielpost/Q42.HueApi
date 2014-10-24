@@ -24,6 +24,7 @@ namespace Q42.HueApi
 		/// <returns></returns>
     public async Task<IEnumerable<string>> LocateBridgesAsync(TimeSpan timeout)
     {
+      // since this specifies timeout (and probably isn't called much), don't use shared client
       HttpClient client = new HttpClient();
       client.Timeout = timeout;
 

@@ -28,7 +28,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = new HttpClient();
+      HttpClient client = HueClient.GetHttpClient();
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes", ApiBase))).ConfigureAwait(false);
 
 #if DEBUG
@@ -77,7 +77,7 @@ namespace Q42.HueApi
 
       string jsonString = JsonConvert.SerializeObject(jsonObj);
 
-      HttpClient client = new HttpClient();
+      HttpClient client = HueClient.GetHttpClient();
       var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -104,7 +104,7 @@ namespace Q42.HueApi
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = new HttpClient();
+      HttpClient client = HueClient.GetHttpClient();
       var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}/lights/{1}/state", ApiBase, sceneId, lightId)), new StringContent(jsonCommand)).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
