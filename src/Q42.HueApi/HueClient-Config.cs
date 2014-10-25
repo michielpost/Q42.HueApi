@@ -23,7 +23,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = new HttpClient();
+      HttpClient client = HueClient.GetHttpClient();
 
       var response = await client.DeleteAsync(new Uri(string.Format("{0}config/whitelist/{1}", ApiBase, entry))).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -67,7 +67,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = new HttpClient();
+      HttpClient client = HueClient.GetHttpClient();
       var stringResult = await client.GetStringAsync(new Uri(ApiBase)).ConfigureAwait(false);
 
       BridgeState jsonResult = DeserializeResult<BridgeState>(stringResult);
@@ -86,7 +86,7 @@ namespace Q42.HueApi
 
       string command = JsonConvert.SerializeObject(update, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = new HttpClient();
+      HttpClient client = HueClient.GetHttpClient();
       var result = await client.PutAsync(new Uri(string.Format("{0}config", ApiBase)), new StringContent(command)).ConfigureAwait(false);
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);

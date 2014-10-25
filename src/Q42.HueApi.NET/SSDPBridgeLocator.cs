@@ -123,6 +123,7 @@ namespace Q42.HueApi.NET
     // http://www.nerdblog.com/2012/10/a-day-with-philips-hue.html - description.xml retrieval
     private async Task<bool> IsHue(string discoveryUrl)
     {
+      // since this specifies timeout (and probably isn't called much), don't use shared client
       var http = new HttpClient { Timeout = TimeSpan.FromMilliseconds(2000) };
       try
       {

@@ -87,6 +87,16 @@ namespace Q42.HueApi
       IsInitialized = true;
     }
 
+    [ThreadStatic]
+    private static HttpClient _httpClient;
+    public static HttpClient GetHttpClient()
+    {
+      // return per-thread HttpClient
+      if (_httpClient == null)
+        _httpClient = new HttpClient();
+      return _httpClient;
+    }
+
     /// <summary>
     /// Check if the HueClient is initialized
     /// </summary>
