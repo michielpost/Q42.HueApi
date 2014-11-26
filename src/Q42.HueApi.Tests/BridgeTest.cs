@@ -46,5 +46,27 @@ namespace Q42.HueApi.Tests
       Assert.AreEqual(newName, result.Config.Name);
 
     }
+
+	[TestMethod]
+	public async Task UpdateFirmwareTest()
+	{
+		var config = await _client.GetBridgeAsync();
+
+		//UpdateState 2 means there is an update available to apply
+		Assert.AreEqual(2, config.Config.SoftwareUpdate.UpdateState);
+
+		//Apply the update
+		BridgeConfigUpdate update = new BridgeConfigUpdate();
+		update.SoftwareUpdate = new SoftwareUpdate() { UpdateState = 3 }; 
+
+		await _client.UpdateBridgeConfigAsync(update);
+
+		var result = await _client.GetBridgeAsync();
+
+		//Check if the bridge is updating
+		Assert.AreEqual(3, result.Config.SoftwareUpdate.UpdateState);
+
+	}
+
   }
 }
