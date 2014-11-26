@@ -229,7 +229,7 @@ namespace Q42.HueApi
       if (config == null)
         throw new ArgumentNullException("config");
 
-      string jsonString = JsonConvert.SerializeObject(config);
+	  string jsonString = JsonConvert.SerializeObject(config, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = HueClient.GetHttpClient();
 
@@ -253,7 +253,7 @@ namespace Q42.HueApi
       if (state == null)
         throw new ArgumentNullException("state");
 
-      string jsonString = JsonConvert.SerializeObject(state);
+	  string jsonString = JsonConvert.SerializeObject(state, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = HueClient.GetHttpClient();
 
