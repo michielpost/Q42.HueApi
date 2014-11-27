@@ -80,7 +80,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    public Task<HueResults> SendGroupCommandAsync(LightCommand command, string group = "0")
+    public Task<HueResults> SendGroupCommandAsync(GroupCommand command, string group = "0")
     {
       if (command == null)
         throw new ArgumentNullException("command");

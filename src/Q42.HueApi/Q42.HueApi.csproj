@@ -73,6 +73,7 @@
     <Compile Include="Models\Groups\Group.cs" />
     <Compile Include="Models\Groups\DefaultHueResult.cs" />
     <Compile Include="Models\HueDateTime.cs" />
+    <Compile Include="Models\GroupCommand.cs" />
     <Compile Include="Models\LightCommand.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\NuPnPResponse.cs" />

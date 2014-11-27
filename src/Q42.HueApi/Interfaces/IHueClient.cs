@@ -112,7 +112,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    Task<HueResults> SendGroupCommandAsync(LightCommand command, string group = "0");
+    Task<HueResults> SendGroupCommandAsync(GroupCommand command, string group = "0");
 
     /// <summary>
     /// Creates a group for a set of lights
@@ -218,6 +218,7 @@ namespace Q42.HueApi.Interfaces
     Task<IEnumerable<Scene>> GetScenesAsync();
     Task<HueResults> CreateOrUpdateSceneAsync(string id, string name, IEnumerable<string> lights);
     Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command);
+    Task<HueResults> RecallSceneAsync(string sceneId, string groupId = "0");
     #endregion
 
     #region Rules

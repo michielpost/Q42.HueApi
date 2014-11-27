@@ -111,5 +111,17 @@ namespace Q42.HueApi
 
       return DeserializeDefaultHueResult(jsonResult);
     }
+
+
+    public Task<HueResults> RecallSceneAsync(string sceneId, string groupId = "0")
+    {
+      if (sceneId == null)
+        throw new ArgumentNullException("sceneId");
+
+      var groupCommand = new GroupCommand() { Scene = sceneId };
+
+      return this.SendGroupCommandAsync(groupCommand, groupId);
+
+    }
   }
 }
