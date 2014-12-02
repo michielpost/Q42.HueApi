@@ -55,9 +55,11 @@ namespace Q42.HueApi.Tests
 			{
 				DateTime = DateTime.Now.AddDays(1)
 			};
-      schedule.Command = new ScheduleCommand();
-      schedule.Command.Body = new LightCommand();
-      schedule.Command.Body.Alert = Alert.Once;
+      schedule.Command = new InternalBridgeCommand();
+
+      var commandBody = new LightCommand();
+      commandBody.Alert = Alert.Once;
+      schedule.Command.Body = commandBody;
       schedule.Command.Address = "/api/huelandspoor/lights/5/state";
       schedule.Command.Method = "PUT";
 
@@ -76,9 +78,10 @@ namespace Q42.HueApi.Tests
 			{
 				DateTime = DateTime.UtcNow.AddDays(1)
 			};
-      schedule.Command = new ScheduleCommand();
-      schedule.Command.Body = new LightCommand();
-      schedule.Command.Body.Alert = Alert.Once;
+      schedule.Command = new InternalBridgeCommand();
+      var commandBody = new LightCommand();
+      commandBody.Alert = Alert.Once;
+      schedule.Command.Body = commandBody;
       schedule.Command.Address = "/api/huelandspoor/lights/5/state";
       schedule.Command.Method = "PUT";
 
@@ -106,9 +109,10 @@ namespace Q42.HueApi.Tests
 			{
 				DateTime = DateTime.UtcNow.AddDays(1)
 			};
-      schedule.Command = new ScheduleCommand();
-      schedule.Command.Body = new LightCommand();
-      schedule.Command.Body.Alert = Alert.Once;
+      schedule.Command = new InternalBridgeCommand();
+      var commandBody = new LightCommand();
+      commandBody.Alert = Alert.Once;
+      schedule.Command.Body = commandBody;
       schedule.Command.Address = "/api/huelandspoor/lights/5/state";
       schedule.Command.Method = "PUT";
 

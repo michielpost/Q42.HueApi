@@ -118,7 +118,7 @@ namespace Q42.HueApi
       if (sceneId == null)
         throw new ArgumentNullException("sceneId");
 
-      var groupCommand = new GroupCommand() { Scene = sceneId };
+      var groupCommand = new SceneCommand() { Scene = sceneId };
 
       return this.SendGroupCommandAsync(groupCommand, groupId);
 

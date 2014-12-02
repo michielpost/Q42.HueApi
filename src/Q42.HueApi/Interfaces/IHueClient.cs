@@ -112,7 +112,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    Task<HueResults> SendGroupCommandAsync(GroupCommand command, string group = "0");
+    Task<HueResults> SendGroupCommandAsync(ICommandBody command, string group = "0");
 
     /// <summary>
     /// Creates a group for a set of lights
@@ -226,8 +226,8 @@ namespace Q42.HueApi.Interfaces
     Task<IReadOnlyCollection<Rule>> GetRulesAsync();
     Task<Rule> GetRuleAsync(string id);
     Task<HueResults> DeleteRule(string id);
-    Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<RuleAction> actions);
-    Task<HueResults> UpdateRule(string id, string name, IEnumerable<RuleCondition> conditions, IEnumerable<RuleAction> actions);
+    Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions);
+    Task<HueResults> UpdateRule(string id, string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions);
 
     #endregion
 

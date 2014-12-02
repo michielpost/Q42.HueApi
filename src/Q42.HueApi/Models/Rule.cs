@@ -33,7 +33,7 @@ namespace Q42.HueApi.Models
     public List<RuleCondition> Conditions { get; set; }
 
     [DataMember(Name = "actions")]
-    public List<RuleAction> Actions { get; set; }
+    public List<InternalBridgeCommand> Actions { get; set; }
   }
 
   public class RuleCondition
@@ -48,28 +48,8 @@ namespace Q42.HueApi.Models
     public string Value { get; set; }
   }
 
-  /// <summary>
-  /// Supports all LightCommands OR a Scene ID
-  /// </summary>
-  public class RuleBody : LightCommand
-  {
-    [DataMember(Name = "scene")]
-    public string Scene { get; set; }
 
-
-  }
-
-  public class RuleAction
-  {
-    [DataMember(Name = "address")]
-    public string Address { get; set; }
-
-    [DataMember(Name = "method")]
-    public string Method { get; set; }
-
-    [DataMember(Name = "body")]
-    public RuleBody Body { get; set; }
-  }
+ 
 
   
 }

@@ -65,6 +65,7 @@
     <Compile Include="HueColorConverter.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Interfaces\IBridgeLocator.cs" />
+    <Compile Include="Interfaces\ICommandBody.cs" />
     <Compile Include="Interfaces\IHueClient.cs" />
     <Compile Include="HueClient.cs" />
     <Compile Include="Models\Bridge.cs" />
@@ -73,7 +74,8 @@
     <Compile Include="Models\Groups\Group.cs" />
     <Compile Include="Models\Groups\DefaultHueResult.cs" />
     <Compile Include="Models\HueDateTime.cs" />
-    <Compile Include="Models\GroupCommand.cs" />
+    <Compile Include="Models\InternalBridgeCommand.cs" />
+    <Compile Include="Models\SceneCommand.cs" />
     <Compile Include="Models\LightCommand.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\NuPnPResponse.cs" />

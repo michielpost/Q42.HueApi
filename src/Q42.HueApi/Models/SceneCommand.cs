@@ -3,15 +3,16 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Interfaces;
 
 namespace Q42.HueApi
 {
 
   /// <summary>
-  /// Compose a light command to send to a light
+  /// Send a SceneID as command
   /// </summary>
   [DataContract]
-  public class GroupCommand : LightCommand
+  public class SceneCommand : ICommandBody
   {
     /// <summary>
     /// Scene ID to activate

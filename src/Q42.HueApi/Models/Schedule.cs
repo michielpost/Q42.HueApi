@@ -22,7 +22,7 @@ namespace Q42.HueApi.Models
     public string Description { get; set; }
 
     [DataMember(Name = "command")]
-    public ScheduleCommand Command { get; set; }
+    public InternalBridgeCommand Command { get; set; }
 
     [DataMember(Name = "time")]
 		[JsonConverter(typeof(HueDateTimeConverter))]
@@ -52,20 +52,6 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "autodelete")]
     public bool? AutoDelete { get; set; }
 
-
-  }
-
-  [DataContract]
-  public class ScheduleCommand
-  {
-    [DataMember(Name = "address")]
-    public string Address { get; set; }
-
-    [DataMember(Name = "method")]
-    public string Method { get; set; }
-
-    [DataMember(Name = "body")]
-    public LightCommand Body { get; set; }
   }
 
 }

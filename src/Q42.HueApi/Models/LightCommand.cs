@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Interfaces;
 
 namespace Q42.HueApi
 {
@@ -11,7 +12,7 @@ namespace Q42.HueApi
   /// Compose a light command to send to a light
   /// </summary>
   [DataContract]
-  public class LightCommand
+  public class LightCommand : ICommandBody
   {
     /// <summary>
     /// Gets or sets the colors based on CIE 1931 Color coordinates.

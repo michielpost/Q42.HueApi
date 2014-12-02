@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="group"></param>
     /// <returns></returns>
-    public Task<HueResults> SendGroupCommandAsync(GroupCommand command, string group = "0")
+    public Task<HueResults> SendGroupCommandAsync(ICommandBody command, string group = "0")
     {
       if (command == null)
         throw new ArgumentNullException("command");

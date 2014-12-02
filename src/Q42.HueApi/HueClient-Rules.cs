@@ -94,7 +94,7 @@ namespace Q42.HueApi
       return rule;
     }
 
-    public async Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<RuleAction> actions)
+    public async Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions)
     {
       CheckInitialized();
 
@@ -138,7 +138,7 @@ namespace Q42.HueApi
       return null;
     }
 
-    public async Task<HueResults> UpdateRule(string id, string name, IEnumerable<RuleCondition> conditions, IEnumerable<RuleAction> actions)
+    public async Task<HueResults> UpdateRule(string id, string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions)
     {
       CheckInitialized();
 
