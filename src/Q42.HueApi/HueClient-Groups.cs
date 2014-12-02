@@ -116,7 +116,7 @@ namespace Q42.HueApi
     /// Get all groups
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Group>> GetGroupsAsync()
+    public async Task<IReadOnlyCollection<Group>> GetGroupsAsync()
     {
       CheckInitialized();
 
@@ -178,7 +178,7 @@ namespace Q42.HueApi
     /// <param name="lights">List of light IDs</param>
     /// <param name="name">Group Name</param>
     /// <returns></returns>
-    public async Task<HueResults> UpdateGroupAsync(string id, List<string> lights, string name = null)
+    public async Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null)
     {
       if (id == null)
         throw new ArgumentNullException("id");

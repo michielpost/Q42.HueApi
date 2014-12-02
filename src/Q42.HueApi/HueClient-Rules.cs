@@ -23,7 +23,7 @@ namespace Q42.HueApi
     /// Asynchronously gets all rules registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="Rule"/>s registered with the bridge.</returns>
-    public async Task<IEnumerable<Rule>> GetRulesAsync()
+    public async Task<IReadOnlyCollection<Rule>> GetRulesAsync()
     {
       CheckInitialized();
 

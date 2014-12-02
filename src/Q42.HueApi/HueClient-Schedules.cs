@@ -20,7 +20,7 @@ namespace Q42.HueApi
     /// Get all schedules
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Schedule>> GetSchedulesAsync()
+    public async Task<IReadOnlyCollection<Schedule>> GetSchedulesAsync()
     {
       CheckInitialized();
 

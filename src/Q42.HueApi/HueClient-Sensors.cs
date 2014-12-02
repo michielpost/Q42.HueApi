@@ -24,7 +24,7 @@ namespace Q42.HueApi
     /// Asynchronously gets all sensors registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="Sensor"/>s registered with the bridge.</returns>
-    public async Task<IEnumerable<Sensor>> GetSensorsAsync()
+    public async Task<IReadOnlyCollection<Sensor>> GetSensorsAsync()
     {
       CheckInitialized();
 
@@ -103,7 +103,7 @@ namespace Q42.HueApi
     /// Gets a list of sensors that were discovered the last time a search for new sensors was performed. The list of new sensors is always deleted when a new search is started.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Sensor>> GetNewSensorsAsync()
+    public async Task<IReadOnlyCollection<Sensor>> GetNewSensorsAsync()
     {
       CheckInitialized();
 

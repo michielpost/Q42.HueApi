@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Q42.HueApi.Extensions;
 using Newtonsoft.Json;
 using Q42.HueApi.Models.Groups;
+using System.Dynamic;
 
 namespace Q42.HueApi
 {
@@ -164,12 +165,25 @@ namespace Q42.HueApi
     /// Start searching for new lights
     /// </summary>
     /// <returns></returns>
-    public async Task<HueResults> SearchNewLightsAsync()
+    public async Task<HueResults> SearchNewLightsAsync(IEnumerable<string> deviceIds = null)
     {
       CheckInitialized();
 
+      StringContent jsonStringContent = null;
+
+      if(deviceIds != null)
+      {
+        dynamic jsonObj = new ExpandoObject();
+        jsonObj.deviceid = deviceIds;
+
+        string jsonString = JsonConvert.SerializeObject(jsonObj);
+
+        jsonStringContent = new StringContent(jsonString);
+
+      }
+
       HttpClient client = HueClient.GetHttpClient();
-      var response = await client.PostAsync(new Uri(String.Format("{0}lights", ApiBase)), null).ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri(String.Format("{0}lights", ApiBase)), jsonStringContent).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -181,7 +195,7 @@ namespace Q42.HueApi
     /// Gets a list of lights that were discovered the last time a search for new lights was performed. The list of new lights is always deleted when a new search is started.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Light>> GetNewLightsAsync()
+    public async Task<IReadOnlyCollection<Light>> GetNewLightsAsync()
     {
       CheckInitialized();
 

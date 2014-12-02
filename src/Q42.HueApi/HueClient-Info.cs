@@ -20,7 +20,7 @@ namespace Q42.HueApi
     /// Get all Timezones
    /// </summary>
    /// <returns></returns>
-    public async Task<IEnumerable<string>> GetTimeZonesAsync()
+    public async Task<IReadOnlyCollection<string>> GetTimeZonesAsync()
     {
       CheckInitialized();
 

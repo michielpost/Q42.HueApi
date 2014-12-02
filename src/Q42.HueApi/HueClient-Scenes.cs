@@ -24,7 +24,7 @@ namespace Q42.HueApi
     /// Asynchronously gets all scenes registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="Scene"/>s registered with the bridge.</returns>
-    public async Task<IEnumerable<Scene>> GetScenesAsync()
+    public async Task<IReadOnlyCollection<Scene>> GetScenesAsync()
     {
       CheckInitialized();
 

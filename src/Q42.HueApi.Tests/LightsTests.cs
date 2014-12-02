@@ -59,6 +59,19 @@ namespace Q42.HueApi.Tests
     }
 
     [TestMethod]
+    public async Task SearchNewLightsWithDeviceIdsAsyncTest()
+    {
+      List<string> deviceIds = new List<string>();
+      deviceIds.Add("45AF34");
+      deviceIds.Add("543636");
+      deviceIds.Add("34AFBE");
+
+      //Search for new lights
+      await _client.SearchNewLightsAsync(deviceIds);
+
+    }
+
+    [TestMethod]
     public async Task GetLightsAsyncTest()
     {
       //Search for new lights

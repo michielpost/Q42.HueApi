@@ -133,7 +133,7 @@ namespace Q42.HueApi.Interfaces
     /// Get all groups
     /// </summary>
     /// <returns></returns>
-    Task<List<Group>> GetGroupsAsync();
+    Task<IReadOnlyCollection<Group>> GetGroupsAsync();
 
     /// <summary>
     /// Get the state of a single group
@@ -149,19 +149,19 @@ namespace Q42.HueApi.Interfaces
     /// <param name="lights">List of light IDs</param>
     /// <param name="name">Group Name (optional)</param>
     /// <returns></returns>
-    Task<HueResults> UpdateGroupAsync(string id, List<string> lights, string name = null);
+    Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null);
 
     /// <summary>
     /// Start searching for new lights
     /// </summary>
     /// <returns></returns>
-    Task<HueResults> SearchNewLightsAsync();
+    Task<HueResults> SearchNewLightsAsync(IEnumerable<string> deviceIds = null);
 
     /// <summary>
     /// Gets a list of lights that were discovered the last time a search for new lights was performed.
     /// </summary>
     /// <returns></returns>
-    Task<List<Light>> GetNewLightsAsync();
+    Task<IReadOnlyCollection<Light>> GetNewLightsAsync();
 
     #region Schedules
 
@@ -169,7 +169,7 @@ namespace Q42.HueApi.Interfaces
     /// Get all schedules
     /// </summary>
     /// <returns></returns>
-    Task<List<Schedule>> GetSchedulesAsync();
+    Task<IReadOnlyCollection<Schedule>> GetSchedulesAsync();
 
 
     /// <summary>
@@ -209,13 +209,13 @@ namespace Q42.HueApi.Interfaces
 
     #region Info
 
-    Task<IEnumerable<string>> GetTimeZonesAsync();
+    Task<IReadOnlyCollection<string>> GetTimeZonesAsync();
 
     #endregion
 
     #region Scenes
 
-    Task<IEnumerable<Scene>> GetScenesAsync();
+    Task<IReadOnlyCollection<Scene>> GetScenesAsync();
     Task<HueResults> CreateOrUpdateSceneAsync(string id, string name, IEnumerable<string> lights);
     Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command);
     Task<HueResults> RecallSceneAsync(string sceneId, string groupId = "0");
@@ -223,7 +223,7 @@ namespace Q42.HueApi.Interfaces
 
     #region Rules
 
-    Task<IEnumerable<Rule>> GetRulesAsync();
+    Task<IReadOnlyCollection<Rule>> GetRulesAsync();
     Task<Rule> GetRuleAsync(string id);
     Task<HueResults> DeleteRule(string id);
     Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<RuleAction> actions);
@@ -233,10 +233,10 @@ namespace Q42.HueApi.Interfaces
 
     #region Sensors
 
-    Task<IEnumerable<Sensor>> GetSensorsAsync();
+    Task<IReadOnlyCollection<Sensor>> GetSensorsAsync();
     Task<string> CreateSensorAsync(Sensor sensor);
     Task<HueResults> FindNewSensorsAsync();
-    Task<List<Sensor>> GetNewSensorsAsync();
+    Task<IReadOnlyCollection<Sensor>> GetNewSensorsAsync();
     Task<Sensor> GetSensorAsync(string id);
     Task<HueResults> UpdateSensorAsync(string id, string newName);
     Task<HueResults> ChangeSensorConfigAsync(string id, SensorConfig config);
