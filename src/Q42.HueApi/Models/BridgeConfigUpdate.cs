@@ -41,5 +41,8 @@ namespace Q42.HueApi
 
     [DataMember(Name = "portalservices")]
     public bool? PortalServices { get; set; }
+
+    [DataMember(Name = "timezone")]
+    public string TimeZone { get; set; }
   }
 }
