@@ -84,7 +84,6 @@ Contributions are welcome. Fork this repository and send a pull request if you h
 
 * [Lists of hue libraries](https://github.com/Q42/hue-libs)
 * [Official Philips hue API documentation](http://developers.meethue.com)
-* [cDima Hue library](https://github.com/cDima/Hue) C# library
 
 
 ## Apps that use Q42.HueAPI
