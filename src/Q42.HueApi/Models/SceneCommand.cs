@@ -14,6 +14,16 @@ namespace Q42.HueApi
   [DataContract]
   public class SceneCommand : ICommandBody
   {
+    public SceneCommand()
+    {
+
+    }
+
+    public SceneCommand(string sceneId)
+    {
+      this.Scene = sceneId;
+    }
+
     /// <summary>
     /// Scene ID to activate
     /// </summary>

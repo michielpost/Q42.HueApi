@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Q42.HueApi.Models
 {
 
+  [DataContract]
   public class Sensor
   {
     [IgnoreDataMember]
@@ -37,6 +38,7 @@ namespace Q42.HueApi.Models
     public string UniqueId { get; set; }
   }
 
+  [DataContract]
   public class SensorState
   {
     [DataMember(Name = "daylight")]
@@ -52,6 +54,7 @@ namespace Q42.HueApi.Models
     public int? ButtonEvent { get; set; }
   }
 
+  [DataContract]
   public class SensorConfig
   {
     [DataMember(Name = "on")]

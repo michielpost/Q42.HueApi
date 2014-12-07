@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models
 {
+  [DataContract]
   public class Rule
   {
     public string Id { get; set; }
@@ -38,6 +39,7 @@ namespace Q42.HueApi.Models
     public List<InternalBridgeCommand> Actions { get; set; }
   }
 
+  [DataContract]
   public class RuleCondition
   {
     [DataMember(Name = "address")]

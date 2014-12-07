@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models
 {
+  [DataContract]
   public class Scene
   {
     [IgnoreDataMember]
