@@ -226,7 +226,9 @@ namespace Q42.HueApi.Interfaces
     Task<IReadOnlyCollection<Rule>> GetRulesAsync();
     Task<Rule> GetRuleAsync(string id);
     Task<HueResults> DeleteRule(string id);
+    Task<string> CreateRule(Rule rule);
     Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions);
+    Task<HueResults> UpdateRule(Rule rule);
     Task<HueResults> UpdateRule(string id, string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions);
 
     #endregion

@@ -94,6 +94,14 @@ namespace Q42.HueApi
       return rule;
     }
 
+    public Task<string> CreateRule(Rule rule)
+    {
+      if(rule == null)
+        throw new ArgumentNullException("rule");
+
+      return CreateRule(rule.Name, rule.Conditions, rule.Actions);
+    }
+
     public async Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions)
     {
       CheckInitialized();
@@ -136,6 +144,14 @@ namespace Q42.HueApi
         throw new Exception(rulesResult.Errors.First().Error.Description);
 
       return null;
+    }
+
+    public Task<HueResults> UpdateRule(Rule rule)
+    {
+      if (rule == null)
+        throw new ArgumentNullException("rule");
+
+      return UpdateRule(rule.Id, rule.Name, rule.Conditions, rule.Actions);
     }
 
     public async Task<HueResults> UpdateRule(string id, string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions)
