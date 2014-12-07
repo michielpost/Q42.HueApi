@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -41,15 +43,41 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "address")]
     public string Address { get; set; }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     [DataMember(Name = "operator")]
-    public string Operator { get; set; }
+    public RuleOperator Operator { get; set; }
 
     [DataMember(Name = "value")]
     public string Value { get; set; }
   }
 
+  /// <summary>
+  /// Possible light alerts
+  /// </summary>
+  public enum RuleOperator
+  {
+    /// <summary>
+    /// Equal, Used for bool and int.
+    /// </summary>
+    [EnumMember(Value = "eq")]
+    Equal,
 
- 
+    /// <summary>
+    /// OnChange, Used for Time (timestamps) int and bool values..
+    /// </summary>
+    [EnumMember(Value = "dx")]
+    OnChange,
 
-  
+    /// <summary>
+    /// LessThan, Allowed on int values
+    /// </summary>
+    [EnumMember(Value = "lt")]
+    LessThan,
+
+    /// <summary>
+    /// GreaterThan, Allowed on int values
+    /// </summary>
+    [EnumMember(Value = "gt")]
+    GreaterThan
+  }
 }

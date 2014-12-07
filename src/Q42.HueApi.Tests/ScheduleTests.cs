@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
 using System.Globalization;
+using System.Net.Http;
 
 namespace Q42.HueApi.Tests
 {
@@ -61,7 +62,7 @@ namespace Q42.HueApi.Tests
       commandBody.Alert = Alert.Once;
       schedule.Command.Body = commandBody;
       schedule.Command.Address = "/api/huelandspoor/lights/5/state";
-      schedule.Command.Method = "PUT";
+      schedule.Command.Method = HttpMethod.Put;
 
       var result = await _client.CreateScheduleAsync(schedule);
 
@@ -83,7 +84,7 @@ namespace Q42.HueApi.Tests
       commandBody.Alert = Alert.Once;
       schedule.Command.Body = commandBody;
       schedule.Command.Address = "/api/huelandspoor/lights/5/state";
-      schedule.Command.Method = "PUT";
+      schedule.Command.Method = HttpMethod.Put;
 
       var scheduleId = await _client.CreateScheduleAsync(schedule);
 
@@ -114,7 +115,7 @@ namespace Q42.HueApi.Tests
       commandBody.Alert = Alert.Once;
       schedule.Command.Body = commandBody;
       schedule.Command.Address = "/api/huelandspoor/lights/5/state";
-      schedule.Command.Method = "PUT";
+      schedule.Command.Method = HttpMethod.Put;
 
       var scheduleId = await _client.CreateScheduleAsync(schedule);
 

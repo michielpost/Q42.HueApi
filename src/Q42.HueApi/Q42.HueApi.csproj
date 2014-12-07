@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Converters\HueDateTimeConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\HttpMethodConverter.cs" />
     <Compile Include="HttpBridgeLocator.cs" />
     <Compile Include="HueClient-Api.cs" />
     <Compile Include="HueClient-Info.cs" />
