@@ -9,7 +9,7 @@ using System.Globalization;
 using Q42.HueApi.Models;
 using System.Text.RegularExpressions;
 
-namespace Q42.HueApi
+namespace Q42.HueApi.Converters
 {
   /// <summary>
   /// Custom DateTime converter for hue bridge

@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Q42.HueApi.Interfaces;
+using Q42.HueApi.Converters;
 
 namespace Q42.HueApi
 {

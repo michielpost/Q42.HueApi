@@ -49,6 +49,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Converters\CommandBodyConverter.cs" />
     <Compile Include="Converters\HueDateTimeConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\HttpMethodConverter.cs" />

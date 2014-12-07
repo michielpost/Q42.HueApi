@@ -10,6 +10,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using Q42.HueApi.Converters;
 
 namespace Q42.HueApi.Tests
 {

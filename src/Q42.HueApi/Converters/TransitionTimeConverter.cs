@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Q42.HueApi
+namespace Q42.HueApi.Converters
 {
   internal class TransitionTimeConverter
     : JsonConverter

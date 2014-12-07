@@ -7,10 +7,9 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 
-namespace Q42.HueApi
+namespace Q42.HueApi.Converters
 {
-  internal class HttpMethodConverter
-    : JsonConverter
+  internal class HttpMethodConverter : JsonConverter
   {
     public override bool CanConvert(Type objectType)
     {

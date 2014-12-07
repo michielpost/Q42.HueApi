@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

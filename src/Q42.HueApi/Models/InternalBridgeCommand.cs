@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Converters;
 using Q42.HueApi.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "method")]
     public HttpMethod Method { get; set; }
 
+    [JsonConverter(typeof(CommandBodyConverter))]
     [DataMember(Name = "body")]
     public ICommandBody Body { get; set; }
   }

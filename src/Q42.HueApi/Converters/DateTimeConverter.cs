@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Globalization;
 
-namespace Q42.HueApi
+namespace Q42.HueApi.Converters
 {
   /// <summary>
   /// Custom DateTime converter for hue bridge
