@@ -126,7 +126,7 @@ namespace Q42.HueApi
       if (!string.IsNullOrEmpty(name))
         jsonObj.name = name;
 
-      string jsonString = JsonConvert.SerializeObject(jsonObj);
+      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = HueClient.GetHttpClient();
       //Create group with the lights we want to target
@@ -174,7 +174,7 @@ namespace Q42.HueApi
       if (!string.IsNullOrEmpty(name))
         jsonObj.name = name;
 
-      string jsonString = JsonConvert.SerializeObject(jsonObj);
+      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = HueClient.GetHttpClient();
       var response = await client.PutAsync(new Uri(String.Format("{0}rules/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);

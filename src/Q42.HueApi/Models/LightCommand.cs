@@ -56,14 +56,14 @@ namespace Q42.HueApi
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     [DataMember (Name = "effect")]
-    public Effect Effect { get; set; }
+    public Effect? Effect { get; set; }
 
     /// <summary>
     /// Gets or sets the current alert for the light.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     [DataMember (Name = "alert")]
-    public Alert Alert { get; set; }
+    public Alert? Alert { get; set; }
 
     /// <summary>
     /// Gets or sets the transition time for the light.

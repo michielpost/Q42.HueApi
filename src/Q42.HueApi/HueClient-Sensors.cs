@@ -199,7 +199,7 @@ namespace Q42.HueApi
       dynamic jsonObj = new ExpandoObject();
       jsonObj.name = newName;
 
-      string jsonString = JsonConvert.SerializeObject(jsonObj);
+      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = HueClient.GetHttpClient();
 
