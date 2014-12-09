@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Q42.HueApi
 {
@@ -20,7 +21,17 @@ namespace Q42.HueApi
     [DataMember (Name = "modelid")]
     public string ModelId { get; set; }
 
+    /// <summary>
+    /// Unique id of the device. The MAC address of the device with a unique endpoint id in the form: AA:BB:CC:DD:EE:FF:00:11-XX
+    /// </summary>
+    [DataMember(Name = "uniqueid")]
+    public string UniqueId { get; set; }
+
     [DataMember (Name = "swversion")]
     public string SoftwareVersion { get; set; }
+
+    [DataMember(Name = "pointsymbol")]
+    public Dictionary<string, string> PointSymbol { get; set; }
+
   }
 }

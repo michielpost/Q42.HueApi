@@ -134,9 +134,8 @@ namespace Q42.HueApi
 
         foreach (var prop in jsonResult.Properties())
         {
-          Group newGroup = new Group();
+          Group newGroup = JsonConvert.DeserializeObject<Group>(prop.Value.ToString());
           newGroup.Id = prop.Name;
-          newGroup.Name = prop.First["name"].ToString();
 
           results.Add(newGroup);
         }

@@ -74,8 +74,21 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task GetLightsAsyncTest()
     {
-      //Search for new lights
-      await _client.GetLightsAsync();
+      //Get all lights
+      var result = await _client.GetLightsAsync();
+
+      Assert.IsNotNull(result);
+
+    }
+
+    [TestMethod]
+    public async Task GetLightAsyncTest()
+    {
+      //Get single light
+      var result = await _client.GetLightAsync("19");
+
+      Assert.IsNotNull(result);
+
 
     }
 
