@@ -35,6 +35,12 @@ namespace Q42.HueApi.Interfaces
     Task<bool> RegisterAsync(string appName, string appKey);
 
     /// <summary>
+    /// Check if there is a working connection with the bridge
+    /// </summary>
+    /// <returns></returns>
+    Task<bool> CheckConnection();
+
+    /// <summary>
     /// Set the next Hue color
     /// </summary>
     /// <param name="lightList"></param>

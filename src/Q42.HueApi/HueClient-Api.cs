@@ -57,5 +57,45 @@ namespace Q42.HueApi
       Initialize(result["success"]["username"].Value<string>());
       return true;
     }
+
+    public async Task<bool> CheckConnection()
+    {
+      HttpClient client = HueClient.GetHttpClient();
+
+      try
+      {
+        //Check if there is a hue bridge on the specified IP by checking the content of description.xml
+        var result = await client.GetAsync(string.Format("http://{0}/description.xml", _ip));
+        if (result.IsSuccessStatusCode)
+        {
+          string res = await result.Content.ReadAsStringAsync();
+          if (!string.IsNullOrWhiteSpace(res))
+          {
+            if (!res.ToLower().Contains("philips hue bridge"))
+              return false;
+          }
+        }
+        else
+        {
+          return false;
+        }
+      }
+      catch(Exception e)
+      {
+        return false;
+      }
+
+      try
+      {
+        //Check if app is registered
+        var test = await this.GetBridgeAsync();
+      }
+      catch 
+      {
+        return false;
+      }
+      
+      return true;
+    }
   }
 }
