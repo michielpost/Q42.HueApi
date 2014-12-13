@@ -126,9 +126,8 @@ namespace Q42.HueApi
         {
           if (prop.Name != "lastscan")
           {
-            Sensor newSensor = new Sensor();
+            Sensor newSensor = JsonConvert.DeserializeObject<Sensor>(prop.Value.ToString());
             newSensor.Id = prop.Name;
-            newSensor.Name = prop.First["name"].ToString();
 
             results.Add(newSensor);
 

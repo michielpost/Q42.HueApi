@@ -37,9 +37,8 @@ namespace Q42.HueApi
 
         foreach (var prop in jsonResult.Properties())
         {
-          Schedule newSchedule = new Schedule();
+          Schedule newSchedule = JsonConvert.DeserializeObject<Schedule>(prop.Value.ToString());
           newSchedule.Id = prop.Name;
-          newSchedule.Name = prop.First["name"].ToString();
 
           results.Add(newSchedule);
         }

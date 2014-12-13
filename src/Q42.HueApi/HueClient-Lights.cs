@@ -218,9 +218,8 @@ namespace Q42.HueApi
         {
           if (prop.Name != "lastscan")
           {
-            Light newLight = new Light();
+            Light newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
             newLight.Id = prop.Name;
-            newLight.Name = prop.First["name"].ToString();
 
             results.Add(newLight);
 
