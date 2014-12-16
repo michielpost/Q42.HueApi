@@ -52,7 +52,7 @@ namespace Q42.HueApi.Tests
       Schedule schedule = new Schedule();
       schedule.Name = "t1";
       schedule.Description = "test";
-			schedule.Time = new HueDateTime()
+			schedule.LocalTime = new HueDateTime()
 			{
 				DateTime = DateTime.Now.AddDays(1)
 			};
@@ -75,7 +75,7 @@ namespace Q42.HueApi.Tests
       Schedule schedule = new Schedule();
       schedule.Name = "t1";
       schedule.Description = "test";
-			schedule.Time = new HueDateTime
+      schedule.LocalTime = new HueDateTime
 			{
 				DateTime = DateTime.UtcNow.AddDays(1)
 			};
@@ -106,7 +106,7 @@ namespace Q42.HueApi.Tests
       Schedule schedule = new Schedule();
       schedule.Name = "t1";
       schedule.Description = "test";
-			schedule.Time = new HueDateTime()
+      schedule.LocalTime = new HueDateTime()
 			{
 				DateTime = DateTime.UtcNow.AddDays(1)
 			};

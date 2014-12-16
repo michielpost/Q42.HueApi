@@ -25,9 +25,17 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "command")]
     public InternalBridgeCommand Command { get; set; }
 
+    /// <summary>
+    /// UTC time
+    /// </summary>
     [DataMember(Name = "time")]
 		[JsonConverter(typeof(HueDateTimeConverter))]
+    [Obsolete("Use the LocalTime property. This property will be removed in the future.")]
 		public HueDateTime Time { get; set; }
+
+    [DataMember(Name = "localtime")]
+    [JsonConverter(typeof(HueDateTimeConverter))]
+    public HueDateTime LocalTime { get; set; }
     
     [DataMember(Name = "created")]
     public DateTime? Created { get; set; }
