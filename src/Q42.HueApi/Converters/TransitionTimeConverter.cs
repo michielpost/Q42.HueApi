@@ -7,12 +7,11 @@ using Newtonsoft.Json;
 
 namespace Q42.HueApi.Converters
 {
-  internal class TransitionTimeConverter
-    : JsonConverter
+  internal class TransitionTimeConverter : JsonConverter
   {
     public override bool CanConvert(Type objectType)
     {
-      return objectType == typeof (TimeSpan?) || objectType == typeof (TimeSpan);
+      return objectType == typeof(TimeSpan?) || objectType == typeof(TimeSpan);
     }
 
     public override bool CanRead
@@ -27,11 +26,17 @@ namespace Q42.HueApi.Converters
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-      int? value = reader.ReadAsInt32();
-      if (value == null)
+      string value = reader.Value.ToString();
+      if (string.IsNullOrWhiteSpace(value))
         return null;
 
-      return (TimeSpan?)TimeSpan.FromMilliseconds (value.Value * 100);
+      int result;
+      if (int.TryParse(value, out result))
+      {
+        return (TimeSpan?)TimeSpan.FromMilliseconds(result * 100);
+      }
+
+      return null;
     }
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -40,8 +45,8 @@ namespace Q42.HueApi.Converters
 
       if (value == null)
       {
-          writer.WriteValue (0);
-          return;
+        writer.WriteValue(0);
+        return;
       }
 
       if (value is TimeSpan?)
@@ -49,7 +54,7 @@ namespace Q42.HueApi.Converters
       else
         span = (TimeSpan)value;
 
-      writer.WriteValue ((int?)(span.TotalSeconds * 10));
+      writer.WriteValue((int?)(span.TotalSeconds * 10));
     }
   }
 }

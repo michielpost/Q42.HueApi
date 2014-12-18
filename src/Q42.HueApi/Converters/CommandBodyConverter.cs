@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Converters
 {
-  public class CommandBodyConverter : JsonConverter
+  internal class CommandBodyConverter : JsonConverter
   {
     public override bool CanConvert(Type objectType)
     {
