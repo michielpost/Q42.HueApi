@@ -26,14 +26,10 @@ namespace Q42.HueApi.Converters
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-      string value = reader.Value.ToString();
-      if (string.IsNullOrWhiteSpace(value))
-        return null;
-
-      int result;
-      if (int.TryParse(value, out result))
+      if (reader.TokenType == JsonToken.Integer)
       {
-        return (TimeSpan?)TimeSpan.FromMilliseconds(result * 100);
+        long value = (long)reader.Value;
+        return (TimeSpan?)TimeSpan.FromMilliseconds(value * 100);
       }
 
       return null;
