@@ -58,7 +58,7 @@ namespace Q42.HueApi.Models
   public class SensorConfig
   {
     [DataMember(Name = "on")]
-    public bool On { get; set; }
+    public bool? On { get; set; }
 
     [DataMember(Name = "long")]
     public string Long { get; set; }
@@ -76,7 +76,7 @@ namespace Q42.HueApi.Models
     public string Url { get; set; }
 
     [DataMember(Name = "reachable")]
-    public bool Reachable { get; set; }
+    public bool? Reachable { get; set; }
 
     [DataMember(Name = "battery")]
     public int? Battery { get; set; }
