@@ -14,7 +14,7 @@ namespace Q42.HueApi
 	/// </summary>
   public class HttpBridgeLocator : IBridgeLocator
   {
-    private readonly Uri NuPnPUrl = new Uri("http://www.meethue.com/api/nupnp");
+    private readonly Uri NuPnPUrl = new Uri("https://www.meethue.com/api/nupnp");
 
 
 		/// <summary>
