@@ -77,7 +77,7 @@ namespace Q42.HueApi
     }
     
     
-        /// <summary>
+    /// <summary>
     /// Get bridge config
     /// </summary>
     /// <returns>BridgeConfig object</returns>
