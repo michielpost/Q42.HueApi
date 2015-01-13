@@ -54,7 +54,7 @@ namespace Q42.HueApi.Models
     public int? ButtonEvent { get; set; }
     
    [DataMember(Name = "status")]
-    public int? status { get; set; }
+    public int? Status { get; set; }
   }
 
   [DataContract]
