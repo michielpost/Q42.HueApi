@@ -91,8 +91,25 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      Bridge bridge = await GetBridgeAsync().ConfigureAwait(false);
-      return bridge.Lights;
+      HttpClient client = HueClient.GetHttpClient();
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights", ApiBase))).ConfigureAwait(false);
+
+      List<Light> results = new List<Light>();
+
+      JToken token = JToken.Parse(stringResult);
+      if (token.Type == JTokenType.Object)
+      {
+          //Each property is a light
+          var jsonResult = (JObject)token;
+
+          foreach (var prop in jsonResult.Properties())
+          {
+                  Light newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
+                  newLight.Id = prop.Name;
+                  results.Add(newLight);
+          }
+      }
+     return results;
     }
 
     /// <summary>

@@ -54,8 +54,9 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      Bridge bridge = await GetBridgeAsync().ConfigureAwait(false);
-      return bridge.WhiteList;
+      BridgeConfig config = await GetConfigAsync().ConfigureAwait(false);
+      
+      return config.WhiteList.Select(l => l.Value).ToList();
     }
 
 
@@ -73,6 +74,27 @@ namespace Q42.HueApi
       BridgeState jsonResult = DeserializeResult<BridgeState>(stringResult);
 
       return new Bridge(jsonResult);
+    }
+    
+    
+    /// <summary>
+    /// Get bridge config
+    /// </summary>
+    /// <returns>BridgeConfig object</returns>
+    public async Task<BridgeConfig> GetConfigAsync()
+    {
+        CheckInitialized();
+
+        HttpClient client = HueClient.GetHttpClient();
+        string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}config", ApiBase))).ConfigureAwait(false);
+        JToken token = JToken.Parse(stringResult);
+        BridgeConfig config = null;
+        if (token.Type == JTokenType.Object)
+        {
+            var jsonResult = (JObject)token;
+            config = JsonConvert.DeserializeObject<BridgeConfig>(jsonResult.ToString());
+        }
+        return config;
     }
 
     /// <summary>
