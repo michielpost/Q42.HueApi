@@ -89,9 +89,6 @@ Contributions are welcome. Fork this repository and send a pull request if you h
 ## Apps that use Q42.HueAPI
 Are you using Q42.HueAPI? Get your app listed here! Edit this page and send a pull request.
 
-Windows (All)
-* [CastleOS](http://www.CastleOS.com/)
-
 Windows Phone
 * [My Hue Light Switch](http://www.windowsphone.com/s?appid=669c9e16-b417-43c6-b0cc-724e8dfd5866)
 * [iControlHue](http://www.windowsphone.com/s?appid=f1b2bcb5-82e4-4a04-9894-c9e08b85a55d)
@@ -101,6 +98,9 @@ Windows Phone
 Windows 8
 * [My Hue Light Switch](http://apps.microsoft.com/windows/app/my-hue-light-switch/1193bff8-dec8-4997-82e3-a0f9aedacbb2)
 * [DarkLights](http://apps.microsoft.com/windows/app/09fb8d8b-cefc-4215-b3b2-a87a483d6690)
+
+Windows Desktop
+* [CastleOS](http://www.CastleOS.com/)
 
 MONO
 * [Command Line Tool](http://www.everyhue.com/vanilla/discussion/1061)
