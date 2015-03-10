@@ -93,6 +93,10 @@ namespace Q42.HueApi
         {
             var jsonResult = (JObject)token;
             config = JsonConvert.DeserializeObject<BridgeConfig>(jsonResult.ToString());
+
+            //Fix whitelist IDs
+            foreach (var whitelist in config.WhiteList)
+              whitelist.Value.Id = whitelist.Key;
         }
         return config;
     }

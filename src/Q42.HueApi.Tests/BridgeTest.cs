@@ -31,6 +31,15 @@ namespace Q42.HueApi.Tests
     }
 
     [TestMethod]
+    public async Task GetWhiteList()
+    {
+      var result = await _client.GetWhiteListAsync();
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(string.IsNullOrEmpty(result.First().Id));
+    }
+
+    [TestMethod]
     public async Task ChangeConfig()
     {
       var newName = "test" + DateTime.Now.Second;

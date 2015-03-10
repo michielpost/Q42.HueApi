@@ -33,6 +33,7 @@ namespace Q42.HueApi
         light.Value.Id = light.Key;
       Lights = bridge.lights.Select(l => l.Value).ToList();
 
+      //Fix whitelist IDs
       foreach (var whitelist in bridge.config.WhiteList)
         whitelist.Value.Id = whitelist.Key;
       WhiteList = bridge.config.WhiteList.Select(l => l.Value).ToList();
