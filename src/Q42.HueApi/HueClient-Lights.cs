@@ -248,5 +248,28 @@ namespace Q42.HueApi
       return results;
 
     }
+
+    /// <summary>
+    /// Deletes a single light
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <returns></returns>
+    public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteLightAsync(string id)
+    {
+      CheckInitialized();
+
+      HttpClient client = HueClient.GetHttpClient();
+      //Delete light
+      var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("lights/{0}", id))).ConfigureAwait(false);
+
+      string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+#if DEBUG
+      jsonResult = "[{\"success\":\"/lights/" + id + " deleted\"}]";
+#endif
+
+      return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
+
+    }
   }
 }

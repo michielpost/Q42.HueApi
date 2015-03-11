@@ -155,5 +155,26 @@ namespace Q42.HueApi
 
     }
 
+    /// <summary>
+    /// Checks if the json contains errors
+    /// </summary>
+    /// <param name="json"></param>
+    private static IReadOnlyCollection<T> DeserializeDefaultHueResult<T>(string json)
+    {
+      List<T> result = null;
+
+      try
+      {
+        result = JsonConvert.DeserializeObject<List<T>>(json);
+      }
+      catch (JsonSerializationException ex)
+      {
+        //Ignore JsonSerializationException
+      }
+
+      return result;
+
+    }
+
   }
 }

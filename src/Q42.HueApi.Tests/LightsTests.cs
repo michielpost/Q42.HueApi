@@ -109,6 +109,14 @@ namespace Q42.HueApi.Tests
 
     }
 
+    [TestMethod]
+    public async Task DeleteLightsAsyncTest()
+    {
+      var result = await _client.DeleteLightAsync("1");
+
+      Assert.IsNotNull(result);
+
+    }
    
 
   

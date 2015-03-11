@@ -35,6 +35,13 @@ namespace Q42.HueApi.Models.Groups
     public ErrorResult Error { get; set; }
   }
 
+  public class DeleteDefaultHueResult
+  {
+    public string Success { get; set; }
+    public ErrorResult Error { get; set; }
+  }
+
+
   public class SuccessResult
   {
     public string Id { get; set; }

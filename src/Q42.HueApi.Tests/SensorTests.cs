@@ -32,7 +32,14 @@ namespace Q42.HueApi.Tests
       Assert.AreNotEqual(0, result.Count());
     }
 
-   
+    [TestMethod]
+    public async Task DeleteSensorAsyncTest()
+    {
+      var result = await _client.DeleteSensorAsync("1");
+
+      Assert.IsNotNull(result);
+
+    }
 
   }
 }

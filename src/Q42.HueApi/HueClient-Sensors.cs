@@ -264,5 +264,28 @@ namespace Q42.HueApi
       return DeserializeDefaultHueResult(jsonResult);
 
     }
+
+    /// <summary>
+    /// Deletes a single sensor
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <returns></returns>
+    public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSensorAsync(string id)
+    {
+      CheckInitialized();
+
+      HttpClient client = HueClient.GetHttpClient();
+      //Delete sensor
+      var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("sensors/{0}", id))).ConfigureAwait(false);
+
+      string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+#if DEBUG
+      jsonResult = "[{\"success\":\"/sensors/" + id + " deleted\"}]";
+#endif
+
+      return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
+
+    }
   }
 }

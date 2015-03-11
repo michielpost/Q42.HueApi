@@ -41,40 +41,10 @@ namespace Q42.HueApi.Interfaces
     Task<bool> CheckConnection();
 
     /// <summary>
-    /// Set the next Hue color
-    /// </summary>
-    /// <param name="lightList"></param>
-    /// <returns></returns>
-    Task<HueResults> SetNextHueColorAsync(IEnumerable<string> lightList = null);
-
-    /// <summary>
-    /// Asynchronously gets all lights registered with the bridge.
-    /// </summary>
-    /// <returns>An enumerable of <see cref="Light"/>s registered with the bridge.</returns>
-    Task<IEnumerable<Light>> GetLightsAsync();
-
-    /// <summary>
     /// Asynchronously gets all lights registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
     Task<IEnumerable<WhiteList>> GetWhiteListAsync();
-
-    /// <summary>
-    /// Asynchronously retrieves an individual light.
-    /// </summary>
-    /// <param name="id">The light's Id.</param>
-    /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
-    /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
-    Task<Light> GetLightAsync(string id);
-
-    /// <summary>
-    /// Sets the light name
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    Task<HueResults> SetLightNameAsync(string id, string name);
 
     /// <summary>
     /// Get bridge info
@@ -96,21 +66,7 @@ namespace Q42.HueApi.Interfaces
     Task<bool> DeleteWhiteListEntryAsync(string entry);
 
 
-    /// <summary>
-    /// Send a raw string / json command
-    /// </summary>
-    /// <param name="command">json</param>
-    /// <param name="lightList">if null, send to all lights</param>
-    /// <returns></returns>
-    Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string> lightList = null);
-
-    /// <summary>
-    /// Send a light command
-    /// </summary>
-    /// <param name="command">Compose a new lightCommand()</param>
-    /// <param name="lightList">if null, send to all lights</param>
-    /// <returns></returns>
-    Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null);
+    #region Groups
 
     /// <summary>
     /// Send command to a group
@@ -157,6 +113,63 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null);
 
+#endregion
+
+    #region Lights
+
+    /// <summary>
+    /// Set the next Hue color
+    /// </summary>
+    /// <param name="lightList"></param>
+    /// <returns></returns>
+    Task<HueResults> SetNextHueColorAsync(IEnumerable<string> lightList = null);
+
+    /// <summary>
+    /// Asynchronously gets all lights registered with the bridge.
+    /// </summary>
+    /// <returns>An enumerable of <see cref="Light"/>s registered with the bridge.</returns>
+    Task<IEnumerable<Light>> GetLightsAsync();
+
+    /// <summary>
+    /// Asynchronously retrieves an individual light.
+    /// </summary>
+    /// <param name="id">The light's Id.</param>
+    /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
+    Task<Light> GetLightAsync(string id);
+
+    /// <summary>
+    /// Delete Light
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteLightAsync(string id);
+
+    /// <summary>
+    /// Sets the light name
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    Task<HueResults> SetLightNameAsync(string id, string name);
+
+    /// <summary>
+    /// Send a raw string / json command
+    /// </summary>
+    /// <param name="command">json</param>
+    /// <param name="lightList">if null, send to all lights</param>
+    /// <returns></returns>
+    Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string> lightList = null);
+
+    /// <summary>
+    /// Send a light command
+    /// </summary>
+    /// <param name="command">Compose a new lightCommand()</param>
+    /// <param name="lightList">if null, send to all lights</param>
+    /// <returns></returns>
+    Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null);
+
     /// <summary>
     /// Start searching for new lights
     /// </summary>
@@ -168,6 +181,8 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <returns></returns>
     Task<IReadOnlyCollection<Light>> GetNewLightsAsync();
+
+    #endregion
 
     #region Schedules
 
@@ -249,6 +264,13 @@ namespace Q42.HueApi.Interfaces
     Task<HueResults> UpdateSensorAsync(string id, string newName);
     Task<HueResults> ChangeSensorConfigAsync(string id, SensorConfig config);
     Task<HueResults> ChangeSensorStateAsync(string id, SensorState state);
+
+    /// <summary>
+    /// Delete Sensor
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSensorAsync(string id);
 
     #endregion
   }
