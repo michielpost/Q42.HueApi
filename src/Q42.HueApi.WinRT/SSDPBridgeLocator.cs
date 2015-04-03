@@ -85,7 +85,7 @@ namespace Q42.HueApi.WinRT
 
       foreach (var endpoint in endpoints)
       {
-        var ip = endpoint.Replace("http://", "").Replace("/description.xml", "");
+		  var ip = endpoint.Replace("http://", "").Replace("https://", "").Replace("/description.xml", "");
 
         //Not in the list yet?
         if (!bridgeIps.Contains(ip))

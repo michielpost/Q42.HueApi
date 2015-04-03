@@ -23,6 +23,22 @@ namespace Q42.HueApi.Tests
       _client = new HueClient(ip, key);
     }
 
+	[TestMethod]
+	public void ValidHueIpTest()
+	{
+		_client = new HueClient("127.0.0.1");
+
+		Assert.IsNotNull(_client);
+	}
+
+	[TestMethod]
+	[ExpectedException(typeof(System.Exception))]
+	public void InValidHueIpTest()
+	{
+		_client = new HueClient("//127.0.0@@.1in.v.alid");
+	}
+
+
     [TestMethod]
     public async Task CheckConnectionTest()
     {

@@ -53,8 +53,24 @@ namespace Q42.HueApi
       if (ip == null)
         throw new ArgumentNullException("ip");
 
+	  CheckValidIp(ip);
+
       _ip = ip;
     }
+
+	/// <summary>
+	/// Check if the provided IP is valid by using it in an URI to the Hue Bridge
+	/// </summary>
+	/// <param name="ip"></param>
+	private void CheckValidIp(string ip)
+	{
+		Uri uri;
+		if (!Uri.TryCreate(string.Format("http://{0}/description.xml", ip), UriKind.Absolute, out uri))
+		{
+			//Invalid ip or hostname caused Uri creation to fail
+			throw new Exception(string.Format("The supplied ip to the HueClient is not a valid ip: {0}", ip));
+		}
+	}
 
     /// <summary>
     /// Initialize with Bridge IP and AppKey
@@ -65,6 +81,9 @@ namespace Q42.HueApi
     {
       if (ip == null)
         throw new ArgumentNullException("ip");
+
+	  CheckValidIp(ip);
+
 
       _ip = ip;
 

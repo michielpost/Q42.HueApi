@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Q42.HueApi</id>
-    <version>1.8.6.42</version>
+    <version>1.8.7.42</version>
     <summary>Open source library for interaction with the Philips Hue Bridge.</summary>
     <description><![CDATA[Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Portable library works with .Net45, Windows 8 and Windows Phone 8]]></description>
     <authors>Q42</authors>
