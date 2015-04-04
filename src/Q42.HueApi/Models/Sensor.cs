@@ -41,8 +41,9 @@ namespace Q42.HueApi.Models
   [DataContract]
   public class SensorState
   {
+	//Documentation says Daylight is not nullable, but in the real world they can be null
     [DataMember(Name = "daylight")]
-    public bool Daylight { get; set; }
+    public bool? Daylight { get; set; }
 
     [DataMember(Name = "lastupdated")]
     public string Lastupdated { get; set; }
