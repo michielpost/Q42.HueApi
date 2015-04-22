@@ -122,6 +122,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="lightList"></param>
     /// <returns></returns>
+    [Obsolete("Please use the HueIncrement and SaturationIncrement properties on a LightCommand. This method will be removed in the future.")]
     Task<HueResults> SetNextHueColorAsync(IEnumerable<string> lightList = null);
 
     /// <summary>

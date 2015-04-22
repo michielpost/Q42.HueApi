@@ -27,6 +27,9 @@ namespace Q42.HueApi
     [DataMember(Name = "uniqueid")]
     public string UniqueId { get; set; }
 
+    [DataMember(Name = "manufacturername")]
+    public string ManufacturerName { get; set; }
+
     [DataMember (Name = "swversion")]
     public string SoftwareVersion { get; set; }
 

@@ -72,6 +72,41 @@ namespace Q42.HueApi
     [JsonConverter (typeof(TransitionTimeConverter))]
     public TimeSpan? TransitionTime { get; set; }
 
+    /// <summary>
+    /// -254 to 254
+    /// As of 1.7. Increments or decrements the value of the brightness.  bri_inc is ignored if the bri attribute is provided. Any ongoing bri transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the bri value after the increment is performed.
+    /// </summary>
+    [DataMember(Name = "bri_inc")]
+    public int? BrightnessIncrement { get; set; }
+
+    /// <summary>
+    /// -254 to 254
+    /// As of 1.7. Increments or decrements the value of the sat.  sat_inc is ignored if the sat attribute is provided. Any ongoing sat transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the sat value after the increment is performed.
+    /// </summary>
+    [DataMember(Name = "sat_inc")]
+    public int? SaturationIncrement { get; set; }
+
+    /// <summary>
+    /// -65534 to 65534
+    /// As of 1.7. Increments or decrements the value of the hue.   hue_inc is ignored if the hue attribute is provided. Any ongoing color transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the hue value after the increment is performed.
+    /// </summary>
+    [DataMember(Name = "hue_inc")]
+    public int? HueIncrement { get; set; }
+
+    /// <summary>
+    /// -65534 to 65534
+    /// As of 1.7. Increments or decrements the value of the ct. ct_inc is ignored if the ct attribute is provided. Any ongoing color transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the ct value after the increment is performed.
+    /// </summary>
+    [DataMember(Name = "ct_inc")]
+    public int? ColorTemperatureIncrement { get; set; }
+
+    /// <summary>
+    /// -0.5 to 0.5
+    /// As of 1.7. Increments or decrements the value of the xy.  xy_inc is ignored if the xy attribute is provided. Any ongoing color transition is stopped.  Will stop at it's gamut boundaries. Setting a value of 0 also stops any ongoing transition.  The bridge will return the xy value after the increment is performed.
+    /// </summary>
+    [DataMember(Name = "xy_inc")]
+    public decimal? ColorCoordinatesIncrement { get; set; }
+
   }
 
   /// <summary>

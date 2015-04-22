@@ -99,13 +99,14 @@ namespace Q42.HueApi.Tests
       //Create command
       var command = new LightCommand();
       command.TurnOn();
-      command.SetColor("#225566");
+      //command.SetColor("#225566");
+      command.HueIncrement = 255;
 
       List<string> lights = new List<string>();
 
       //Send Command
-      await _client.SendCommandAsync(command);
-      await _client.SendCommandAsync(command, lights);
+      var result = await _client.SendCommandAsync(command);
+      var result2 = await _client.SendCommandAsync(command, lights);
 
     }
 
@@ -113,6 +114,15 @@ namespace Q42.HueApi.Tests
     public async Task DeleteLightsAsyncTest()
     {
       var result = await _client.DeleteLightAsync("1");
+
+      Assert.IsNotNull(result);
+
+    }
+
+    [TestMethod]
+    public async Task SetNextHueColorAsyncTest()
+    {
+      var result = await _client.SetNextHueColorAsync(new List<string>() { "1" });
 
       Assert.IsNotNull(result);
 
