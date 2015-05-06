@@ -65,10 +65,10 @@ namespace Q42.HueApi
       try
       {
         //Check if there is a hue bridge on the specified IP by checking the content of description.xml
-        var result = await client.GetAsync(string.Format("http://{0}/description.xml", _ip));
+        var result = await client.GetAsync(string.Format("http://{0}/description.xml", _ip)).ConfigureAwait(false);
         if (result.IsSuccessStatusCode)
         {
-          string res = await result.Content.ReadAsStringAsync();
+          string res = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
           if (!string.IsNullOrWhiteSpace(res))
           {
             if (!res.ToLower().Contains("philips hue bridge"))
@@ -88,7 +88,7 @@ namespace Q42.HueApi
       try
       {
         //Check if app is registered
-        var test = await this.GetBridgeAsync();
+        var test = await this.GetBridgeAsync().ConfigureAwait(false);
       }
       catch 
       {

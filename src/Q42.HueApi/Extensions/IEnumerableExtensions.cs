@@ -51,16 +51,21 @@ namespace Q42.HueApi.Extensions
 					select ProcessAsync(item, body, semaphore));
 		}
 
-		private static async Task ProcessAsync<T>(T item, Func<T, Task> body, SemaphoreSlim semaphore)
-		{
-			//Wait untill we are allowed to start
-			await semaphore.WaitAsync();
+    private static async Task ProcessAsync<T>(T item, Func<T, Task> body, SemaphoreSlim semaphore)
+    {
+      //Wait untill we are allowed to start
+      await semaphore.WaitAsync().ConfigureAwait(false);
 
-			//Do the processing
-			await body(item);
-
-			//Release for others
-			semaphore.Release();
-		}
+      try
+      {
+        //Do the processing
+        await body(item).ConfigureAwait(false);
+      }
+      finally
+      {
+        //Release for others
+        semaphore.Release();
+      }
+    }
   }
 }

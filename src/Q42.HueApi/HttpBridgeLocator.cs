@@ -28,7 +28,7 @@ namespace Q42.HueApi
       HttpClient client = new HttpClient();
       client.Timeout = timeout;
 
-      string response = await client.GetStringAsync(NuPnPUrl);
+      string response = await client.GetStringAsync(NuPnPUrl).ConfigureAwait(false);
 
       NuPnPResponse[] responseModel = JsonConvert.DeserializeObject<NuPnPResponse[]>(response);
 

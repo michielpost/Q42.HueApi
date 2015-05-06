@@ -102,7 +102,7 @@ namespace Q42.HueApi.Tests
       //command.SetColor("#225566");
       command.HueIncrement = 255;
 
-      List<string> lights = new List<string>();
+      List<string> lights = new List<string>() { "1", "2", "3" };
 
       //Send Command
       var result = await _client.SendCommandAsync(command);

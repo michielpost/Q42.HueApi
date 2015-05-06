@@ -56,7 +56,7 @@ namespace Q42.HueApi.NET
         socket.Close();
       }
 
-      return await FilterBridges(_discoveredDevices);
+      return await FilterBridges(_discoveredDevices).ConfigureAwait(false);
     
     }
 
@@ -109,7 +109,7 @@ namespace Q42.HueApi.NET
         if (!bridgeIps.Contains(ip))
         {
           //Check if it is Hue Bridge
-          if (await IsHue(endpoint))
+          if (await IsHue(endpoint).ConfigureAwait(false))
           {
             //Add ip
             bridgeIps.Add(ip);
@@ -127,7 +127,7 @@ namespace Q42.HueApi.NET
       var http = new HttpClient { Timeout = TimeSpan.FromMilliseconds(2000) };
       try
       {
-        var res = await http.GetStringAsync(discoveryUrl);
+        var res = await http.GetStringAsync(discoveryUrl).ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(res))
         {
           if (res.ToLower().Contains("philips hue bridge"))
