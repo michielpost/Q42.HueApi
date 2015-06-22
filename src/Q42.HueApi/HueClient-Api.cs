@@ -27,10 +27,15 @@ namespace Q42.HueApi
         throw new ArgumentNullException("appName");
       if (appName.Trim() == String.Empty)
         throw new ArgumentException("appName must not be empty", "appName");
+      if (appName.Length > 40)
+        throw new ArgumentException("appName max is 40 characters.", "appKey");
+
       if (appKey == null)
         throw new ArgumentNullException("appKey");
       if (appKey.Length < 10 || appKey.Trim() == String.Empty)
         throw new ArgumentException("appKey must be at least 10 characters.", "appKey");
+      if (appKey.Length > 40)
+        throw new ArgumentException("appKey max is 40 characters.", "appKey");
       if (appKey.Contains(" "))
         throw new ArgumentException("Cannot contain spaces.", "appName");
 
@@ -42,8 +47,17 @@ namespace Q42.HueApi
       var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new StringContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      JArray jresponse = JArray.Parse(stringResponse);
-      JObject result = (JObject)jresponse.First;
+      JObject result;
+      try
+      {
+        JArray jresponse = JArray.Parse(stringResponse);
+        result = (JObject)jresponse.First;
+      }
+      catch
+      {
+        //Not an expected response. Return response as exception
+        throw new Exception(stringResponse);
+      }
 
       JToken error;
       if (result.TryGetValue("error", out error))
