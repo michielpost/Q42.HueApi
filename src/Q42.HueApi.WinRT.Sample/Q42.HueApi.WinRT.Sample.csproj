@@ -17,7 +17,7 @@
     <RestorePackages>true</RestorePackages>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
-    <PackageCertificateThumbprint>A13FFA496E3C0E341ABB5B858F81DF09D34EE5FD</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>C73F5046F4A75998C6EC2FB92ADC9C2F7FE3FA7D</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>

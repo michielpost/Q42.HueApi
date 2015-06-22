@@ -18,7 +18,7 @@
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <AppxBundle>Never</AppxBundle>
-    <PackageCertificateThumbprint>145F01FF027A73C7EC65F7C55139AE11A737F90C</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>25FB52BBD470F85C47B2E7F1DDC83EB145C72DA3</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
