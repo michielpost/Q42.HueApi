@@ -13,33 +13,8 @@ namespace Q42.HueApi.Interfaces
   /// </summary>
   public interface IHueClient
   {
-    /// <summary>
-    /// Base address url
-    /// </summary>
-    string ApiBase { get; }
-
-    /// <summary>
-    /// Initialize the client with your app key
-    /// </summary>
-    /// <param name="appKey"></param>
-    void Initialize(string appKey);
-
-    /// <summary>
-    /// Register your <paramref name="appName"/> and <paramref name="appKey"/> at the Hue Bridge.
-    /// </summary>
-    /// <param name="appKey">Secret key for your app. Must be at least 10 characters.</param>
-    /// <param name="appName">The name of your app or device.</param>
-    /// <returns><c>true</c> if success, <c>false</c> if the link button hasn't been pressed.</returns>
-    /// <exception cref="ArgumentNullException"><paramref name="appName"/> or <paramref name="appKey"/> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentException"><paramref name="appName"/> or <paramref name="appKey"/> aren't long enough, are empty or contains spaces.</exception>
-    Task<bool> RegisterAsync(string appName, string appKey);
-
-    /// <summary>
-    /// Check if there is a working connection with the bridge
-    /// </summary>
-    /// <returns></returns>
-    Task<bool> CheckConnection();
-
+  
+   
     /// <summary>
     /// Asynchronously gets all lights registered with the bridge.
     /// </summary>

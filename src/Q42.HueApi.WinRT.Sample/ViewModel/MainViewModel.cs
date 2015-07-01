@@ -46,7 +46,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 			IBridgeLocator httpLocator = new HttpBridgeLocator();
 			IBridgeLocator ssdpLocator = new SSDPBridgeLocator();
 
-			HueClient _hueClient;
+			LocalHueClient _hueClient;
 
 
 			private string _httpBridges;
@@ -130,7 +130,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 					HttpBridges = string.Join(", ", result.ToArray());
 
 					if (result.Count() > 0)
-						_hueClient = new HueClient(result.First());
+						_hueClient = new LocalHueClient(result.First());
 				}
 
 				private async void SsdpLocateBridgeAction()
@@ -143,7 +143,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 					SsdpBridges = string.Join(", ", result.ToArray());
 
 					if (result.Count() > 0)
-						_hueClient = new HueClient(result.First());
+						_hueClient = new LocalHueClient(result.First());
 				}
 
 				internal async void Register(string p)
@@ -230,7 +230,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 
 				internal void ManualRegister(string ip)
 				{
-					_hueClient = new HueClient(ip);
+					_hueClient = new LocalHueClient(ip);
 				}
 		}
 }

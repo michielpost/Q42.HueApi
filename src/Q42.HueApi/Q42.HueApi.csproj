@@ -54,7 +54,9 @@
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\HttpMethodConverter.cs" />
     <Compile Include="HttpBridgeLocator.cs" />
-    <Compile Include="HueClient-Api.cs" />
+    <Compile Include="Interfaces\ILocalHueClient.cs" />
+    <Compile Include="LocalHueClient.cs" />
+    <Compile Include="LocalHueClient-Api.cs" />
     <Compile Include="HueClient-Info.cs" />
     <Compile Include="HueClient-Config.cs" />
     <Compile Include="HueClient-Groups.cs" />
@@ -91,6 +93,8 @@
     <Compile Include="Models\WhiteList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Converters\TransitionTimeConverter.cs" />
+    <Compile Include="RemoteHueClient-Authentication.cs" />
+    <Compile Include="RemoteHueClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

@@ -21,7 +21,7 @@ namespace Q42.HueApi.Tests
       string ip = ConfigurationManager.AppSettings["ip"].ToString();
       string key = ConfigurationManager.AppSettings["key"].ToString();
 
-      _client = new HueClient(ip, key);
+	  _client = new LocalHueClient(ip, key);
     }
 
     [TestMethod]
