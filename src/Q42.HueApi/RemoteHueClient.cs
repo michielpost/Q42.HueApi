@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Q42.HueApi.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi
 {
-	public partial class RemoteHueClient : HueClient
+	public partial class RemoteHueClient : HueClient, IRemoteHueClient
 	{
 		private static string _remoteAccessToken;
 		private string _bridgeId;

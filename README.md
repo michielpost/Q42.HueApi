@@ -21,7 +21,7 @@ Before you can communicate with the Philips Hue Bridge, you need to find the bri
 	
 Register your application
 	
-	HueClient client = new HueClient("ip");
+	ILocalHueClient client = new LocalHueClient("ip");
 	var appKey = await client.RegisterAsync("mypersonalappname", "mydevicename");
 	//Save the app key for later use
 	
@@ -55,6 +55,18 @@ Once you have composed your command, send it to one or more lights
 Or send it to all lights
 
 	client.SendCommandAsync(command);
+	
+## Remote API
+There is also a Philips Hue Remote API. It allows you to send commands to a bridge over the internet. You can request access here: http://www.developers.meethue.com/content/remote-api  
+Q42.HueApi is compatible with the remote API.  
+You need an Access Token and a Bridge Id. Please refer to the Philips Hue API documentation on how to obtain them. This library does not have support for it yet. Pull Requests are welcome!
+
+	IRemoteHueClient remoteHueClient =  new RemoteHueClient("access token");
+	remoteHueClient.Initialize("bridge id");
+	
+After the setup, you can send normal commands to the remote API:
+
+	remoteHueClient.SendCommandAsync(command, new List<string> { "1" });
 
 ## How To install?
 Download the source from GitHub or get the compiled assembly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
