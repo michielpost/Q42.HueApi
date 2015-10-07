@@ -22,97 +22,29 @@ namespace Q42.HueApi
   public partial class HueClient : IHueClient
   {
 
-    private readonly string _ip;
     private readonly int _parallelRequests = 5;
-
-    private string _appKey;
 
     /// <summary>
     /// Indicates the HueClient is initialized with an AppKey
     /// </summary>
-    public bool IsInitialized { get; private set; }
+    public bool IsInitialized { get; protected set; }
 
-
-    /// <summary>
-    /// Base URL for the API
-    /// </summary>
-    public string ApiBase
-    {
-      get
-      {
-        return string.Format("http://{0}/api/{1}/", _ip, _appKey);
-      }
-    }
-
-    /// <summary>
-    /// Initialize with Bridge IP
-    /// </summary>
-    /// <param name="ip"></param>
-    public HueClient(string ip)
-    {
-      if (ip == null)
-        throw new ArgumentNullException("ip");
-
-	  CheckValidIp(ip);
-
-      _ip = ip;
-    }
-
-	/// <summary>
-	/// Check if the provided IP is valid by using it in an URI to the Hue Bridge
-	/// </summary>
-	/// <param name="ip"></param>
-	private void CheckValidIp(string ip)
+	protected HueClient()
 	{
-		Uri uri;
-		if (!Uri.TryCreate(string.Format("http://{0}/description.xml", ip), UriKind.Absolute, out uri))
-		{
-			//Invalid ip or hostname caused Uri creation to fail
-			throw new Exception(string.Format("The supplied ip to the HueClient is not a valid ip: {0}", ip));
-		}
+
 	}
 
-    /// <summary>
-    /// Initialize with Bridge IP and AppKey
-    /// </summary>
-    /// <param name="ip"></param>
-    /// <param name="appKey"></param>
-    public HueClient(string ip, string appKey)
-    {
-      if (ip == null)
-        throw new ArgumentNullException("ip");
-
-	  CheckValidIp(ip);
-
-
-      _ip = ip;
-
-      //Direct initialization
-      Initialize(appKey);
-    }
-
-
-    /// <summary>
-    /// Initialize client with your app key
-    /// </summary>
-    /// <param name="appKey"></param>
-    public void Initialize(string appKey)
-    {
-      if (appKey == null)
-        throw new ArgumentNullException("appKey");
-
-      _appKey = appKey;
-
-      IsInitialized = true;
-    }
+	protected virtual string ApiBase { get; private set; }
 
     [ThreadStatic]
-    private static HttpClient _httpClient;
-    public static HttpClient GetHttpClient()
+    protected static HttpClient _httpClient;
+    
+	 public static HttpClient GetHttpClient()
     {
       // return per-thread HttpClient
-      if (_httpClient == null)
-        _httpClient = new HttpClient();
+		if (_httpClient == null)
+			_httpClient = new HttpClient();
+
       return _httpClient;
     }
 

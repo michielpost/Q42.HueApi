@@ -12,7 +12,7 @@ namespace Q42.HueApi.Tests
   [TestClass]
   public class HueApiTests
   {
-    private IHueClient _client;
+    private ILocalHueClient _client;
 
     [TestInitialize]
     public void Initialize()
@@ -20,13 +20,13 @@ namespace Q42.HueApi.Tests
       string ip = ConfigurationManager.AppSettings["ip"].ToString();
       string key = ConfigurationManager.AppSettings["key"].ToString();
 
-      _client = new HueClient(ip, key);
+	  _client = new LocalHueClient(ip, key);
     }
 
 	[TestMethod]
 	public void ValidHueIpTest()
 	{
-		_client = new HueClient("127.0.0.1");
+		_client = new LocalHueClient("127.0.0.1");
 
 		Assert.IsNotNull(_client);
 	}
@@ -35,7 +35,7 @@ namespace Q42.HueApi.Tests
 	[ExpectedException(typeof(System.Exception))]
 	public void InValidHueIpTest()
 	{
-		_client = new HueClient("//127.0.0@@.1in.v.alid");
+		_client = new LocalHueClient("//127.0.0@@.1in.v.alid");
 	}
 
 
@@ -50,7 +50,7 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task CheckConnectionWrongIpTest()
     {
-      IHueClient client = new HueClient("42.1.1.1", ConfigurationManager.AppSettings["key"].ToString());
+		ILocalHueClient client = new LocalHueClient("42.1.1.1", ConfigurationManager.AppSettings["key"].ToString());
 
       var result = await client.CheckConnection();
 
@@ -60,7 +60,7 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task CheckConnectionWrongKeyTest()
     {
-      IHueClient client = new HueClient(ConfigurationManager.AppSettings["ip"].ToString(), "wrongkey123");
+		ILocalHueClient client = new LocalHueClient(ConfigurationManager.AppSettings["ip"].ToString(), "wrongkey123");
 
       var result = await client.CheckConnection();
 

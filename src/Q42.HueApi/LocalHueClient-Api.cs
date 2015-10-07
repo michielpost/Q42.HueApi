@@ -11,7 +11,7 @@ namespace Q42.HueApi
   /// <summary>
   ///  Partial HueClient, contains requests to the /api/ url
   /// </summary>
-  public partial class HueClient
+  public partial class LocalHueClient
   {
     /// <summary>
     /// Register your <paramref name="applicationName"/> and <paramref name="deviceName"/> at the Hue Bridge.
