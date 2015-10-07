@@ -27,7 +27,13 @@ namespace Q42.HueApi
     [DataMember(Name = "uniqueid")]
     public string UniqueId { get; set; }
 
-    [DataMember(Name = "manufacturername")]
+	/// <summary>
+	/// As of 1.9. Unique ID of the luminaire the light is a part of in the format: AA:BB:CC:DD-XX-YY.  AA:BB:, ... represents the hex of the luminaireid, XX the lightsource position (incremental but may contain gaps) and YY the lightpoint position (index of light in luminaire group).  A gap in the lightpoint position indicates an incomplete luminaire (light search required to discover missing light points in this case).
+	/// </summary>
+	[DataMember(Name = "luminaireuniqueid")]
+	public string LuminaireUniqueId { get; set; }
+
+	[DataMember(Name = "manufacturername")]
     public string ManufacturerName { get; set; }
 
     [DataMember (Name = "swversion")]

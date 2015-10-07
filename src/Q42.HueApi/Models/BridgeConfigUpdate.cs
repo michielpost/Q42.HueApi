@@ -44,5 +44,11 @@ namespace Q42.HueApi
 
     [DataMember(Name = "timezone")]
     public string TimeZone { get; set; }
-  }
+
+	/// <summary>
+	/// As of 1.9. If set to true performs a touchlink action.
+	/// </summary>
+	[DataMember(Name = "touchlink")]
+	public bool TouchLink { get; set; }
+	}
 }
