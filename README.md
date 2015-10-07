@@ -22,7 +22,8 @@ Before you can communicate with the Philips Hue Bridge, you need to find the bri
 Register your application
 	
 	HueClient client = new HueClient("ip");
-	client.RegisterAsync("mypersonalappname", "mypersonalappkey");
+	var appKey = await client.RegisterAsync("mypersonalappname", "mydevicename");
+	//Save the app key for later use
 	
 If you already registered an appname, you can initialize the HueClient with the app's key:	
 

@@ -27,7 +27,7 @@ namespace Q42.HueApi.Interfaces
 	/// <returns><c>true</c> if success, <c>false</c> if the link button hasn't been pressed.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="appName"/> or <paramref name="appKey"/> is <c>null</c>.</exception>
 	/// <exception cref="ArgumentException"><paramref name="appName"/> or <paramref name="appKey"/> aren't long enough, are empty or contains spaces.</exception>
-	Task<bool> RegisterAsync(string appName, string appKey);
+	Task<string> RegisterAsync(string appName, string appKey);
 
 	/// <summary>
 	/// Check if there is a working connection with the bridge

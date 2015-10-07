@@ -150,7 +150,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 				{
 					var result = await RegisterDataLoader.LoadAsync(() => _hueClient.RegisterAsync(p, p));
 
-					RegisterSuccess = result;
+					RegisterSuccess = !string.IsNullOrEmpty(result);
 				}
 
 				internal void Initialize(string p)

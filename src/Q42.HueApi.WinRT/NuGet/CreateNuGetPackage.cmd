@@ -1,2 +1,2 @@
 @echo off
-..\..\.nuget\NuGet.exe pack ..\Q42.HueApi.WinRT.csproj -Prop Configuration=Release
+nuget pack ..\Q42.HueApi.WinRT.csproj -Prop Configuration=Release
