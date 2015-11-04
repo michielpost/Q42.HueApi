@@ -39,8 +39,5 @@ namespace Q42.HueApi
     [DataMember (Name = "swversion")]
     public string SoftwareVersion { get; set; }
 
-    [DataMember(Name = "pointsymbol")]
-    public Dictionary<string, string> PointSymbol { get; set; }
-
   }
 }
