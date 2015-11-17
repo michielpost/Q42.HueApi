@@ -215,14 +215,23 @@ namespace Q42.HueApi
       return lightCommand.SetColor(point.x, point.y);
     }
 
-    /// <summary>
-    /// Helper to set the color based on the light's built in XY color schema
-    /// </summary>
-    /// <param name="lightCommand"></param>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    public static LightCommand SetColor(this LightCommand lightCommand, double x, double y)
+	public static LightCommand SetColor(this LightCommand lightCommand, RGBColor color, string model)
+	{
+		if (lightCommand == null)
+			throw new ArgumentNullException("lightCommand");
+
+		var point = HueColorConverter.CalculateXY(color, model);
+		return lightCommand.SetColor(point.x, point.y);
+	}
+
+		/// <summary>
+		/// Helper to set the color based on the light's built in XY color schema
+		/// </summary>
+		/// <param name="lightCommand"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public static LightCommand SetColor(this LightCommand lightCommand, double x, double y)
     {
       if (lightCommand == null)
         throw new ArgumentNullException ("lightCommand");
