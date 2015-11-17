@@ -27,12 +27,12 @@ namespace Q42.HueApi
 	
 	public struct RGBColor
 	{
-		public float R { get; set; }
-		public float G { get; set; }
-		public float B { get; set; }
-		public float A { get; set; }
+		public float R;
+		public float G;
+		public float B;
+		public float A;
 
-		public RGBColor(int red, int green, int blue)
+		public RGBColor(float red, float green, float blue)
 		{
 			R = red;
 			G = green;
