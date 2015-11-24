@@ -24,7 +24,7 @@ namespace Q42.HueApi
 
 	}
 
-	
+
 	public struct RGBColor
 	{
 		public float R;
@@ -62,7 +62,7 @@ namespace Q42.HueApi
     /// <param name="green"></param>
     /// <param name="blue"></param>
     /// <returns></returns>
-    public static CGPoint XyFromColor(string red, string green, string blue)
+    private static CGPoint XyFromColor(string red, string green, string blue)
     {
       return XyFromColor(int.Parse(red), int.Parse(green), int.Parse(blue));
     }
@@ -238,7 +238,7 @@ namespace Q42.HueApi
     /// <param name="xNumber"></param>
     /// <param name="yNumber"></param>
     /// <returns></returns>
-    public static string HexFromXy(double xNumber, double yNumber)
+    private static string HexFromXy(double xNumber, double yNumber)
     {
       if (xNumber == 0 && yNumber == 0)
       {
@@ -504,7 +504,27 @@ namespace Q42.HueApi
 			return (float)(p1.x * p2.y - p1.y * p2.x);
 		}
 
-		public static RGBColor ColorFromXY(CGPoint xy, string model)
+		/// <summary>
+		/// Returns hexvalue from Light State
+		/// </summary>
+		/// <param name="state"></param>
+		/// <returns></returns>
+		public static string HexFromState(State state, string model)
+		{
+			if (state == null)
+				throw new ArgumentNullException("state");
+			if (state.On == false || state.Brightness <= 5) //Off or low brightness
+				return "000000";
+			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
+			{
+				var color = ColorFromXY(new CGPoint(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
+				return string.Format("{0}{1}{2}", color.R.ToString("X2"), color.G.ToString("X2"), color.B.ToString("X2"));
+			}
+
+			return "FFFFFF"; //White
+		}
+
+		private static RGBColor ColorFromXY(CGPoint xy, string model)
 		{
 			List<CGPoint> colorPoints = ColorPointsForModel(model);
 			bool inReachOfLamps = CheckPointInLampsReach(xy, colorPoints);

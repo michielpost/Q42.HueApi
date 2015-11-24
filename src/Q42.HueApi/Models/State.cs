@@ -43,5 +43,10 @@ namespace Q42.HueApi
     {
       return HueColorConverter.HexFromState(this);
     }
+
+	public string ToHex(string model)
+	{
+		return HueColorConverter.HexFromState(this, model);
+	}
   }
 }

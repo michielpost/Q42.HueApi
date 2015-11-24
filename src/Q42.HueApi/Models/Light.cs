@@ -39,5 +39,9 @@ namespace Q42.HueApi
     [DataMember (Name = "swversion")]
     public string SoftwareVersion { get; set; }
 
+	public string ToHex()
+	{
+		return HueColorConverter.HexFromState(this.State, this.ModelId);
+	}
   }
 }
