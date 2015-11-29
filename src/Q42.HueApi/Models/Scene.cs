@@ -10,7 +10,7 @@ namespace Q42.HueApi.Models
   [DataContract]
   public class Scene
   {
-    [IgnoreDataMember]
+    [DataMember]
     public string Id { get; set; }
 
     [DataMember(Name = "name")]
