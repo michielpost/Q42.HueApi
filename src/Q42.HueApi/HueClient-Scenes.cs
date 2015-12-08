@@ -123,5 +123,23 @@ namespace Q42.HueApi
       return this.SendGroupCommandAsync(groupCommand, groupId);
 
     }
+
+	/// <summary>
+	/// Deletes a scene
+	/// </summary>
+	/// <param name="id"></param>
+	/// <returns></returns>
+	public async Task<HueResults> DeleteSceneAsync(string sceneId)
+	{
+		CheckInitialized();
+
+		HttpClient client = HueClient.GetHttpClient();
+		var result = await client.DeleteAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, sceneId))).ConfigureAwait(false);
+
+		string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+		return DeserializeDefaultHueResult(jsonResult);
+
+	}
   }
 }
