@@ -58,7 +58,7 @@ namespace Q42.HueApi
 
     }
 
-    public async Task<HueResults> CreateOrUpdateSceneAsync(string id, string name, IEnumerable<string> lights)
+    public async Task<HueResults> CreateSceneAsync(string id, string name, IEnumerable<string> lights)
     {
       CheckInitialized();
 
@@ -78,7 +78,7 @@ namespace Q42.HueApi
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = HueClient.GetHttpClient();
-      var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -86,7 +86,46 @@ namespace Q42.HueApi
 
     }
 
-    public async Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="name"></param>
+		/// <param name="lights"></param>
+		/// <param name="storeLightState">If set, the lightstates of the lights in the scene will be overwritten by the current state of the lights. Can also be used in combination with transitiontime to update the transition time of a scene.</param>
+		/// <returns></returns>
+		public async Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState)
+	{
+		CheckInitialized();
+
+		if (id == null)
+			throw new ArgumentNullException("id");
+		if (id.Trim() == String.Empty)
+			throw new ArgumentException("id must not be empty", "id");
+		if (lights == null)
+			throw new ArgumentNullException("lights");
+
+		dynamic jsonObj = new ExpandoObject();
+		jsonObj.lights = lights;
+
+		if (storeLightState.HasValue)
+			jsonObj.storelightstate = storeLightState.Value;
+
+		if (!string.IsNullOrEmpty(name))
+			jsonObj.name = name;
+
+		string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+		HttpClient client = HueClient.GetHttpClient();
+		var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+
+		var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+		return DeserializeDefaultHueResult(jsonResult);
+
+	}
+
+		public async Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command)
     {
       CheckInitialized();
 
@@ -105,7 +144,7 @@ namespace Q42.HueApi
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = HueClient.GetHttpClient();
-      var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}/lights/{1}/state", ApiBase, sceneId, lightId)), new StringContent(jsonCommand)).ConfigureAwait(false);
+      var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}/lights/{1}/lightstate", ApiBase, sceneId, lightId)), new StringContent(jsonCommand)).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -141,5 +180,26 @@ namespace Q42.HueApi
 		return DeserializeDefaultHueResult(jsonResult);
 
 	}
-  }
+
+		/// <summary>
+		/// Get a single scene
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<Scene> GetSceneAsync(string id)
+		{
+			CheckInitialized();
+
+			HttpClient client = HueClient.GetHttpClient();
+			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id))).ConfigureAwait(false);
+
+			Scene scene = DeserializeResult<Scene>(stringResult);
+
+			if (string.IsNullOrEmpty(scene.Id))
+				scene.Id = id;
+
+			return scene;
+
+		}
+	}
 }

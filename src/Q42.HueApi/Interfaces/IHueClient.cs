@@ -213,16 +213,19 @@ namespace Q42.HueApi.Interfaces
     #region Scenes
 
     Task<IReadOnlyCollection<Scene>> GetScenesAsync();
-    Task<HueResults> CreateOrUpdateSceneAsync(string id, string name, IEnumerable<string> lights);
+    Task<HueResults> CreateSceneAsync(string id, string name, IEnumerable<string> lights);
+    Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState);
     Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command);
     Task<HueResults> RecallSceneAsync(string sceneId, string groupId = "0");
 	Task<HueResults> DeleteSceneAsync(string sceneId);
 
-    #endregion
+	Task<Scene> GetSceneAsync(string id);
 
-    #region Rules
+	#endregion
 
-    Task<IReadOnlyCollection<Rule>> GetRulesAsync();
+		#region Rules
+
+	Task<IReadOnlyCollection<Rule>> GetRulesAsync();
     Task<Rule> GetRuleAsync(string id);
     Task<HueResults> DeleteRule(string id);
     Task<string> CreateRule(Rule rule);
