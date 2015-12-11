@@ -87,14 +87,15 @@ namespace Q42.HueApi
     }
 
 		/// <summary>
-		/// 
+		/// UpdateSceneAsync
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="name"></param>
 		/// <param name="lights"></param>
 		/// <param name="storeLightState">If set, the lightstates of the lights in the scene will be overwritten by the current state of the lights. Can also be used in combination with transitiontime to update the transition time of a scene.</param>
+		/// <param name="transitionTime">Can be used in combinatino with storeLightState</param>
 		/// <returns></returns>
-		public async Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState)
+		public async Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState = null, TimeSpan? transitionTime = null)
 	{
 		CheckInitialized();
 
@@ -109,7 +110,15 @@ namespace Q42.HueApi
 		jsonObj.lights = lights;
 
 		if (storeLightState.HasValue)
+		{
 			jsonObj.storelightstate = storeLightState.Value;
+
+			//Transitiontime can only be used in combination with storeLightState
+			if (transitionTime.HasValue)
+			{
+				jsonObj.transitiontime = transitionTime.Value.TotalSeconds * 10;
+			}
+		}
 
 		if (!string.IsNullOrEmpty(name))
 			jsonObj.name = name;

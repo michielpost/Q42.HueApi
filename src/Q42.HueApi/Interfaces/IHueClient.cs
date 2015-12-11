@@ -214,7 +214,7 @@ namespace Q42.HueApi.Interfaces
 
     Task<IReadOnlyCollection<Scene>> GetScenesAsync();
     Task<HueResults> CreateSceneAsync(string id, string name, IEnumerable<string> lights);
-    Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState);
+    Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState = null, TimeSpan? transitionTime = null);
     Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command);
     Task<HueResults> RecallSceneAsync(string sceneId, string groupId = "0");
 	Task<HueResults> DeleteSceneAsync(string sceneId);
