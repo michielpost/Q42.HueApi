@@ -116,7 +116,7 @@ namespace Q42.HueApi
 			//Transitiontime can only be used in combination with storeLightState
 			if (transitionTime.HasValue)
 			{
-				jsonObj.transitiontime = transitionTime.Value.TotalSeconds * 10;
+				jsonObj.transitiontime = (uint)transitionTime.Value.TotalSeconds * 10;
 			}
 		}
 
