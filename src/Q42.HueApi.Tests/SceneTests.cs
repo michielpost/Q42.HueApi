@@ -35,9 +35,13 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task Create()
     {
-      var result = await _client.CreateSceneAsync("scene1", "test", new List<string> { "2" });
+	  Scene test = new Scene();
+	  test.Name = "scene1";
+	  test.Lights = new List<string> { "2" };
 
-      Assert.AreNotEqual(0, result.Count);
+	  var result = await _client.CreateSceneAsync(test);
+
+      Assert.IsNotNull(result);
     }
 
     [TestMethod]

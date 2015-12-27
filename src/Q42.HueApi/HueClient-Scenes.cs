@@ -58,33 +58,37 @@ namespace Q42.HueApi
 
     }
 
-    public async Task<HueResults> CreateSceneAsync(string id, string name, IEnumerable<string> lights)
-    {
-      CheckInitialized();
+		public async Task<string> CreateSceneAsync(Scene scene)
+		{
+			CheckInitialized();
 
-      if (id == null)
-        throw new ArgumentNullException("id");
-      if (id.Trim() == String.Empty)
-        throw new ArgumentException("id must not be empty", "id");
-      if (lights == null)
-        throw new ArgumentNullException("lights");
+			if (scene == null)
+				throw new ArgumentNullException(nameof(scene));
+			if (scene.Lights == null)
+				throw new ArgumentNullException(nameof(scene.Lights));
+			if (scene.Name == null)
+				throw new ArgumentNullException(nameof(scene.Name));
 
-      dynamic jsonObj = new ExpandoObject();
-      jsonObj.lights = lights;
+			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      if (!string.IsNullOrEmpty(name))
-        jsonObj.name = name;
+			HttpClient client = HueClient.GetHttpClient();
+			var response = await client.PostAsync(new Uri(String.Format("{0}scenes", ApiBase)), new StringContent(jsonString)).ConfigureAwait(false);
 
-      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+			var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      HttpClient client = HueClient.GetHttpClient();
-      var response = await client.PostAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+			HueResults sceneResult = DeserializeDefaultHueResult(jsonResult);
 
-      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			if (sceneResult.Count > 0 && sceneResult[0].Success != null && !string.IsNullOrEmpty(sceneResult[0].Success.Id))
+			{
+				return sceneResult[0].Success.Id;
+			}
 
-      return DeserializeDefaultHueResult(jsonResult);
+			if (sceneResult.HasErrors())
+				throw new Exception(sceneResult.Errors.First().Error.Description);
 
-    }
+			return null;
+
+		}
 
 		/// <summary>
 		/// UpdateSceneAsync
@@ -93,7 +97,7 @@ namespace Q42.HueApi
 		/// <param name="name"></param>
 		/// <param name="lights"></param>
 		/// <param name="storeLightState">If set, the lightstates of the lights in the scene will be overwritten by the current state of the lights. Can also be used in combination with transitiontime to update the transition time of a scene.</param>
-		/// <param name="transitionTime">Can be used in combinatino with storeLightState</param>
+		/// <param name="transitionTime">Can be used in combination with storeLightState</param>
 		/// <returns></returns>
 		public async Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState = null, TimeSpan? transitionTime = null)
 	{
@@ -133,6 +137,35 @@ namespace Q42.HueApi
 		return DeserializeDefaultHueResult(jsonResult);
 
 	}
+
+		/// <summary>
+		/// UpdateSceneAsync
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="scene"></param>
+		/// <returns></returns>
+		public async Task<HueResults> UpdateSceneAsync(string id, Scene scene)
+		{
+			CheckInitialized();
+
+			if (id == null)
+				throw new ArgumentNullException("id");
+			if (id.Trim() == String.Empty)
+				throw new ArgumentException("id must not be empty", "id");
+			if (scene == null)
+				throw new ArgumentNullException(nameof(scene));
+
+			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+			HttpClient client = HueClient.GetHttpClient();
+			var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+
+			var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+			return DeserializeDefaultHueResult(jsonResult);
+
+		}
+
 
 		public async Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command)
     {
