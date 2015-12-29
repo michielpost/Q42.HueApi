@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Q42.HueApi.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -55,6 +57,13 @@ namespace Q42.HueApi.Models
 
 	[DataMember(Name = "lastupdated")]
 	public DateTime? LastUpdated { get; set; }
+
+	[DataMember(Name = "storelightstate")]
+	public bool? StoreLightState { get; set; }
+
+	[DataMember(Name = "transitiontime")]
+	[JsonConverter(typeof(TransitionTimeConverter))]
+	public TimeSpan? TransitionTime { get; set; }
 
   }
 
