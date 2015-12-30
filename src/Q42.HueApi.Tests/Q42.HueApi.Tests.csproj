@@ -67,6 +67,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ColorConverterTests-Arrays.cs" />
+    <Compile Include="ColorConverterTests.cs" />
     <Compile Include="HueApiTests.cs" />
     <Compile Include="Remote\RemoteLightsTests.cs" />
     <Compile Include="RuleTests.cs" />
