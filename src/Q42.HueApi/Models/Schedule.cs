@@ -13,7 +13,7 @@ namespace Q42.HueApi.Models
   [DataContract]
   public class Schedule
   {
-    [IgnoreDataMember]
+    [DataMember]
     public string Id { get; set; }
 
     [DataMember(Name = "name")]

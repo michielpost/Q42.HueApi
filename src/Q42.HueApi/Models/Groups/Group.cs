@@ -21,10 +21,16 @@ namespace Q42.HueApi.Models.Groups
     [DataMember(Name = "type")]
     public string Type { get; set; }
 
-    /// <summary>
-    /// As of 1.4. Uniquely identifies the hardware model of the luminaire. Only present for automatically created Luminaires.
-    /// </summary>
-    [DataMember(Name = "modelid")]
+	/// <summary>
+	/// Category of the Room type. Default is "Other".
+	/// </summary>
+	[DataMember(Name = "class")]
+	public string Class { get; set; }
+
+	/// <summary>
+	/// As of 1.4. Uniquely identifies the hardware model of the luminaire. Only present for automatically created Luminaires.
+	/// </summary>
+	[DataMember(Name = "modelid")]
     public string ModelId { get; set; }
 
     /// <summary>
