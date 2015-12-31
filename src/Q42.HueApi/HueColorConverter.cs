@@ -7,502 +7,320 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi
 {
+    /// <summary>
+    /// Represents a point in CIE1931 color space.
+    /// </summary>
+    internal struct CIE1931Point
+    {
+        /// <summary>
+        /// The D65 White Point.
+        /// </summary>
+        public static readonly CIE1931Point D65White = new CIE1931Point(0.312713, 0.329016);
 
-	/// <summary>
-	/// Internal helper class, holds XY
-	/// </summary>
-	internal struct CGPoint
-	{
-		public double x;
-		public double y;
+        /// <summary>
+        /// The slightly-off D65 White Point used by Philips.
+        /// </summary>
+        public static readonly CIE1931Point PhilipsWhite = new CIE1931Point(0.322727, 0.32902);
 
-		public CGPoint(double x, double y)
-		{
-			this.x = x;
-			this.y = y;
-		}
+        public CIE1931Point(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = 1.0 - x - y;
+        }
 
-	}
+        public readonly double x;
+        public readonly double y;
+        public readonly double z;
+
+        public override string ToString()
+        {
+            // Makes debugging easier.
+            return string.Format("{0}, {1}", x, y);
+        }
+    }
+
+    /// <summary>
+    /// Represents a gamut with red, green and blue primaries in CIE1931 color space.
+    /// </summary>
+    internal struct CIE1931Gamut
+    {
+        public readonly CIE1931Point Red;
+        public readonly CIE1931Point Green;
+        public readonly CIE1931Point Blue;
+        
+        public CIE1931Gamut(CIE1931Point red, CIE1931Point green, CIE1931Point blue)
+        {
+            this.Red = red;
+            this.Green = green;
+            this.Blue = blue;
+        }
+
+        public static readonly CIE1931Gamut PhilipsWideGamut = new CIE1931Gamut(
+                red: new CIE1931Point(0.700607, 0.299301),
+                green: new CIE1931Point(0.172416, 0.746797),
+                blue: new CIE1931Point(0.135503, 0.039879)
+                );
+
+        public static CIE1931Gamut ForModel(string modelId)
+        {
+            // Details from http://www.developers.meethue.com/documentation/supported-lights
+
+            List<string> gamutA = new List<string>() {
+                "LLC001" /* Monet, Renoir, Mondriaan (gen II) */,
+                "LLC005" /* Bloom (gen II) */,
+                "LLC006" /* Iris (gen III) */,
+                "LLC007" /* Bloom, Aura (gen III) */,
+                "LLC010" /* Iris */,
+                "LLC011" /* Hue Bloom */,
+                "LLC012" /* Hue Bloom */,
+                "LLC013" /* Storylight */,
+                "LST001" /* Light Strips */
+            };
+
+            List<string> gamutB = new List<string>() {
+                "LCT001" /* Hue A19 */,
+                "LCT007" /* Hue A19 */,
+                "LCT002" /* Hue BR30 */,
+                "LCT003" /* Hue GU10 */,
+                "LLM001" /* Color Light Module */
+            };
+
+            List<string> gamutC = new List<string>() {
+                "LLC020" /* Hue Go */,
+                "LST002" /* Hue LightStrips Plus */
+            };
+
+            if (gamutA.Contains(modelId))
+            {
+                return new CIE1931Gamut(
+                    red: new CIE1931Point(0.704, 0.296),
+                    green: new CIE1931Point(0.2151, 0.7106),
+                    blue: new CIE1931Point(0.138, 0.08)
+                );
+            }
+            else if (gamutB.Contains(modelId))
+            {
+                return new CIE1931Gamut(
+                    red: new CIE1931Point(0.675, 0.322),
+                    green: new CIE1931Point(0.409, 0.518),
+                    blue: new CIE1931Point(0.167, 0.04)
+                );
+            }
+            else if (gamutC.Contains(modelId))
+            {
+                return new CIE1931Gamut(
+                      red: new CIE1931Point(0.692, 0.308),
+                      green: new CIE1931Point(0.17, 0.7),
+                      blue: new CIE1931Point(0.153, 0.048)
+                  );
+            }
+            else
+            {
+                // A gamut containing all colors (and then some!)
+                return new CIE1931Gamut(
+                    red: new CIE1931Point(1.0F, 0.0F),
+                    green: new CIE1931Point(0.0F, 1.0F),
+                    blue: new CIE1931Point(0.0F, 0.0F)
+                );
+            }
+        }
+        
+        public bool Contains(CIE1931Point point)
+        {
+            // Arrangement of points in color space:
+            // 
+            //   ^             G
+            //  y|             
+            //   |                  R
+            //   |   B         
+            //   .------------------->
+            //                      x
+            //
+            return IsBelow(Blue, Green, point) &&
+                IsBelow(Green, Red, point) &&
+                IsAbove(Red, Blue, point);
+        }
+
+        private static bool IsBelow(CIE1931Point a, CIE1931Point b, CIE1931Point point)
+        {
+            double slope = (a.y - b.y) / (a.x - b.x);
+            double intercept = a.y - slope * a.x;
+
+            double maxY = point.x * slope + intercept;
+            return point.y <= maxY;
+        }
+
+        private static bool IsAbove(CIE1931Point blue, CIE1931Point red, CIE1931Point point)
+        {
+            double slope = (blue.y - red.y) / (blue.x - red.x);
+            double intercept = blue.y - slope * blue.x;
+
+            double minY = point.x * slope + intercept;
+            return point.y >= minY;
+        }
+
+        public CIE1931Point NearestContainedPoint(CIE1931Point point)
+        {
+            if (Contains(point))
+            {
+                // If this gamut already contains the point, then no adjustment is required.
+                return point;
+            }
+
+            // Find the closest point on each line in the triangle.
+            CIE1931Point pAB = GetClosestPointOnLine(Red, Green, point);
+            CIE1931Point pAC = GetClosestPointOnLine(Red, Blue, point);
+            CIE1931Point pBC = GetClosestPointOnLine(Green, Blue, point);
+
+            //Get the distances per point and see which point is closer to our Point.
+            double dAB = GetDistanceBetweenTwoPoints(point, pAB);
+            double dAC = GetDistanceBetweenTwoPoints(point, pAC);
+            double dBC = GetDistanceBetweenTwoPoints(point, pBC);
+
+            double lowest = dAB;
+            CIE1931Point closestPoint = pAB;
+
+            if (dAC < lowest)
+            {
+                lowest = dAC;
+                closestPoint = pAC;
+            }
+            if (dBC < lowest)
+            {
+                lowest = dBC;
+                closestPoint = pBC;
+            }
+            return closestPoint;
+        }
+
+        private static CIE1931Point GetClosestPointOnLine(CIE1931Point a, CIE1931Point b, CIE1931Point p)
+        {
+            CIE1931Point AP = new CIE1931Point(p.x - a.x, p.y - a.y);
+            CIE1931Point AB = new CIE1931Point(b.x - a.x, b.y - a.y);
+
+            double ab2 = AB.x * AB.x + AB.y * AB.y;
+            double ap_ab = AP.x * AB.x + AP.y * AB.y;
+
+            double t = ap_ab / ab2;
+
+            // Bound to ends of line between A and B.
+            if (t < 0.0f)
+            {
+                t = 0.0f;
+            }
+            else if (t > 1.0f)
+            {
+                t = 1.0f;
+            }
+
+            return new CIE1931Point(a.x + AB.x * t, a.y + AB.y * t);
+        }
+
+        private static double GetDistanceBetweenTwoPoints(CIE1931Point one, CIE1931Point two)
+        {
+            double dx = one.x - two.x; // horizontal difference
+            double dy = one.y - two.y; // vertical difference
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+    }
 
 
+    /// <summary>
+    /// Represents a color with red, green and blue components.
+    /// All values are between 0.0 and 1.0.
+    /// </summary>
 	public struct RGBColor
 	{
-		public float R;
-		public float G;
-		public float B;
-		public float A;
+		public readonly double R;
+		public readonly double G;
+		public readonly double B;
 
-		public RGBColor(float red, float green, float blue)
+		public RGBColor(double red, double green, double blue)
 		{
 			R = red;
 			G = green;
 			B = blue;
-			A = 0.0f;
 		}
+        
+        /// <summary>
+        /// Returns the color as a six-digit hexadecimal string, in the form RRGGBB.
+        /// </summary>
+        public string ToHex()
+        {
+            int red = (int)(R * 255.99);
+            int green = (int)(G * 255.99);
+            int blue = (int)(B * 255.99);
 
+            return string.Format("{0}{1}{2}", red.ToString("X2"), green.ToString("X2"), blue.ToString("X2"));
+        }
 	}
 
-	/// <summary>
-	/// Used to convert colors between XY and RGB
-	/// internal: Do not expose
-	/// </summary>
-	internal static partial class HueColorConverter
-  {
-    private static CGPoint Red = new CGPoint(0.675F, 0.322F);
-    private static CGPoint Lime = new CGPoint(0.4091F, 0.518F);
-    private static CGPoint Blue = new CGPoint(0.167F, 0.04F);
-    private static float factor = 10000.0f;
-    private static int maxX = 452;
-    private static int maxY = 302;
-
     /// <summary>
-    /// Get XY from red,green,blue strings / ints
+    /// Used to convert colors between XY and RGB
+    /// internal: Do not expose
     /// </summary>
-    /// <param name="red"></param>
-    /// <param name="green"></param>
-    /// <param name="blue"></param>
-    /// <returns></returns>
-    private static CGPoint XyFromColor(string red, string green, string blue)
+    /// <remarks>
+    /// Based on http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
+    /// </remarks>
+    internal static partial class HueColorConverter
     {
-      return XyFromColor(int.Parse(red), int.Parse(green), int.Parse(blue));
-    }
-
-    /// <summary>
-    ///  Get XY from red,green,blue ints
-    /// </summary>
-    /// <param name="red"></param>
-    /// <param name="green"></param>
-    /// <param name="blue"></param>
-    /// <returns></returns>
-    public static CGPoint XyFromColor(int red, int green, int blue)
-    {
-      double r = (red > 0.04045f) ? Math.Pow((red + 0.055f) / (1.0f + 0.055f), 2.4f) : (red / 12.92f);
-      double g = (green > 0.04045f) ? Math.Pow((green + 0.055f) / (1.0f + 0.055f), 2.4f) : (green / 12.92f);
-      double b = (blue > 0.04045f) ? Math.Pow((blue + 0.055f) / (1.0f + 0.055f), 2.4f) : (blue / 12.92f);
-
-      double X = r * 0.4360747f + g * 0.3850649f + b * 0.0930804f;
-      double Y = r * 0.2225045f + g * 0.7168786f + b * 0.0406169f;
-      double Z = r * 0.0139322f + g * 0.0971045f + b * 0.7141733f;
-
-      double cx = X / (X + Y + Z);
-      double cy = Y / (X + Y + Z);
-
-      if (Double.IsNaN(cx))
-      {
-        cx = 0.0f;
-      }
-
-      if (Double.IsNaN(cy))
-      {
-        cy = 0.0f;
-      }
-
-      //Check if the given XY value is within the colourreach of our lamps.
-      CGPoint xyPoint = new CGPoint(cx, cy);
-      bool inReachOfLamps = HueColorConverter.CheckPointInLampsReach(xyPoint);
-
-      if (!inReachOfLamps)
-      {
-        //It seems the colour is out of reach
-        //let's find the closes colour we can produce with our lamp and send this XY value out.
-
-        //Find the closest point on each line in the triangle.
-        CGPoint pAB = HueColorConverter.GetClosestPointToPoint(Red, Lime, xyPoint);
-        CGPoint pAC = HueColorConverter.GetClosestPointToPoint(Blue, Red, xyPoint);
-        CGPoint pBC = HueColorConverter.GetClosestPointToPoint(Lime, Blue, xyPoint);
-
-        //Get the distances per point and see which point is closer to our Point.
-        double dAB = HueColorConverter.GetDistanceBetweenTwoPoints(xyPoint, pAB);
-        double dAC = HueColorConverter.GetDistanceBetweenTwoPoints(xyPoint, pAC);
-        double dBC = HueColorConverter.GetDistanceBetweenTwoPoints(xyPoint, pBC);
-
-        double lowest = dAB;
-        CGPoint closestPoint = pAB;
-
-        if (dAC < lowest)
-        {
-          lowest = dAC;
-          closestPoint = pAC;
-        }
-        if (dBC < lowest)
-        {
-          lowest = dBC;
-          closestPoint = pBC;
-        }
-
-        //Change the xy value to a value which is within the reach of the lamp.
-        cx = closestPoint.x;
-        cy = closestPoint.y;
-      }
-
-      return new CGPoint(cx, cy);
-    }
-
-    /// <summary>
-    ///  Method to see if the given XY value is within the reach of the lamps.
-    /// </summary>
-    /// <param name="p">p the point containing the X,Y value</param>
-    /// <returns>true if within reach, false otherwise.</returns>
-    private static bool CheckPointInLampsReach(CGPoint p)
-    {
-      CGPoint v1 = new CGPoint(Lime.x - Red.x, Lime.y - Red.y);
-      CGPoint v2 = new CGPoint(Blue.x - Red.x, Blue.y - Red.y);
-
-      CGPoint q = new CGPoint(p.x - Red.x, p.y - Red.y);
-
-      double s = HueColorConverter.CrossProduct(q, v2) / HueColorConverter.CrossProduct(v1, v2);
-      double t = HueColorConverter.CrossProduct(v1, q) / HueColorConverter.CrossProduct(v1, v2);
-
-      if ((s >= 0.0f) && (t >= 0.0f) && (s + t <= 1.0f))
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// Calculates crossProduct of two 2D vectors / points.
-    /// </summary>
-    /// <param name="p1"> p1 first point used as vector</param>
-    /// <param name="p2">p2 second point used as vector</param>
-    /// <returns>crossProduct of vectors</returns>
-    //private static double CrossProduct(CGPoint p1, CGPoint p2)
-    //{
-    //  return (p1.x * p2.y - p1.y * p2.x);
-    //}
-
-    /// <summary>
-    /// Find the closest point on a line.
-    /// This point will be within reach of the lamp.
-    /// </summary>
-    /// <param name="A">A the point where the line starts</param>
-    /// <param name="B">B the point where the line ends</param>
-    /// <param name="P">P the point which is close to a line.</param>
-    /// <returns> the point which is on the line.</returns>
-    private static CGPoint GetClosestPointToPoint(CGPoint A, CGPoint B, CGPoint P)
-    {
-      CGPoint AP = new CGPoint(P.x - A.x, P.y - A.y);
-      CGPoint AB = new CGPoint(B.x - A.x, B.y - A.y);
-      double ab2 = AB.x * AB.x + AB.y * AB.y;
-      double ap_ab = AP.x * AB.x + AP.y * AB.y;
-
-      double t = ap_ab / ab2;
-
-      if (t < 0.0f)
-        t = 0.0f;
-      else if (t > 1.0f)
-        t = 1.0f;
-
-      CGPoint newPoint = new CGPoint(A.x + AB.x * t, A.y + AB.y * t);
-      return newPoint;
-    }
-
-    /// <summary>
-    /// Find the distance between two points.
-    /// </summary>
-    /// <param name="one"></param>
-    /// <param name="two"></param>
-    /// <returns>the distance between point one and two</returns>
-    //private static double GetDistanceBetweenTwoPoints(CGPoint one, CGPoint two)
-    //{
-    //  double dx = one.x - two.x; // horizontal difference
-    //  double dy = one.y - two.y; // vertical difference
-    //  double dist = Math.Sqrt(dx * dx + dy * dy);
-
-    //  return dist;
-    //}
-
-    /// <summary>
-    /// Returns hexvalue from Light State
-    /// </summary>
-    /// <param name="state"></param>
-    /// <returns></returns>
-    public static string HexFromState(State state)
-    {
-      if (state == null)
-        throw new ArgumentNullException("state");
-      if (state.On == false || state.Brightness <= 5) //Off or low brightness
-        return "000000";
-      if(state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
-        return HexFromXy(state.ColorCoordinates[0], state.ColorCoordinates[1]);
-
-      return "FFFFFF"; //White
-    }
-
-    /// <summary>
-    /// Get the HEX color from an XY value
-    /// </summary>
-    /// <param name="xNumber"></param>
-    /// <param name="yNumber"></param>
-    /// <returns></returns>
-    private static string HexFromXy(double xNumber, double yNumber)
-    {
-      if (xNumber == 0 && yNumber == 0)
-      {
-        return "ffffff";
-      }
-
-      int closestValue = Int32.MaxValue;
-      int closestX = 0, closestY = 0;
-
-      double fX = xNumber;
-      double fY = yNumber;
-
-      int intX = (int)(fX * factor);
-      int intY = (int)(fY * factor);
-
-      for (int y = 0; y < maxY; y++)
-      {
-        for (int x = 0; x < maxX; x++)
-        {
-          int differenceForPixel = 0;
-          differenceForPixel += Math.Abs(xArray[x, y] - intX);
-          differenceForPixel += Math.Abs(yArray[x, y] - intY);
-
-          if (differenceForPixel < closestValue)
-          {
-            closestX = x;
-            closestY = y;
-            closestValue = differenceForPixel;
-          }
-        }
-      }
-
-      int color = cArray[closestX, closestY];
-      int red = (color >> 16) & 0xFF;
-      int green = (color >> 8) & 0xFF;
-      int blue = color & 0xFF;
-
-      return string.Format("{0}{1}{2}", red.ToString("X2"), green.ToString("X2"), blue.ToString("X2"));
-    }
-
-
-		/*****************************************************************************************
-		The code below is based on http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
-		Converted to C# by Niels Laute
-		*****************************************************************************************/
-
-		public static CGPoint CalculateXY(RGBColor color, string model)
+		public static CIE1931Point RgbToXY(RGBColor color, string model)
 		{
-			//CGColorRef cgColor = [color CGColor];
+            // Apply gamma correction. Convert non-linear RGB colour components
+            // to linear color intensity levels.
+            double r = InverseGamma(color.R);
+            double g = InverseGamma(color.G);
+            double b = InverseGamma(color.B);
 
-			//const CGFloat* components = CGColorGetComponents(cgColor);
-			//long numberOfComponents = CGColorGetNumberOfComponents(cgColor);
+            // Hue bulbs (depending on the type) can display colors outside the sRGB gamut supported
+            // by most computer screens.
+            // To make sure all colors are selectable by the user, Philips in its implementation
+            // decided to interpret all RGB colors as if they were from a wide (non-sRGB) gamut.
+            // The effect of this is to map colors in sRGB to a broader gamut of colors the hue lights
+            // can produce.
+            //
+            // This also results in some deviation of color on screen vs color in real-life.
+            // 
+            // The Philips implementation describes the matrix below with the comment 
+            // "Wide Gamut D65", but the values suggest this is infact not a standard
+            // gamut but some custom gamut. 
+            // 
+            // The coordinates of this gamut have been identified as follows:
+            //  red: (0.700607, 0.299301)
+            //  green: (0.172416, 0.746797)
+            //  blue: (0.135503, 0.039879)
+            // 
+            // (substitute r = 1, g = 1, b = 1 in sequence into array below and convert
+            //  from XYZ to xyY coordinates).
+            // The plotted chart can be seen here: http://imgur.com/zelKnSk
+            // 
+            // Also of interest, the white point is not D65 (0.31271, 0.32902), but a slightly
+            // shifted version at (0.322727, 0.32902). This might be because true D65 is slightly
+            // outside Gamut B (the position of D65 in the linked chart is slightly inaccurate).
+            double X = r * 0.664511f + g * 0.154324f + b * 0.162028f;
+            double Y = r * 0.283881f + g * 0.668433f + b * 0.047685f;
+            double Z = r * 0.000088f + g * 0.072310f + b * 0.986039f;
+            
+            CIE1931Point xyPoint = new CIE1931Point(0.0, 0.0);
 
-			// Default to white
-			float red = 1.0f;
-			float green = 1.0f;
-			float blue = 1.0f;
+            if ((X + Y + Z) > 0.0)
+            {
+                // Convert from CIE XYZ to CIE xyY coordinates.
+                xyPoint = new CIE1931Point(X / (X + Y + Z), Y / (X + Y + Z));
+            }
 
-			//if (numberOfComponents == 4)
-			//{
-			// Full color
-			red = color.R;
-			green = color.G;
-			blue = color.B;
-			//}
-			//else if (numberOfComponents == 2)
-			//{
-			//    // Greyscale color
-			//    red = green = blue = color.A;
-			//}
+            if (model != null)
+            {
+                //Check if the given XY value is within the colourreach of our lamps.
+                CIE1931Gamut gamut = CIE1931Gamut.ForModel(model);
 
-			// Apply gamma correction
-			float r;
-			float g;
-			float b;
-
-			if (red > 0.04045f)
-			{
-				r = (float)Math.Pow((red + 0.055f) / (1.0f + 0.055f), 2.4f);
-			}
-			else
-			{
-				r = red / 12.92f;
-			}
-
-			if (green > 0.04045f)
-			{
-				g = (float)Math.Pow((green + 0.055f) / (1.0f + 0.055f), 2.4f);
-			}
-			else
-			{
-				g = green / 12.92f;
-			}
-
-			if (blue > 0.04045f)
-			{
-				b = (float)Math.Pow((blue + 0.055f) / (1.0f + 0.055f), 2.4f);
-			}
-			else
-			{
-				b = blue / 12.92f;
-			}
-
-
-			// Wide gamut conversion D65
-			float X = r * 0.664511f + g * 0.154324f + b * 0.162028f;
-			float Y = r * 0.283881f + g * 0.668433f + b * 0.047685f;
-			float Z = r * 0.000088f + g * 0.072310f + b * 0.986039f;
-
-			float cx = 0.0f;
-
-			if((X + Y + Z) != 0)
-				cx = X / (X + Y + Z);
-
-			float cy = 0.0f;
-			if((X + Y + Z) != 0)
-				cy = Y / (X + Y + Z);
-
-			//Check if the given XY value is within the colourreach of our lamps.
-
-			CGPoint xyPoint = new CGPoint(cx, cy);
-			List<CGPoint> colorPoints = ColorPointsForModel(model);
-			bool inReachOfLamps = CheckPointInLampsReach(xyPoint, colorPoints);
-
-			if (!inReachOfLamps)
-			{
-				//It seems the colour is out of reach
-				//let's find the closest colour we can produce with our lamp and send this XY value out.
-
-				//Find the closest point on each line in the triangle.
-				CGPoint pAB = GetClosestPointToPoints(colorPoints[0], colorPoints[1], xyPoint);
-				CGPoint pAC = GetClosestPointToPoints(colorPoints[2], colorPoints[0], xyPoint);
-				CGPoint pBC = GetClosestPointToPoints(colorPoints[1], colorPoints[2], xyPoint);
-
-				//Get the distances per point and see which point is closer to our Point.
-				float dAB = GetDistanceBetweenTwoPoints(xyPoint, pAB);
-				float dAC = GetDistanceBetweenTwoPoints(xyPoint, pAC);
-				float dBC = GetDistanceBetweenTwoPoints(xyPoint, pBC);
-
-				float lowest = dAB;
-				CGPoint closestPoint = pAB;
-
-				if (dAC < lowest)
-				{
-					lowest = dAC;
-					closestPoint = pAC;
-				}
-				if (dBC < lowest)
-				{
-					lowest = dBC;
-					closestPoint = pBC;
-				}
-
-				//Change the xy value to a value which is within the reach of the lamp.
-				cx = (float)closestPoint.x;
-				cy = (float)closestPoint.y;
-			}
-
-			return new CGPoint(cx, cy);
+                // The point, adjusted it to the nearest point that is within the gamut of the lamp, if neccessary.
+                return gamut.NearestContainedPoint(xyPoint);
+            }
+            return xyPoint;
 		}
-
-		private static List<CGPoint> ColorPointsForModel(string ModelID)
-		{
-			List<CGPoint> colorPoints = new List<CGPoint>();
-			List<string> hueBulbs = new List<string>() {
-		"LCT001" /* Hue A19 */,
-		   "LCT002" /* Hue BR30 */,
-						   "LCT003" /* Hue GU10 */
-
-    };
-
-
-			List<string> livingColors = new List<string>() {
-				"LLC001" /* Monet, Renoir, Mondriaan (gen II) */,
-							 "LLC005" /* Bloom (gen II) */,
-							 "LLC006" /* Iris (gen III) */,
-							 "LLC007" /* Bloom, Aura (gen III) */,
-							 "LLC011" /* Hue Bloom */,
-							 "LLC012" /* Hue Bloom */,
-							 "LLC013" /* Storylight */,
-							 "LST001" /* Light Strips */ };
-
-
-			if (hueBulbs.Contains(ModelID))
-			{
-				// Hue bulbs color gamut triangle
-				colorPoints.Add(new CGPoint(0.674F, 0.322F)); // Red
-				colorPoints.Add(new CGPoint(0.408F, 0.517F)); // Green
-				colorPoints.Add(new CGPoint(0.168F, 0.041F)); // Blue
-			}
-			else if (livingColors.Contains(ModelID))
-			{
-				// LivingColors color gamut triangle
-				colorPoints.Add(new CGPoint(0.703F, 0.296F)); // Red
-				colorPoints.Add(new CGPoint(0.214F, 0.709F)); // Green
-				colorPoints.Add(new CGPoint(0.139F, 0.081F)); // Blue
-			}
-			else
-			{
-				// Default construct triangle wich contains all values
-				colorPoints.Add(new CGPoint(1.0F, 0.0F)); // Red
-				colorPoints.Add(new CGPoint(0.0F, 1.0F)); // Green
-				colorPoints.Add(new CGPoint(0.0F, 0.0F)); // Blue
-			}
-
-			return colorPoints;
-		}
-
-		private static CGPoint GetClosestPointToPoints(CGPoint A, CGPoint B, CGPoint P)
-		{
-			CGPoint AP = new CGPoint(P.x - A.x, P.y - A.y);
-			CGPoint AB = new CGPoint(B.x - A.x, B.y - A.y);
-			float ab2 = (float)(AB.x * AB.x + AB.y * AB.y);
-			float ap_ab = (float)(AP.x * AB.x + AP.y * AB.y);
-
-			float t = ap_ab / ab2;
-
-			if (t < 0.0f)
-			{
-				t = 0.0f;
-			}
-			else if (t > 1.0f)
-			{
-				t = 1.0f;
-			}
-
-			return new CGPoint(A.x + AB.x * t, A.y + AB.y * t);
-		}
-
-		private static float GetDistanceBetweenTwoPoints(CGPoint one, CGPoint two)
-		{
-			float dx = (float)(one.x - two.x); // horizontal difference
-			float dy = (float)(one.y - two.y); // vertical difference
-			return (float)Math.Sqrt(dx * dx + dy * dy);
-		}
-
-		private static bool CheckPointInLampsReach(CGPoint p, List<CGPoint> colorPoints)
-		{
-			CGPoint red = colorPoints[0];
-			CGPoint green = colorPoints[1];
-			CGPoint blue = colorPoints[2];
-
-			CGPoint v1 = new CGPoint(green.x - red.x, green.y - red.y);
-			CGPoint v2 = new CGPoint(blue.x - red.x, blue.y - red.y);
-
-			CGPoint q = new CGPoint(p.x - red.x, p.y - red.y);
-
-			float s = CrossProduct(q, v2) / CrossProduct(v1, v2);
-			float t = CrossProduct(v1, q) / CrossProduct(v1, v2);
-
-			if ((s >= 0.0f) && (t >= 0.0f) && (s + t <= 1.0f))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		private static float CrossProduct(CGPoint p1, CGPoint p2)
-		{
-			return (float)(p1.x * p2.y - p1.y * p2.x);
-		}
+        
 
 		/// <summary>
 		/// Returns hexvalue from Light State
@@ -517,148 +335,114 @@ namespace Q42.HueApi
 				return "000000";
 			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
 			{
-				var color = ColorFromXY(new CGPoint(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
-				return string.Format("{0}{1}{2}", color.R.ToString("X2"), color.G.ToString("X2"), color.B.ToString("X2"));
+				var color = XYToRgb(new CIE1931Point(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
+                return color.ToHex();
 			}
 
 			return "FFFFFF"; //White
 		}
 
-		private static RGBColor ColorFromXY(CGPoint xy, string model)
+		public static RGBColor XYToRgb(CIE1931Point point, string model)
 		{
-			List<CGPoint> colorPoints = ColorPointsForModel(model);
-			bool inReachOfLamps = CheckPointInLampsReach(xy, colorPoints);
+            if (model != null)
+            {
+                CIE1931Gamut gamut = CIE1931Gamut.ForModel(model);
 
-			if (!inReachOfLamps)
-			{
-				//It seems the colour is out of reach
-				//let's find the closest colour we can produce with our lamp and send this XY value out.
+                // If the color is outside the lamp's gamut, adjust to the nearest color
+                // inside the lamp's gamut.
+                point = gamut.NearestContainedPoint(point);
+            }
 
-				//Find the closest point on each line in the triangle.
-				CGPoint pAB = GetClosestPointToPoints(colorPoints[0], colorPoints[1], xy);
-				CGPoint pAC = GetClosestPointToPoints(colorPoints[2], colorPoints[0], xy);
-				CGPoint pBC = GetClosestPointToPoints(colorPoints[1], colorPoints[2], xy);
+            // Also adjust it to be in the Philips "Wide Gamut" if not already.
+            // The wide gamut used for XYZ->RGB conversion does not quite contain all colors
+            // all of the hue bulbs support.
+            point = CIE1931Gamut.PhilipsWideGamut.NearestContainedPoint(point);
 
-				//Get the distances per point and see which point is closer to our Point.
-				float dAB = GetDistanceBetweenTwoPoints(xy, pAB);
-				float dAC = GetDistanceBetweenTwoPoints(xy, pAC);
-				float dBC = GetDistanceBetweenTwoPoints(xy, pBC);
+            // Convert from xyY to XYZ coordinates.
+            double Y = 1.0; // Luminance
+            double X = (Y / point.y) * point.x;
+            double Z = (Y / point.y) * point.z;
 
-				float lowest = dAB;
-				CGPoint closestPoint = pAB;
+            // The Philips implementation comments this matrix with "sRGB D65 conversion"
+            // However, this is not the XYZ -> RGB conversion matrix for sRGB. Instead
+            // the matrix that is the inverse of that in RgbToXY() is used.
+            // See comment in RgbToXY() for more info.
+            double r = X * 1.656492 - Y * 0.354851 - Z * 0.255038;
+            double g = -X * 0.707196 + Y * 1.655397 + Z * 0.036152;
+            double b = X * 0.051713 - Y * 0.121364 + Z * 1.011530;
+            
+            // Downscale color components so that largest component has an intensity of 1.0,
+            // as we can't display colors brighter than that.
+            double maxComponent = Math.Max(Math.Max(r, g), b);
+            if (maxComponent > 1.0)
+            {
+                r /= maxComponent;
+                g /= maxComponent;
+                b /= maxComponent;
+            }
+            
+            // We now have the (linear) amounts of R, G and B corresponding to the specified XY coordinates.
+            // Since displays are non-linear, we must apply a gamma correction to get the pixel value.
+            // For example, a pixel red value of 1.0 (255) is more than twice as bright as 0.5 (127).
+            // We need to correct for this non-linearity.
+            r = Gamma(r);
+            g = Gamma(g);
+            b = Gamma(b);
 
-				if (dAC < lowest)
-				{
-					lowest = dAC;
-					closestPoint = pAC;
-				}
-				if (dBC < lowest)
-				{
-					lowest = dBC;
-					closestPoint = pBC;
-				}
-
-				//Change the xy value to a value which is within the reach of the lamp.
-				xy.x = closestPoint.x;
-				xy.y = closestPoint.y;
-			}
-
-			float x = (float)xy.x;
-			float y = (float)xy.y;
-			float z = 1.0f - x - y;
-
-			float Y = 1.0f;
-			float X = (Y / y) * x;
-			float Z = (Y / y) * z;
-
-			// sRGB D65 conversion
-			float r = X * 1.656492f - Y * 0.354851f - Z * 0.255038f;
-			float g = -X * 0.707196f + Y * 1.655397f + Z * 0.036152f;
-			float b = X * 0.051713f - Y * 0.121364f + Z * 1.011530f;
-
-			if (r > b && r > g && r > 1.0f)
-			{
-				// red is too big
-				g = g / r;
-				b = b / r;
-				r = 1.0f;
-			}
-			else if (g > b && g > r && g > 1.0f)
-			{
-				// green is too big
-				r = r / g;
-				b = b / g;
-				g = 1.0f;
-			}
-			else if (b > r && b > g && b > 1.0f)
-			{
-				// blue is too big
-				r = r / b;
-				g = g / b;
-				b = 1.0f;
-			}
-
-			// Apply gamma correction
-			if (r <= 0.0031308f)
-			{
-				r = 12.92f * r;
-			}
-			else
-			{
-				r = (1.0f + 0.055f) * (float)Math.Pow(r, (1.0f / 2.4f)) - 0.055f;
-			}
-
-			if (g <= 0.0031308f)
-			{
-				g = 12.92f * g;
-			}
-			else
-			{
-				g = (1.0f + 0.055f) * (float)Math.Pow(g, (1.0f / 2.4f)) - 0.055f;
-			}
-
-			if (b <= 0.0031308f)
-			{
-				b = 12.92f * b;
-			}
-			else
-			{
-				b = (1.0f + 0.055f) * (float)Math.Pow(b, (1.0f / 2.4f)) - 0.055f;
-			}
-
-			if (r > b && r > g)
-			{
-				// red is biggest
-				if (r > 1.0f)
-				{
-					g = g / r;
-					b = b / r;
-					r = 1.0f;
-				}
-			}
-			else if (g > b && g > r)
-			{
-				// green is biggest
-				if (g > 1.0f)
-				{
-					r = r / g;
-					b = b / g;
-					g = 1.0f;
-				}
-			}
-			else if (b > r && b > g)
-			{
-				// blue is biggest
-				if (b > 1.0f)
-				{
-					r = r / b;
-					g = g / b;
-					b = 1.0f;
-				}
-			}
-
-			return new RGBColor() { R = (byte)r, G = (byte)g, B = (byte)b, A = (byte)1.0f };
+            // Philips applies a second round of downscaling here, but that should be unnecessary given
+            // gamma returns a value between 0.0 and 1.0 for every input between 0.0 and 1.0.
+            return new RGBColor(r, g, b);
 		}
-	}
+
+        /// <summary>
+        /// Converts a gamma-corrected value (e.g. as used in RGB pixel components) to
+        /// a linear color intensity level. All values are between 0.0 and 1.0.
+        /// Used when converting to XY chroma coordinates.
+        /// </summary>
+        private static double InverseGamma(double value)
+        {
+            double result;
+            if (value > 0.04045)
+            {
+                result = Math.Pow((value + 0.055) / (1.0 + 0.055), 2.4);
+            }
+            else
+            {
+                result = value / 12.92;
+            }
+            // The gamma function returns values between 0.0 and 1.0 for all inputs
+            // between 0.0 and 1.0, but in case there is a slight rounding error...
+            return Bound(result);
+        }
+
+        /// <summary>
+        /// Converts a linear color intensity level to a gamma-corrected value for display
+        /// on a screen. All values are between 0.0 and 1.0.
+        /// Used when converting to 'RGB' pixel outputs.
+        /// </summary>
+        private static double Gamma(double value)
+        {
+            double result;
+            if (value <= 0.0031308)
+            {
+                result = 12.92 * value;
+            }
+            else
+            {
+                result = (1.0 + 0.055) * Math.Pow(value, (1.0 / 2.4)) - 0.055;
+            }
+            // The gamma function returns values between 0.0 and 1.0 for all inputs
+            // between 0.0 and 1.0, but in case there is a slight rounding error...
+            return Bound(result);
+        }
+        
+        /// <summary>
+        /// Bounds the specified value to between 0.0 and 1.0. 
+        /// </summary>
+        private static double Bound(double value)
+        {
+            return Math.Max(0.0, Math.Min(1.0, value));
+        }
+    }
 }
 

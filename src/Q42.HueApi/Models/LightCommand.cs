@@ -206,12 +206,12 @@ namespace Q42.HueApi
     /// <param name="green"></param>
     /// <param name="blue"></param>
     /// <returns></returns>
-    public static LightCommand SetColor(this LightCommand lightCommand, int red, int green, int blue)
+    public static LightCommand SetColor(this LightCommand lightCommand, int red, int green, int blue, string model = "LCT001")
     {
       if (lightCommand == null)
         throw new ArgumentNullException ("lightCommand");
 
-      var point = HueColorConverter.XyFromColor(red, green, blue);
+      var point = HueColorConverter.RgbToXY(new RGBColor(red / 255.0, green / 255.0, blue / 255.0), model);
       return lightCommand.SetColor(point.x, point.y);
     }
 
@@ -220,7 +220,7 @@ namespace Q42.HueApi
 		if (lightCommand == null)
 			throw new ArgumentNullException("lightCommand");
 
-		var point = HueColorConverter.CalculateXY(color, model);
+		var point = HueColorConverter.RgbToXY(color, model);
 		return lightCommand.SetColor(point.x, point.y);
 	}
 
