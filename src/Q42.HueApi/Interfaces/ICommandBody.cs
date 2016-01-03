@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Interfaces
 {
-  public class ICommandBody
+  public interface ICommandBody
   {
   }
 }

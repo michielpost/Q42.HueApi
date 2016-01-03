@@ -8,6 +8,9 @@ using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
 using System.Globalization;
 using System.Net.Http;
+using System.Dynamic;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Q42.HueApi.Tests
 {
@@ -69,7 +72,33 @@ namespace Q42.HueApi.Tests
       Assert.IsNotNull(result);
     }
 
-    [TestMethod]
+	[TestMethod]
+	public async Task CreateGenericScheduleSingle()
+	{
+		Schedule schedule = new Schedule();
+		schedule.Name = "t1";
+		schedule.Description = "test";
+		schedule.LocalTime = new HueDateTime()
+		{
+			DateTime = DateTime.Now.AddDays(1)
+		};
+		schedule.Command = new InternalBridgeCommand();
+
+		dynamic dynamicCOmmand = new ExpandoObject();
+		dynamicCOmmand.status = 1;
+
+		var jsonString = JsonConvert.SerializeObject(dynamicCOmmand);
+		var commandBody = new GenericScheduleCommand(jsonString);
+		schedule.Command.Body = commandBody;
+		schedule.Command.Address = "/api/huelandspoor/lights/5/state";
+		schedule.Command.Method = HttpMethod.Put;
+
+		var result = await _client.CreateScheduleAsync(schedule);
+
+		Assert.IsNotNull(result);
+	}
+
+		[TestMethod]
     public async Task UpdateSchedule()
     {
       Schedule schedule = new Schedule();

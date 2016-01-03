@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,15 @@ namespace Q42.HueApi.Converters
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
     {
-      serializer.Serialize(writer, value);
+			if (value is GenericScheduleCommand)
+			{
+				var genericCommand = value as GenericScheduleCommand;
+				writer.WriteRawValue(genericCommand.JsonString);
+			}
+			else
+			{
+				serializer.Serialize(writer, value);
+			}
     }
   }
 }
