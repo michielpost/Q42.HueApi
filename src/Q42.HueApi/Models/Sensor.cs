@@ -56,7 +56,19 @@ namespace Q42.HueApi.Models
     
    [DataMember(Name = "status")]
     public int? Status { get; set; }
-  }
+
+	[DataMember(Name = "open")]
+	public bool? Open { get; set; }
+
+	[DataMember(Name = "temperature")]
+	public int? Temperature { get; set; }
+
+	[DataMember(Name = "humidity")]
+	public int? Humidity { get; set; }
+
+	[DataMember(Name = "flag")]
+	public bool? Flag { get; set; }
+	}
 
   [DataContract]
   public class SensorConfig
