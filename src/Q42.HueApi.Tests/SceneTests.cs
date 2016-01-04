@@ -52,5 +52,20 @@ namespace Q42.HueApi.Tests
       Assert.AreNotEqual(0, result.Count);
     }
 
-  }
+		[TestMethod]
+		public async Task UpdateScene()
+		{
+			Scene scene = new Scene()
+			{
+				 Id = "scene1",
+				 Recycle = true,
+				  Name = "test"
+			};
+
+			var result = await _client.UpdateSceneAsync("scene1", scene);
+
+			Assert.AreNotEqual(0, result.Count);
+		}
+
+	}
 }

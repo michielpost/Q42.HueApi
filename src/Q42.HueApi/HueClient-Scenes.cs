@@ -32,7 +32,7 @@ namespace Q42.HueApi
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes", ApiBase))).ConfigureAwait(false);
 
 #if DEBUG
-      stringResult = "{    \"1\": {        \"name\": \"My Scene 1\",        \"lights\": [            \"1\",            \"2\",            \"3\"        ],        \"active\": true    },    \"2\": {        \"name\": \"My Scene 2\",        \"lights\": [            \"1\",            \"2\",            \"3\"        ],        \"active\": true    }}";
+      stringResult = "{    \"1\": {        \"name\": \"My Scene 1\",        \"lights\": [            \"1\",            \"2\",            \"3\"        ],        \"recycle\": true    },    \"2\": {        \"name\": \"My Scene 2\",        \"lights\": [            \"1\",            \"2\",            \"3\"        ],        \"recycle\": true    }}";
 #endif
 
 

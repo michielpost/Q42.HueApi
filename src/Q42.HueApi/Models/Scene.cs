@@ -13,9 +13,10 @@ namespace Q42.HueApi.Models
   public class Scene
   {
     [DataMember]
-    public string Id { get; set; }
+	public string Id { get; set; }
+	public bool ShouldSerializeId() { return false; }
 
-    [DataMember(Name = "name")]
+		[DataMember(Name = "name")]
     public string Name { get; set; }
 
     [DataMember(Name = "lights")]
@@ -26,6 +27,8 @@ namespace Q42.HueApi.Models
 	/// </summary>
 	[DataMember(Name = "owner")]
 	public string Owner { get; set; }
+	public bool ShouldSerializeOwner() { return false; }
+
 
 	/// <summary>
 	/// App specific data linked to the scene.  Each individual application should take responsibility for the data written in this field.
@@ -44,21 +47,27 @@ namespace Q42.HueApi.Models
 	/// </summary>
 	[DataMember(Name = "recycle")]
 	public bool? Recycle { get; set; }
+	public bool ShouldSerializeRecycle() { return false; }
+
 
 	/// <summary>
 	/// Indicates that the scene is locked by a rule or a schedule and cannot be deleted until all resources requiring or that reference the scene are deleted.
 	/// </summary>
 	[DataMember(Name = "locked")]
 	public bool? Locked { get; set; }
+	public bool ShouldSerializeLocked() { return false; }
 
 
 	[DataMember(Name = "version")]
 	public int? Version { get; set; }
+	public bool ShouldSerializeVersion() { return false; }
 
-	[DataMember(Name = "lastupdated")]
+		[DataMember(Name = "lastupdated")]
 	public DateTime? LastUpdated { get; set; }
+	public bool ShouldSerializeLastUpdated() { return false; }
 
-	[DataMember(Name = "storelightstate")]
+
+		[DataMember(Name = "storelightstate")]
 	public bool? StoreLightState { get; set; }
 
 	[DataMember(Name = "transitiontime")]
