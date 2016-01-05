@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Q42.HueApi.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,23 @@ namespace Q42.HueApi.Models
 		public GenericScheduleCommand(string jsonString)
 		{
 			JsonString = jsonString;
+		}
+
+		public bool IsSceneCommand()
+		{
+			JObject jObject = JObject.Parse(this.JsonString);
+
+			return jObject["scene"] != null || jObject["Scene"] != null;
+		}
+
+		public SceneCommand AsSceneCommand()
+		{
+			return JsonConvert.DeserializeObject<SceneCommand>(this.JsonString);
+		}
+
+		public LightCommand AsLightCommand()
+		{
+			return JsonConvert.DeserializeObject<LightCommand>(this.JsonString);
 		}
 	}
 }

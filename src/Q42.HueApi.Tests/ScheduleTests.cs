@@ -49,7 +49,15 @@ namespace Q42.HueApi.Tests
       Assert.IsNotNull(single);
     }
 
-    [TestMethod]
+	[TestMethod]
+	public async Task GetSingleDebugTest()
+	{
+		var single = await _client.GetScheduleAsync("1");
+
+		Assert.IsNotNull(single);
+	}
+
+		[TestMethod]
     public async Task CreateScheduleSingle()
     {
       Schedule schedule = new Schedule();

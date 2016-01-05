@@ -10,39 +10,22 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Converters
 {
-  internal class CommandBodyConverter : JsonConverter
-  {
-    public override bool CanConvert(Type objectType)
-    {
-      return (objectType == typeof(ICommandBody));
-    }
+	internal class CommandBodyConverter : JsonConverter
+	{
+		public override bool CanConvert(Type objectType)
+		{
+			return (objectType == typeof(ICommandBody));
+		}
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-    {
-      if (reader.TokenType == JsonToken.StartObject)
-      {
-        JObject jObject = JObject.Load(reader);
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		{
+			var jsonString = JObject.Load(reader).ToString();
 
-        //Check if it is a scene command
-        if (jObject["scene"] != null || jObject["Scene"] != null)
-        {
-          var sceneTarget = new SceneCommand();
-          // Populate the object properties
-          serializer.Populate(jObject.CreateReader(), sceneTarget);
-          return sceneTarget;
-        }
+			return new GenericScheduleCommand(jsonString);
+		}
 
-        // Populate the object properties
-        var target = new LightCommand();
-        serializer.Populate(jObject.CreateReader(), target);
-        return target;
-      }
-     
-      return serializer.Deserialize<LightCommand>(reader);
-    }
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-    {
+		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		{
 			if (value is GenericScheduleCommand)
 			{
 				var genericCommand = value as GenericScheduleCommand;
@@ -52,6 +35,6 @@ namespace Q42.HueApi.Converters
 			{
 				serializer.Serialize(writer, value);
 			}
-    }
-  }
+		}
+	}
 }

@@ -60,7 +60,11 @@ namespace Q42.HueApi
       HttpClient client = HueClient.GetHttpClient();
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules/{1}", ApiBase, id))).ConfigureAwait(false);
 
-      Schedule schedule = DeserializeResult<Schedule>(stringResult);
+#if DEBUG
+		stringResult = "{	\"name\": \"Wake up\",	\"description\": \"My wake up alarm\",	\"command\": {		\"address\": \"/api/<username>/groups/1/action\",		\"method\": \"PUT\",		\"body\": {			\"on\": true		}	},	\"time\": \"W124/T06:00:00\"}";
+#endif
+
+	  Schedule schedule = DeserializeResult<Schedule>(stringResult);
 
       if (string.IsNullOrEmpty(schedule.Id))
         schedule.Id = id;
