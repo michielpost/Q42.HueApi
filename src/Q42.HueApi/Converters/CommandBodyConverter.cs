@@ -19,9 +19,15 @@ namespace Q42.HueApi.Converters
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			var jsonString = JObject.Load(reader).ToString();
+			if (reader.TokenType == JsonToken.StartObject)
+			{
+				JObject jObject = JObject.Load(reader);
 
-			return new GenericScheduleCommand(jsonString);
+				return new GenericScheduleCommand(jObject.ToString());
+			}
+
+			return null;
+
 		}
 
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
