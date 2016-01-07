@@ -155,6 +155,10 @@ namespace Q42.HueApi
 			if (scene == null)
 				throw new ArgumentNullException(nameof(scene));
 
+			//Set these fields to null
+			scene.Id = null;
+			scene.Recycle = null;
+
 			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = HueClient.GetHttpClient();

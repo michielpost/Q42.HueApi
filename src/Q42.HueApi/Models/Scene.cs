@@ -14,7 +14,6 @@ namespace Q42.HueApi.Models
   {
     [DataMember]
 	public string Id { get; set; }
-	public bool ShouldSerializeId() { return false; }
 
 		[DataMember(Name = "name")]
     public string Name { get; set; }
@@ -47,7 +46,6 @@ namespace Q42.HueApi.Models
 	/// </summary>
 	[DataMember(Name = "recycle")]
 	public bool? Recycle { get; set; }
-	public bool ShouldSerializeRecycle() { return false; }
 
 
 	/// <summary>
