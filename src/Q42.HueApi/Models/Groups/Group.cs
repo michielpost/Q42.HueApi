@@ -45,6 +45,6 @@ namespace Q42.HueApi.Models.Groups
     /// Action property only filled when getting a single group
     /// </summary>
     [DataMember(Name = "action")]
-    public LightCommand Action { get; set; }
+    public State Action { get; set; }
   }
 }
