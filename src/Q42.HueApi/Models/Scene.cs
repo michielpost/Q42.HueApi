@@ -14,7 +14,6 @@ namespace Q42.HueApi.Models
   {
     [DataMember]
 	public string Id { get; set; }
-	public bool ShouldSerializeId() { return false; }
 
 		[DataMember(Name = "name")]
     public string Name { get; set; }
@@ -27,8 +26,6 @@ namespace Q42.HueApi.Models
 	/// </summary>
 	[DataMember(Name = "owner")]
 	public string Owner { get; set; }
-	public bool ShouldSerializeOwner() { return false; }
-
 
 	/// <summary>
 	/// App specific data linked to the scene.  Each individual application should take responsibility for the data written in this field.
@@ -47,7 +44,6 @@ namespace Q42.HueApi.Models
 	/// </summary>
 	[DataMember(Name = "recycle")]
 	public bool? Recycle { get; set; }
-	public bool ShouldSerializeRecycle() { return false; }
 
 
 	/// <summary>
@@ -55,17 +51,12 @@ namespace Q42.HueApi.Models
 	/// </summary>
 	[DataMember(Name = "locked")]
 	public bool? Locked { get; set; }
-	public bool ShouldSerializeLocked() { return false; }
-
 
 	[DataMember(Name = "version")]
 	public int? Version { get; set; }
-	public bool ShouldSerializeVersion() { return false; }
 
 		[DataMember(Name = "lastupdated")]
 	public DateTime? LastUpdated { get; set; }
-	public bool ShouldSerializeLastUpdated() { return false; }
-
 
 		[DataMember(Name = "storelightstate")]
 	public bool? StoreLightState { get; set; }
@@ -73,6 +64,15 @@ namespace Q42.HueApi.Models
 	[DataMember(Name = "transitiontime")]
 	[JsonConverter(typeof(TransitionTimeConverter))]
 	public TimeSpan? TransitionTime { get; set; }
+
+
+		public void FilterNonUpdatableProperties()
+		{
+			this.Version = null;
+			this.LastUpdated = null;
+			this.Locked = null;
+			this.Owner = null;
+		}
 
   }
 

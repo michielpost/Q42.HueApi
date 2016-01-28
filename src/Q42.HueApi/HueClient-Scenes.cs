@@ -69,6 +69,9 @@ namespace Q42.HueApi
 			if (scene.Name == null)
 				throw new ArgumentNullException(nameof(scene.Name));
 
+			//Filter non updatable properties
+			scene.FilterNonUpdatableProperties();
+
 			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = HueClient.GetHttpClient();
@@ -154,6 +157,11 @@ namespace Q42.HueApi
 				throw new ArgumentException("id must not be empty", "id");
 			if (scene == null)
 				throw new ArgumentNullException(nameof(scene));
+
+			//Set these fields to null
+			scene.Id = null;
+			scene.Recycle = null;
+			scene.FilterNonUpdatableProperties();
 
 			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
