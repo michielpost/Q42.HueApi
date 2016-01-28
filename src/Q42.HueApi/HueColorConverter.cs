@@ -320,7 +320,7 @@ namespace Q42.HueApi
             }
             return xyPoint;
 		}
-        
+
 
 		/// <summary>
 		/// Returns hexvalue from Light State
@@ -329,17 +329,29 @@ namespace Q42.HueApi
 		/// <returns></returns>
 		public static string HexFromState(State state, string model)
 		{
+			var rgb = RgbFromState(state, model);
+
+			return rgb.ToHex();
+		}
+
+		/// <summary>
+		/// Returns hexvalue from Light State
+		/// </summary>
+		/// <param name="state"></param>
+		/// <returns></returns>
+		public static RGBColor RgbFromState(State state, string model)
+		{
 			if (state == null)
 				throw new ArgumentNullException("state");
 			if (state.On == false || state.Brightness <= 5) //Off or low brightness
-				return "000000";
+				return new RGBColor(0,0,0);
 			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
 			{
 				var color = XYToRgb(new CIE1931Point(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
-                return color.ToHex();
+				return color;
 			}
 
-			return "FFFFFF"; //White
+			return new RGBColor(1, 1, 1); ;
 		}
 
 		public static RGBColor XYToRgb(CIE1931Point point, string model)

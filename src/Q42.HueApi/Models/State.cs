@@ -43,5 +43,10 @@ namespace Q42.HueApi
 	{
 		return HueColorConverter.HexFromState(this, model);
 	}
-  }
+
+	public RGBColor ToRgb(string model = "LCT001")
+	{
+		return HueColorConverter.RgbFromState(this, model);
+	}
+	}
 }
