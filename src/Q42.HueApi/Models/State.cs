@@ -31,7 +31,7 @@ namespace Q42.HueApi
 
     [JsonConverter(typeof(StringEnumConverter))]
     [DataMember (Name = "effect")]
-    public Effect Effect { get; set; }
+    public Effect? Effect { get; set; }
 
     [DataMember (Name = "colormode")]
     public string ColorMode { get; set; }
