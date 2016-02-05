@@ -72,6 +72,11 @@ namespace Q42.HueApi
 			//Filter non updatable properties
 			scene.FilterNonUpdatableProperties();
 
+            //It defaults to false, but fails when omitted
+            //https://github.com/Q42/Q42.HueApi/issues/56
+            if (!scene.Recycle.HasValue)
+                scene.Recycle = false;
+
 			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = HueClient.GetHttpClient();
