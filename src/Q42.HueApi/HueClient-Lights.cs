@@ -55,7 +55,10 @@ namespace Q42.HueApi
         throw new Exception(error["description"].Value<string>());
       }
 
-      return token.ToObject<Light>();
+	  var light = token.ToObject<Light>();
+	  light.Id = id;
+
+	  return light;
     }
 
     /// <summary>
