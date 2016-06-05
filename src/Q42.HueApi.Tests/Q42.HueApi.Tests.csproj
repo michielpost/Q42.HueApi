@@ -73,6 +73,7 @@
     <Compile Include="Remote\RemoteLightsTests.cs" />
     <Compile Include="RuleTests.cs" />
     <Compile Include="Schedule-GenericScheduleCommandTests.cs" />
+    <Compile Include="ResourceLinksTests.cs" />
     <Compile Include="SensorTests.cs" />
     <Compile Include="SceneTests.cs" />
     <Compile Include="InfoTests.cs" />

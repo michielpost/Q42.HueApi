@@ -259,6 +259,16 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSensorAsync(string id);
 
-    #endregion
-  }
+		#endregion
+
+		#region ResourceLinks
+
+		Task<HueResults> DeleteResourceLinkAsync(string resourceLinkId);
+		Task<IReadOnlyCollection<ResourceLink>> GetResourceLinksAsync();
+		Task<ResourceLink> GetResourceLinkAsync(string id);
+		Task<string> CreateResourceLinkAsync(ResourceLink resourceLink);
+		Task<HueResults> UpdateResourceLinkAsync(string id, ResourceLink resourceLink);
+
+		#endregion
+	}
 }

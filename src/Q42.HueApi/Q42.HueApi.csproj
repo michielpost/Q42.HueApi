@@ -53,6 +53,7 @@
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\HttpMethodConverter.cs" />
     <Compile Include="HttpBridgeLocator.cs" />
+    <Compile Include="HueClient-ResourceLinks.cs" />
     <Compile Include="Interfaces\IRemoteHueClient.cs" />
     <Compile Include="Interfaces\ILocalHueClient.cs" />
     <Compile Include="LocalHueClient.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Models\Groups\DefaultHueResult.cs" />
     <Compile Include="Models\HueDateTime.cs" />
     <Compile Include="Models\InternalBridgeCommand.cs" />
+    <Compile Include="Models\ResourceLink.cs" />
     <Compile Include="Models\SensorCommand.cs" />
     <Compile Include="Models\SceneCommand.cs" />
     <Compile Include="Models\LightCommand.cs" />
