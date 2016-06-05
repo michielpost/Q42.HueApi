@@ -37,6 +37,12 @@ namespace Q42.HueApi.Models
 
     [DataMember(Name = "uniqueid")]
     public string UniqueId { get; set; }
+
+	[DataMember(Name = "productid")]
+	public string ProductId { get; set; }
+
+	[DataMember(Name = "swconfigid")]
+	public string SwConfigId { get; set; }
   }
 
   [DataContract]

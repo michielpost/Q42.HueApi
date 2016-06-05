@@ -70,10 +70,28 @@ namespace Q42.HueApi.Models
     [EnumMember(Value = "dx")]
     OnChange,
 
-    /// <summary>
-    /// LessThan, Allowed on int values
-    /// </summary>
-    [EnumMember(Value = "lt")]
+	/// <summary>
+	/// OnChange, Used for Time (timestamps) int and bool values..
+	/// </summary>
+	[EnumMember(Value = "ddx")]
+	OnChangeDdx,
+
+	/// <summary>
+	/// OnChange, Used for Time (timestamps) int and bool values..
+	/// </summary>
+	[EnumMember(Value = "stable")]
+	OnChangeStable,
+
+	/// <summary>
+	/// OnChange, Used for Time (timestamps) int and bool values..
+	/// </summary>
+	[EnumMember(Value = "not stable")]
+	OnChangeNotStable,
+
+	/// <summary>
+	/// LessThan, Allowed on int values
+	/// </summary>
+	[EnumMember(Value = "lt")]
     LessThan,
 
     /// <summary>

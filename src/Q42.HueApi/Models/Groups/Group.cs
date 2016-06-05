@@ -7,44 +7,59 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models.Groups
 {
-  [DataContract]
-  public class Group
-  {
+	[DataContract]
+	public class Group
+	{
 
-	[DataMember]
-	public string Id { get; set; }
+		[DataMember]
+		public string Id { get; set; }
 
-    [DataMember(Name = "name")]
-    public string Name { get; set; }
+		[DataMember(Name = "name")]
+		public string Name { get; set; }
 
-    /// <summary>
-    /// Luminaire / Lightsource / LightGroup
-    /// </summary>
-    [DataMember(Name = "type")]
-    public string Type { get; set; }
+		/// <summary>
+		/// Luminaire / Lightsource / LightGroup
+		/// </summary>
+		[DataMember(Name = "type")]
+		public string Type { get; set; }
 
-	/// <summary>
-	/// Category of the Room type. Default is "Other".
-	/// </summary>
-	[DataMember(Name = "class")]
-	public string Class { get; set; }
+		/// <summary>
+		/// Category of the Room type. Default is "Other".
+		/// </summary>
+		[DataMember(Name = "class")]
+		public string Class { get; set; }
 
-	/// <summary>
-	/// As of 1.4. Uniquely identifies the hardware model of the luminaire. Only present for automatically created Luminaires.
-	/// </summary>
-	[DataMember(Name = "modelid")]
-    public string ModelId { get; set; }
+		/// <summary>
+		/// As of 1.4. Uniquely identifies the hardware model of the luminaire. Only present for automatically created Luminaires.
+		/// </summary>
+		[DataMember(Name = "modelid")]
+		public string ModelId { get; set; }
 
-    /// <summary>
-    /// Lights property only filled when getting a single group
-    /// </summary>
-    [DataMember(Name = "lights")]
-    public List<string> Lights { get; set; }
-    
-    /// <summary>
-    /// Action property only filled when getting a single group
-    /// </summary>
-    [DataMember(Name = "action")]
-    public State Action { get; set; }
-  }
+		/// <summary>
+		/// Lights property only filled when getting a single group
+		/// </summary>
+		[DataMember(Name = "lights")]
+		public List<string> Lights { get; set; }
+
+		/// <summary>
+		/// Action property only filled when getting a single group
+		/// </summary>
+		[DataMember(Name = "action")]
+		public State Action { get; set; }
+
+		[DataMember(Name = "state")]
+		public GroupState State { get; set; }
+
+	}
+
+	[DataContract]
+	public class GroupState
+	{
+		[DataMember(Name = "any_on")]
+		public bool? AnyOn { get; set; }
+
+		[DataMember(Name = "all_on")]
+		public bool? AllOn { get; set; }
+	}
+
 }

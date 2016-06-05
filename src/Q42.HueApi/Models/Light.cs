@@ -21,10 +21,16 @@ namespace Q42.HueApi
     [DataMember (Name = "modelid")]
     public string ModelId { get; set; }
 
-    /// <summary>
-    /// Unique id of the device. The MAC address of the device with a unique endpoint id in the form: AA:BB:CC:DD:EE:FF:00:11-XX
-    /// </summary>
-    [DataMember(Name = "uniqueid")]
+	[DataMember(Name = "productid")]
+	public string ProductId { get; set; }
+
+	[DataMember(Name = "swconfigid")]
+	public string SwConfigId { get; set; }
+
+	/// <summary>
+	/// Unique id of the device. The MAC address of the device with a unique endpoint id in the form: AA:BB:CC:DD:EE:FF:00:11-XX
+	/// </summary>
+	[DataMember(Name = "uniqueid")]
     public string UniqueId { get; set; }
 
 	/// <summary>
