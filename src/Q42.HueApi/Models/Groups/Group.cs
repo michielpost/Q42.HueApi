@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -20,14 +22,16 @@ namespace Q42.HueApi.Models.Groups
 		/// <summary>
 		/// Luminaire / Lightsource / LightGroup
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		[DataMember(Name = "type")]
-		public string Type { get; set; }
+		public GroupType Type { get; set; }
 
 		/// <summary>
 		/// Category of the Room type. Default is "Other".
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		[DataMember(Name = "class")]
-		public string Class { get; set; }
+		public RoomClass? Class { get; set; }
 
 		/// <summary>
 		/// As of 1.4. Uniquely identifies the hardware model of the luminaire. Only present for automatically created Luminaires.
@@ -36,13 +40,13 @@ namespace Q42.HueApi.Models.Groups
 		public string ModelId { get; set; }
 
 		/// <summary>
-		/// Lights property only filled when getting a single group
+		/// The IDs of the lights that are in the group.
 		/// </summary>
 		[DataMember(Name = "lights")]
 		public List<string> Lights { get; set; }
 
 		/// <summary>
-		/// Action property only filled when getting a single group
+		/// The light state of one of the lamps in the group.
 		/// </summary>
 		[DataMember(Name = "action")]
 		public State Action { get; set; }
@@ -60,6 +64,67 @@ namespace Q42.HueApi.Models.Groups
 
 		[DataMember(Name = "all_on")]
 		public bool? AllOn { get; set; }
+	}
+
+	/// <summary>
+	/// Possible group types
+	/// </summary>
+	public enum GroupType
+	{
+		
+		[EnumMember(Value = "LightGroup")]
+		LightGroup,
+		[EnumMember(Value = "Room")]
+		Room,
+		[EnumMember(Value = "Luminaire")]
+		Luminaire,
+		[EnumMember(Value = "LightSource")]
+		LightSource
+	}
+
+	/// <summary>
+	/// Possible room types
+	/// </summary>
+	public enum RoomClass
+	{
+		[EnumMember(Value = "Other")]
+		Other,
+		[EnumMember(Value = "Living room")]
+		LivingRoom,
+		[EnumMember(Value = "Kitchen")]
+		Kitchen,
+		[EnumMember(Value = "Dining")]
+		Dining,
+		[EnumMember(Value = "Bedroom")]
+		Bedroom,
+		[EnumMember(Value = "Kids bedroom")]
+		KidsBedroom,
+		[EnumMember(Value = "Bathroom")]
+		Bathroom,
+		[EnumMember(Value = "Nursery")]
+		Nursery,
+		[EnumMember(Value = "Recreation")]
+		Recreation,
+		[EnumMember(Value = "Office")]
+		Office,
+		[EnumMember(Value = "Gym")]
+		Gym,
+		[EnumMember(Value = "Hallway")]
+		Hallway,
+		[EnumMember(Value = "Toilet")]
+		Toilet,
+		[EnumMember(Value = "Front door")]
+		FrontDoor,
+		[EnumMember(Value = "Garage")]
+		Garage,
+		[EnumMember(Value = "Terrace")]
+		Terrace,
+		[EnumMember(Value = "Garden")]
+		Garden,
+		[EnumMember(Value = "Driveway")]
+		Driveway,
+		[EnumMember(Value = "Carport")]
+		Carport
 	}
 
 }

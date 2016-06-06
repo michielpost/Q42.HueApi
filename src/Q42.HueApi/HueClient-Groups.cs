@@ -17,23 +17,31 @@ namespace Q42.HueApi
   /// </summary>
   public partial class HueClient
   {
-    /// <summary>
-    /// Create a group for a list of lights
-    /// </summary>
-    /// <param name="lights"></param>
-    /// <returns></returns>
-    public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null)
+	/// <summary>
+	/// Create a group for a list of lights
+	/// </summary>
+	/// <param name="lights">List of lights in the group</param>
+	/// <param name="name">Optional name</param>
+	/// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
+	/// <returns></returns>
+	public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null)
     {
       CheckInitialized();
 
       if (lights == null)
         throw new ArgumentNullException("lights");
-      
-      dynamic jsonObj = new ExpandoObject();
-      jsonObj.lights = lights;
+
+			CreateGroupRequest jsonObj = new CreateGroupRequest();
+      jsonObj.Lights = lights;
 
       if (!string.IsNullOrEmpty(name))
-        jsonObj.name = name;
+        jsonObj.Name = name;
+
+	  if(roomClass.HasValue)
+	  {
+		jsonObj.Class = roomClass.Value;
+		jsonObj.Type = GroupType.Room;
+	  }
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 

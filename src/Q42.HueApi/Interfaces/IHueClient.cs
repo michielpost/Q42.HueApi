@@ -51,13 +51,14 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<HueResults> SendGroupCommandAsync(ICommandBody command, string group = "0");
 
-    /// <summary>
-    /// Creates a group for a set of lights
-    /// </summary>
-    /// <param name="lights"></param>
-    /// <param name="name">Group Name (optional)</param>
-    /// <returns></returns>
-    Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null);
+	/// <summary>
+	/// Create a group for a list of lights
+	/// </summary>
+	/// <param name="lights">List of lights in the group</param>
+	/// <param name="name">Optional name</param>
+	/// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
+	/// <returns></returns>
+	Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomCLass = null);
 
     /// <summary>
     /// Deletes a single group

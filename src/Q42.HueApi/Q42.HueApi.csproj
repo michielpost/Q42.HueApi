@@ -76,6 +76,7 @@
     <Compile Include="Models\BridgeConfigUpdate.cs" />
     <Compile Include="Models\BridgeConfig.cs" />
     <Compile Include="Models\GenericScheduleCommand.cs" />
+    <Compile Include="Models\Groups\CreateGroupRequest.cs" />
     <Compile Include="Models\Groups\Group.cs" />
     <Compile Include="Models\Groups\DefaultHueResult.cs" />
     <Compile Include="Models\HueDateTime.cs" />
