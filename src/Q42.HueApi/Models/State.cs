@@ -37,7 +37,7 @@ namespace Q42.HueApi
     public string ColorMode { get; set; }
 
     [DataMember (Name = "reachable")]
-    public bool IsReachable { get; set; }
+    public bool? IsReachable { get; set; }
         
 	public string ToHex(string model = "LCT001")
 	{
