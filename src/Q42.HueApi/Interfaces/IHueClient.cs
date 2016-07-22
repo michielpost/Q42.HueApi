@@ -94,14 +94,6 @@ namespace Q42.HueApi.Interfaces
     #region Lights
 
     /// <summary>
-    /// Set the next Hue color
-    /// </summary>
-    /// <param name="lightList"></param>
-    /// <returns></returns>
-    [Obsolete("Please use the HueIncrement and SaturationIncrement properties on a LightCommand. This method will be removed in the future.")]
-    Task<HueResults> SetNextHueColorAsync(IEnumerable<string> lightList = null);
-
-    /// <summary>
     /// Asynchronously gets all lights registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="Light"/>s registered with the bridge.</returns>

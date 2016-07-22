@@ -118,17 +118,6 @@ namespace Q42.HueApi.Tests
       Assert.IsNotNull(result);
 
     }
-
-    [TestMethod]
-    public async Task SetNextHueColorAsyncTest()
-    {
-      var result = await _client.SetNextHueColorAsync(new List<string>() { "1" });
-
-      Assert.IsNotNull(result);
-
-    }
-   
-
   
   }
 }
