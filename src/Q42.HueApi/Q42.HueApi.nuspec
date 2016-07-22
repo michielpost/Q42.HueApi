@@ -30,6 +30,9 @@
   <files>
 		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.dll" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
 		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.XML" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
+		
+		<file src="..\Q42.HueApi.ColorConverters\bin\Release\Q42.HueApi.ColorConverters.dll" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
+		<file src="..\Q42.HueApi.ColorConverters\bin\Release\Q42.HueApi.ColorConverters.XML" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
   </files>
 </package>
 
