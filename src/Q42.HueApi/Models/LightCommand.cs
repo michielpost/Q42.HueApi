@@ -31,13 +31,13 @@ namespace Q42.HueApi
     /// Gets or sets the hue for Hue and <see cref="Saturation"/> mode.
     /// </summary>
     [DataMember (Name = "hue")]
-    public int? Hue { get; set; }
+    public double? Hue { get; set; }
 
     /// <summary>
     /// Gets or sets the saturation for <see cref="Hue"/> and Saturation mode.
     /// </summary>
     [DataMember (Name = "sat")]
-    public int? Saturation { get; set; }
+    public double? Saturation { get; set; }
 
     /// <summary>
     /// Gets or sets the Color Temperature

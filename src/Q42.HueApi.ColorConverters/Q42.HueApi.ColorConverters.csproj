@@ -38,18 +38,29 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HSB\DoubleExtension.cs" />
+    <Compile Include="HSB\Extensions\LightCommandExtensions.cs" />
+    <Compile Include="HSB\Extensions\LightExtensions.cs" />
+    <Compile Include="HSB\Extensions\StateExtensions.cs" />
+    <Compile Include="HSB\HSB.cs" />
+    <Compile Include="HSB\Numbers.cs" />
+    <Compile Include="HSB\RGBExtensions.cs" />
     <Compile Include="OriginalWithModel\CIE1931Gamut.cs" />
     <Compile Include="OriginalWithModel\CIE1931Point.cs" />
     <Compile Include="OriginalWithModel\Extensions\LightCommandExtensions.cs" />
     <Compile Include="OriginalWithModel\Extensions\LightExtensions.cs" />
     <Compile Include="OriginalWithModel\Extensions\StateExtensions.cs" />
     <Compile Include="OriginalWithModel\HueColorConverter.cs" />
-    <Compile Include="OriginalWithModel\RGBColor.cs" />
+    <Compile Include="RGBColor.cs" />
+    <Compile Include="Original\CGPoint.cs" />
+    <Compile Include="Original\Extensions\LightCommandExtensions.cs" />
+    <Compile Include="Original\Extensions\LightExtensions.cs" />
+    <Compile Include="Original\Extensions\StateExtensions.cs" />
+    <Compile Include="Original\HueColorConverter-Arrays.cs" />
+    <Compile Include="Original\HueColorConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Original\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
       <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>

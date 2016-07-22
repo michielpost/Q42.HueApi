@@ -1,11 +1,11 @@
-﻿using Q42.HueApi.ColorConverters.OriginalWithModel;
+﻿using Q42.HueApi.ColorConverters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi
+namespace Q42.HueApi.ColorConverters.OriginalWithModel
 {
     /// <summary>
     /// Used to convert colors between XY and RGB
@@ -14,7 +14,7 @@ namespace Q42.HueApi
     /// <remarks>
     /// Based on http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
     /// </remarks>
-    internal static partial class HueColorConverter
+    internal static class HueColorConverter
     {
 		public static CIE1931Point RgbToXY(RGBColor color, string model)
 		{

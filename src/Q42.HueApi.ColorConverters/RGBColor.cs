@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.ColorConverters.OriginalWithModel
+namespace Q42.HueApi.ColorConverters
 {
 	/// <summary>
 	/// Represents a color with red, green and blue components.
@@ -34,5 +34,7 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 
 			return string.Format("{0}{1}{2}", red.ToString("X2"), green.ToString("X2"), blue.ToString("X2"));
 		}
+
+		
 	}
 }
