@@ -66,7 +66,6 @@
     <Compile Include="HueClient-Scenes.cs" />
     <Compile Include="HueClient-Lights.cs" />
     <Compile Include="HueClient-Schedules.cs" />
-    <Compile Include="HueColorConverter.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Interfaces\IBridgeLocator.cs" />
     <Compile Include="Interfaces\ICommandBody.cs" />

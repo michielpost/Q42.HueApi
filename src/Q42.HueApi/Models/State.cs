@@ -39,14 +39,6 @@ namespace Q42.HueApi
     [DataMember (Name = "reachable")]
     public bool? IsReachable { get; set; }
         
-	public string ToHex(string model = "LCT001")
-	{
-		return HueColorConverter.HexFromState(this, model);
-	}
-
-	public RGBColor ToRgb(string model = "LCT001")
-	{
-		return HueColorConverter.RgbFromState(this, model);
-	}
+	
 	}
 }

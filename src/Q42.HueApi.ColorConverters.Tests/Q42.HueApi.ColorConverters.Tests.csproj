@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2114B768-86CF-4687-BCFD-2B7916C85CD9}</ProjectGuid>
+    <ProjectGuid>{64A5861F-4D4E-4127-B70F-F80CC9D49CFD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Q42.HueApi.NET.Tests</RootNamespace>
-    <AssemblyName>Q42.HueApi.NET.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Q42.HueApi.ColorConverters.Tests</RootNamespace>
+    <AssemblyName>Q42.HueApi.ColorConverters.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -34,18 +34,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI|AnyCPU'">
-    <OutputPath>bin\CI\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -60,18 +50,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BridgeDiscoveryTests.cs" />
-    <Compile Include="HueColorConverterTests.cs" />
+    <Compile Include="ColorConverterTests-Arrays.cs" />
+    <Compile Include="ColorConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj">
       <Project>{a4c0c8c0-da94-4e12-a293-860b7cf609db}</Project>
       <Name>Q42.HueApi.ColorConverters</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Q42.HueApi.NET\Q42.HueApi.NET.csproj">
-      <Project>{bbb3d8f5-5e2e-4366-81cc-d37bebe10891}</Project>
-      <Name>Q42.HueApi.NET</Name>
     </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
       <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>

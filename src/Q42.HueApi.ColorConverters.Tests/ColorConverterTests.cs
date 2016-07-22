@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Q42.HueApi.ColorConverters.OriginalWithModel;
 using System;
 
-namespace Q42.HueApi.Tests
+namespace Q42.HueApi.ColorConverters.Tests
 {
     [TestClass]
     public class ColorConverterTests

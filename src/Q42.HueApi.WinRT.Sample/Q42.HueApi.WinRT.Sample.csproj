@@ -200,6 +200,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj">
+      <Project>{a4c0c8c0-da94-4e12-a293-860b7cf609db}</Project>
+      <Name>Q42.HueApi.ColorConverters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi.WinRT\Q42.HueApi.WinRT.csproj">
       <Project>{0a49146a-6cf7-4074-827e-be32e24b0445}</Project>
       <Name>Q42.HueApi.WinRT</Name>
