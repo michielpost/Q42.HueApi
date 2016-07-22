@@ -165,23 +165,6 @@ namespace Q42.HueApi
       }
     }
 
-
-    /// <summary>
-    /// Set the next Hue color
-    /// </summary>
-    /// <param name="lightList"></param>
-    /// <returns></returns>
-    [Obsolete("Only works in bridge firmware < 1.7 Please use the HueIncrement and SaturationIncrement properties on a LightCommand. This method will be removed in the future.")]
-    public Task<HueResults> SetNextHueColorAsync(IEnumerable<string> lightList = null)
-    {
-      //Invalid JSON, doesn't work anymore. Only in bridge firmware < 1.7
-      string command = "{\"hue\":+10000,\"sat\":255}";
-
-      return SendCommandRawAsync(command, lightList);
-
-    }
-
-
     /// <summary>
     /// Start searching for new lights
     /// </summary>

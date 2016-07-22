@@ -16,7 +16,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
-    <PackageCertificateThumbprint>C73F5046F4A75998C6EC2FB92ADC9C2F7FE3FA7D</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>A53D7C8CE3802D84EA5BFEF813BE53E131CF227F</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
