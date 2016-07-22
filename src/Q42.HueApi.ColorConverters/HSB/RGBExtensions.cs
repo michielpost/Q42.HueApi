@@ -11,6 +11,17 @@ namespace Q42.HueApi.ColorConverters.HSB
 	/// </summary>
 	internal static class RGBExtensions
 	{
+		internal static HSB GetHSB(this RGBColor rgb)
+		{
+			var hsb = new HSB
+			{
+				Hue = (int)rgb.GetHue(),
+				Saturation = (int)rgb.GetSaturation(),
+				Brightness = (int)rgb.GetBrightness()
+			};
+			return hsb;
+		}
+
 		internal static double GetHue(this RGBColor rgb)
 		{
 			var R = rgb.R;

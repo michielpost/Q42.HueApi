@@ -32,9 +32,10 @@ namespace Q42.HueApi.ColorConverters.HSB
 			if (lightCommand == null)
 				throw new ArgumentNullException("lightCommand");
 
-			lightCommand.Brightness = (byte)color.GetBrightness();
-			lightCommand.Hue = color.GetHue();
-			lightCommand.Saturation = color.GetSaturation();
+			var hsb = color.GetHSB();
+			lightCommand.Brightness = (byte)hsb.Brightness;
+			lightCommand.Hue = hsb.Hue;
+			lightCommand.Saturation = hsb.Saturation;
 
 			return lightCommand;
 		}
