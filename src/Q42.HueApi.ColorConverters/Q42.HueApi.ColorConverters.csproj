@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A4C0C8C0-DA94-4E12-A293-860B7CF609DB}</ProjectGuid>
+    <ProjectGuid>{C7305601-B583-479D-9A08-D6DA0A63AB85}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Q42.HueApi.ColorConverters</RootNamespace>
@@ -32,11 +32,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Q42.HueApi.ColorConverters.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="project.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
+      <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>
+      <Name>Q42.HueApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HSB\DoubleExtension.cs" />
@@ -52,7 +54,6 @@
     <Compile Include="OriginalWithModel\Extensions\LightExtensions.cs" />
     <Compile Include="OriginalWithModel\Extensions\StateExtensions.cs" />
     <Compile Include="OriginalWithModel\HueColorConverter.cs" />
-    <Compile Include="RGBColor.cs" />
     <Compile Include="Original\CGPoint.cs" />
     <Compile Include="Original\Extensions\LightCommandExtensions.cs" />
     <Compile Include="Original\Extensions\LightExtensions.cs" />
@@ -60,13 +61,7 @@
     <Compile Include="Original\HueColorConverter-Arrays.cs" />
     <Compile Include="Original\HueColorConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
-      <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>
-      <Name>Q42.HueApi</Name>
-    </ProjectReference>
+    <Compile Include="RGBColor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

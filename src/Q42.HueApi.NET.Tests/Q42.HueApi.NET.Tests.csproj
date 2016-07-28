@@ -66,7 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj">
-      <Project>{a4c0c8c0-da94-4e12-a293-860b7cf609db}</Project>
+      <Project>{c7305601-b583-479d-9a08-d6da0a63ab85}</Project>
       <Name>Q42.HueApi.ColorConverters</Name>
     </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi.NET\Q42.HueApi.NET.csproj">
