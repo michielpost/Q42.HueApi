@@ -65,6 +65,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj">
+      <Project>{c7305601-b583-479d-9a08-d6da0a63ab85}</Project>
+      <Name>Q42.HueApi.ColorConverters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi.NET\Q42.HueApi.NET.csproj">
       <Project>{bbb3d8f5-5e2e-4366-81cc-d37bebe10891}</Project>
       <Name>Q42.HueApi.NET</Name>

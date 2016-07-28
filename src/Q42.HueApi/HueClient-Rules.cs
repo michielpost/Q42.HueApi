@@ -64,9 +64,9 @@ namespace Q42.HueApi
     public async Task<Rule> GetRuleAsync(string id)
     {
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id can not be empty or a blank string", "id");
+        throw new ArgumentException("id can not be empty or a blank string", nameof(id));
 
       CheckInitialized();
 
@@ -97,7 +97,7 @@ namespace Q42.HueApi
     public Task<string> CreateRule(Rule rule)
     {
       if(rule == null)
-        throw new ArgumentNullException("rule");
+        throw new ArgumentNullException(nameof(rule));
 
       return CreateRule(rule.Name, rule.Conditions, rule.Actions);
     }
@@ -107,14 +107,14 @@ namespace Q42.HueApi
       CheckInitialized();
 
       if (conditions == null || !conditions.Any())
-        throw new ArgumentNullException("lights");
+        throw new ArgumentNullException(nameof(conditions));
       if (actions == null || !actions.Any())
-        throw new ArgumentNullException("actions");
+        throw new ArgumentNullException(nameof(actions));
 
       if (conditions.Count() > 8)
-        throw new ArgumentException("Max 8 conditions allowed", "conditions");
+        throw new ArgumentException("Max 8 conditions allowed", nameof(conditions));
       if (actions.Count() > 8)
-        throw new ArgumentException("Max 8 actions allowed", "actions");
+        throw new ArgumentException("Max 8 actions allowed", nameof(actions));
 
       dynamic jsonObj = new ExpandoObject();
 
@@ -149,7 +149,7 @@ namespace Q42.HueApi
     public Task<HueResults> UpdateRule(Rule rule)
     {
       if (rule == null)
-        throw new ArgumentNullException("rule");
+        throw new ArgumentNullException(nameof(rule));
 
       return UpdateRule(rule.Id, rule.Name, rule.Conditions, rule.Actions);
     }
@@ -159,9 +159,9 @@ namespace Q42.HueApi
       CheckInitialized();
 
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id must not be empty", "id");
+        throw new ArgumentException("id must not be empty", nameof(id));
      
 
       dynamic jsonObj = new ExpandoObject();

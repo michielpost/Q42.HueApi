@@ -112,11 +112,11 @@ namespace Q42.HueApi
 		CheckInitialized();
 
 		if (id == null)
-			throw new ArgumentNullException("id");
+			throw new ArgumentNullException(nameof(id));
 		if (id.Trim() == String.Empty)
-			throw new ArgumentException("id must not be empty", "id");
+			throw new ArgumentException("id must not be empty", nameof(id));
 		if (lights == null)
-			throw new ArgumentNullException("lights");
+			throw new ArgumentNullException(nameof(lights));
 
 		dynamic jsonObj = new ExpandoObject();
 		jsonObj.lights = lights;
@@ -157,9 +157,9 @@ namespace Q42.HueApi
 			CheckInitialized();
 
 			if (id == null)
-				throw new ArgumentNullException("id");
+				throw new ArgumentNullException(nameof(id));
 			if (id.Trim() == String.Empty)
-				throw new ArgumentException("id must not be empty", "id");
+				throw new ArgumentException("id must not be empty", nameof(id));
 			if (scene == null)
 				throw new ArgumentNullException(nameof(scene));
 
@@ -185,16 +185,16 @@ namespace Q42.HueApi
       CheckInitialized();
 
       if (sceneId == null)
-        throw new ArgumentNullException("sceneId");
+        throw new ArgumentNullException(nameof(sceneId));
       if (sceneId.Trim() == String.Empty)
-        throw new ArgumentException("sceneId must not be empty", "sceneId");
+        throw new ArgumentException("sceneId must not be empty", nameof(sceneId));
       if (lightId == null)
-        throw new ArgumentNullException("lightId");
+        throw new ArgumentNullException(nameof(lightId));
       if (lightId.Trim() == String.Empty)
-        throw new ArgumentException("lightId must not be empty", "lightId");
+        throw new ArgumentException("lightId must not be empty", nameof(lightId));
 
       if (command == null)
-        throw new ArgumentNullException("command");
+        throw new ArgumentNullException(nameof(command));
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -210,7 +210,7 @@ namespace Q42.HueApi
     public Task<HueResults> RecallSceneAsync(string sceneId, string groupId = "0")
     {
       if (sceneId == null)
-        throw new ArgumentNullException("sceneId");
+        throw new ArgumentNullException(nameof(sceneId));
 
       var groupCommand = new SceneCommand() { Scene = sceneId };
 

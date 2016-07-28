@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Q42.HueApi.ColorConverters.OriginalWithModel;
 
 namespace Q42.HueApi.NET.Tests
 {

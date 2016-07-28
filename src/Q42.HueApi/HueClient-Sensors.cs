@@ -148,9 +148,9 @@ namespace Q42.HueApi
     public async Task<Sensor> GetSensorAsync(string id)
     {
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id can not be empty or a blank string", "id");
+        throw new ArgumentException("id can not be empty or a blank string", nameof(id));
 
       CheckInitialized();
 
@@ -189,11 +189,11 @@ namespace Q42.HueApi
       CheckInitialized();
 
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id must not be empty", "id");
+        throw new ArgumentException("id must not be empty", nameof(id));
       if (string.IsNullOrEmpty(newName))
-        throw new ArgumentNullException("newName");
+        throw new ArgumentNullException(nameof(newName));
 
       dynamic jsonObj = new ExpandoObject();
       jsonObj.name = newName;
@@ -222,11 +222,11 @@ namespace Q42.HueApi
       CheckInitialized();
 
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id must not be empty", "id");
+        throw new ArgumentException("id must not be empty", nameof(id));
       if (config == null)
-        throw new ArgumentNullException("config");
+        throw new ArgumentNullException(nameof(config));
 
 	  string jsonString = JsonConvert.SerializeObject(config, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -246,11 +246,11 @@ namespace Q42.HueApi
       CheckInitialized();
 
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id must not be empty", "id");
+        throw new ArgumentException("id must not be empty", nameof(id));
       if (state == null)
-        throw new ArgumentNullException("state");
+        throw new ArgumentNullException(nameof(state));
 
 	  string jsonString = JsonConvert.SerializeObject(state, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
