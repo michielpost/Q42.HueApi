@@ -1,6 +1,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Q42.HueApi;
+using Q42.HueApi.ColorConverters;
 using Q42.HueApi.ColorConverters.OriginalWithModel;
 using Q42.HueApi.Interfaces;
 using Q42.WinRT.Data;
@@ -172,7 +173,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 				private void RedAction()
 				{
 					LightCommand command = new LightCommand();
-					command.TurnOn().SetColor("FF0000");
+					command.TurnOn().SetColor(new RGBColor("FF0000)"));
 
 					_hueClient.SendCommandAsync(command);
 				}
@@ -180,7 +181,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 				private void GreenAction()
 				{
 					LightCommand command = new LightCommand();
-					command.TurnOn().SetColor("00FF00");
+					command.TurnOn().SetColor(new RGBColor("00FF00"));
 
 					_hueClient.SendCommandAsync(command);
 				}
@@ -223,7 +224,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 				{
 					LightCommand command = new LightCommand();
 					command.TurnOn();
-					command.SetColor(r, g, b);
+					command.SetColor(new RGBColor(r, g, b));
 
 					_hueClient.SendCommandAsync(command);
 				}

@@ -12,6 +12,5 @@ namespace Q42.HueApi.ColorConverters.Original
 		{
 			return HueColorConverter.HexFromState(state, model);
 		}
-
 	}
 }
