@@ -37,8 +37,8 @@ Main usage of this library is to be able to control your lights. We use a LightC
 	
 There are some helpers to set a color on a command:
 	
-	//Turn the light on and set a Hex color for the command
-	command.TurnOn().SetColor("FF00AA")
+	//Turn the light on and set a Hex color for the command (see the section about Color Converters)
+    command.TurnOn().SetColor(new RGBColor("FF00AA"))
 	
 LightCommands also support Effects and Alerts
 
@@ -55,6 +55,24 @@ Once you have composed your command, send it to one or more lights
 Or send it to all lights
 
 	client.SendCommandAsync(command);
+
+### Color Conversion
+The Philips Hue lights work with Brightness, Saturation, Hue and X, Y properties. More info can be found in the Philips Hue Developer documentation: http://www.developers.meethue.com/documentation/core-concepts#color_gets_more_complicated
+It's not trivial to convert the light colors to a color system developers like to work with, like RGB or HEX. Q42.HueApi has 3 different color converters out of the box. They are in a seperate package and it's easy to create your own color converter.
+ - *Original*:  The original converter based on a large XY array.
+ - *OriginalWithModel*: Does not use the large XY array, but should produce the same result and takes the lamp model into account.
+ - *HSB*: Converts based on Hue, Brightness and Saturation 
+
+ How to use a color converter?
+ Add one of the following usings:
+ `using Q42.HueApi.ColorConverters.Original`  
+ `using Q42.HueApi.ColorConverters.OriginalWithModel`  
+ `using Q42.HueApi.ColorConverters.HSB`  
+
+ This will add extension methods to `Light`, `State` and `LightCommand`. So you can set the color using `new RGBColor()` and convert the `State` back to `RGBColor`
+
+ Pull Requests with improvements to the color conversion are always welcome! 
+ 
 	
 ## Remote API
 There is also a Philips Hue Remote API. It allows you to send commands to a bridge over the internet. You can request access here: http://www.developers.meethue.com/content/remote-api  
