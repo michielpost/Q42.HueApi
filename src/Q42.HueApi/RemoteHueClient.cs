@@ -37,7 +37,7 @@ namespace Q42.HueApi
 		public void Initialize(string bridgeId)
 		{
 			if (bridgeId == null)
-				throw new ArgumentNullException("bridgeId");
+				throw new ArgumentNullException(nameof(bridgeId));
 
 			_bridgeId = bridgeId;
 

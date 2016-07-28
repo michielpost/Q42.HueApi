@@ -40,7 +40,7 @@ namespace Q42.HueApi.NET
     public async Task<IEnumerable<string>> LocateBridgesAsync(TimeSpan timeout)
     {
       if (timeout <= TimeSpan.Zero)
-        throw new ArgumentException("Timeout value must be greater than zero.", "timeout");
+        throw new ArgumentException("Timeout value must be greater than zero.", nameof(timeout));
 
       _discoveredDevices = new List<string>();
 

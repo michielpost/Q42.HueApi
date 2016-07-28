@@ -45,7 +45,7 @@ namespace Q42.HueApi
     public LocalHueClient(string ip)
     {
       if (ip == null)
-        throw new ArgumentNullException("ip");
+        throw new ArgumentNullException(nameof(ip));
 
 	  CheckValidIp(ip);
 
@@ -74,7 +74,7 @@ namespace Q42.HueApi
 	public LocalHueClient(string ip, string appKey)
     {
       if (ip == null)
-        throw new ArgumentNullException("ip");
+        throw new ArgumentNullException(nameof(ip));
 
 	  CheckValidIp(ip);
 
@@ -93,7 +93,7 @@ namespace Q42.HueApi
     public void Initialize(string appKey)
     {
       if (appKey == null)
-        throw new ArgumentNullException("appKey");
+        throw new ArgumentNullException(nameof(appKey));
 
       _appKey = appKey;
 

@@ -188,7 +188,7 @@ namespace Q42.HueApi.ColorConverters.Original
     public static string HexFromState(State state)
     {
       if (state == null)
-        throw new ArgumentNullException("state");
+        throw new ArgumentNullException(nameof(state));
       if (state.On == false || state.Brightness <= 5) //Off or low brightness
         return "000000";
       if(state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
@@ -477,7 +477,7 @@ namespace Q42.HueApi.ColorConverters.Original
 		public static string HexFromState(State state, string model)
 		{
 			if (state == null)
-				throw new ArgumentNullException("state");
+				throw new ArgumentNullException(nameof(state));
 			if (state.On == false || state.Brightness <= 5) //Off or low brightness
 				return "000000";
 			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value

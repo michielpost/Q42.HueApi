@@ -26,15 +26,15 @@ namespace Q42.HueApi
 		public async Task<string> Authorize(string clientId, string state, string deviceId, string appId, string deviceName = null, string responseType = "code")
 		{
 			if (string.IsNullOrEmpty(clientId))
-				throw new ArgumentNullException("clientId");
+				throw new ArgumentNullException(nameof(clientId));
 			if (string.IsNullOrEmpty(state))
-				throw new ArgumentNullException("state");
+				throw new ArgumentNullException(nameof(state));
 			if (string.IsNullOrEmpty(deviceId))
-				throw new ArgumentNullException("deviceId");
+				throw new ArgumentNullException(nameof(deviceId));
 			if (string.IsNullOrEmpty(appId))
-				throw new ArgumentNullException("appId");
+				throw new ArgumentNullException(nameof(appId));
 			if (string.IsNullOrEmpty(responseType))
-				throw new ArgumentNullException("responseType");
+				throw new ArgumentNullException(nameof(responseType));
 
 			string url = string.Format("https://api.meethue.com/oauth2/auth?clientid={0}&response_type={5}&state={1}&appid={3}&deviceid={2}&devicename={4}", clientId, state, deviceId, appId, deviceName, responseType);
 

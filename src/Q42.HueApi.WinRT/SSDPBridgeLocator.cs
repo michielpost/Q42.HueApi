@@ -24,7 +24,7 @@ namespace Q42.HueApi.WinRT
     public async Task<IEnumerable<string>> LocateBridgesAsync(TimeSpan timeout)
     {
       if (timeout <= TimeSpan.Zero)
-        throw new ArgumentException("Timeout value must be greater than zero.", "timeout");
+        throw new ArgumentException("Timeout value must be greater than zero.", nameof(timeout));
 
       var discoveredDevices = new List<string>();
       var multicastIP = new HostName("239.255.255.250");

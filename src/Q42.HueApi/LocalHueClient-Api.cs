@@ -24,22 +24,22 @@ namespace Q42.HueApi
     public async Task<string> RegisterAsync(string applicationName, string deviceName)
     {
       if (applicationName == null)
-        throw new ArgumentNullException("applicationName");
+        throw new ArgumentNullException(nameof(applicationName));
       if (applicationName.Trim() == String.Empty)
-        throw new ArgumentException("applicationName must not be empty", "applicationName");
+        throw new ArgumentException("applicationName must not be empty", nameof(applicationName));
       if (applicationName.Length > 20)
-        throw new ArgumentException("applicationName max is 20 characters.", "applicationName");
+        throw new ArgumentException("applicationName max is 20 characters.", nameof(applicationName));
       if(applicationName.Contains(" "))
-        throw new ArgumentException("Cannot contain spaces.", "applicationName");
+        throw new ArgumentException("Cannot contain spaces.", nameof(applicationName));
 
       if (deviceName == null)
-        throw new ArgumentNullException("deviceName");
+        throw new ArgumentNullException(nameof(deviceName));
       if (deviceName.Length < 0 || deviceName.Trim() == String.Empty)
-        throw new ArgumentException("deviceName must be at least 0 characters.", "deviceName");
+        throw new ArgumentException("deviceName must be at least 0 characters.", nameof(deviceName));
       if (deviceName.Length > 19)
-        throw new ArgumentException("deviceName max is 19 characters.", "deviceName");
+        throw new ArgumentException("deviceName max is 19 characters.", nameof(deviceName));
       if (deviceName.Contains(" "))
-        throw new ArgumentException("Cannot contain spaces.", "deviceName");
+        throw new ArgumentException("Cannot contain spaces.", nameof(deviceName));
 
       string fullName = string.Format("{0}#{1}", applicationName, deviceName);
 

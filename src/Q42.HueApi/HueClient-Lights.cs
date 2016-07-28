@@ -27,9 +27,9 @@ namespace Q42.HueApi
     public async Task<Light> GetLightAsync(string id)
     {
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id can not be empty or a blank string", "id");
+        throw new ArgumentException("id can not be empty or a blank string", nameof(id));
 
       CheckInitialized();
 
@@ -70,9 +70,9 @@ namespace Q42.HueApi
     public async Task<HueResults> SetLightNameAsync(string id, string name)
     {
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id can not be empty or a blank string", "id");
+        throw new ArgumentException("id can not be empty or a blank string", nameof(id));
 
       CheckInitialized();
 
@@ -124,7 +124,7 @@ namespace Q42.HueApi
     public Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null)
     {
       if (command == null)
-        throw new ArgumentNullException("command");
+        throw new ArgumentNullException(nameof(command));
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -141,7 +141,7 @@ namespace Q42.HueApi
     public async Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string> lightList = null)
     {
       if (command == null)
-        throw new ArgumentNullException("command");
+        throw new ArgumentNullException(nameof(command));
 
       CheckInitialized();
 

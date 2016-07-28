@@ -29,7 +29,7 @@ namespace Q42.HueApi
       CheckInitialized();
 
       if (lights == null)
-        throw new ArgumentNullException("lights");
+        throw new ArgumentNullException(nameof(lights));
 
 			CreateGroupRequest jsonObj = new CreateGroupRequest();
       jsonObj.Lights = lights;
@@ -92,7 +92,7 @@ namespace Q42.HueApi
     public Task<HueResults> SendGroupCommandAsync(ICommandBody command, string group = "0")
     {
       if (command == null)
-        throw new ArgumentNullException("command");
+        throw new ArgumentNullException(nameof(command));
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -108,7 +108,7 @@ namespace Q42.HueApi
     private async Task<HueResults> SendGroupCommandAsync(string command, string group = "0") //Group 0 contains all the lights
     {
       if (command == null)
-        throw new ArgumentNullException("command");
+        throw new ArgumentNullException(nameof(command));
 
       CheckInitialized();
 
@@ -189,11 +189,11 @@ namespace Q42.HueApi
     public async Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null)
     {
       if (id == null)
-        throw new ArgumentNullException("id");
+        throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
-        throw new ArgumentException("id must not be empty", "id");
+        throw new ArgumentException("id must not be empty", nameof(id));
       if (lights == null)
-        throw new ArgumentNullException("lights");      
+        throw new ArgumentNullException(nameof(lights));      
 
       dynamic jsonObj = new ExpandoObject();
       jsonObj.lights = lights;

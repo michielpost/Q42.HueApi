@@ -93,7 +93,7 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 		public static RGBColor RgbFromState(State state, string model)
 		{
 			if (state == null)
-				throw new ArgumentNullException("state");
+				throw new ArgumentNullException(nameof(state));
 			if (state.On == false || state.Brightness <= 5) //Off or low brightness
 				return new RGBColor(0,0,0);
 			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value

@@ -166,7 +166,7 @@ namespace Q42.HueApi
 	public static LightCommand SetColor(this LightCommand lightCommand, double x, double y)
     {
       if (lightCommand == null)
-        throw new ArgumentNullException ("lightCommand");
+        throw new ArgumentNullException (nameof(lightCommand));
 
       lightCommand.ColorCoordinates = new[] { x, y };
       return lightCommand;
@@ -181,7 +181,7 @@ namespace Q42.HueApi
     public static LightCommand SetColor(this LightCommand lightCommand, int ct)
     {
       if (lightCommand == null)
-        throw new ArgumentNullException ("lightCommand");
+        throw new ArgumentNullException (nameof(lightCommand));
 
       lightCommand.ColorTemperature = ct;
       return lightCommand;
@@ -195,7 +195,7 @@ namespace Q42.HueApi
     public static LightCommand TurnOn(this LightCommand lightCommand)
     {
       if (lightCommand == null)
-        throw new ArgumentNullException ("lightCommand");
+        throw new ArgumentNullException (nameof(lightCommand));
 
       lightCommand.On = true;
       return lightCommand;
@@ -209,7 +209,7 @@ namespace Q42.HueApi
     public static LightCommand TurnOff(this LightCommand lightCommand)
     {
       if (lightCommand == null)
-        throw new ArgumentNullException ("lightCommand");
+        throw new ArgumentNullException (nameof(lightCommand));
 
       lightCommand.On = false;
       return lightCommand;

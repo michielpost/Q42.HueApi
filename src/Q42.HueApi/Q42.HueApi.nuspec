@@ -14,25 +14,25 @@
 	  <group targetFramework="portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10">
 	    <dependency id="Newtonsoft.Json" version="7.0.1" />
 		<dependency id="Microsoft.Net.Http" version="2.2.29" />
+		<dependency id="Q42.HueApi.ColorConverters" version="1.0.0" />
 	  </group>
       <group targetFramework="portable-win81+wpa81">
 	  	<dependency id="Newtonsoft.Json" version="7.0.1" />
 		<dependency id="Microsoft.Net.Http" version="2.2.29" />
 		<dependency id="Q42.HueApi.WinRT" version="1.4.3.42" />
+		<dependency id="Q42.HueApi.ColorConverters" version="1.0.0" />
 	  </group>	 
 	  <group targetFramework="net45">
         <dependency id="Newtonsoft.Json" version="7.0.1" />
 		<dependency id="Microsoft.Net.Http" version="2.2.29" />
 		<dependency id="Q42.HueApi.NET" version="2.0.0" />
+		<dependency id="Q42.HueApi.ColorConverters" version="1.0.0" />
 	  </group>
     </dependencies>  
   </metadata>
   <files>
 		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.dll" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
 		<file src="..\Q42.HueApi\bin\Release\Q42.HueApi.XML" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
-		
-		<file src="..\Q42.HueApi.ColorConverters\bin\Release\Q42.HueApi.ColorConverters.dll" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
-		<file src="..\Q42.HueApi.ColorConverters\bin\Release\Q42.HueApi.ColorConverters.XML" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
   </files>
 </package>
 

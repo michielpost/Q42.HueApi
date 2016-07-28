@@ -25,7 +25,7 @@ namespace Q42.HueApi
     internal Bridge(BridgeState bridge)
     {
       if (bridge == null)
-        throw new ArgumentNullException("bridge");
+        throw new ArgumentNullException(nameof(bridge));
 
       Config = bridge.config;
 
