@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Q42.HueApi.ColorConverters;
+using Q42.HueApi.ColorConverters.HSB;
 using Q42.HueApi.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -99,8 +101,7 @@ namespace Q42.HueApi.Tests
       //Create command
       var command = new LightCommand();
       command.TurnOn();
-      //command.SetColor("#225566");
-      command.HueIncrement = 255;
+      command.SetColor(new RGBColor("#225566"));
 
       List<string> lights = new List<string>() { "1", "2", "3" };
 
