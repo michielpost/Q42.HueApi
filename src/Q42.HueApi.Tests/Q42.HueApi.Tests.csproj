@@ -87,6 +87,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj">
+      <Project>{C7305601-B583-479D-9A08-D6DA0A63AB85}</Project>
+      <Name>Q42.HueApi.ColorConverters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
       <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>
       <Name>Q42.HueApi</Name>

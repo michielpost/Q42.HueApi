@@ -25,25 +25,44 @@ namespace Q42.HueApi
     private readonly int _parallelRequests = 5;
 
     /// <summary>
+    /// Whitelist ID
+    /// </summary>
+    protected string _appKey;
+
+
+    /// <summary>
     /// Indicates the HueClient is initialized with an AppKey
     /// </summary>
     public bool IsInitialized { get; protected set; }
 
-	protected HueClient()
-	{
+    protected virtual string ApiBase { get; private set; }
 
-	}
-
-	protected virtual string ApiBase { get; private set; }
-
-    [ThreadStatic]
     protected static HttpClient _httpClient;
-    
-	 public static HttpClient GetHttpClient()
+
+    protected HueClient()
+    {
+
+    }
+
+    /// <summary>
+    /// Initialize client with your app key
+    /// </summary>
+    /// <param name="appKey"></param>
+    public void Initialize(string appKey)
+    {
+      if (appKey == null)
+        throw new ArgumentNullException(nameof(appKey));
+
+      _appKey = appKey;
+
+      IsInitialized = true;
+    }
+
+    public static HttpClient GetHttpClient()
     {
       // return per-thread HttpClient
-		if (_httpClient == null)
-			_httpClient = new HttpClient();
+      if (_httpClient == null)
+        _httpClient = new HttpClient();
 
       return _httpClient;
     }

@@ -24,7 +24,6 @@ namespace Q42.HueApi
 
     private readonly string _ip;
 
-    private string _appKey;
 
 
     /// <summary>
@@ -86,19 +85,7 @@ namespace Q42.HueApi
     }
 
 
-    /// <summary>
-    /// Initialize client with your app key
-    /// </summary>
-    /// <param name="appKey"></param>
-    public void Initialize(string appKey)
-    {
-      if (appKey == null)
-        throw new ArgumentNullException(nameof(appKey));
-
-      _appKey = appKey;
-
-      IsInitialized = true;
-    }
+  
 
   }
 }

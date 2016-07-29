@@ -13,13 +13,14 @@ namespace Q42.HueApi.Interfaces
   /// </summary>
   public interface IHueClient
   {
-  
-   
-    /// <summary>
-    /// Asynchronously gets all lights registered with the bridge.
-    /// </summary>
-    /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
-    Task<IEnumerable<WhiteList>> GetWhiteListAsync();
+
+	
+
+		/// <summary>
+		/// Asynchronously gets all lights registered with the bridge.
+		/// </summary>
+		/// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
+		Task<IEnumerable<WhiteList>> GetWhiteListAsync();
 
     /// <summary>
     /// Get bridge info

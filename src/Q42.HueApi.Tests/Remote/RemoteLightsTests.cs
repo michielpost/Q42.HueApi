@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Q42.HueApi.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,18 @@ namespace Q42.HueApi.Tests.Remote
 		[TestInitialize]
 		public new void Initialize()
 		{
-			var remoteBridge = new RemoteHueClient("test");
-			//remoteBridge.Initialize("bridgeId");
+			IRemoteHueClient remoteBridge = new RemoteHueClient("test");
+			remoteBridge.Initialize("bridgeId", "key");
 
 			_client = remoteBridge;
+		}
+
+		[TestMethod]
+		public async Task RegisterBridgeTest()
+		{
+			await ((IRemoteHueClient)_client).RegisterAsync("1", "test");
+			var result = await _client.GetLightAsync("1");
+			Assert.AreEqual("test", result.Name);
 		}
 
 		[TestMethod]

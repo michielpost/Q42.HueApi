@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace Q42.HueApi
 {
 	public partial class RemoteHueClient : HueClient, IRemoteHueClient
 	{
+		private readonly string _apiBase = "https://api.meethue.com/v2/bridges/";
 		private static string _remoteAccessToken;
 		private string _bridgeId;
 
@@ -25,23 +27,23 @@ namespace Q42.HueApi
 
 			var client = GetHttpClient();
 			if (!string.IsNullOrEmpty(_remoteAccessToken))
-				_httpClient.DefaultRequestHeaders.Add("access_token", _remoteAccessToken);
+				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _remoteAccessToken);
 			else
-				_httpClient.DefaultRequestHeaders.Remove("access_token");
+				_httpClient.DefaultRequestHeaders.Authorization = null;
 		}
 
 		/// <summary>
 		/// Initialize client with your app key
 		/// </summary>
 		/// <param name="appKey"></param>
-		public void Initialize(string bridgeId)
+		public void Initialize(string bridgeId, string appKey)
 		{
 			if (bridgeId == null)
 				throw new ArgumentNullException(nameof(bridgeId));
 
 			_bridgeId = bridgeId;
 
-			IsInitialized = true;
+			Initialize(appKey);
 		}
 
 
@@ -53,7 +55,7 @@ namespace Q42.HueApi
 				_httpClient = new HttpClient();
 
 				if (!string.IsNullOrEmpty(_remoteAccessToken))
-					_httpClient.DefaultRequestHeaders.Add("access_token", _remoteAccessToken);
+					_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _remoteAccessToken);
 			}
 
 			return _httpClient;
@@ -67,7 +69,7 @@ namespace Q42.HueApi
 		{
 			get
 			{
-				return string.Format("https://api.meethue.com/v1/bridges/{0}/", _bridgeId);
+				return $"{_apiBase}{_bridgeId}/{_appKey}/";
 			}
 		}
 	}

@@ -173,7 +173,7 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 				private void RedAction()
 				{
 					LightCommand command = new LightCommand();
-					command.TurnOn().SetColor(new RGBColor("FF0000)"));
+					command.TurnOn().SetColor(new RGBColor("FF0000"));
 
 					_hueClient.SendCommandAsync(command);
 				}
