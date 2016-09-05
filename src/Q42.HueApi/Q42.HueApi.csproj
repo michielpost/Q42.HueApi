@@ -80,6 +80,7 @@
     <Compile Include="Models\Groups\DefaultHueResult.cs" />
     <Compile Include="Models\HueDateTime.cs" />
     <Compile Include="Models\InternalBridgeCommand.cs" />
+    <Compile Include="Models\RemoteAuthorizeResponse.cs" />
     <Compile Include="Models\ResourceLink.cs" />
     <Compile Include="Models\SensorCommand.cs" />
     <Compile Include="Models\SceneCommand.cs" />

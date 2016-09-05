@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
+using Q42.HueApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -24,7 +26,7 @@ namespace Q42.HueApi
 		/// <param name="deviceName">The device name should be the name of the app or device accessing the remote API. The devicename is used in the user's "My Apps" overview in the Hue Account (visualized as: "<app name> on <devicename>"). If not present, deviceid is also used for devicename. The <app name> is the application name you provided to us the moment you requested access to the remote API.</param>
 		/// <param name="responseType">The response_type value must be "code".</param>
 		/// <returns></returns>
-		public async Task<string> Authorize(string clientId, string state, string deviceId, string appId, string deviceName = null, string responseType = "code")
+		public static Uri BuildAuthorizeUri(string clientId, string state, string deviceId, string appId, string deviceName = null, string responseType = "code")
 		{
 			if (string.IsNullOrEmpty(clientId))
 				throw new ArgumentNullException(nameof(clientId));
@@ -39,12 +41,39 @@ namespace Q42.HueApi
 
 			string url = string.Format("https://api.meethue.com/oauth2/auth?clientid={0}&response_type={5}&state={1}&appid={3}&deviceid={2}&devicename={4}", clientId, state, deviceId, appId, deviceName, responseType);
 
+			return new Uri(url);
+		}
+
+		public static RemoteAuthorizeResponse ProcessAuthorizeResponse(string responseData)
+		{
+			string url = responseData;
+			string[] parts = url.Split(new char[] { '?', '&' });
+
+			RemoteAuthorizeResponse result = new RemoteAuthorizeResponse();
+
+			foreach (var part in parts)
+			{
+				string[] nv = part.Split(new char[] { '=' });
+				if(nv.Length == 2)
+				{
+					if (nv[0].ToLower() == "code")
+						result.Code = nv[1];
+					if (nv[0].ToLower() == "state")
+						result.State = nv[1];
+				}
+			}
+
+			return result;
+		}
+
+		public async Task<string> GetToken(string code)
+		{
 			HttpClient client = HueClient.GetHttpClient();
-			var stringResult = await client.GetStringAsync(new Uri(url)).ConfigureAwait(false);
+			var result = await client.PostAsync(new Uri($"https://api.meethue.com/oauth2/token?code={code}&grant_type=authorization_code"), null).ConfigureAwait(false);
 
-			//TODO: get code parameter from returned redirect url?
+			//TODO: Do something with the result
 
-			return stringResult;
+			return string.Empty;
 		}
 
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Q42.HueApi.Interfaces
 {
@@ -7,18 +8,6 @@ namespace Q42.HueApi.Interfaces
 	/// </summary>
 	public interface IRemoteHueClient : IHueClient
 	{
-		/// <summary>
-		/// Untested
-		/// </summary>
-		/// <param name="clientId"></param>
-		/// <param name="state"></param>
-		/// <param name="deviceId"></param>
-		/// <param name="appId"></param>
-		/// <param name="deviceName"></param>
-		/// <param name="responseType"></param>
-		/// <returns></returns>
-		Task<string> Authorize(string clientId, string state, string deviceId, string appId, string deviceName = null, string responseType = "code");
-
 		/// <summary>
 		/// Initialize the client with a bridgeId and appKey (whitelist identifier)
 		/// </summary>
@@ -38,6 +27,14 @@ namespace Q42.HueApi.Interfaces
 		/// </summary>
 		/// <param name="accessToken"></param>
 		void SetRemoteAccessToken(string accessToken);
+
+
+		/// <summary>
+		/// Get a token based on the code from the RemoteAuthorizeResponse
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		Task<string> GetToken(string code);
 
 		/// <summary>
 		/// Untested
