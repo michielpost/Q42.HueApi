@@ -111,3 +111,4 @@ UpgradeLog*.XML
 /src/Q42.HueApi/NuGet/*.nupkg
 *.nupkg
 /src/Q42.HueApi.ColorConverters/project.lock.json
+/src/Q42.HueApi.RemoteApi.Sample/project.lock.json
