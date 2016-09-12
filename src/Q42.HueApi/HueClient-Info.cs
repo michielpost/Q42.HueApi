@@ -24,7 +24,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient();
       var result = await client.GetAsync(new Uri(String.Format("{0}info/timezones", ApiBase))).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);

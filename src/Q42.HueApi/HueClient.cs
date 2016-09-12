@@ -58,13 +58,13 @@ namespace Q42.HueApi
       IsInitialized = true;
     }
 
-    public static HttpClient GetHttpClient()
+    public static Task<HttpClient> GetHttpClient()
     {
       // return per-thread HttpClient
       if (_httpClient == null)
         _httpClient = new HttpClient();
 
-      return _httpClient;
+      return Task.FromResult(_httpClient);
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ namespace Q42.HueApi
     /// <typeparam name="T"></typeparam>
     /// <param name="json"></param>
     /// <returns></returns>
-    private static T DeserializeResult<T>(string json) where T : class
+    protected static T DeserializeResult<T>(string json) where T : class
     {
       try
       {

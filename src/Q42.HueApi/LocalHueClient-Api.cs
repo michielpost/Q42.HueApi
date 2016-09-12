@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Q42.HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,8 +47,8 @@ namespace Q42.HueApi
       JObject obj = new JObject();
       obj["devicetype"] = fullName;
 
-      HttpClient client = HueClient.GetHttpClient();
-      var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new StringContent(obj.ToString())).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient();
+      var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new JsonContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       JObject result;
@@ -79,7 +80,7 @@ namespace Q42.HueApi
 
     public async Task<bool> CheckConnection()
     {
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient();
 
       try
       {

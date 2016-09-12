@@ -38,69 +38,45 @@ namespace Q42.HueApi.RemoteApi.Sample
 		{
 			base.OnNavigatedTo(e);
 
+            string appId = "";
+            string clientId = "";
+            string clientSecret = "";
 
-			string appId = "";
-			string clientId = "";
-			string clientSecret = "";
-
-			//IRemoteHueClient client = new RemoteHueClient(clientSecret);
-			var authorizeUri = RemoteHueClient.BuildAuthorizeUri(clientId, "sample", "consoleapp", appId);
+            IRemoteAuthenticationClient authClient = new RemoteAuthenticationClient(clientId, clientSecret, appId);
+            var authorizeUri = authClient.BuildAuthorizeUri("sample", "consoleapp");
 			var callbackUri = new Uri("https://localhost/q42hueapi");
 
 			var webAuthenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, authorizeUri, callbackUri);
 
 			if (webAuthenticationResult != null)
 			{
-				var result = RemoteHueClient.ProcessAuthorizeResponse(webAuthenticationResult.ResponseData);
+				var result = authClient.ProcessAuthorizeResponse(webAuthenticationResult.ResponseData);
 
 				if (!string.IsNullOrEmpty(result.Code))
 				{
+                    var accessToken = await authClient.GetToken(result.Code);
+                    //var refreshedToken = await authClient.RefreshToken(accessToken.Refresh_token);
 
-					var requestUri = new Uri($"https://api.meethue.com/oauth2/token?code={result.Code}&grant_type=authorization_code");
-
-					using (var httpClient = new HttpClient())
-					{
-							var responseTask = await httpClient.PostAsync(requestUri, null);
-						var r = responseTask.Headers.WwwAuthenticate.ToString();
-						r = r.Replace("Digest ", string.Empty);
-
-						int startNonce = r.IndexOf("nonce=") + 7;
-						int endNonce = r.IndexOf("\"", startNonce);
-						string nonce = r.Substring(startNonce, endNonce - startNonce);
-
-						if (!string.IsNullOrEmpty(r))
-						{
-							//Get token
-							var request = new HttpRequestMessage()
-							{
-								RequestUri = requestUri,
-								Method = HttpMethod.Post,
-								 
-							};
-
-							string response = CalculateHash(clientId, clientSecret, nonce);
-							string param = $"username=\"{clientId}\", {r}, uri=\"/oauth2/token\", response=\"{response}\"";
-
-							request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Digest", param);
-
-							var respon = await httpClient.SendAsync(request);
-							var s = await respon.Content.ReadAsStringAsync();
-						}
-
-					}
-
-					IRemoteHueClient client = new RemoteHueClient(null);
-					var token = await client.GetToken(result.Code);
-
-					var bridges = await client.GetBridgeAsync();
+                    IRemoteHueClient client = new RemoteHueClient(authClient.GetValidToken);
+					var bridges = await client.GetBridgesAsync();
 
 					if (bridges != null)
-					{ }
+					{
+                        //Register app
+                        //var key = await client.RegisterAsync(bridges.First().Id, "Sample App");
+
+                        //Or initialize with saved key:
+                        client.Initialize(bridges.First().Id, "C95sK6Cchq2LfbkbVkfpRKSBlns2CylN-VxxDD8F");
+
+                        //Turn all lights on
+                        var lightResult = await client.SendCommandAsync(new LightCommand().TurnOn());
+
+                    }
 				}
 			}
 		}
 
-		private string CalculateHash(string clientId, string clientSecret, string nonce)
+		private static string CalculateHash(string clientId, string clientSecret, string nonce)
 		{
 			var HASH1 = MD5($"{clientId}:oauth2_client@api.meethue.com:{clientSecret}");
 			var HASH2 = MD5("POST:/oauth2/token");
@@ -109,38 +85,14 @@ namespace Q42.HueApi.RemoteApi.Sample
 			return response;
 		}
 
-		public string MD5(string input)
-		{
+        private static string MD5(string str)
+        {
+            var alg = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+            IBuffer buff = CryptographicBuffer.ConvertStringToBinary(str, BinaryStringEncoding.Utf8);
+            var hashed = alg.HashData(buff);
+            var res = CryptographicBuffer.EncodeToHexString(hashed);
+            return res;
+        }
 
-			String strAlgName = HashAlgorithmNames.Md5;
-			return this.SampleHashMsg(strAlgName, input);
-
-		}
-
-		public String SampleHashMsg(String strAlgName, String strMsg)
-		{
-			// Convert the message string to binary data.
-			IBuffer buffUtf8Msg = CryptographicBuffer.ConvertStringToBinary(strMsg, BinaryStringEncoding.Utf8);
-
-			// Create a HashAlgorithmProvider object.
-			HashAlgorithmProvider objAlgProv = HashAlgorithmProvider.OpenAlgorithm(strAlgName);
-
-			// Hash the message.
-			IBuffer buffHash = objAlgProv.HashData(buffUtf8Msg);
-
-			// Verify that the hash length equals the length specified for the algorithm.
-			if (buffHash.Length != objAlgProv.HashLength)
-			{
-				throw new Exception("There was an error creating the hash");
-			}
-
-			// Convert the hash to a string (for display).
-			String strHashBase64 = CryptographicBuffer.EncodeToBase64String(buffHash);
-
-			// Return the encoded string
-			return strHashBase64;
-		}
-
-
-	}
+    }
 }

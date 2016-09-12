@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Q42.HueApi.Models;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Q42.HueApi.Interfaces
@@ -22,27 +24,11 @@ namespace Q42.HueApi.Interfaces
 		/// <returns></returns>
 		Task<string> RegisterAsync(string bridgeId, string appId);
 
-		/// <summary>
-		/// Set the accessToken for the RemoteHueClient
-		/// </summary>
-		/// <param name="accessToken"></param>
-		void SetRemoteAccessToken(string accessToken);
+        /// <summary>
+        /// Gets the bridge ID registered by the user. When a user has linked a bridge to an account on www.meethue.com the bridge will appear on this interface.  
+        /// </summary>
+        /// <returns></returns>
+        Task<List<RemoteBridge>> GetBridgesAsync();
 
-
-		/// <summary>
-		/// Get a token based on the code from the RemoteAuthorizeResponse
-		/// </summary>
-		/// <param name="code"></param>
-		/// <returns></returns>
-		Task<string> GetToken(string code);
-
-		/// <summary>
-		/// Untested
-		/// </summary>
-		/// <param name="refreshToken"></param>
-		/// <param name="clientId"></param>
-		/// <param name="clientSecret"></param>
-		/// <returns></returns>
-		Task<string> RefreshToken(string refreshToken, string clientId, string clientSecret);
-	}
+    }
 }

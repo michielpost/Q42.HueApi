@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models;
 using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
@@ -45,9 +46,9 @@ namespace Q42.HueApi
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient();
       //Create group with the lights we want to target
-      var response = await client.PostAsync(new Uri(String.Format("{0}groups", ApiBase)), new StringContent(jsonString)).ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri(String.Format("{0}groups", ApiBase)), new JsonContent(jsonString)).ConfigureAwait(false);
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       HueResults groupResult = DeserializeDefaultHueResult(jsonResult);
@@ -73,7 +74,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient();
       //Delete group 1
       var result =  await client.DeleteAsync(new Uri(ApiBase + string.Format("groups/{0}", groupId))).ConfigureAwait(false);
 
@@ -112,8 +113,8 @@ namespace Q42.HueApi
 
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
-      var result = await client.PutAsync(new Uri(ApiBase + string.Format("groups/{0}/action", group)), new StringContent(command)).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient();
+      var result = await client.PutAsync(new Uri(ApiBase + string.Format("groups/{0}/action", group)), new JsonContent(command)).ConfigureAwait(false);
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -129,7 +130,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient();
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}groups", ApiBase))).ConfigureAwait(false);
 
       List<Group> results = new List<Group>();
@@ -162,7 +163,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient();
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id))).ConfigureAwait(false);
 
 #if DEBUG
@@ -203,8 +204,8 @@ namespace Q42.HueApi
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = HueClient.GetHttpClient();
-      var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient();
+      var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       return DeserializeDefaultHueResult(jsonResult);

@@ -14,13 +14,18 @@ namespace Q42.HueApi.Tests.Remote
 		[TestInitialize]
 		public new void Initialize()
 		{
-			IRemoteHueClient remoteBridge = new RemoteHueClient("test");
+			IRemoteHueClient remoteBridge = new RemoteHueClient(GetTestAccessToken);
 			remoteBridge.Initialize("bridgeId", "key");
 
 			_client = remoteBridge;
 		}
 
-		[TestMethod]
+        private Task<string> GetTestAccessToken()
+        {
+            return Task.FromResult("test");
+        }
+
+        [TestMethod]
 		public async Task RegisterBridgeTest()
 		{
 			await ((IRemoteHueClient)_client).RegisterAsync("1", "test");
