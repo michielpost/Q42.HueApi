@@ -83,11 +83,11 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "on")]
     public bool? On { get; set; }
 
-    [DataMember(Name = "long")]
-    public string Long { get; set; }
-
-    [DataMember(Name = "lat")]
-    public string Lat { get; set; }
+    /// <summary>
+    /// True if the valid GPS coordinates have been set.
+    /// </summary>
+    [DataMember(Name = "configured")]
+    public bool? Configured { get; set; }
 
     [DataMember(Name = "sunriseoffset")]
     public int? SunriseOffset { get; set; }
@@ -103,7 +103,30 @@ namespace Q42.HueApi.Models
 
     [DataMember(Name = "battery")]
     public int? Battery { get; set; }
-  }
 
-  
+    [DataMember(Name = "battery")]
+    public int? Sensitivity { get; set; }
+
+    [DataMember(Name = "sensitivitymax")]
+    public int? SensitivityMax { get; set; }
+
+    /// <summary>
+    /// Activates or extends user usertest mode of device for 120 seconds.  False deactivates usertest mode.
+    /// </summary>
+    [DataMember(Name = "usertest")]
+    public string UserTest { get; set; }
+
+    /// <summary>
+    /// Array of config parameters which is not yet committed to sensor.  As long as the atrribute is listed here, the configuration attribute value listed on GET does not take effect and might return to previous value.  A subsequent PUT on listed atrribute might return error 10.
+    /// </summary>
+    [DataMember(Name = "pending")]
+    public List<string> Pending { get; set; }
+
+    /// <summary>
+    /// Turns device LED during normal operation on or off.  Devices might still indicate exceptional operation (Reset, SW Update, Battery Low)
+    /// Optional, only used for ZLL sensors.
+    /// </summary>
+    [DataMember(Name = "ledindication")]
+    public bool? LedIndication { get; set; }
+    }
 }

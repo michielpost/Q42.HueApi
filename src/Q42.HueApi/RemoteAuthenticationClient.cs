@@ -92,13 +92,9 @@ namespace Q42.HueApi
 
             //Do a token request
             var responseTask = await httpClient.PostAsync(requestUri, null);
-            var r = responseTask.Headers.WwwAuthenticate.ToString();
-            r = r.Replace("Digest ", string.Empty);
-
-            //Find the nonce
-            int startNonce = r.IndexOf("nonce=") + 7;
-            int endNonce = r.IndexOf("\"", startNonce);
-            string nonce = r.Substring(startNonce, endNonce - startNonce);
+            var responseString = responseTask.Headers.WwwAuthenticate.ToString();
+            responseString = responseString.Replace("Digest ", string.Empty);
+            string nonce = GetNonce(responseString);
 
             if (!string.IsNullOrEmpty(nonce))
             {
@@ -112,7 +108,7 @@ namespace Q42.HueApi
 
                 //Build request
                 string response = CalculateHash(_clientId, _clientSecret, nonce, "/oauth2/token");
-                string param = $"username=\"{_clientId}\", {r}, uri=\"/oauth2/token\", response=\"{response}\"";
+                string param = $"username=\"{_clientId}\", {responseString}, uri=\"/oauth2/token\", response=\"{response}\"";
 
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Digest", param);
 
@@ -131,6 +127,17 @@ namespace Q42.HueApi
             return null;
         }
 
+        private static string GetNonce(string r)
+        {
+           
+
+            //Find the nonce
+            int startNonce = r.IndexOf("nonce=") + 7;
+            int endNonce = r.IndexOf("\"", startNonce);
+            string nonce = r.Substring(startNonce, endNonce - startNonce);
+
+            return nonce;
+        }
 
         public async Task<AccessTokenResponse> RefreshToken(string refreshToken)
         {
@@ -142,13 +149,9 @@ namespace Q42.HueApi
 
             //Do a token request
             var responseTask = await httpClient.PostAsync(requestUri, stringContent);
-            var r = responseTask.Headers.WwwAuthenticate.ToString();
-            r = r.Replace("Digest ", string.Empty);
-
-            //Find the nonce
-            int startNonce = r.IndexOf("nonce=") + 7;
-            int endNonce = r.IndexOf("\"", startNonce);
-            string nonce = r.Substring(startNonce, endNonce - startNonce);
+            var responseString = responseTask.Headers.WwwAuthenticate.ToString();
+            responseString = responseString.Replace("Digest ", string.Empty);
+            string nonce = GetNonce(responseString);
 
             if (!string.IsNullOrEmpty(nonce))
             {
@@ -162,7 +165,7 @@ namespace Q42.HueApi
 
                 //Build request
                 string response = CalculateHash(_clientId, _clientSecret, nonce, "/oauth2/refresh");
-                string param = $"username=\"{_clientId}\", {r}, uri=\"/oauth2/refresh\", response=\"{response}\"";
+                string param = $"username=\"{_clientId}\", {responseString}, uri=\"/oauth2/refresh\", response=\"{response}\"";
 
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Digest", param);
 
