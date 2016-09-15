@@ -2,6 +2,9 @@
 There is also a Philips Hue Remote API. It allows you to send commands to a bridge over the internet. You can request access here: http://www.developers.meethue.com/content/remote-api  
 Q42.HueApi is compatible with the remote API.
 
+**Check out the sample code:
+https://github.com/Q42/Q42.HueApi/blob/master/src/Q42.HueApi.RemoteApi.Sample/MainPage.xaml.cs**
+
 How to use the Remote API with the Q42.HueApi library?
 
 You'll need an appId, clientId and clientSecret provided by Philips Hue. You can request them on the Hue Developer Portal. Before we can use the RemoteHueClient, we need to get an access token. We use the RemoteAuthenticationClient for that.
