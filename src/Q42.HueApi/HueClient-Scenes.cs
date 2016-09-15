@@ -28,7 +28,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = await GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes", ApiBase))).ConfigureAwait(false);
 
 #if DEBUG
@@ -79,7 +79,7 @@ namespace Q42.HueApi
 
 			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			var response = await client.PostAsync(new Uri(String.Format("{0}scenes", ApiBase)), new JsonContent(jsonString)).ConfigureAwait(false);
 
 			var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -137,7 +137,7 @@ namespace Q42.HueApi
 
 		string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-		HttpClient client = await GetHttpClient();
+		HttpClient client = await GetHttpClient().ConfigureAwait(false);
 		var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
 		var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -170,7 +170,7 @@ namespace Q42.HueApi
 
 			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
 			var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -198,7 +198,7 @@ namespace Q42.HueApi
 
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = await GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}/lights/{1}/lightstate", ApiBase, sceneId, lightId)), new JsonContent(jsonCommand)).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -227,7 +227,7 @@ namespace Q42.HueApi
 	{
 		CheckInitialized();
 
-		HttpClient client = await GetHttpClient();
+		HttpClient client = await GetHttpClient().ConfigureAwait(false);
 		var result = await client.DeleteAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, sceneId))).ConfigureAwait(false);
 
 		string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -245,7 +245,7 @@ namespace Q42.HueApi
 		{
 			CheckInitialized();
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id))).ConfigureAwait(false);
 
 			Scene scene = DeserializeResult<Scene>(stringResult);

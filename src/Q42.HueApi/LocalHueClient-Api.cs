@@ -47,7 +47,7 @@ namespace Q42.HueApi
       JObject obj = new JObject();
       obj["devicetype"] = fullName;
 
-      HttpClient client = await GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new JsonContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -80,7 +80,7 @@ namespace Q42.HueApi
 
     public async Task<bool> CheckConnection()
     {
-      HttpClient client = await GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
       try
       {

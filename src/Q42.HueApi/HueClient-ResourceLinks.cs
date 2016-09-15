@@ -28,7 +28,7 @@ namespace Q42.HueApi
 		{
 			CheckInitialized();
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			//Delete resource link 1
 			var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("resourcelinks/{0}", resourceLinkId))).ConfigureAwait(false);
 
@@ -47,7 +47,7 @@ namespace Q42.HueApi
 		{
 			CheckInitialized();
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}resourcelinks", ApiBase))).ConfigureAwait(false);
 
 			List<ResourceLink> results = new List<ResourceLink>();
@@ -80,7 +80,7 @@ namespace Q42.HueApi
 		{
 			CheckInitialized();
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}resourcelinks/{1}", ApiBase, id))).ConfigureAwait(false);
 
 			ResourceLink resourceLink = DeserializeResult<ResourceLink>(stringResult);
@@ -104,7 +104,7 @@ namespace Q42.HueApi
 
 			string command = JsonConvert.SerializeObject(resourceLink, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
 			//Create ResourceLink
 			var result = await client.PostAsync(new Uri(ApiBase + "resourcelinks"), new JsonContent(command)).ConfigureAwait(false);
@@ -133,7 +133,7 @@ namespace Q42.HueApi
 
 			string command = JsonConvert.SerializeObject(resourceLink, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
 			//Create ResourceLink
 			var result = await client.PutAsync(new Uri(string.Format("{0}resourcelinks/{1}", ApiBase, id)), new JsonContent(command)).ConfigureAwait(false);

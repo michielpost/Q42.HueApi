@@ -42,7 +42,7 @@ namespace Q42.HueApi
         /// <returns></returns>
         public async Task<List<RemoteBridge>> GetBridgesAsync()
         {
-            HttpClient client = await GetHttpClient();
+            HttpClient client = await GetHttpClient().ConfigureAwait(false);
             var stringResult = await client.GetStringAsync(new Uri(_apiBase)).ConfigureAwait(false);
 
             var bridges = DeserializeResult<List<RemoteBridge>>(stringResult);
@@ -62,7 +62,7 @@ namespace Q42.HueApi
 
             if (_getAccessToken != null)
             {
-                var remoteAccessToken = await _getAccessToken();
+                var remoteAccessToken = await _getAccessToken().ConfigureAwait(false);
                 if (!string.IsNullOrEmpty(remoteAccessToken))
                     _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", remoteAccessToken);
             }

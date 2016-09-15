@@ -88,10 +88,10 @@ namespace Q42.HueApi
         {
             var requestUri = new Uri($"https://api.meethue.com/oauth2/token?code={code}&grant_type=authorization_code");
 
-            HttpClient httpClient = await HueClient.GetHttpClient();
+            HttpClient httpClient = await HueClient.GetHttpClient().ConfigureAwait(false);
 
             //Do a token request
-            var responseTask = await httpClient.PostAsync(requestUri, null);
+            var responseTask = await httpClient.PostAsync(requestUri, null).ConfigureAwait(false);
             var responseString = responseTask.Headers.WwwAuthenticate.ToString();
             responseString = responseString.Replace("Digest ", string.Empty);
             string nonce = GetNonce(responseString);
@@ -112,8 +112,8 @@ namespace Q42.HueApi
 
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Digest", param);
 
-                var accessTokenResponse = await httpClient.SendAsync(request);
-                var accessTokenResponseString = await accessTokenResponse.Content.ReadAsStringAsync();
+                var accessTokenResponse = await httpClient.SendAsync(request).ConfigureAwait(false);
+                var accessTokenResponseString = await accessTokenResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var accessToken = JsonConvert.DeserializeObject<AccessTokenResponse>(accessTokenResponseString);
 
@@ -145,10 +145,10 @@ namespace Q42.HueApi
 
             var requestUri = new Uri($"https://api.meethue.com/oauth2/refresh?grant_type=refresh_token");
 
-            HttpClient httpClient = await HueClient.GetHttpClient();
+            HttpClient httpClient = await HueClient.GetHttpClient().ConfigureAwait(false);
 
             //Do a token request
-            var responseTask = await httpClient.PostAsync(requestUri, stringContent);
+            var responseTask = await httpClient.PostAsync(requestUri, stringContent).ConfigureAwait(false);
             var responseString = responseTask.Headers.WwwAuthenticate.ToString();
             responseString = responseString.Replace("Digest ", string.Empty);
             string nonce = GetNonce(responseString);
@@ -169,8 +169,8 @@ namespace Q42.HueApi
 
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Digest", param);
 
-                var accessTokenResponse = await httpClient.SendAsync(request);
-                var accessTokenResponseString = await accessTokenResponse.Content.ReadAsStringAsync();
+                var accessTokenResponse = await httpClient.SendAsync(request).ConfigureAwait(false);
+                var accessTokenResponseString = await accessTokenResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var accessToken = JsonConvert.DeserializeObject<AccessTokenResponse>(accessTokenResponseString);
 
@@ -213,7 +213,7 @@ namespace Q42.HueApi
 
             if (_lastAuthorizationResponse.RefreshTokenExpireTime() < DateTimeOffset.UtcNow)
             {
-                var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token);
+                var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token).ConfigureAwait(false);
 
                 return newToken.Access_token;
             }

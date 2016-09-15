@@ -28,7 +28,7 @@ namespace Q42.HueApi
 			JObject obj = new JObject();
 			obj["linkbutton"] = true;
 
-			HttpClient client = await GetHttpClient();
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			var configResponse = await client.PutAsync(new Uri($"{_apiBase}{bridgeId}/0/config"), new JsonContent(obj.ToString())).ConfigureAwait(false);
 
 			JObject bridge = new JObject();
