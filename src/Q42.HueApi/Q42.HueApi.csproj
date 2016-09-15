@@ -52,13 +52,14 @@
     <Compile Include="Converters\HueDateTimeConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\HttpMethodConverter.cs" />
+    <Compile Include="Crypto\MD5.cs" />
     <Compile Include="HttpBridgeLocator.cs" />
     <Compile Include="HueClient-ResourceLinks.cs" />
+    <Compile Include="Interfaces\IRemoteAuthenticationClient.cs" />
     <Compile Include="Interfaces\IRemoteHueClient.cs" />
     <Compile Include="Interfaces\ILocalHueClient.cs" />
     <Compile Include="LocalHueClient.cs" />
     <Compile Include="LocalHueClient-Api.cs" />
-    <Compile Include="HueClient-Info.cs" />
     <Compile Include="HueClient-Config.cs" />
     <Compile Include="HueClient-Groups.cs" />
     <Compile Include="HueClient-Rules.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Interfaces\ICommandBody.cs" />
     <Compile Include="Interfaces\IHueClient.cs" />
     <Compile Include="HueClient.cs" />
+    <Compile Include="Models\AccessTokenResponse.cs" />
     <Compile Include="Models\Bridge.cs" />
     <Compile Include="Models\BridgeConfigUpdate.cs" />
     <Compile Include="Models\BridgeConfig.cs" />
@@ -80,6 +82,9 @@
     <Compile Include="Models\Groups\DefaultHueResult.cs" />
     <Compile Include="Models\HueDateTime.cs" />
     <Compile Include="Models\InternalBridgeCommand.cs" />
+    <Compile Include="Models\JsonContent.cs" />
+    <Compile Include="Models\RemoteAuthorizeResponse.cs" />
+    <Compile Include="Models\RemoteBridge.cs" />
     <Compile Include="Models\ResourceLink.cs" />
     <Compile Include="Models\SensorCommand.cs" />
     <Compile Include="Models\SceneCommand.cs" />
@@ -96,6 +101,7 @@
     <Compile Include="Models\WhiteList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Converters\TransitionTimeConverter.cs" />
+    <Compile Include="RemoteAuthenticationClient.cs" />
     <Compile Include="RemoteHueClient-Authentication.cs" />
     <Compile Include="RemoteHueClient.cs" />
   </ItemGroup>

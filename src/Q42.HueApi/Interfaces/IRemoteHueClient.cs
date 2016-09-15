@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Q42.HueApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Q42.HueApi.Interfaces
 {
@@ -7,18 +10,6 @@ namespace Q42.HueApi.Interfaces
 	/// </summary>
 	public interface IRemoteHueClient : IHueClient
 	{
-		/// <summary>
-		/// Untested
-		/// </summary>
-		/// <param name="clientId"></param>
-		/// <param name="state"></param>
-		/// <param name="deviceId"></param>
-		/// <param name="appId"></param>
-		/// <param name="deviceName"></param>
-		/// <param name="responseType"></param>
-		/// <returns></returns>
-		Task<string> Authorize(string clientId, string state, string deviceId, string appId, string deviceName = null, string responseType = "code");
-
 		/// <summary>
 		/// Initialize the client with a bridgeId and appKey (whitelist identifier)
 		/// </summary>
@@ -33,19 +24,11 @@ namespace Q42.HueApi.Interfaces
 		/// <returns></returns>
 		Task<string> RegisterAsync(string bridgeId, string appId);
 
-		/// <summary>
-		/// Set the accessToken for the RemoteHueClient
-		/// </summary>
-		/// <param name="accessToken"></param>
-		void SetRemoteAccessToken(string accessToken);
+        /// <summary>
+        /// Gets the bridge ID registered by the user. When a user has linked a bridge to an account on www.meethue.com the bridge will appear on this interface.  
+        /// </summary>
+        /// <returns></returns>
+        Task<List<RemoteBridge>> GetBridgesAsync();
 
-		/// <summary>
-		/// Untested
-		/// </summary>
-		/// <param name="refreshToken"></param>
-		/// <param name="clientId"></param>
-		/// <param name="clientSecret"></param>
-		/// <returns></returns>
-		Task<string> RefreshToken(string refreshToken, string clientId, string clientSecret);
-	}
+    }
 }

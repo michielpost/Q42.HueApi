@@ -74,7 +74,6 @@
     <Compile Include="ResourceLinksTests.cs" />
     <Compile Include="SensorTests.cs" />
     <Compile Include="SceneTests.cs" />
-    <Compile Include="InfoTests.cs" />
     <Compile Include="HueDateTimeTests.cs" />
     <Compile Include="ScheduleTests.cs" />
     <Compile Include="BridgeTest.cs" />

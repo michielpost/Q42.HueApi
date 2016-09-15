@@ -28,7 +28,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}sensors", ApiBase))).ConfigureAwait(false);
 
 #if DEBUG
@@ -64,10 +64,10 @@ namespace Q42.HueApi
 
       string sensorJson = JsonConvert.SerializeObject(sensor, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
       //Create schedule
-      var result = await client.PostAsync(new Uri(String.Format("{0}sensors", ApiBase)), new StringContent(sensorJson)).ConfigureAwait(false);
+      var result = await client.PostAsync(new Uri(String.Format("{0}sensors", ApiBase)), new JsonContent(sensorJson)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -89,7 +89,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       var response = await client.PostAsync(new Uri(String.Format("{0}sensors", ApiBase)), null).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -107,7 +107,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}sensors/new", ApiBase))).ConfigureAwait(false);
 
 #if DEBUG
@@ -154,7 +154,7 @@ namespace Q42.HueApi
 
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}sensors/{1}", ApiBase, id))).ConfigureAwait(false);
 
 #if DEBUG
@@ -200,10 +200,10 @@ namespace Q42.HueApi
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
       //Create schedule
-      var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+      var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -230,10 +230,10 @@ namespace Q42.HueApi
 
 	  string jsonString = JsonConvert.SerializeObject(config, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
       //Create schedule
-      var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}/config", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+      var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}/config", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -254,10 +254,10 @@ namespace Q42.HueApi
 
 	  string jsonString = JsonConvert.SerializeObject(state, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
       //Create schedule
-      var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}/state", ApiBase, id)), new StringContent(jsonString)).ConfigureAwait(false);
+      var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}/state", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -274,7 +274,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       //Delete sensor
       var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("sensors/{0}", id))).ConfigureAwait(false);
 

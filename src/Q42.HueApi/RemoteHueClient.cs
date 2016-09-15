@@ -1,4 +1,5 @@
 ﻿using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,25 +13,14 @@ namespace Q42.HueApi
 	public partial class RemoteHueClient : HueClient, IRemoteHueClient
 	{
 		private readonly string _apiBase = "https://api.meethue.com/v2/bridges/";
-		private static string _remoteAccessToken;
+		private static Func<Task<string>> _getAccessToken;
 		private string _bridgeId;
 
 
-		public RemoteHueClient(string accessToken)
+		public RemoteHueClient(Func<Task<string>> getAccessToken)
 		{
-			SetRemoteAccessToken(accessToken);
-		}
-
-		public void SetRemoteAccessToken(string accessToken)
-		{
-			_remoteAccessToken = accessToken;
-
-			var client = GetHttpClient();
-			if (!string.IsNullOrEmpty(_remoteAccessToken))
-				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _remoteAccessToken);
-			else
-				_httpClient.DefaultRequestHeaders.Authorization = null;
-		}
+            _getAccessToken = getAccessToken;
+        }
 
 		/// <summary>
 		/// Initialize client with your app key
@@ -46,19 +36,38 @@ namespace Q42.HueApi
 			Initialize(appKey);
 		}
 
+        /// <summary>
+        /// Get bridge info
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<RemoteBridge>> GetBridgesAsync()
+        {
+            HttpClient client = await GetHttpClient().ConfigureAwait(false);
+            var stringResult = await client.GetStringAsync(new Uri(_apiBase)).ConfigureAwait(false);
 
-		public new static HttpClient GetHttpClient()
+            var bridges = DeserializeResult<List<RemoteBridge>>(stringResult);
+
+            return bridges;
+        }
+
+
+        public new static async Task<HttpClient> GetHttpClient()
 		{
-			// return per-thread HttpClient
-			if (_httpClient == null)
-			{
-				_httpClient = new HttpClient();
+            // return per-thread HttpClient
+            if (_httpClient == null)
+            {
+                _httpClient = new HttpClient();
 
-				if (!string.IsNullOrEmpty(_remoteAccessToken))
-					_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _remoteAccessToken);
-			}
+            }
 
-			return _httpClient;
+            if (_getAccessToken != null)
+            {
+                var remoteAccessToken = await _getAccessToken().ConfigureAwait(false);
+                if (!string.IsNullOrEmpty(remoteAccessToken))
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", remoteAccessToken);
+            }
+
+            return _httpClient;
 		}
 
 

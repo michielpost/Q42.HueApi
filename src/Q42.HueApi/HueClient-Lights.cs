@@ -9,6 +9,7 @@ using Q42.HueApi.Extensions;
 using Newtonsoft.Json;
 using Q42.HueApi.Models.Groups;
 using System.Dynamic;
+using Q42.HueApi.Models;
 
 namespace Q42.HueApi
 {
@@ -33,7 +34,7 @@ namespace Q42.HueApi
 
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id))).ConfigureAwait(false);
 
 #if DEBUG
@@ -78,8 +79,8 @@ namespace Q42.HueApi
 
       string command = JsonConvert.SerializeObject(new { name = name});
 
-      HttpClient client = HueClient.GetHttpClient();
-      var result = await client.PutAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id)), new StringContent(command)).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var result = await client.PutAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id)), new JsonContent(command)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -94,7 +95,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights", ApiBase))).ConfigureAwait(false);
 
       List<Light> results = new List<Light>();
@@ -156,8 +157,8 @@ namespace Q42.HueApi
 
         await lightList.ForEachAsync(_parallelRequests, async (lightId) =>
         {
-          HttpClient client = HueClient.GetHttpClient();
-          await client.PutAsync(new Uri(ApiBase + string.Format("lights/{0}/state", lightId)), new StringContent(command)).ConfigureAwait(false);
+          HttpClient client = await GetHttpClient().ConfigureAwait(false);
+          await client.PutAsync(new Uri(ApiBase + string.Format("lights/{0}/state", lightId)), new JsonContent(command)).ConfigureAwait(false);
 
         }).ConfigureAwait(false);
 
@@ -182,11 +183,11 @@ namespace Q42.HueApi
 
         string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-        jsonStringContent = new StringContent(jsonString);
+        jsonStringContent = new JsonContent(jsonString);
 
       }
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       var response = await client.PostAsync(new Uri(String.Format("{0}lights", ApiBase)), jsonStringContent).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -203,7 +204,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/new", ApiBase))).ConfigureAwait(false);
 
 #if DEBUG
@@ -245,7 +246,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       //Delete light
       var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("lights/{0}", id))).ConfigureAwait(false);
 

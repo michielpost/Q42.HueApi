@@ -198,12 +198,6 @@ namespace Q42.HueApi.Interfaces
 
     #endregion
 
-    #region Info
-
-    Task<IReadOnlyCollection<string>> GetTimeZonesAsync();
-
-    #endregion
-
     #region Scenes
 
     Task<IReadOnlyCollection<Scene>> GetScenesAsync();

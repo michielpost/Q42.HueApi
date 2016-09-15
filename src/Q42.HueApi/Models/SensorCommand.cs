@@ -65,11 +65,17 @@ namespace Q42.HueApi
 		[DataMember(Name = "sunsetoffset")]
 		public int? SunsetOffset { get; set; }
 
-		// from CLIP Humidity
-		// already covered: on, battery, url
-		// Sensor specific state attributes
-		// Current humidity 0.01% steps (e.g. 2000 is 20%)
-		[DataMember(Name = "humidity")]
+        /// <summary>
+        /// Sensitivity of the sensor. Value in the range 0..sensitivitymax.
+        /// </summary>
+        [DataMember(Name = "sensitivity")]
+        public int? Sensitivity { get; set; }
+
+        // from CLIP Humidity
+        // already covered: on, battery, url
+        // Sensor specific state attributes
+        // Current humidity 0.01% steps (e.g. 2000 is 20%)
+        [DataMember(Name = "humidity")]
 		public int? Humidity { get; set; }
 
 		// from CLIP Temperature
@@ -93,16 +99,30 @@ namespace Q42.HueApi
 		[DataMember(Name = "open")]
 		public bool? Open { get; set; }
 
-		// CLIP Switch
-		// nothing
 
-		// ZLL Switch
-		// already covered: name on, battery, reachable
+        /// <summary>
+        /// Activates or extends user usertest mode of device for 120 seconds.  False deactivates usertest mode.
+        /// </summary>
+        [DataMember(Name = "usertest")]
+        public string UserTest { get; set; }
 
-		// ZGP Switch
-		// already covered: name, on
+        /// <summary>
+        /// Turns device LED during normal operation on or off.  Devices might still indicate exceptional operation (Reset, SW Update, Battery Low)
+        /// Optional, only used for ZLL sensors.
+        /// </summary>
+        [DataMember(Name = "ledindication")]
+        public bool? LedIndication { get; set; }
+
+        // CLIP Switch
+        // nothing
+
+        // ZLL Switch
+        // already covered: name on, battery, reachable
+
+        // ZGP Switch
+        // already covered: name, on
 
 
-	}
+    }
 
 }

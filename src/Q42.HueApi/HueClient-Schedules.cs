@@ -24,7 +24,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules", ApiBase))).ConfigureAwait(false);
 
       List<Schedule> results = new List<Schedule>();
@@ -57,7 +57,7 @@ namespace Q42.HueApi
     {
       CheckInitialized();
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules/{1}", ApiBase, id))).ConfigureAwait(false);
 
 #if DEBUG
@@ -84,10 +84,10 @@ namespace Q42.HueApi
 
       string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
      
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
       //Create schedule
-      var result = await client.PostAsync(new Uri(ApiBase + "schedules"), new StringContent(command)).ConfigureAwait(false);
+      var result = await client.PostAsync(new Uri(ApiBase + "schedules"), new JsonContent(command)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -113,10 +113,10 @@ namespace Q42.HueApi
 
       string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
       //Create schedule
-      var result = await client.PutAsync(new Uri(string.Format("{0}schedules/{1}", ApiBase, id)), new StringContent(command)).ConfigureAwait(false);
+      var result = await client.PutAsync(new Uri(string.Format("{0}schedules/{1}", ApiBase, id)), new JsonContent(command)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -131,7 +131,7 @@ namespace Q42.HueApi
     /// <returns></returns>
     public async Task<HueResults> DeleteScheduleAsync(string id)
     {
-      HttpClient client = HueClient.GetHttpClient();
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
       //Delete schedule
       var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("schedules/{0}", id))).ConfigureAwait(false);
 
