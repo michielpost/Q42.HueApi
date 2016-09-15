@@ -54,6 +54,7 @@
     <Compile Include="Converters\HttpMethodConverter.cs" />
     <Compile Include="Crypto\MD5.cs" />
     <Compile Include="HttpBridgeLocator.cs" />
+    <Compile Include="HueClient-Capabilities.cs" />
     <Compile Include="HueClient-ResourceLinks.cs" />
     <Compile Include="Interfaces\IRemoteAuthenticationClient.cs" />
     <Compile Include="Interfaces\IRemoteHueClient.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="HueClient.cs" />
     <Compile Include="Models\AccessTokenResponse.cs" />
     <Compile Include="Models\Bridge.cs" />
+    <Compile Include="Models\BridgeCapabilities.cs" />
     <Compile Include="Models\BridgeConfigUpdate.cs" />
     <Compile Include="Models\BridgeConfig.cs" />
     <Compile Include="Models\GenericScheduleCommand.cs" />

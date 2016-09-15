@@ -257,6 +257,12 @@ namespace Q42.HueApi.Interfaces
 		Task<string> CreateResourceLinkAsync(ResourceLink resourceLink);
 		Task<HueResults> UpdateResourceLinkAsync(string id, ResourceLink resourceLink);
 
-		#endregion
-	}
+        #endregion
+
+        #region Capabilities
+
+        Task<BridgeCapabilities> GetCapabilitiesAsync();
+
+#endregion
+    }
 }
