@@ -76,16 +76,8 @@ It's not trivial to convert the light colors to a color system developers like t
 	
 ## Remote API
 There is also a Philips Hue Remote API. It allows you to send commands to a bridge over the internet. You can request access here: http://www.developers.meethue.com/content/remote-api  
-Q42.HueApi is compatible with the remote API.  
-You need an Access Token and a Bridge Id. Please refer to the Philips Hue API documentation on how to obtain them.
-**NOTE** Remote API support is untested. Testing and PRs are very much appreciated.
-
-	IRemoteHueClient remoteHueClient =  new RemoteHueClient("access token");
-	remoteHueClient.Initialize("bridge id", "whitelist_id");
-	
-After the setup, you can send normal commands to the remote API:
-
-	remoteHueClient.SendCommandAsync(command, new List<string> { "1" });
+Q42.HueApi is compatible with the remote API.  There's a sample app and documentation can be found here:
+https://github.com/Q42/Q42.HueApi/blob/master/RemoteApi.md
 
 ## How To install?
 Download the source from GitHub or get the compiled assembly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
