@@ -83,6 +83,12 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "on")]
     public bool? On { get; set; }
 
+    [DataMember(Name = "long")]
+    public string Long { get; set; }
+
+    [DataMember(Name = "lat")]
+    public string Lat { get; set; }
+
     /// <summary>
     /// True if the valid GPS coordinates have been set.
     /// </summary>
