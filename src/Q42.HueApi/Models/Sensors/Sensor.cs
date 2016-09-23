@@ -104,13 +104,13 @@ namespace Q42.HueApi.Models
 
 		public int? Battery { get; set; }
 
-		public bool? Configured { get; set; }
+		public bool? Configured { get; }
 
-		public string Lat { get; set; }
-
-		public bool? LedIndication { get; set; }
+		public string Lat { get;  set; }
 
 		public string Long { get; set; }
+
+		public bool? LedIndication { get; set; }
 
 		public bool? On { get; set; }
 
