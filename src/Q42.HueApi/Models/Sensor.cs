@@ -110,7 +110,7 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "battery")]
     public int? Battery { get; set; }
 
-    [DataMember(Name = "battery")]
+    [DataMember(Name = "sensitivity")]
     public int? Sensitivity { get; set; }
 
     [DataMember(Name = "sensitivitymax")]
