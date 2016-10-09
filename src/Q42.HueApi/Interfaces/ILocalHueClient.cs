@@ -14,14 +14,14 @@ namespace Q42.HueApi.Interfaces
   public interface ILocalHueClient : IHueClient
   {
 	/// <summary>
-	/// Register your <paramref name="appName"/> and <paramref name="appKey"/> at the Hue Bridge.
+	/// Register your <paramref name="appName"/> and <paramref name="deviceName"/> at the Hue Bridge.
 	/// </summary>
-	/// <param name="appKey">Secret key for your app. Must be at least 10 characters.</param>
-	/// <param name="appName">The name of your app or device.</param>
+	/// <param name="deviceName">The name of the device.</param>
+	/// <param name="appName">The name of your app.</param>
 	/// <returns><c>true</c> if success, <c>false</c> if the link button hasn't been pressed.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="appName"/> or <paramref name="appKey"/> is <c>null</c>.</exception>
-	/// <exception cref="ArgumentException"><paramref name="appName"/> or <paramref name="appKey"/> aren't long enough, are empty or contains spaces.</exception>
-	Task<string> RegisterAsync(string appName, string appKey);
+	/// <exception cref="ArgumentNullException"><paramref name="appName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
+	/// <exception cref="ArgumentException"><paramref name="appName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
+	Task<string> RegisterAsync(string appName, string deviceName);
 
 		/// <summary>
 		/// Initialize the client with your app key
