@@ -49,7 +49,7 @@ namespace Q42.HueApi.Models
 		public string UniqueId { get; set; }
 	}
 
-	public class SensorState :
+	public class SensorState : ICommandBody,
 		CLIPGenericFlagState,
 		CLIPGenericStatusState,
 		CLIPHumidityState,
@@ -85,7 +85,7 @@ namespace Q42.HueApi.Models
 		public int? Temperature { get; set; }
 	}
 
-	public class SensorConfig : ICommandBody,
+	public class SensorConfig :
 		CLIPGenericFlagConfig,
 		CLIPGenericStatusConfig,
 		CLIPHumidityConfig,

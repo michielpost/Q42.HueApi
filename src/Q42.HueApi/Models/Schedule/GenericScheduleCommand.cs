@@ -45,9 +45,9 @@ namespace Q42.HueApi.Models
 			return JsonConvert.DeserializeObject<LightCommand>(this.JsonString);
 		}
 
-		public SensorConfig AsSensorCommand()
+		public SensorState AsSensorCommand()
 		{
-			return JsonConvert.DeserializeObject<SensorConfig>(this.JsonString);
+			return JsonConvert.DeserializeObject<SensorState>(this.JsonString);
 		}
 	}
 }

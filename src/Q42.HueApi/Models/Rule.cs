@@ -64,40 +64,52 @@ namespace Q42.HueApi.Models
     [EnumMember(Value = "eq")]
     Equal,
 
-    /// <summary>
-    /// OnChange, Used for Time (timestamps) int and bool values..
-    /// </summary>
-    [EnumMember(Value = "dx")]
-    OnChange,
+	/// <summary>
+	/// Time (timestamps) int and bool values. Only dx or ddx is allowed, but not both. Triggers when value of button event is changed or change of presence is detected.ddx is introduced in 1.13
+	/// </summary>
+	[EnumMember(Value = "dx")]
+	Dx,
 
 	/// <summary>
-	/// OnChange, Used for Time (timestamps) int and bool values..
+	/// Time (timestamps) int and bool values. Only dx or ddx is allowed, but not both. Triggers when value of button event is changed or change of presence is detected.ddx is introduced in 1.13
 	/// </summary>
 	[EnumMember(Value = "ddx")]
-	OnChangeDdx,
+	Ddx,
 
 	/// <summary>
-	/// OnChange, Used for Time (timestamps) int and bool values..
+	/// Time (timestamps) int and bool values.  An attribute has or has not changed for a given time.  Does not trigger a rule change.  Not allowed on /config/utc and /config/localtime. Introduced in 1.13
 	/// </summary>
 	[EnumMember(Value = "stable")]
-	OnChangeStable,
+	Stable,
 
 	/// <summary>
-	/// OnChange, Used for Time (timestamps) int and bool values..
+	/// Time (timestamps) int and bool values.  An attribute has or has not changed for a given time.  Does not trigger a rule change.  Not allowed on /config/utc and /config/localtime. Introduced in 1.13
 	/// </summary>
 	[EnumMember(Value = "not stable")]
-	OnChangeNotStable,
+	NotStable,
+
+	/// <summary>
+	/// Current time is in or not in given time interval.  "in" rule will be triggered on starttime and "not in" rule will be triggered on endtime.  Only one "in" operator is allowed in a rule.  Multiple "not in" operators are allowed in a rule.  Not allowed to be combined with "not in". Introduced in  1.14
+	/// </summary>
+	[EnumMember(Value = "in")]
+	In,
+
+	/// <summary>
+	/// Current time is in or not in given time interval.  "in" rule will be triggered on starttime and "not in" rule will be triggered on endtime.  Only one "in" operator is allowed in a rule.  Multiple "not in" operators are allowed in a rule.  Not allowed to be combined with "not in". Introduced in  1.14
+	/// </summary>
+	[EnumMember(Value = "not in")]
+	NotIn,
 
 	/// <summary>
 	/// LessThan, Allowed on int values
 	/// </summary>
 	[EnumMember(Value = "lt")]
-    LessThan,
+	LessThan,
 
-    /// <summary>
-    /// GreaterThan, Allowed on int values
-    /// </summary>
-    [EnumMember(Value = "gt")]
-    GreaterThan
+	/// <summary>
+	/// GreaterThan, Allowed on int values
+	/// </summary>
+	[EnumMember(Value = "gt")]
+	GreaterThan
   }
 }
