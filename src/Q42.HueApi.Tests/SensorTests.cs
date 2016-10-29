@@ -41,5 +41,14 @@ namespace Q42.HueApi.Tests
 
     }
 
-  }
+	[TestMethod]
+	public async Task ChangeSensorConfigAsyncTest()
+	{
+		var result = await _client.ChangeSensorConfigAsync("1", new SensorConfig() { On = false });
+
+		Assert.IsNotNull(result);
+
+	}
+
+	}
 }
