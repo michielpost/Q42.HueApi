@@ -115,7 +115,7 @@ namespace Q42.HueApi
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
-      //Create schedule
+      //Update schedule
       var result = await client.PutAsync(new Uri(string.Format("{0}schedules/{1}", ApiBase, id)), new JsonContent(command)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);

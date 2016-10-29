@@ -66,7 +66,7 @@ namespace Q42.HueApi
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
-      //Create schedule
+      //Create sensor
       var result = await client.PostAsync(new Uri(String.Format("{0}sensors", ApiBase)), new JsonContent(sensorJson)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -202,7 +202,7 @@ namespace Q42.HueApi
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
-      //Create schedule
+      //Update sensor
       var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -232,7 +232,7 @@ namespace Q42.HueApi
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
-      //Create schedule
+      //Change sensor config
       var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}/config", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -256,7 +256,7 @@ namespace Q42.HueApi
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
-      //Create schedule
+      //Change sensor state
       var result = await client.PutAsync(new Uri(string.Format("{0}sensors/{1}/state", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
       var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
