@@ -16,13 +16,14 @@ namespace Q42.HueApi.Models.Sensors.ZigBee
 
 		string SwConfigId { get; set; }
 
-		int? Sensitivity { get; set; }
-
-		int? SensitivityMax { get; set; }
+		
 	}
 
 	public interface ZLLPresenceConfig : GeneralSensorConfig
 	{
+		int? Sensitivity { get; set; }
+
+		int? SensitivityMax { get; set; }
 	}
 
 	public interface ZLLPresenceState : GeneralSensorState

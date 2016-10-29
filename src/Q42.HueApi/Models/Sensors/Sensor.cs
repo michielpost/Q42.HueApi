@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models
 {
-
+	/// <summary>
+	/// Based on http://www.developers.meethue.com/documentation/supported-sensors
+	/// </summary>
 	public class Sensor :
 		CLIPGenericFlag,
 		CLIPGenericStatus,
@@ -45,13 +47,7 @@ namespace Q42.HueApi.Models
 
 		[JsonProperty("productid")]
 		public string ProductId { get; set; }
-
-		[JsonProperty("sensitivity")]
-		public int? Sensitivity { get; set; }
-
-		[JsonProperty("sensitivitymax")]
-		public int? SensitivityMax { get; set; }
-
+		
 		[JsonProperty("swconfigid")]
 		public string SwConfigId { get; set; }
 		[JsonProperty("swversion")]
@@ -169,5 +165,11 @@ namespace Q42.HueApi.Models
 
 		[JsonProperty("usertest")]
 		public bool? Usertest { get; set; }
+
+		[JsonProperty("sensitivity")]
+		public int? Sensitivity { get; set; }
+
+		[JsonProperty("sensitivitymax")]
+		public int? SensitivityMax { get; set; }
 	}
 }
