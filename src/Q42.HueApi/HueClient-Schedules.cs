@@ -11,133 +11,161 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi
 {
-  /// <summary>
-  /// Partial HueClient, contains requests to the /schedules/ url
-  /// </summary>
-  public partial class HueClient
-  {
-    /// <summary>
-    /// Get all schedules
-    /// </summary>
-    /// <returns></returns>
-    public async Task<IReadOnlyCollection<Schedule>> GetSchedulesAsync()
-    {
-      CheckInitialized();
+	/// <summary>
+	/// Partial HueClient, contains requests to the /schedules/ url
+	/// </summary>
+	public partial class HueClient
+	{
+		/// <summary>
+		/// Get all schedules
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IReadOnlyCollection<Schedule>> GetSchedulesAsync()
+		{
+			CheckInitialized();
 
-      HttpClient client = await GetHttpClient().ConfigureAwait(false);
-      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules", ApiBase))).ConfigureAwait(false);
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
+			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules", ApiBase))).ConfigureAwait(false);
 
-      List<Schedule> results = new List<Schedule>();
+			List<Schedule> results = new List<Schedule>();
 
-      JToken token = JToken.Parse(stringResult);
-      if (token.Type == JTokenType.Object)
-      {
-        //Each property is a light
-        var jsonResult = (JObject)token;
+			JToken token = JToken.Parse(stringResult);
+			if (token.Type == JTokenType.Object)
+			{
+				//Each property is a light
+				var jsonResult = (JObject)token;
 
-        foreach (var prop in jsonResult.Properties())
-        {
-          Schedule newSchedule = JsonConvert.DeserializeObject<Schedule>(prop.Value.ToString());
-          newSchedule.Id = prop.Name;
+				foreach (var prop in jsonResult.Properties())
+				{
+					Schedule newSchedule = JsonConvert.DeserializeObject<Schedule>(prop.Value.ToString());
+					newSchedule.Id = prop.Name;
 
-          results.Add(newSchedule);
-        }
+					results.Add(newSchedule);
+				}
 
-      }
+			}
 
-      return results;
-    }
+			return results;
+		}
 
-    /// <summary>
-    /// Get a single schedule
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public async Task<Schedule> GetScheduleAsync(string id)
-    {
-      CheckInitialized();
+		/// <summary>
+		/// Get a single schedule
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<Schedule> GetScheduleAsync(string id)
+		{
+			if (id == null)
+				throw new ArgumentNullException(nameof(id));
+			if (id.Trim() == String.Empty)
+				throw new ArgumentException("id must not be empty", nameof(id));
 
-      HttpClient client = await GetHttpClient().ConfigureAwait(false);
-      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules/{1}", ApiBase, id))).ConfigureAwait(false);
+			CheckInitialized();
+
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
+			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules/{1}", ApiBase, id))).ConfigureAwait(false);
 
 #if DEBUG
-		stringResult = "{	\"name\": \"Wake up\",	\"description\": \"My wake up alarm\",	\"command\": {		\"address\": \"/api/<username>/groups/1/action\",		\"method\": \"PUT\",		\"body\": {			\"on\": true		}	},	\"time\": \"W124/T06:00:00\"}";
+			stringResult = "{	\"name\": \"Wake up\",	\"description\": \"My wake up alarm\",	\"command\": {		\"address\": \"/api/<username>/groups/1/action\",		\"method\": \"PUT\",		\"body\": {			\"on\": true		}	},	\"time\": \"W124/T06:00:00\"}";
 #endif
 
-	  Schedule schedule = DeserializeResult<Schedule>(stringResult);
+			Schedule schedule = DeserializeResult<Schedule>(stringResult);
 
-      if (string.IsNullOrEmpty(schedule.Id))
-        schedule.Id = id;
+			if (string.IsNullOrEmpty(schedule.Id))
+				schedule.Id = id;
 
-      return schedule;
+			return schedule;
 
-    }
+		}
 
-    /// <summary>
-    /// Create a schedule
-    /// </summary>
-    /// <param name="schedule"></param>
-    /// <returns></returns>
-    public async Task<string> CreateScheduleAsync(Schedule schedule)
-    {
-      CheckInitialized();
+		/// <summary>
+		/// Create a schedule
+		/// </summary>
+		/// <param name="schedule"></param>
+		/// <returns></returns>
+		public async Task<string> CreateScheduleAsync(Schedule schedule)
+		{
+			if (schedule == null)
+				throw new ArgumentNullException(nameof(schedule));
 
-      string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-     
-      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+			CheckInitialized();
 
-      //Create schedule
-      var result = await client.PostAsync(new Uri(ApiBase + "schedules"), new JsonContent(command)).ConfigureAwait(false);
+			//Set these fields to null
+			schedule.Id = null;
+			schedule.Created = null;
 
-      var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+			string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-      DefaultHueResult[] scheduleResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
-      if (scheduleResult.Length > 0 && scheduleResult[0].Success != null && !string.IsNullOrEmpty(scheduleResult[0].Success.Id))
-      {
-        return scheduleResult[0].Success.Id;
-      }
+			//Create schedule
+			var result = await client.PostAsync(new Uri(ApiBase + "schedules"), new JsonContent(command)).ConfigureAwait(false);
 
-      return null;
-    }
+			var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-    /// <summary>
-    /// Update a schedule
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="schedule"></param>
-    /// <returns></returns>
-    public async Task<HueResults> UpdateScheduleAsync(string id, Schedule schedule)
-    {
-      CheckInitialized();
+			DefaultHueResult[] scheduleResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
 
-      string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+			if (scheduleResult.Length > 0 && scheduleResult[0].Success != null && !string.IsNullOrEmpty(scheduleResult[0].Success.Id))
+			{
+				return scheduleResult[0].Success.Id;
+			}
 
-      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+			return null;
+		}
 
-      //Update schedule
-      var result = await client.PutAsync(new Uri(string.Format("{0}schedules/{1}", ApiBase, id)), new JsonContent(command)).ConfigureAwait(false);
+		/// <summary>
+		/// Update a schedule
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="schedule"></param>
+		/// <returns></returns>
+		public async Task<HueResults> UpdateScheduleAsync(string id, Schedule schedule)
+		{
+			if (id == null)
+				throw new ArgumentNullException(nameof(id));
+			if (id.Trim() == String.Empty)
+				throw new ArgumentException("id must not be empty", nameof(id));
+			if (schedule == null)
+				throw new ArgumentNullException(nameof(schedule));
 
-      var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+			CheckInitialized();
 
-      return DeserializeDefaultHueResult(jsonResult);
+			//Set these fields to null
+			schedule.Id = null;
+			schedule.Created = null;
 
-    }
+			string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-    /// <summary>
-    /// Delete a schedule
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public async Task<HueResults> DeleteScheduleAsync(string id)
-    {
-      HttpClient client = await GetHttpClient().ConfigureAwait(false);
-      //Delete schedule
-      var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("schedules/{0}", id))).ConfigureAwait(false);
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
-      string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+			//Update schedule
+			var result = await client.PutAsync(new Uri(string.Format("{0}schedules/{1}", ApiBase, id)), new JsonContent(command)).ConfigureAwait(false);
 
-      return DeserializeDefaultHueResult(jsonResult);
-    }
-  }
+			var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+			return DeserializeDefaultHueResult(jsonResult);
+
+		}
+
+		/// <summary>
+		/// Delete a schedule
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<HueResults> DeleteScheduleAsync(string id)
+		{
+			if (id == null)
+				throw new ArgumentNullException(nameof(id));
+			if (id.Trim() == String.Empty)
+				throw new ArgumentException("id must not be empty", nameof(id));
+
+			HttpClient client = await GetHttpClient().ConfigureAwait(false);
+			//Delete schedule
+			var result = await client.DeleteAsync(new Uri(ApiBase + string.Format("schedules/{0}", id))).ConfigureAwait(false);
+
+			string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+			return DeserializeDefaultHueResult(jsonResult);
+		}
+	}
 }
