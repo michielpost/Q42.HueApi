@@ -98,7 +98,10 @@ namespace Q42.HueApi.Converters
 				return hueValueDate;
 			}
 
-			string rawValue = reader.Value.ToString();
+			string rawValue = reader.Value?.ToString();
+
+			if (string.IsNullOrWhiteSpace(rawValue))
+				return null;
 
 			//normal datetimes (optional random time)
 			{
