@@ -69,15 +69,20 @@ namespace Q42.HueApi
 			if (scene.Name == null)
 				throw new ArgumentNullException(nameof(scene.Name));
 
+			//It defaults to false, but fails when omitted
+			//https://github.com/Q42/Q42.HueApi/issues/56
+			if (!scene.Recycle.HasValue)
+				scene.Recycle = false;
+
 			//Filter non updatable properties
-			scene.FilterNonUpdatableProperties();
+			//Set these fields to null
+			var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+			sceneJson.Remove("version");
+			sceneJson.Remove("lastupdated");
+			sceneJson.Remove("locked");
+			sceneJson.Remove("owner");
 
-            //It defaults to false, but fails when omitted
-            //https://github.com/Q42/Q42.HueApi/issues/56
-            if (!scene.Recycle.HasValue)
-                scene.Recycle = false;
-
-			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			var response = await client.PostAsync(new Uri(String.Format("{0}scenes", ApiBase)), new JsonContent(jsonString)).ConfigureAwait(false);
@@ -164,11 +169,14 @@ namespace Q42.HueApi
 				throw new ArgumentNullException(nameof(scene));
 
 			//Set these fields to null
-			scene.Id = null;
-			scene.Recycle = null;
-			scene.FilterNonUpdatableProperties();
+			var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+			sceneJson.Remove("recycle");
+			sceneJson.Remove("version");
+			sceneJson.Remove("lastupdated");
+			sceneJson.Remove("locked");
+			sceneJson.Remove("owner");
 
-			string jsonString = JsonConvert.SerializeObject(scene, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);

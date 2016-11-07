@@ -91,10 +91,11 @@ namespace Q42.HueApi
 			CheckInitialized();
 
 			//Set these fields to null
-			schedule.Id = null;
-			schedule.Created = null;
+			var scheduleJson = JObject.FromObject(schedule, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+			scheduleJson.Remove("Id");
+			scheduleJson.Remove("created");
 
-			string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+			string command = JsonConvert.SerializeObject(scheduleJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
@@ -131,10 +132,11 @@ namespace Q42.HueApi
 			CheckInitialized();
 
 			//Set these fields to null
-			schedule.Id = null;
-			schedule.Created = null;
+			var scheduleJson = JObject.FromObject(schedule, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+			scheduleJson.Remove("Id");
+			scheduleJson.Remove("created");
 
-			string command = JsonConvert.SerializeObject(schedule, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+			string command = JsonConvert.SerializeObject(scheduleJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 

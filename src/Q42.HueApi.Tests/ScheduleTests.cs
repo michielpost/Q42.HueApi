@@ -107,6 +107,19 @@ namespace Q42.HueApi.Tests
 	}
 
 		[TestMethod]
+		public async Task DontClearIdWhenUpdatingSchedule()
+		{
+			Schedule schedule = new Schedule();
+			schedule.Id = "1";
+			schedule.Name = "test";
+
+			await _client.UpdateScheduleAsync(schedule.Id, schedule);
+
+			Assert.IsNotNull(schedule.Id);
+
+		}
+
+		[TestMethod]
     public async Task UpdateSchedule()
     {
       Schedule schedule = new Schedule();

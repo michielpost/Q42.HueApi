@@ -79,7 +79,9 @@ namespace Q42.HueApi
 
 			if (sensorResult.Length > 0 && sensorResult[0].Success != null && !string.IsNullOrEmpty(sensorResult[0].Success.Id))
 			{
-				return sensorResult[0].Success.Id;
+				var id = sensorResult[0].Success.Id;
+				sensor.Id = id;
+				return id;
 			}
 
 			return null;

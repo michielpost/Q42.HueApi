@@ -64,15 +64,7 @@ namespace Q42.HueApi.Models
 	[DataMember(Name = "transitiontime")]
 	[JsonConverter(typeof(TransitionTimeConverter))]
 	public TimeSpan? TransitionTime { get; set; }
-
-
-		public void FilterNonUpdatableProperties()
-		{
-			this.Version = null;
-			this.LastUpdated = null;
-			this.Locked = null;
-			this.Owner = null;
-		}
+		
 
   }
 
