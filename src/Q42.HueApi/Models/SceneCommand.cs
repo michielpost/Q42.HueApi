@@ -30,6 +30,10 @@ namespace Q42.HueApi
     [DataMember (Name = "scene")]
     public string Scene { get; set; }
 
-  }
+
+	[DataMember(Name = "storelightstate")]
+	public bool? StoreLightState { get; set; }
+
+	}
 
 }
