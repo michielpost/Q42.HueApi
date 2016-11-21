@@ -14,7 +14,7 @@ namespace Q42.HueApi
 	  /// http://www.everyhue.com/vanilla/discussion/484/firmware-update-triggering
 	  /// </summary>
     [DataMember (Name = "updatestate")]
-    public int UpdateState { get; set; }
+    public int? UpdateState { get; set; }
 
     [DataMember (Name = "url")]
     public string Url { get; set; }
@@ -23,12 +23,13 @@ namespace Q42.HueApi
     public string Text { get; set; }
 
     [DataMember (Name = "notify")]
-    public bool Notify { get; set; }
+    public bool? Notify { get; set; }
 
-    /// <summary>
-    /// Setting this flag to true lets the bridge search for software updates in the portal. After the search attempt, this flag is set back to false. Requires portal connection to update server
-    /// </summary>
-    [DataMember(Name = "checkforupdate")]
+	/// <summary>
+	/// Setting this flag to true lets the bridge search for software updates in the portal. After the search attempt, this flag is set back to false. Requires portal connection to update server
+	/// http://www.developers.meethue.com/documentation/software-update
+	/// </summary>
+	[DataMember(Name = "checkforupdate")]
     public bool CheckForUpdate { get; set; }
   }
 
