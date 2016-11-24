@@ -118,11 +118,16 @@ Windows Phone
 * [iControlHue](http://www.windowsphone.com/s?appid=f1b2bcb5-82e4-4a04-9894-c9e08b85a55d)
 * [OnHue](http://www.windowsphone.com/s?appid=37d7f4dc-8520-4fa8-9b27-46531c34dd60)
 * [Huetro for Hue](http://www.windowsphone.com/s?appid=f14faa22-179d-42e4-99ca-88b44d10449b)
+* [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
 
 Windows
 * [My Hue Light Switch](http://apps.microsoft.com/windows/app/my-hue-light-switch/1193bff8-dec8-4997-82e3-a0f9aedacbb2)
 * [DarkLights](http://apps.microsoft.com/windows/app/09fb8d8b-cefc-4215-b3b2-a87a483d6690)
 * [Huetro for Hue](http://apps.microsoft.com/windows/app/33553060-d57c-467d-8348-5e88071360c5)
+* [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
+
+Xbox One
+* [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
 
 Windows Desktop
 * [CastleOS](http://www.CastleOS.com/)
