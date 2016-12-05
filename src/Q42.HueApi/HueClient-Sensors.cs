@@ -234,7 +234,15 @@ namespace Q42.HueApi
 			if (config == null)
 				throw new ArgumentNullException(nameof(config));
 
-			string jsonString = JsonConvert.SerializeObject(config, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+			var updateJson = JObject.FromObject(config, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+
+			//Remove properties from json that are readonly
+			updateJson.Remove("battery");
+			updateJson.Remove("reachable");
+			updateJson.Remove("configured");
+			updateJson.Remove("pending");
+
+			string jsonString = JsonConvert.SerializeObject(updateJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
