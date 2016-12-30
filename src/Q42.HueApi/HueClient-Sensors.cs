@@ -241,6 +241,7 @@ namespace Q42.HueApi
 			updateJson.Remove("reachable");
 			updateJson.Remove("configured");
 			updateJson.Remove("pending");
+			updateJson.Remove("sensitivitymax");
 
 			string jsonString = JsonConvert.SerializeObject(updateJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
