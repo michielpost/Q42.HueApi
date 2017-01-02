@@ -77,6 +77,7 @@ namespace Q42.HueApi
 			//Filter non updatable properties
 			//Set these fields to null
 			var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+			sceneJson.Remove("id");
 			sceneJson.Remove("version");
 			sceneJson.Remove("lastupdated");
 			sceneJson.Remove("locked");
@@ -171,6 +172,7 @@ namespace Q42.HueApi
 
 			//Set these fields to null
 			var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+			sceneJson.Remove("id");
 			sceneJson.Remove("recycle");
 			sceneJson.Remove("version");
 			sceneJson.Remove("lastupdated");
