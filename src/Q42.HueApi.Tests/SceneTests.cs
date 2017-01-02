@@ -32,7 +32,15 @@ namespace Q42.HueApi.Tests
       Assert.AreNotEqual(0, result.Count());
     }
 
-    [TestMethod]
+	[TestMethod]
+	public async Task GetSingle()
+	{
+		var result = await _client.GetSceneAsync("1");
+
+		Assert.AreNotEqual(0, result.LightStates.Count);
+	}
+
+		[TestMethod]
     public async Task Create()
     {
 	  Scene test = new Scene();

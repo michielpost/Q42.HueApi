@@ -81,6 +81,7 @@ namespace Q42.HueApi
 			sceneJson.Remove("lastupdated");
 			sceneJson.Remove("locked");
 			sceneJson.Remove("owner");
+			sceneJson.Remove("lightstates");
 
 			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -175,6 +176,7 @@ namespace Q42.HueApi
 			sceneJson.Remove("lastupdated");
 			sceneJson.Remove("locked");
 			sceneJson.Remove("owner");
+			sceneJson.Remove("lightstates");
 
 			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -226,12 +228,12 @@ namespace Q42.HueApi
 
     }
 
-	/// <summary>
-	/// Deletes a scene
-	/// </summary>
-	/// <param name="id"></param>
-	/// <returns></returns>
-	public async Task<HueResults> DeleteSceneAsync(string sceneId)
+		/// <summary>
+		/// Deletes a scene
+		/// </summary>
+		/// <param name="sceneId"></param>
+		/// <returns></returns>
+		public async Task<HueResults> DeleteSceneAsync(string sceneId)
 	{
 		CheckInitialized();
 
@@ -255,6 +257,10 @@ namespace Q42.HueApi
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id))).ConfigureAwait(false);
+
+#if DEBUG
+			stringResult = "{	\"name\": \"Cozy dinner\",	\"lights\": [\"1\"],	\"owner\": \"newdeveloper\",	\"recycle\": true,	\"locked\": false,	\"appdata\": {},	\"picture\": \"\",	\"lastupdated\": \"2015-12-03T10:09:22\",	\"version\": 2,	\"lightstates\": {		\"1\": {			\"on\": true,			\"bri\": 237,			\"xy\": [0.5806, 0.3903]		}	}}";
+#endif
 
 			Scene scene = DeserializeResult<Scene>(stringResult);
 
