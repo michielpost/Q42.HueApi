@@ -46,15 +46,15 @@ LightCommands also support Effects and Alerts
 	command.Alert = Alerts.Once;
 	
 	//Or start a colorloop
-	command.Effect = Effects.ColorLoop;
+	command.Effect = Effect.ColorLoop;
 	
 Once you have composed your command, send it to one or more lights
 
-	client.SendCommandAsync(command, new List<string> { "1" });
+	await client.SendCommandAsync(command, new List<string> { "1" });
 	
 Or send it to all lights
 
-	client.SendCommandAsync(command);
+	await client.SendCommandAsync(command);
 
 ### Color Conversion
 The Philips Hue lights work with Brightness, Saturation, Hue and X, Y properties. More info can be found in the Philips Hue Developer documentation: http://www.developers.meethue.com/documentation/core-concepts#color_gets_more_complicated
