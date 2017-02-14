@@ -1,4 +1,5 @@
 ﻿using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models.Bridge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Q42.HueApi.NET
 
 
 
-    public async Task<IEnumerable<string>> LocateBridgesAsync(TimeSpan timeout)
+    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout)
     {
       if (timeout <= TimeSpan.Zero)
         throw new ArgumentException("Timeout value must be greater than zero.", nameof(timeout));
@@ -94,9 +95,9 @@ namespace Q42.HueApi.NET
     }
 
 
-    private async Task<IEnumerable<string>> FilterBridges(List<string> discoveredDevices)
+    private async Task<IEnumerable<LocatedBridge>> FilterBridges(List<string> discoveredDevices)
     {
-      List<string> bridgeIps = new List<string>();
+      List<LocatedBridge> bridges = new List<LocatedBridge>();
 
 
       var endpoints = discoveredDevices.Where(s => s.EndsWith("/description.xml")).ToList();
@@ -106,18 +107,18 @@ namespace Q42.HueApi.NET
         var ip = endpoint.Replace("http://", "").Replace("/description.xml", "");
 
         //Not in the list yet?
-        if (!bridgeIps.Contains(ip))
+        if (bridges.Where(x => x.IpAddress == ip).Any())
         {
           //Check if it is Hue Bridge
           if (await IsHue(endpoint).ConfigureAwait(false))
           {
             //Add ip
-            bridgeIps.Add(ip);
+            bridges.Add(new LocatedBridge() { IpAddress = ip });
           }
         }
       }
 
-      return bridgeIps;
+      return bridges;
     }
 
     // http://www.nerdblog.com/2012/10/a-day-with-philips-hue.html - description.xml retrieval
