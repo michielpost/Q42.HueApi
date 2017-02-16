@@ -109,11 +109,12 @@ namespace Q42.HueApi.NET
         //Not in the list yet?
         if (bridges.Where(x => x.IpAddress == ip).Any())
         {
-          //Check if it is Hue Bridge
-          if (await IsHue(endpoint).ConfigureAwait(false))
+		  //Check if it is Hue Bridge
+		  string serialNumber = await IsHue(endpoint).ConfigureAwait(false);
+		  if (!string.IsNullOrWhiteSpace(serialNumber))
           {
             //Add ip
-            bridges.Add(new LocatedBridge() { IpAddress = ip });
+            bridges.Add(new LocatedBridge() { IpAddress = ip, BridgeId = serialNumber });
           }
         }
       }
@@ -122,7 +123,7 @@ namespace Q42.HueApi.NET
     }
 
     // http://www.nerdblog.com/2012/10/a-day-with-philips-hue.html - description.xml retrieval
-    private async Task<bool> IsHue(string discoveryUrl)
+    private async Task<string> IsHue(string discoveryUrl)
     {
       // since this specifies timeout (and probably isn't called much), don't use shared client
       var http = new HttpClient { Timeout = TimeSpan.FromMilliseconds(2000) };
@@ -131,15 +132,26 @@ namespace Q42.HueApi.NET
         var res = await http.GetStringAsync(discoveryUrl).ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(res))
         {
-          if (res.ToLower().Contains("philips hue bridge"))
-            return true;
-        }
+			res = res.ToLower();
+
+			if (res.Contains("philips hue bridge"))
+			{
+				int startSerial = res.IndexOf("<serialnumber>");
+				if (startSerial > 0)
+				{
+					int endSerial = res.IndexOf("</", startSerial);
+
+					int startPoint = startSerial + 14;
+					return res.Substring(startPoint, endSerial - startPoint);
+				}
+			}
+		}
       }
       catch
       {
         //Not a UTF8 string, ignore this response.
       }
-      return false;
+      return null;
     }
 
   }
