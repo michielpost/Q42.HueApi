@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Q42.HueApi.Models.Bridge;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,6 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="timeout"></param>
     /// <returns></returns>
-    Task<IEnumerable<string>> LocateBridgesAsync(TimeSpan timeout);
+    Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout);
   }
 }

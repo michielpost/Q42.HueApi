@@ -1,4 +1,5 @@
 ﻿using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models.Bridge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Q42.HueApi.NET
 
 
 
-    public async Task<IEnumerable<string>> LocateBridgesAsync(TimeSpan timeout)
+    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout)
     {
       if (timeout <= TimeSpan.Zero)
         throw new ArgumentException("Timeout value must be greater than zero.", nameof(timeout));
@@ -94,9 +95,9 @@ namespace Q42.HueApi.NET
     }
 
 
-    private async Task<IEnumerable<string>> FilterBridges(List<string> discoveredDevices)
+    private async Task<IEnumerable<LocatedBridge>> FilterBridges(List<string> discoveredDevices)
     {
-      List<string> bridgeIps = new List<string>();
+      List<LocatedBridge> bridges = new List<LocatedBridge>();
 
 
       var endpoints = discoveredDevices.Where(s => s.EndsWith("/description.xml")).ToList();
@@ -106,22 +107,23 @@ namespace Q42.HueApi.NET
         var ip = endpoint.Replace("http://", "").Replace("/description.xml", "");
 
         //Not in the list yet?
-        if (!bridgeIps.Contains(ip))
+        if (bridges.Where(x => x.IpAddress == ip).Any())
         {
-          //Check if it is Hue Bridge
-          if (await IsHue(endpoint).ConfigureAwait(false))
+		  //Check if it is Hue Bridge
+		  string serialNumber = await IsHue(endpoint).ConfigureAwait(false);
+		  if (!string.IsNullOrWhiteSpace(serialNumber))
           {
             //Add ip
-            bridgeIps.Add(ip);
+            bridges.Add(new LocatedBridge() { IpAddress = ip, BridgeId = serialNumber });
           }
         }
       }
 
-      return bridgeIps;
+      return bridges;
     }
 
     // http://www.nerdblog.com/2012/10/a-day-with-philips-hue.html - description.xml retrieval
-    private async Task<bool> IsHue(string discoveryUrl)
+    private async Task<string> IsHue(string discoveryUrl)
     {
       // since this specifies timeout (and probably isn't called much), don't use shared client
       var http = new HttpClient { Timeout = TimeSpan.FromMilliseconds(2000) };
@@ -130,15 +132,26 @@ namespace Q42.HueApi.NET
         var res = await http.GetStringAsync(discoveryUrl).ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(res))
         {
-          if (res.ToLower().Contains("philips hue bridge"))
-            return true;
-        }
+			res = res.ToLower();
+
+			if (res.Contains("philips hue bridge"))
+			{
+				int startSerial = res.IndexOf("<serialnumber>");
+				if (startSerial > 0)
+				{
+					int endSerial = res.IndexOf("</", startSerial);
+
+					int startPoint = startSerial + 14;
+					return res.Substring(startPoint, endSerial - startPoint);
+				}
+			}
+		}
       }
       catch
       {
         //Not a UTF8 string, ignore this response.
       }
-      return false;
+      return null;
     }
 
   }

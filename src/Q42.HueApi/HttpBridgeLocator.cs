@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models.Bridge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="timeout"></param>
 		/// <returns></returns>
-    public async Task<IEnumerable<string>> LocateBridgesAsync(TimeSpan timeout)
+    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout)
     {
       // since this specifies timeout (and probably isn't called much), don't use shared client
       HttpClient client = new HttpClient();
@@ -32,7 +33,7 @@ namespace Q42.HueApi
 
       NuPnPResponse[] responseModel = JsonConvert.DeserializeObject<NuPnPResponse[]>(response);
 
-      return responseModel.Select(x => x.InternalIpAddress).ToList();
+      return responseModel.Select(x => new LocatedBridge() { BridgeId = x.Id, IpAddress = x.InternalIpAddress }).ToList();
 
     }
   }

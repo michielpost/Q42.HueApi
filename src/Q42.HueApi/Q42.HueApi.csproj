@@ -78,6 +78,7 @@
     <Compile Include="Models\Bridge\BridgeCapabilities.cs" />
     <Compile Include="Models\Bridge\BridgeConfigUpdate.cs" />
     <Compile Include="Models\Bridge\BridgeConfig.cs" />
+    <Compile Include="Models\Bridge\LocatedBridge.cs" />
     <Compile Include="Models\Schedule\GenericScheduleCommand.cs" />
     <Compile Include="Models\Groups\CreateGroupRequest.cs" />
     <Compile Include="Models\Groups\Group.cs" />

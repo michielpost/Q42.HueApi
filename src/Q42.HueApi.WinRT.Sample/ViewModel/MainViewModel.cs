@@ -4,6 +4,7 @@ using Q42.HueApi;
 using Q42.HueApi.ColorConverters;
 using Q42.HueApi.ColorConverters.OriginalWithModel;
 using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models.Bridge;
 using Q42.WinRT.Data;
 using Q42.WinRT.Portable.Data;
 using System;
@@ -130,23 +131,23 @@ namespace Q42.HueApi.WinRT.Sample.ViewModel
 				{
 					var result = await LocateBridgeDataLoader.LoadAsync(() => httpLocator.LocateBridgesAsync(TimeSpan.FromSeconds(5)));
 
-					HttpBridges = string.Join(", ", result.ToArray());
+					HttpBridges = string.Join(", ", result.Select(x => x.IpAddress).ToArray());
 
 					if (result.Count() > 0)
-						_hueClient = new LocalHueClient(result.First());
+						_hueClient = new LocalHueClient(result.Select(x => x.IpAddress).First());
 				}
 
 				private async void SsdpLocateBridgeAction()
 				{
 					var result = await SsdpLocateBridgeDataLoader.LoadAsync(() => ssdpLocator.LocateBridgesAsync(TimeSpan.FromSeconds(5)));
 
-          if (result == null)
-            result = new List<string>();
+					if (result == null)
+						result = new List<LocatedBridge>();
 
-					SsdpBridges = string.Join(", ", result.ToArray());
+					SsdpBridges = string.Join(", ", result.Select(x => x.IpAddress).ToArray());
 
 					if (result.Count() > 0)
-						_hueClient = new LocalHueClient(result.First());
+						_hueClient = new LocalHueClient(result.Select(x => x.IpAddress).First());
 				}
 
 				internal async void Register(string p)

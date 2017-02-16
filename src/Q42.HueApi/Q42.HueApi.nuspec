@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Q42.HueApi</id>
-    <version>3.2.9</version>
+    <version>3.3.0</version>
     <summary>Open source library for interaction with the Philips Hue Bridge.</summary>
     <description><![CDATA[Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Portable library works with .Net45, Windows (Phone) 8 and UWP]]></description>
     <authors>Q42</authors>
@@ -21,14 +21,14 @@
 		<dependency id="Microsoft.Bcl.Build" version="1.0.21" />
 	  	<dependency id="Newtonsoft.Json" version="9.0.1" />
 		<dependency id="Microsoft.Net.Http" version="2.2.29" />
-		<dependency id="Q42.HueApi.WinRT" version="1.4.3.42" />
+		<dependency id="Q42.HueApi.WinRT" version="3.3.0" />
 		<dependency id="Q42.HueApi.ColorConverters" version="3.0.0" />
 	  </group>	 
 	  <group targetFramework="net45">
 		<dependency id="Microsoft.Bcl.Build" version="1.0.21" />
         <dependency id="Newtonsoft.Json" version="9.0.1" />
 		<dependency id="Microsoft.Net.Http" version="2.2.29" />
-		<dependency id="Q42.HueApi.NET" version="2.0.0" />
+		<dependency id="Q42.HueApi.NET" version="3.3.0" />
 		<dependency id="Q42.HueApi.ColorConverters" version="3.0.0" />
 	  </group>
     </dependencies>  
