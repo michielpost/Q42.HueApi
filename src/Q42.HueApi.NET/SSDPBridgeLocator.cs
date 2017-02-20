@@ -75,7 +75,7 @@ namespace Q42.HueApi.NET
           {
             var receivedString = Encoding.UTF8.GetString(response);
 
-            var location = receivedString.Substring(receivedString.ToLower().IndexOf("location:", System.StringComparison.Ordinal) + 9);
+            var location = receivedString.Substring(receivedString.IndexOf("LOCATION:", System.StringComparison.Ordinal) + 9);
             receivedString = location.Substring(0, location.IndexOf("\r", System.StringComparison.Ordinal)).Trim();
 
             _discoveredDevices.Add(receivedString);
