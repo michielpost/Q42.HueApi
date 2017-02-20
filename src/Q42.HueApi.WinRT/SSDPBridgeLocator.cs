@@ -40,7 +40,7 @@ namespace Q42.HueApi.WinRT
           var bytesRemaining = reader.UnconsumedBufferLength;
           var receivedString = reader.ReadString(bytesRemaining);
 
-          var location = receivedString.Substring(receivedString.ToLower().IndexOf("location:", System.StringComparison.Ordinal) + 9);
+          var location = receivedString.Substring(receivedString.IndexOf("LOCATION:", System.StringComparison.Ordinal) + 9);
           receivedString = location.Substring(0, location.IndexOf("\r", System.StringComparison.Ordinal)).Trim();
 
           discoveredDevices.Add(receivedString);
