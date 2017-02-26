@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Q42.HueApi.ColorConverters</id>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <summary>Please use the main Q42.HueApi package. This package only contains Hue Color Converters.</summary>
     <description><![CDATA[Please use the main Q42.HueApi package. This package only contains Hue Color Converters. - Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#.]]></description>
     <authors>Q42</authors>
