@@ -474,12 +474,12 @@ namespace Q42.HueApi.ColorConverters.Original
 		/// </summary>
 		/// <param name="state"></param>
 		/// <returns></returns>
-		public static string HexFromState(State state, string model)
+		public static string HexColorFromState(State state, string model)
 		{
 			if (state == null)
 				throw new ArgumentNullException(nameof(state));
-			if (state.On == false || state.Brightness <= 5) //Off or low brightness
-				return "000000";
+			//if (state.On == false || state.Brightness <= 5) //Off or low brightness
+			//	return "000000";
 			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
 			{
 				var color = ColorFromXY(new CGPoint(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
@@ -489,7 +489,25 @@ namespace Q42.HueApi.ColorConverters.Original
 			return "FFFFFF"; //White
 		}
 
-		private static RGBColor ColorFromXY(CGPoint xy, string model)
+    /// <summary>
+    /// Returns hexvalue from Light State
+    /// </summary>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    public static RGBColor RGBColorFromState(State state, string model)
+    {
+      if (state == null)
+        throw new ArgumentNullException(nameof(state));
+      //if (state.On == false || state.Brightness <= 5) //Off or low brightness
+      //  return new RGBColor("000000");
+      if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
+      {
+        return ColorFromXY(new CGPoint(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
+      }
+      return new RGBColor("FFFFFF"); //White
+    }
+
+    private static RGBColor ColorFromXY(CGPoint xy, string model)
 		{
 			List<CGPoint> colorPoints = ColorPointsForModel(model);
 			bool inReachOfLamps = CheckPointInLampsReach(xy, colorPoints);
@@ -622,7 +640,7 @@ namespace Q42.HueApi.ColorConverters.Original
 				}
 			}
 
-			return new RGBColor((byte)r, (byte)g, (byte)b);
+			return new RGBColor(r, g, b);
 		}
 	}
 }
