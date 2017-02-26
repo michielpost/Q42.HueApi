@@ -10,7 +10,12 @@ namespace Q42.HueApi.ColorConverters.Original
 	{
 		public static string ToHex(this Light light)
 		{
-			return HueColorConverter.HexFromState(light.State, light.ModelId);
+			return HueColorConverter.HexColorFromState(light.State, light.ModelId);
 		}
-	}
+
+    public static RGBColor ToRGBColor(this Light light)
+    {
+      return HueColorConverter.RGBColorFromState(light.State, light.ModelId);
+    }
+  }
 }

@@ -10,7 +10,13 @@ namespace Q42.HueApi.ColorConverters.Original
 	{
 		public static string ToHex(this State state, string model = "LCT001")
 		{
-			return HueColorConverter.HexFromState(state, model);
+			return HueColorConverter.HexColorFromState(state, model);
 		}
-	}
+
+    public static RGBColor ToRGBColor(this State state, string model = "LCT001")
+    {
+      return HueColorConverter.RGBColorFromState(state, model);
+    }
+
+  }
 }
