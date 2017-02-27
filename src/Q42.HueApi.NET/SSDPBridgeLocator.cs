@@ -107,7 +107,7 @@ namespace Q42.HueApi.NET
         var ip = endpoint.Replace("http://", "").Replace("/description.xml", "");
 
         //Not in the list yet?
-        if (bridges.Where(x => x.IpAddress == ip).Any())
+        if (!bridges.Where(x => x.IpAddress == ip).Any())
         {
 		  //Check if it is Hue Bridge
 		  string serialNumber = await IsHue(endpoint).ConfigureAwait(false);
