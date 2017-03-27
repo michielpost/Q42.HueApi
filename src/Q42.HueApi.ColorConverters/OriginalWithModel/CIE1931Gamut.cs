@@ -55,6 +55,8 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 			List<string> gamutC = new List<string>() {
 				"LLC020" /* Hue Go */,
 				"LST002" /* Hue LightStrips Plus */
+				"LCT011" /* Hue BR30 */
+				"LCT012" /* Hue color candle */
             };
 
 			if (gamutA.Contains(modelId))
