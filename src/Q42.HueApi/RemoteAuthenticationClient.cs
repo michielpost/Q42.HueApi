@@ -39,6 +39,11 @@ namespace Q42.HueApi
             _appId = appId;
         }
 
+        public void Initialize(AccessTokenResponse accessTokenResponse)
+        {
+            _lastAuthorizationResponse = accessTokenResponse;
+        }
+
         /// <summary>
         /// Authorization request
         /// </summary>

@@ -7,20 +7,26 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Interfaces
 {
-    public interface IRemoteAuthenticationClient
-    {
-        Uri BuildAuthorizeUri(string state, string deviceId, string deviceName = null, string responseType = "code");
+  public interface IRemoteAuthenticationClient
+  {
+    Uri BuildAuthorizeUri(string state, string deviceId, string deviceName = null, string responseType = "code");
 
-        RemoteAuthorizeResponse ProcessAuthorizeResponse(string responseData);
+    RemoteAuthorizeResponse ProcessAuthorizeResponse(string responseData);
 
-        Task<AccessTokenResponse> GetToken(string code);
+    /// <summary>
+    /// Initialize with existing AccessTokenResponse
+    /// </summary>
+    /// <param name="storedAccessToken"></param>
+    void Initialize(AccessTokenResponse storedAccessToken);
 
-        Task<AccessTokenResponse> RefreshToken(string refreshToken);
+    Task<AccessTokenResponse> GetToken(string code);
 
-        /// <summary>
-        /// Gets a valid access token
-        /// </summary>
-        /// <returns></returns>
-        Task<string> GetValidToken();
-    }
+    Task<AccessTokenResponse> RefreshToken(string refreshToken);
+
+    /// <summary>
+    /// Gets a valid access token
+    /// </summary>
+    /// <returns></returns>
+    Task<string> GetValidToken();
+  }
 }
