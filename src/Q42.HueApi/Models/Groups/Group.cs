@@ -24,7 +24,7 @@ namespace Q42.HueApi.Models.Groups
 		/// </summary>
 		[JsonConverter(typeof(StringEnumConverter))]
 		[DataMember(Name = "type")]
-		public GroupType Type { get; set; }
+		public GroupType? Type { get; set; }
 
 		/// <summary>
 		/// Category of the Room type. Default is "Other".

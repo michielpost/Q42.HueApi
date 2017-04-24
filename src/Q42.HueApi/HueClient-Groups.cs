@@ -167,7 +167,7 @@ namespace Q42.HueApi
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id))).ConfigureAwait(false);
 
 #if DEBUG
-      //stringResult = "{    \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
+      stringResult = "{ \"type\": null,  \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
 #endif
 
       Group group = DeserializeResult<Group>(stringResult);
