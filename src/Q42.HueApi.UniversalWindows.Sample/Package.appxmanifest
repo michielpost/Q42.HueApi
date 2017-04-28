@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="10bcb25a-7e91-4140-89a3-e67e28151b12"
+    Name="f16247fd-d230-41bf-8adb-d633608703d8"
     Publisher="CN=Michiel"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="10bcb25a-7e91-4140-89a3-e67e28151b12" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="f16247fd-d230-41bf-8adb-d633608703d8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Q42.HueApi.RemoteApi.Sample</DisplayName>
+    <DisplayName>Q42.HueApi.UniversalWindows.Sample</DisplayName>
     <PublisherDisplayName>Michiel</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Q42.HueApi.RemoteApi.Sample.App">
+      EntryPoint="Q42.HueApi.UniversalWindows.Sample.App">
       <uap:VisualElements
-        DisplayName="Q42.HueApi.RemoteApi.Sample"
+        DisplayName="Q42.HueApi.UniversalWindows.Sample"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Q42.HueApi.RemoteApi.Sample"
+        Description="Q42.HueApi.UniversalWindows.Sample"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

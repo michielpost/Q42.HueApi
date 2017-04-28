@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="Q42.HueApi.UniversalWindows.Sample.Views.FindLightsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Q42.HueApi.UniversalWindows.Sample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <Button Command="{Binding GetLightsCommand}">Get Lights</Button>
+            <TextBlock Text="{Binding GetLights}"></TextBlock>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -57,11 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj">
-      <Project>{c7305601-b583-479d-9a08-d6da0a63ab85}</Project>
+      <Project>{30e87ae1-1276-43eb-9143-1513eb1f6fc3}</Project>
       <Name>Q42.HueApi.ColorConverters</Name>
     </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
-      <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>
+      <Project>{6be87311-0abb-4cde-93ad-f8a3309a31e0}</Project>
       <Name>Q42.HueApi</Name>
     </ProjectReference>
   </ItemGroup>

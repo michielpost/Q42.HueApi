@@ -58,13 +58,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
-      <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>
-      <Name>Q42.HueApi</Name>
-    </ProjectReference>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
+      <Project>{6be87311-0abb-4cde-93ad-f8a3309a31e0}</Project>
+      <Name>Q42.HueApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
