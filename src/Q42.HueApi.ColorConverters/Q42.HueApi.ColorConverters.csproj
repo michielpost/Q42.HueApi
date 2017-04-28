@@ -15,7 +15,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj" />
+    <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
+      <PrivateAssets>All</PrivateAssets>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
