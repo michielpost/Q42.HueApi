@@ -1,0 +1,23 @@
+﻿<Page
+    x:Class="Q42.HueApi.UniversalWindows.Sample.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Q42.HueApi.UniversalWindows.Sample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <TextBox x:Name="AppName" Width="300" HorizontalAlignment="Left" Text="HueDevConAppname"></TextBox>
+
+            <Button Margin="0,20,0,0" x:Name="RegisterButton" Click="RegisterButton_Click">Register and initialize (press the button!)</Button>
+            <ProgressBar HorizontalAlignment="Left" Width="200" Margin="0,0" DataContext="{Binding LocateBridgeDataLoader}" IsIndeterminate="{Binding IsBusy}"></ProgressBar>
+            <TextBlock Width="300" HorizontalAlignment="Left" Text="{Binding RegisterSuccess}">Success?</TextBlock>
+
+            <Button Margin="0,20,0,0" x:Name="InitButton" Click="InitButton_Click">Initialize only</Button>
+            
+        </StackPanel>
+    </Grid>
+</Page>

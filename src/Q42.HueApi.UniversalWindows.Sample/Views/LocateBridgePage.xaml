@@ -1,0 +1,26 @@
+﻿<Page
+    x:Class="Q42.HueApi.UniversalWindows.Sample.Views.LocateBridgePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Q42.HueApi.UniversalWindows.Sample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <Button Command="{Binding LocateBridgeCommand}">Located bridges (http)</Button>
+            <ProgressBar HorizontalAlignment="Left" Width="200" Margin="0,0" DataContext="{Binding LocateBridgeDataLoader}" IsIndeterminate="{Binding IsBusy}"></ProgressBar>
+            <TextBlock Text="{Binding HttpBridges}"></TextBlock>
+
+
+            <Button Margin="0,50,0,0" Command="{Binding SsdpLocateBridgeCommand}">Located bridges (SSDP)</Button>
+            <ProgressBar HorizontalAlignment="Left" Width="200" Margin="0,0" DataContext="{Binding SsdpLocateBridgeDataLoader}" IsIndeterminate="{Binding IsBusy}"></ProgressBar>
+            <TextBlock Text="{Binding SsdpBridges}"></TextBlock>
+            
+            <TextBox Margin="0,50,0,0" Width="250" HorizontalAlignment="Left" x:Name="ManualIp" />
+            <Button Click="Button_Click">Manual set</Button>
+        </StackPanel>
+    </Grid>
+</Page>

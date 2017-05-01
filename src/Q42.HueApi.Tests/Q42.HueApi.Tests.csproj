@@ -46,9 +46,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -88,11 +87,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj">
-      <Project>{C7305601-B583-479D-9A08-D6DA0A63AB85}</Project>
+      <Project>{30e87ae1-1276-43eb-9143-1513eb1f6fc3}</Project>
       <Name>Q42.HueApi.ColorConverters</Name>
     </ProjectReference>
     <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
-      <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>
+      <Project>{6be87311-0abb-4cde-93ad-f8a3309a31e0}</Project>
       <Name>Q42.HueApi</Name>
     </ProjectReference>
   </ItemGroup>

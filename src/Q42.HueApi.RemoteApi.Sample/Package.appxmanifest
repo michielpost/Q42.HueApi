@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="94039d29-77b2-4bdb-a11d-88bd442a8ee4"
+    Name="10bcb25a-7e91-4140-89a3-e67e28151b12"
     Publisher="CN=Michiel"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="94039d29-77b2-4bdb-a11d-88bd442a8ee4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="10bcb25a-7e91-4140-89a3-e67e28151b12" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Q42.HueApi.RemoteApi.Sample</DisplayName>

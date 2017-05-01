@@ -1,75 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C7305601-B583-479D-9A08-D6DA0A63AB85}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Q42.HueApi.ColorConverters</RootNamespace>
-    <AssemblyName>Q42.HueApi.ColorConverters</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+ <PropertyGroup>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <Version>3.4.0</Version>
+    <Company>Q42</Company>
+    <Authors>Michiel Post, Q42</Authors>
+    <Description>This package only contains the ColorConverers used with Q42.HueApi</Description>
+    <PackageProjectUrl>https://github.com/Q42/Q42.HueApi</PackageProjectUrl>
+    <PackageIconUrl>https://nugetgallery.blob.core.windows.net/icons/DotLessMinification.0.42.1.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Q42/Q42.HueApi</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>philips hue lights</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Q42.HueApi.ColorConverters.XML</DocumentationFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
     <ProjectReference Include="..\Q42.HueApi\Q42.HueApi.csproj">
-      <Project>{e59a16b4-6756-4576-ab63-6a9b2cf2892b}</Project>
-      <Name>Q42.HueApi</Name>
+      <PrivateAssets>All</PrivateAssets>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="HSB\DoubleExtension.cs" />
-    <Compile Include="HSB\Extensions\LightCommandExtensions.cs" />
-    <Compile Include="HSB\Extensions\LightExtensions.cs" />
-    <Compile Include="HSB\Extensions\StateExtensions.cs" />
-    <Compile Include="HSB\HSB.cs" />
-    <Compile Include="HSB\Numbers.cs" />
-    <Compile Include="HSB\RGBExtensions.cs" />
-    <Compile Include="OriginalWithModel\CIE1931Gamut.cs" />
-    <Compile Include="OriginalWithModel\CIE1931Point.cs" />
-    <Compile Include="OriginalWithModel\Extensions\LightCommandExtensions.cs" />
-    <Compile Include="OriginalWithModel\Extensions\LightExtensions.cs" />
-    <Compile Include="OriginalWithModel\Extensions\StateExtensions.cs" />
-    <Compile Include="OriginalWithModel\HueColorConverter.cs" />
-    <Compile Include="Original\CGPoint.cs" />
-    <Compile Include="Original\Extensions\LightCommandExtensions.cs" />
-    <Compile Include="Original\Extensions\LightExtensions.cs" />
-    <Compile Include="Original\Extensions\StateExtensions.cs" />
-    <Compile Include="Original\HueColorConverter-Arrays.cs" />
-    <Compile Include="Original\HueColorConverter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RGBColor.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

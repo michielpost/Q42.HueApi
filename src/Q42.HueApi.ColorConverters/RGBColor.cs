@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Q42.HueApi.ColorConverters.Tests")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Q42.HueApi.NET.Tests")]
+
 namespace Q42.HueApi.ColorConverters
 {
 	/// <summary>
