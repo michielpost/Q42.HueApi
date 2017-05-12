@@ -75,36 +75,45 @@ namespace Q42.HueApi
     [DataMember(Name = "zigbeechannel")]
     public int ZigbeeChannel { get; set; }
 
-	/// <summary>
-	/// Perform a touchlink action if set to true, setting to false is ignored. When set to true a touchlink procedure starts which adds the closet lamp (within range) to the ZigBee network.  You can then search for new lights and lamp will show up in the bridge.
-	/// </summary>
-	[DataMember(Name = "touchlink")]
-	public bool TouchLink { get; set; }
+    /// <summary>
+    /// Perform a touchlink action if set to true, setting to false is ignored. When set to true a touchlink procedure starts which adds the closet lamp (within range) to the ZigBee network.  You can then search for new lights and lamp will show up in the bridge.
+    /// </summary>
+    [DataMember(Name = "touchlink")]
+    public bool TouchLink { get; set; }
 
-	/// <summary>
-	/// Indicates if bridge settings are factory new.
-	/// </summary>
-	[DataMember(Name = "factorynew")]
-	public bool FactoryNew { get; set; }
+    /// <summary>
+    /// Indicates if bridge settings are factory new.
+    /// </summary>
+    [DataMember(Name = "factorynew")]
+    public bool FactoryNew { get; set; }
 
-	/// <summary>
-	///  If a bridge backup file has been restored on this bridge from a bridge with a different bridgeid, it will indicate that bridge id, otherwise it will be null.
-	/// </summary>
-	[DataMember(Name = "replacesbridgeid")]
-	public string ReplacesBridgeId { get; set; }
+    /// <summary>
+    ///  If a bridge backup file has been restored on this bridge from a bridge with a different bridgeid, it will indicate that bridge id, otherwise it will be null.
+    /// </summary>
+    [DataMember(Name = "replacesbridgeid")]
+    public string ReplacesBridgeId { get; set; }
 
-	/// <summary>
-	/// This parameter uniquely identifies the hardware model of the bridge (BSB001, BSB002).
-	/// </summary>
-	[DataMember(Name = "modelid")]
-	public string ModelId { get; set; }
+    /// <summary>
+    /// This parameter uniquely identifies the hardware model of the bridge (BSB001, BSB002).
+    /// </summary>
+    [DataMember(Name = "modelid")]
+    public string ModelId { get; set; }
 
-	/// <summary>
-	/// The unique bridge id. This is currently generated from the bridge Ethernet mac address.
-	/// </summary>
-	[DataMember(Name = "bridgeid")]
-	public string BridgeId { get; set; }
+    /// <summary>
+    /// The unique bridge id. This is currently generated from the bridge Ethernet mac address.
+    /// </summary>
+    [DataMember(Name = "bridgeid")]
+    public string BridgeId { get; set; }
 
-	}
+    [DataMember(Name = "datastoreversion")]
+    public string DataStoreVersion { get; set; }
+
+    [DataMember(Name = "starterkitid")]
+    public string StarterKitId { get; set; }
+
+    [DataMember(Name = "internetservices")]
+    public string InternetServices { get; set; }
+
+  }
 
 }
