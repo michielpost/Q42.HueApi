@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,14 @@ namespace Q42.HueApi.Models.Groups
 		/// <summary>
 		/// Luminaire / Lightsource / LightGroup
 		/// </summary>
-		[JsonConverter(typeof(StringEnumConverter))]
+		[JsonConverter(typeof(StringNullableEnumConverter))]
 		[DataMember(Name = "type")]
 		public GroupType? Type { get; set; }
 
 		/// <summary>
 		/// Category of the Room type. Default is "Other".
 		/// </summary>
-		[JsonConverter(typeof(StringEnumConverter))]
+		[JsonConverter(typeof(StringNullableEnumConverter))]
 		[DataMember(Name = "class")]
 		public RoomClass? Class { get; set; }
 

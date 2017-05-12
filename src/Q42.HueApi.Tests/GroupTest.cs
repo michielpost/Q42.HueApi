@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Groups;
+using Newtonsoft.Json;
 
 namespace Q42.HueApi.Tests
 {
@@ -20,7 +21,7 @@ namespace Q42.HueApi.Tests
       string ip = ConfigurationManager.AppSettings["ip"].ToString();
       string key = ConfigurationManager.AppSettings["key"].ToString();
 
-	  _client = new LocalHueClient(ip, key);
+      _client = new LocalHueClient(ip, key);
     }
 
     [TestMethod]
@@ -61,7 +62,7 @@ namespace Q42.HueApi.Tests
 
       Assert.IsTrue(group.Lights.Any());
       Assert.AreEqual<int>(lights.Count, group.Lights.Count, "Should have the same number of lights");
-      Assert.IsNotNull(group.Name);      
+      Assert.IsNotNull(group.Name);
       Assert.AreEqual<string>(groupName, group.Name, "Name should be the same");
     }
 
@@ -79,7 +80,7 @@ namespace Q42.HueApi.Tests
     {
       var groups = await _client.GetGroupsAsync();
 
-       Assert.IsTrue(groups.Any());
+      Assert.IsTrue(groups.Any());
     }
 
     [TestMethod]
@@ -114,7 +115,7 @@ namespace Q42.HueApi.Tests
       var oldGroup = await _client.GetGroupAsync("1");
 
       List<string> newLights = new List<string>();
-    
+
       await _client.UpdateGroupAsync("1", newLights, "test update");
 
       var group = await _client.GetGroupAsync("1");
@@ -124,28 +125,47 @@ namespace Q42.HueApi.Tests
 
     }
 
-		[TestMethod]
-		public async Task CreateRoomGroupWithName()
-		{
-			//make sure you have lights 1 and 2 in your HUE environment
-			List<string> lights = new List<string>() { "1", "2" };
-			string groupName = "testgroupName";
-			string groupId = await _client.CreateGroupAsync(lights, groupName, Models.Groups.RoomClass.LivingRoom);
+    [TestMethod]
+    public async Task CreateRoomGroupWithName()
+    {
+      //make sure you have lights 1 and 2 in your HUE environment
+      List<string> lights = new List<string>() { "1", "2" };
+      string groupName = "testgroupName";
+      string groupId = await _client.CreateGroupAsync(lights, groupName, Models.Groups.RoomClass.LivingRoom);
 
-			Assert.IsFalse(string.IsNullOrEmpty(groupId));
-			Assert.IsFalse(string.IsNullOrEmpty(groupName));
+      Assert.IsFalse(string.IsNullOrEmpty(groupId));
+      Assert.IsFalse(string.IsNullOrEmpty(groupName));
 
-			//Get group and check lights
-			var group = await _client.GetGroupAsync(groupId);
+      //Get group and check lights
+      var group = await _client.GetGroupAsync(groupId);
 
-			//cleanup
-			await _client.DeleteGroupAsync(groupId);
+      //cleanup
+      await _client.DeleteGroupAsync(groupId);
 
-			Assert.IsTrue(group.Lights.Any());
-			Assert.AreEqual<int>(lights.Count, group.Lights.Count, "Should have the same number of lights");
-			Assert.IsNotNull(group.Name);
-			Assert.AreEqual<string>(groupName, group.Name, "Name should be the same");
-			Assert.AreEqual(RoomClass.LivingRoom, group.Class);
-		}
-	}
+      Assert.IsTrue(group.Lights.Any());
+      Assert.AreEqual<int>(lights.Count, group.Lights.Count, "Should have the same number of lights");
+      Assert.IsNotNull(group.Name);
+      Assert.AreEqual<string>(groupName, group.Name, "Name should be the same");
+      Assert.AreEqual(RoomClass.LivingRoom, group.Class);
+    }
+
+    [TestMethod]
+    public void EnumUnknownTest()
+    {
+      string json = @"{ ""type"": ""unknown""}";
+      Group group = JsonConvert.DeserializeObject<Group>(json);
+
+      Assert.IsNull(group.Type);
+
+    }
+
+    [TestMethod]
+    public void EnumTest()
+    {
+      string json = @"{ ""type"": ""room""}";
+      Group group = JsonConvert.DeserializeObject<Group>(json);
+
+      Assert.AreEqual(GroupType.Room, group.Type);
+    }
+  }
 }
