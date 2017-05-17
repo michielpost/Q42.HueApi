@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using Q42.HueApi.Models;
 using System;
+using Q42.HueApi.Models.Bridge;
 
 namespace Q42.HueApi
 {
@@ -112,7 +113,7 @@ namespace Q42.HueApi
     public string StarterKitId { get; set; }
 
     [DataMember(Name = "internetservices")]
-    public string InternetServices { get; set; }
+    public InternetServices InternetServices { get; set; }
 
   }
 
