@@ -31,6 +31,9 @@ namespace Q42.HueApi
 	/// </summary>
 	[DataMember(Name = "checkforupdate")]
     public bool CheckForUpdate { get; set; }
+
+    [DataMember(Name = "devicetypes")]
+    public SoftwareUpdateDevices DeviceTypes { get; set; }
   }
 
   [DataContract]
@@ -41,6 +44,9 @@ namespace Q42.HueApi
 
     [DataMember(Name = "lights")]
     public IReadOnlyCollection<string> Lights { get; set; }
+
+    [DataMember(Name = "sensors")]
+    public IReadOnlyCollection<string> Sensors { get; set; }
 
   }
 }
