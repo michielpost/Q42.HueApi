@@ -30,12 +30,6 @@ namespace Q42.HueApi
     [DataMember(Name = "gateway")]
     public string Gateway { get; set; }
 
-    [DataMember(Name = "proxyaddress")]
-    public string ProxyAddress { get; set; }
-
-    [DataMember(Name = "proxyport")]
-    public int ProxyPort { get; set; }
-
     //Cant be a DateTime? because when value is not available, HueBridge sends value "none"
     //TODO: Create custom json deserializer
     [DataMember(Name = "UTC")]
@@ -44,8 +38,12 @@ namespace Q42.HueApi
     [DataMember(Name = "swversion")]
     public string SoftwareVersion { get; set; }
 
+    [Obsolete]
     [DataMember(Name = "swupdate")]
     public SoftwareUpdate SoftwareUpdate { get; set; }
+
+    [DataMember(Name = "swupdate2")]
+    public SoftwareUpdate2 SoftwareUpdate2 { get; set; }
 
     [DataMember(Name = "whitelist")]
     public IDictionary<string, WhiteList> WhiteList { get; set; }
