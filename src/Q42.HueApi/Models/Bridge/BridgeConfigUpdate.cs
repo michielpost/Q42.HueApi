@@ -50,5 +50,11 @@ namespace Q42.HueApi
 	/// </summary>
 	[DataMember(Name = "touchlink")]
 	public bool? TouchLink { get; set; }
-	}
+
+    /// <summary>
+    /// The current wireless frequency channel used by the bridge. It can take values of 11, 15, 20,25 or 0 if undefined (factory new).
+    /// </summary>
+    [DataMember(Name = "zigbeechannel")]
+    public int? ZigbeeChannel { get; set; }
+  }
 }
