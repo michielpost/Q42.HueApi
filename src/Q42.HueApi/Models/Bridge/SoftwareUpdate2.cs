@@ -32,15 +32,26 @@ namespace Q42.HueApi
     [DataMember(Name = "lastchange")]
     public DateTimeOffset? LastChange { get; set; }
 
+    [DataMember(Name = "autoinstall")]
+    public SoftwareUpdateAutoInstall AutoInstall { get; set; }
+
+    [DataMember(Name = "bridge")]
+    public SoftwareUpdateBridge Bridge { get; set; }
+
+  }
+
+  [DataContract]
+  public class SoftwareUpdateBridge
+  {
     /// <summary>
     /// Time of last software update.
     /// </summary>
     [DataMember(Name = "lastinstall")]
     public DateTimeOffset? LastInstall { get; set; }
 
-    [DataMember(Name = "autoinstall")]
-    public SoftwareUpdateAutoInstall AutoInstall { get; set; }
-
+    [JsonConverter(typeof(StringEnumConverter))]
+    [DataMember(Name = "state")]
+    public SoftwareUpdateState State { get; set; }
   }
 
   [DataContract]
