@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Q42.HueApi.Net</id>
-    <version>3.3.1</version>
+    <version>3.3.2</version>
     <summary>Please use the main Q42.HueApi package. This package only contains .NET specific SSDP Bridge Locator.</summary>
     <description><![CDATA[Please use the main Q42.HueApi package. This package only contains .NET specific SSDP Bridge Locator. - Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#.]]></description>
     <authors>Q42</authors>
