@@ -84,7 +84,9 @@ namespace Q42.HueApi.WinRT
 
       var endpoints = discoveredDevices.Where(s => s.EndsWith("/description.xml")).ToList();
 
-      foreach (var endpoint in endpoints)
+      var filteredEndpoints = endpoints.Distinct();
+    
+      foreach (var endpoint in filteredEndpoints)
       {
 		  var ip = endpoint.Replace("http://", "").Replace("https://", "").Replace("/description.xml", "");
 
