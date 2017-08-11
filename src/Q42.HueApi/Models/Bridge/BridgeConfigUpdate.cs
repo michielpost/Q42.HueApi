@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
+using System;
 
 namespace Q42.HueApi
 {
@@ -27,14 +28,12 @@ namespace Q42.HueApi
     [DataMember(Name = "gateway")]
     public string Gateway { get; set; }
 
-    [DataMember(Name = "proxyaddress")]
-    public string ProxyAddress { get; set; }
-
-    [DataMember(Name = "proxyport")]
-    public int? ProxyPort { get; set; }
-
+    [Obsolete]
     [DataMember(Name = "swupdate")]
     public SoftwareUpdate SoftwareUpdate { get; set; }
+
+    [DataMember(Name = "swupdate2")]
+    public SoftwareUpdate2 SoftwareUpdate2 { get; set; }
 
     [DataMember(Name = "linkbutton")]
     public bool? LinkButton { get; set; }

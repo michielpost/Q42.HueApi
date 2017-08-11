@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Q42.HueApi
 {
+  [Obsolete]
   [DataContract]
   public class SoftwareUpdate
   {
@@ -36,6 +38,7 @@ namespace Q42.HueApi
     public SoftwareUpdateDevices DeviceTypes { get; set; }
   }
 
+  [Obsolete]
   [DataContract]
   public class SoftwareUpdateDevices
   {
