@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -88,6 +88,8 @@ namespace Q42.HueApi
     AllReadyToInstall,
     [EnumMember(Value = "installing")]
     Installing,
+    [EnumMember(Value = "readytoinstall")]
+    ReadyToInstall,
   }
 
 }
