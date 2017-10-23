@@ -78,6 +78,8 @@ namespace Q42.HueApi
   {
     [EnumMember(Value = "unknown")]
     Unknown,
+    [EnumMember(Value = "notupdatable")]
+    NotUpdatable,
     [EnumMember(Value = "noupdates")]
     NoUpdates,
     [EnumMember(Value = "transferring")]
