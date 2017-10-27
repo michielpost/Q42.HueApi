@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
@@ -11,6 +11,11 @@ namespace Q42.HueApi
   [DataContract]
   public class BridgeConfig
   {
+
+    public BridgeConfig()
+    {
+      WhiteList = new Dictionary<string, WhiteList>();
+    }
 
     [DataMember(Name = "name")]
     public string Name { get; set; }

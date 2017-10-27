@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
@@ -23,7 +23,7 @@ namespace Q42.HueApi.Tests
     }
 
     [TestMethod]
-    public async Task GetConfig()
+    public async Task GetBridge()
     {
       var result = await _client.GetBridgeAsync();
 
@@ -33,10 +33,23 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task GetWhiteList()
     {
-      var result = await _client.GetWhiteListAsync();
+      string ip = ConfigurationManager.AppSettings["ip"].ToString();
+      var noApiKeyclient = new LocalHueClient(ip);
+      var result = await noApiKeyclient.GetWhiteListAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(string.IsNullOrEmpty(result.First().Id));
+    }
+
+    [TestMethod]
+    public async Task GetConfig()
+    {
+      string ip = ConfigurationManager.AppSettings["ip"].ToString();
+      var noApiKeyclient = new LocalHueClient(ip);
+      var result = await noApiKeyclient.GetConfigAsync();
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(string.IsNullOrEmpty(result.BridgeId));
     }
 
     [TestMethod]

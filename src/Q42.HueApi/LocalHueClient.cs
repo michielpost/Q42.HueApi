@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -33,7 +33,10 @@ namespace Q42.HueApi
     {
       get
       {
-        return string.Format("http://{0}/api/{1}/", _ip, _appKey);
+        if(!string.IsNullOrWhiteSpace(_appKey))
+          return string.Format("http://{0}/api/{1}/", _ip, _appKey);
+        else
+          return string.Format("http://{0}/api/", _ip);
       }
     }
 

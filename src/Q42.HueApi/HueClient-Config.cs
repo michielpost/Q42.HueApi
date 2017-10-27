@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Models;
 using Q42.HueApi.Models.Groups;
@@ -53,7 +53,7 @@ namespace Q42.HueApi
     /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
     public async Task<IEnumerable<WhiteList>> GetWhiteListAsync()
     {
-      CheckInitialized();
+      //Not needed to check if initialized, can be used without API key
 
       BridgeConfig config = await GetConfigAsync().ConfigureAwait(false);
       
@@ -84,7 +84,7 @@ namespace Q42.HueApi
     /// <returns>BridgeConfig object</returns>
     public async Task<BridgeConfig> GetConfigAsync()
     {
-        CheckInitialized();
+        //Not needed to check if initialized, can be used without API key
 
         HttpClient client = await GetHttpClient().ConfigureAwait(false);
         string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}config", ApiBase))).ConfigureAwait(false);
