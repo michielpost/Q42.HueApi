@@ -1,4 +1,4 @@
-﻿using Q42.HueApi.Interfaces;
+using Q42.HueApi.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -478,15 +478,20 @@ namespace Q42.HueApi.ColorConverters.Original
 		{
 			if (state == null)
 				throw new ArgumentNullException(nameof(state));
-			//if (state.On == false || state.Brightness <= 5) //Off or low brightness
-			//	return "000000";
-			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
+      if (state.On == false || state.Brightness <= 1) //Off or low brightness
+        return "000000";
+      if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
 			{
-				var color = ColorFromXY(new CGPoint(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
-				return string.Format("{0}{1}{2}", color.R.ToString("X2"), color.G.ToString("X2"), color.B.ToString("X2"));
-			}
+        RGBColor color = ColorFromXY(new CGPoint(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
 
-			return "FFFFFF"; //White
+        //Brightness of state (0.0-1.0)
+        double b = Convert.ToDouble(state.Brightness) / 255;
+        //color with brightness
+        RGBColor colorWithB = new RGBColor(color.R * b, color.G * b, color.B * b);
+        return colorWithB.ToHex();
+      }
+
+      return "FFFFFF"; //White
 		}
 
     /// <summary>

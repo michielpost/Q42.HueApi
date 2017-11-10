@@ -2,7 +2,7 @@
 
  <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
-    <Version>3.4.0</Version>
+    <Version>3.4.1</Version>
     <Company>Q42</Company>
     <Authors>Michiel Post, Q42</Authors>
     <Description>This package only contains the ColorConverers used with Q42.HueApi</Description>
