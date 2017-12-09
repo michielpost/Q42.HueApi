@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Q42.HueApi.ColorConverters;
 using Q42.HueApi.ColorConverters.HSB;
 using Q42.HueApi.Interfaces;
@@ -108,6 +108,9 @@ namespace Q42.HueApi.Tests
       //Send Command
       var result = await _client.SendCommandAsync(command);
       var result2 = await _client.SendCommandAsync(command, lights);
+
+      Assert.IsTrue(result.Count > 0 && result.Any(r => r.Error == null));
+      Assert.IsTrue(result2.Count > 0 && result2.Any(r => r.Error == null));
 
     }
 

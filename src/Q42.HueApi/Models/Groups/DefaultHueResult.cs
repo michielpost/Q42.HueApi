@@ -1,4 +1,6 @@
-﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,6 +47,10 @@ namespace Q42.HueApi.Models.Groups
   public class SuccessResult
   {
     public string Id { get; set; }
+
+    [JsonExtensionData]
+    private IDictionary<string, JToken> OtherData;
+
   }
 
   public class ErrorResult
