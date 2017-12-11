@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
@@ -80,8 +80,10 @@ namespace Q42.HueApi.Models.Groups
 		[EnumMember(Value = "Luminaire")]
 		Luminaire,
 		[EnumMember(Value = "LightSource")]
-		LightSource
-	}
+		LightSource,
+    [EnumMember(Value = "Entertainment")]
+    Entertainment
+  }
 
 	/// <summary>
 	/// Possible room types

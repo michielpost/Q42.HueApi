@@ -1,4 +1,4 @@
-﻿using Q42.HueApi.Models;
+using Q42.HueApi.Models;
 using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
@@ -52,14 +52,15 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<HueResults> SendGroupCommandAsync(ICommandBody command, string group = "0");
 
-	/// <summary>
-	/// Create a group for a list of lights
-	/// </summary>
-	/// <param name="lights">List of lights in the group</param>
-	/// <param name="name">Optional name</param>
-	/// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
-	/// <returns></returns>
-	Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomCLass = null);
+    /// <summary>
+    /// Create a group for a list of lights
+    /// </summary>
+    /// <param name="lights">List of lights in the group</param>
+    /// <param name="name">Optional name</param>
+    /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
+    /// <param name="groupType">GroupType</param>
+    /// <returns></returns>
+    Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room);
 
     /// <summary>
     /// Deletes a single group
