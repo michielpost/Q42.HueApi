@@ -91,6 +91,7 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null);
 
+    Task<HueResults> UpdateGroupLocationsAsync(string id, Dictionary<string, LightLocation> locations);
 #endregion
 
     #region Lights

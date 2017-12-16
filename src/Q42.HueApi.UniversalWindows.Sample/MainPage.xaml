@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="Q42.HueApi.UniversalWindows.Sample.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -37,7 +37,8 @@
                 <Button x:Name="LocateBridgeButton" Click="LocateBridgeButton_Click">Locate Bridge</Button>
                 <Button x:Name="RegisterButton" Click="RegisterButton_Click">Register App</Button>
                 <Button x:Name="FindLightsButton" Click="FindLightsButton_Click">Find lights</Button>
-                <Button x:Name="LightCommandsButton" Click="LightCommandsButton_Click">Light Commands</Button>
+        <Button x:Name="LightCommandsButton" Click="LightCommandsButton_Click">Light Commands</Button>
+        <Button x:Name="EntertainmentButton" Click="EntertainmentButton_Click">Entertainment Setup</Button>
             </StackPanel>
 
             <Frame x:Name="NavFrame" Grid.Column="1" />

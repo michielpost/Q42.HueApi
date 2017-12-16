@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -55,7 +56,27 @@ namespace Q42.HueApi.Models.Groups
 		[DataMember(Name = "state")]
 		public GroupState State { get; set; }
 
-	}
+    [DataMember(Name = "locations")]
+    public Dictionary<string, LightLocation> Locations { get; set; }
+
+  }
+
+  public class LightLocation : List<double>
+  {
+    [JsonIgnore]
+    public double X
+    {
+      get { return this[0];  }
+      set { this[0] = value; }
+    }
+
+    [JsonIgnore]
+    public double Y
+    {
+      get { return this[1]; }
+      set { this[1] = value; }
+    }
+  }
 
 	[DataContract]
 	public class GroupState
@@ -127,7 +148,9 @@ namespace Q42.HueApi.Models.Groups
 		[EnumMember(Value = "Driveway")]
 		Driveway,
 		[EnumMember(Value = "Carport")]
-		Carport
-	}
+		Carport,
+    [EnumMember(Value = "TV")]
+    TV
+  }
 
 }

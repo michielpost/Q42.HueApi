@@ -46,5 +46,10 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<HueResults> SetStreamingAsync(string id, bool active = true);
 
+    /// <summary>
+    /// Returns the entertainment group
+    /// </summary>
+    /// <returns></returns>
+    Task<Group> GetEntertainmentGroup();
   }
 }

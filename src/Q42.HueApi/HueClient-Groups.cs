@@ -155,6 +155,12 @@ namespace Q42.HueApi
 
     }
 
+    public async Task<Group> GetEntertainmentGroup()
+    {
+      var allGroups = await GetGroupsAsync();
+      return allGroups.Where(x => x.Type == Models.Groups.GroupType.Entertainment).First();
+    }
+
     /// <summary>
     /// Get the state of a single group
     /// </summary>
@@ -166,9 +172,9 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id))).ConfigureAwait(false);
 
-#if DEBUG
-      stringResult = "{ \"type\": null,  \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
-#endif
+//#if DEBUG
+//      stringResult = "{ \"type\": null,  \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
+//#endif
 
       Group group = DeserializeResult<Group>(stringResult);
 
@@ -201,6 +207,28 @@ namespace Q42.HueApi
 
       if(!string.IsNullOrEmpty(name))
         jsonObj.name = name;
+
+      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      return DeserializeDefaultHueResult(jsonResult);
+
+    }
+
+    public async Task<HueResults> UpdateGroupLocationsAsync(string id, Dictionary<string, LightLocation> locations)
+    {
+      if (id == null)
+        throw new ArgumentNullException(nameof(id));
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id must not be empty", nameof(id));
+      if (locations == null || !locations.Any())
+        throw new ArgumentNullException(nameof(locations));
+
+      dynamic jsonObj = new ExpandoObject();
+      jsonObj.locations = locations;
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 

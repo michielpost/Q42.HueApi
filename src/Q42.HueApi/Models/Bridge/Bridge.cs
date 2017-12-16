@@ -1,4 +1,5 @@
-﻿using Q42.HueApi.Models;
+using Q42.HueApi.Models;
+using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace Q42.HueApi
   /// </summary>
   internal class BridgeState
   {
-    public Dictionary<string, Light> lights { get; set; }
+    public Dictionary<string, Light> Lights { get; set; }
+    public Dictionary<string, Group> Groups { get; set; }
     public BridgeConfig config { get; set; }
     public Dictionary<string, WhiteList> whitelist { get; set; }
   }
@@ -29,9 +31,13 @@ namespace Q42.HueApi
 
       Config = bridge.config;
 
-      foreach (var light in bridge.lights)
+      foreach (var light in bridge.Lights)
         light.Value.Id = light.Key;
-      Lights = bridge.lights.Select(l => l.Value).ToList();
+      Lights = bridge.Lights.Select(l => l.Value).ToList();
+
+      foreach (var group in bridge.Groups)
+        group.Value.Id = group.Key;
+      Groups = bridge.Groups.Select(l => l.Value).ToList();
 
       //Fix whitelist IDs
       foreach (var whitelist in bridge.config.WhiteList)
@@ -43,6 +49,7 @@ namespace Q42.HueApi
     /// Light info from the bridge
     /// </summary>
     public IEnumerable<Light> Lights { get; private set; }
+    public IEnumerable<Group> Groups { get; private set; }
 
     /// <summary>
     /// Bridge config info
