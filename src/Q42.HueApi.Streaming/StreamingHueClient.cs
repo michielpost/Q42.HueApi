@@ -66,7 +66,7 @@ namespace Q42.HueApi.Streaming
 
     public void AutoUpdate(StreamingGroup entGroup, int frequency, CancellationToken cancellationToken)
     {
-      if (!this._simulator)
+      if (!_simulator)
       {
         int groupCount = (entGroup.Count / 10) + 1;
         frequency = frequency / groupCount;
@@ -76,7 +76,7 @@ namespace Q42.HueApi.Streaming
 
       Task.Run(async () =>
       {
-        while(!cancellationToken.IsCancellationRequested)
+        while (!cancellationToken.IsCancellationRequested)
         {
           Send(entGroup.GetCurrentState());
 

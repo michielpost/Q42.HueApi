@@ -22,32 +22,23 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="cancellationToken"></param>
     public static Task SetBrightness(this StreamingLight light, double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
-      return Task.Run(async () =>
-      {
-        var updates = (timeSpan.TotalMilliseconds / _updateFrequencyMs) * 0.8;
-        var stepSize = (brightness - light.State.Brightness) / updates;
-
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
-        for (int i = 0; i < updates; i++)
-        {
-          if (cancellationToken.IsCancellationRequested)
-            return;
-
-          light.State.Brightness += stepSize;
-
-          await Task.Delay(_updateFrequencyMs);
-
-          if (sw.ElapsedMilliseconds > timeSpan.TotalMilliseconds)
-            break;
-        }
-
-        sw.Stop();
-        light.State.Brightness = brightness;
-      }, cancellationToken);
+      return light.SetState(null, brightness, timeSpan, cancellationToken);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="light"></param>
+    /// <param name="rgb"></param>
+    /// <param name="timeSpan"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static Task SetColor(this StreamingLight light, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    {
+      return light.SetState(rgb, null, timeSpan, cancellationToken);
+    }
+
+    public static Task SetState(this StreamingLight light, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
       if (light.LightLocation.IsLeft)
         Console.WriteLine($"INPUT R: {light.State.RGBColor.R}, G: {light.State.RGBColor.G}, B: {light.State.RGBColor.B}");
@@ -56,20 +47,32 @@ namespace Q42.HueApi.Streaming.Extensions
       {
         //if (light.LightLocation.IsLeft)
         //  Console.WriteLine($"START R: {light.State.RGBColor.R}, G: {light.State.RGBColor.G}, B: {light.State.RGBColor.B}");
-        
+
         var updates = (timeSpan.TotalMilliseconds / _updateFrequencyMs) * 0.75;
+        int? stepSizeR = null;
+        int? stepSizeG = null;
+        int? stepSizeB = null;
+        double? stepSizeBri = null;
 
-        int red = (int)(light.State.RGBColor.R * 255.99);
-        int green = (int)(light.State.RGBColor.G * 255.99);
-        int blue = (int)(light.State.RGBColor.B * 255.99);
+        if (rgb.HasValue)
+        {
+          int red = (int)(light.State.RGBColor.R * 255.99);
+          int green = (int)(light.State.RGBColor.G * 255.99);
+          int blue = (int)(light.State.RGBColor.B * 255.99);
 
-        int newred = (int)(rgb.R * 255.99);
-        int newgreen = (int)(rgb.G * 255.99);
-        int newblue = (int)(rgb.B * 255.99);
+          int newred = (int)(rgb.Value.R * 255.99);
+          int newgreen = (int)(rgb.Value.G * 255.99);
+          int newblue = (int)(rgb.Value.B * 255.99);
 
-        int stepSizeR = (int)((newred - red) / updates);
-        int stepSizeG = (int)((newgreen - green) / updates);
-        int stepSizeB = (int)((newblue - blue) / updates);
+          stepSizeR = (int)((newred - red) / updates);
+          stepSizeG = (int)((newgreen - green) / updates);
+          stepSizeB = (int)((newblue - blue) / updates);
+        }
+
+        if (brightness.HasValue)
+        {
+          stepSizeBri = (brightness - light.State.Brightness) / updates;
+        }
 
         //var stepSizeR = (rgb.R - light.State.RGBColor.R) / updates;
         //var stepSizeG = (rgb.G - light.State.RGBColor.G) / updates;
@@ -83,18 +86,29 @@ namespace Q42.HueApi.Streaming.Extensions
           if (cancellationToken.IsCancellationRequested)
             return;
 
-          red = (int)(light.State.RGBColor.R * 255.99);
-          green = (int)(light.State.RGBColor.G * 255.99);
-          blue = (int)(light.State.RGBColor.B * 255.99);
 
-          light.State.RGBColor = new RGBColor(
-           red + stepSizeR,
-           green + stepSizeG,
-           blue + stepSizeB
-           );
 
-          if (light.LightLocation.IsLeft)
-            Console.WriteLine($"{i} + R: {light.State.RGBColor.R}, G: {light.State.RGBColor.G}, B: {light.State.RGBColor.B}");
+          //Only update color if there are changes
+          if (rgb.HasValue
+          && stepSizeR.HasValue && stepSizeG.HasValue && stepSizeB.HasValue)
+          {
+            int red = (int)(light.State.RGBColor.R * 255.99);
+            int green = (int)(light.State.RGBColor.G * 255.99);
+            int blue = (int)(light.State.RGBColor.B * 255.99);
+
+            light.State.RGBColor = new RGBColor(
+             red + stepSizeR.Value,
+             green + stepSizeG.Value,
+             blue + stepSizeB.Value
+             );
+          }
+
+          //Only update brightness if there are changes
+          if (brightness.HasValue && stepSizeBri.HasValue)
+            light.State.Brightness += stepSizeBri.Value;
+
+          //if (light.LightLocation.IsLeft)
+          //  Console.WriteLine($"{i} + R: {light.State.RGBColor.R}, G: {light.State.RGBColor.G}, B: {light.State.RGBColor.B}");
 
           await Task.Delay(_updateFrequencyMs).ConfigureAwait(false);
 
@@ -118,7 +132,12 @@ namespace Q42.HueApi.Streaming.Extensions
         }
 
         sw.Stop();
-        light.State.RGBColor = rgb;
+
+        if (rgb.HasValue)
+          light.State.RGBColor = rgb.Value;
+        if (brightness.HasValue)
+          light.State.Brightness = brightness.Value;
+
         //if (light.LightLocation.IsLeft)
         //  Console.WriteLine($"FINISHED R: {light.State.RGBColor.R}, G: {light.State.RGBColor.G}, B: {light.State.RGBColor.B}");
 

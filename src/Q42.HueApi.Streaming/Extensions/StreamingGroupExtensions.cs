@@ -48,10 +48,7 @@ namespace Q42.HueApi.Streaming.Extensions
     public static IEnumerable<StreamingLight> SetBrightness(this IEnumerable<StreamingLight> group,
       double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
-      foreach(var light in group)
-      {
-        light.SetBrightness(brightness, timeSpan, cancellationToken);
-      }
+      group.SetState(null, brightness, timeSpan, cancellationToken);
 
       return group;
     }
@@ -68,13 +65,21 @@ namespace Q42.HueApi.Streaming.Extensions
       RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
 
-      foreach (var light in group)
-      {
-        light.SetColor(rgb, timeSpan, cancellationToken);
-      }
+      group.SetState(rgb, null, timeSpan, cancellationToken);
 
       //var p = Parallel.ForEach(group, (light) => light.SetColor(rgb, timeSpan, cancellationToken));
-      
+
+      return group;
+    }
+
+    public static IEnumerable<StreamingLight> SetState(this IEnumerable<StreamingLight> group,
+      RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    {
+      foreach (var light in group)
+      {
+        light.SetState(rgb, brightness, timeSpan, cancellationToken);
+      }
+
       return group;
     }
   }
