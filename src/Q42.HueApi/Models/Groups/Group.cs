@@ -76,9 +76,16 @@ namespace Q42.HueApi.Models.Groups
       get { return this[1]; }
       set { this[1] = value; }
     }
+
+    public bool IsLeft => X < 0;
+    public bool IsRight => X > 0;
+    public bool IsFront => Y < 0;
+    public bool IsBack => Y > 0;
+    public bool IsCenter => X > -0.1 && X < 0.1 ;
+
   }
 
-	[DataContract]
+  [DataContract]
 	public class GroupState
 	{
 		[DataMember(Name = "any_on")]

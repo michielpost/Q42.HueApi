@@ -8,7 +8,7 @@ namespace Q42.HueApi.Streaming.Models
 {
   public class StreamingLight
   {
-    private LightLocation _location = new LightLocation();
+    public LightLocation LightLocation { get; private set; }
 
     public byte Id { get; set; }
 
@@ -18,7 +18,7 @@ namespace Q42.HueApi.Streaming.Models
     public StreamingLight(string id, LightLocation location = null)
     {
       Id = byte.Parse(id);
-      _location = location;
+      LightLocation = location;
     }
 
     internal IEnumerable<byte> GetState()

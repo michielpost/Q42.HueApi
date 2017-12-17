@@ -66,8 +66,11 @@ namespace Q42.HueApi.Streaming
 
     public void AutoUpdate(StreamingGroup entGroup, int frequency, CancellationToken cancellationToken)
     {
-      int groupCount = (entGroup.Count / 10) + 1;
-      frequency = frequency / groupCount;
+      if (!this._simulator)
+      {
+        int groupCount = (entGroup.Count / 10) + 1;
+        frequency = frequency / groupCount;
+      }
 
       var waitTime = (int)TimeSpan.FromSeconds(1).TotalMilliseconds / frequency;
 

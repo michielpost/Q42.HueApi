@@ -120,6 +120,23 @@ namespace Q42.HueApi.UniversalWindows.Sample.Views
     {
       var result = await ((MainViewModel)this.DataContext).CreateNewEntertainmentGroup();
       EntGroupId.Text = result;
+
+      //Load new group
+      await ((MainViewModel)this.DataContext).GetEntertainmentGroup(result);
+
+      //Random position new group
+      Random r = new Random();
+      var positions = ((MainViewModel)this.DataContext).GroupForPositioning;
+      foreach(var pos in positions)
+      {
+        pos.X = r.NextDouble() * 400;
+        pos.Y = r.NextDouble() * 400;
+      }
+
+      //Save new group
+      await ((MainViewModel)this.DataContext).SaveGroupLocationAction(result);
+
+
     }
   }
 }
