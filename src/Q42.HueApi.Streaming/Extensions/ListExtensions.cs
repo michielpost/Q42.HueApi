@@ -11,7 +11,7 @@ namespace Q42.HueApi.Streaming.Extensions
   /// </summary>
   public static class ListExtensions
   {
-    public static List<List<T>> ChunkBy<T>(this List<T> source, int chunkSize)
+    public static IEnumerable<IEnumerable<T>> ChunkBy<T>(this IEnumerable<T> source, int chunkSize)
     {
       return source
           .Select((x, i) => new { Index = i, Value = x })

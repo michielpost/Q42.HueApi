@@ -50,7 +50,15 @@ namespace Q42.HueApi.ColorConverters
 
 		public RGBColor(int red, int green, int blue)
 		{
-			R = red / 255.0;
+      red = red > 255 ? 255 : red;
+      green = green > 255 ? 255 : green;
+      blue = blue > 255 ? 255 : blue;
+
+      red = red < 0 ? 0 : red;
+      green = green < 0 ? 0 : green;
+      blue = blue < 0 ? 0 : blue;
+
+      R = red / 255.0;
 			G = green / 255.0;
 			B = blue / 255.0;
 		}

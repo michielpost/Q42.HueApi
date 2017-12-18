@@ -7,15 +7,31 @@ namespace Q42.HueApi.Streaming.Models
 {
   public class StreamingState
   {
-    public RGBColor RGBColor { get; set; } = new RGBColor();
+    public RGBColor RGBColor { get; private set; } = new RGBColor();
 
     /// <summary>
     /// Between 0 and 1
     /// </summary>
-    public double Brightness { get; set; } = 1;
+    public double Brightness { get; private set; } = 1;
+
+    public bool IsDirty { get; set; } = true;
+
+    public void SetRGBColor(RGBColor color)
+    {
+      this.RGBColor = color;
+      IsDirty = true;
+    }
+
+    public void SetBrightnes(double brightness)
+    {
+      this.Brightness = brightness;
+      IsDirty = true;
+    }
 
     public byte[] ToByteArray()
     {
+      IsDirty = false;
+
       byte red = (byte)(RGBColor.R * Brightness * 255.99);
       byte green = (byte)(RGBColor.G * Brightness * 255.99);
       byte blue = (byte)(RGBColor.B * Brightness * 255.99);

@@ -47,7 +47,7 @@ namespace Q42.HueApi.Streaming
     public async Task Connect(string groupId, bool simulator = false)
     {
       _simulator = simulator;
-      var enableResult = await _localHueClient.SetStreamingAsync(groupId);
+      var enableResult = await _localHueClient.SetStreamingAsync(groupId).ConfigureAwait(false);
 
       byte[] psk = FromHex(_clientKey);
       BasicTlsPskIdentity pskIdentity = new BasicTlsPskIdentity(_appKey, psk);
@@ -56,7 +56,7 @@ namespace Q42.HueApi.Streaming
 
       DtlsClientProtocol clientProtocol = new DtlsClientProtocol(new SecureRandom());
 
-      await _socket.ConnectAsync(IPAddress.Parse(_ip), 2100);
+      await _socket.ConnectAsync(IPAddress.Parse(_ip), 2100).ConfigureAwait(false);
       _udp = new UdpTransport(_socket);
 
       if(!simulator)
@@ -64,23 +64,47 @@ namespace Q42.HueApi.Streaming
 
     }
 
-    public void AutoUpdate(StreamingGroup entGroup, int frequency, CancellationToken cancellationToken)
+    /// <summary>
+    /// Auto update the streamgroup
+    /// </summary>
+    /// <param name="entGroup"></param>
+    /// <param name="frequency"></param>
+    /// <param name="onlySendDirtyStates">Only send light states that have been changed since last update</param>
+    /// <param name="cancellationToken"></param>
+    public void AutoUpdate(StreamingGroup entGroup, int frequency, bool onlySendDirtyStates = false, CancellationToken cancellationToken = new CancellationToken())
     {
       if (!_simulator)
       {
         int groupCount = (entGroup.Count / 10) + 1;
         frequency = frequency / groupCount;
       }
+      else
+        onlySendDirtyStates = false; //Simulator does not understand partial updates
 
       var waitTime = (int)TimeSpan.FromSeconds(1).TotalMilliseconds / frequency;
 
       Task.Run(async () =>
       {
+        int missedMessages = 0;
         while (!cancellationToken.IsCancellationRequested)
         {
-          Send(entGroup.GetCurrentState());
+          var msg = entGroup.GetCurrentState(forceUpdate: !onlySendDirtyStates);
+          if(msg != null)
+          {
+            Send(msg);
+          }
+          else
+          {
+            missedMessages++;
+            if(missedMessages > frequency)
+            {
+              //If there are no updates, still send updates to keep connection open
+              Send(entGroup.GetCurrentState(forceUpdate: true));
+              missedMessages = 0;
+            }
+          }
 
-          await Task.Delay(waitTime);
+          await Task.Delay(waitTime).ConfigureAwait(false);
         }
 
       });

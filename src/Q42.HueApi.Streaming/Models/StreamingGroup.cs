@@ -23,12 +23,16 @@ namespace Q42.HueApi.Streaming.Models
       this.AddRange(locations.Select(x => new StreamingLight(x.Key, x.Value)));
     }
 
-    public List<byte[]> GetCurrentState()
+    public List<byte[]> GetCurrentState(bool forceUpdate = false)
     {
       List<byte[]> result = new List<byte[]>();
 
       //A streaming message contains max 10 light updates
-      var chunks = this.ChunkBy(IsForSimulator ? 100 : 10);
+      var chunks = this.Where(x => x.State.IsDirty || forceUpdate).ChunkBy(IsForSimulator ? 100 : 10);
+
+      //Nothing to update
+      if (!chunks.Any())
+        return null;
 
       foreach (var chunk in chunks)
       {
@@ -39,7 +43,7 @@ namespace Q42.HueApi.Streaming.Models
         0x01, //sequence number 1
         0x00, 0x00, //reserved
         0x00, //color mode RGB
-        0x01, //linear filter
+        0x00, //OR 0x01, //linear filter
         //0x00, 0x00, 0x01, //light 1
         //0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         //0x00, 0x00, 0x02, //light 2
