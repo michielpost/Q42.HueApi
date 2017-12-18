@@ -56,30 +56,6 @@ namespace Q42.HueApi.Streaming.Extensions
         //  Console.WriteLine($"START R: {light.State.RGBColor.R}, G: {light.State.RGBColor.G}, B: {light.State.RGBColor.B}");
 
         var updates = (timeSpan.TotalMilliseconds / _updateFrequencyMs) * 0.75;
-        int? stepSizeR = null;
-        int? stepSizeG = null;
-        int? stepSizeB = null;
-        double? stepSizeBri = null;
-
-        if (rgb.HasValue)
-        {
-          int red = (int)(light.State.RGBColor.R * 255);
-          int green = (int)(light.State.RGBColor.G * 255);
-          int blue = (int)(light.State.RGBColor.B * 255);
-
-          int newred = (int)(rgb.Value.R * 255);
-          int newgreen = (int)(rgb.Value.G * 255);
-          int newblue = (int)(rgb.Value.B * 255);
-
-          stepSizeR = (int)((newred - red) / updates);
-          stepSizeG = (int)((newgreen - green) / updates);
-          stepSizeB = (int)((newblue - blue) / updates);
-        }
-
-        if (brightness.HasValue)
-        {
-          stepSizeBri = (brightness - light.State.Brightness) / updates;
-        }
 
         if (brightness.HasValue
         && rgb.HasValue
@@ -91,6 +67,24 @@ namespace Q42.HueApi.Streaming.Extensions
 
           //Set rgb to null to prevent any other updates
           rgb = null;
+          Debug.WriteLine("Quick set rgb");
+        }
+
+        double? stepSizeR = null;
+        double? stepSizeG = null;
+        double? stepSizeB = null;
+        double? stepSizeBri = null;
+
+        if (rgb.HasValue)
+        {
+          stepSizeR = (rgb.Value.R - light.State.RGBColor.R) / updates;
+          stepSizeG = (rgb.Value.G - light.State.RGBColor.G) / updates;
+          stepSizeB = (rgb.Value.B - light.State.RGBColor.B) / updates;
+        }
+
+        if (brightness.HasValue)
+        {
+          stepSizeBri = (brightness - light.State.Brightness) / updates;
         }
 
         Stopwatch sw = new Stopwatch();
@@ -104,23 +98,28 @@ namespace Q42.HueApi.Streaming.Extensions
           if (rgb.HasValue
           && stepSizeR.HasValue && stepSizeG.HasValue && stepSizeB.HasValue)
           {
-            int red = (int)(light.State.RGBColor.R * 255);
-            int green = (int)(light.State.RGBColor.G * 255);
-            int blue = (int)(light.State.RGBColor.B * 255);
+            if (light.LightLocation.IsLeft)
+              Console.WriteLine($"Start {light.State.RGBColor.R} {light.State.RGBColor.G} {light.State.RGBColor.B}");
 
             light.State.SetRGBColor(new RGBColor(
-             red + stepSizeR.Value,
-             green + stepSizeG.Value,
-             blue + stepSizeB.Value
+             light.State.RGBColor.R + stepSizeR.Value,
+             light.State.RGBColor.G + stepSizeG.Value,
+             light.State.RGBColor.B + stepSizeB.Value
              ));
 
-            if (light.State.RGBColor.R < 0 || light.State.RGBColor.R > 1
-            || light.State.RGBColor.G < 0 || light.State.RGBColor.G > 1
-            || light.State.RGBColor.B < 0 || light.State.RGBColor.B > 1
-            )
-            {
-              Debug.WriteLine("Invalid values!");
-            }
+            //if (light.State.RGBColor.R < 0 || light.State.RGBColor.R > 1
+            //|| light.State.RGBColor.G < 0 || light.State.RGBColor.G > 1
+            //|| light.State.RGBColor.B < 0 || light.State.RGBColor.B > 1
+            //)
+            //{
+            //  if(light.LightLocation.IsLeft)
+            //    Console.WriteLine($"Invalid values! {light.State.RGBColor.R} {light.State.RGBColor.G} {light.State.RGBColor.B}");
+            //}
+            //else
+            //{
+            //  if (light.LightLocation.IsLeft)
+            //    Console.WriteLine($"OK: {light.State.RGBColor.R} {light.State.RGBColor.G} {light.State.RGBColor.B}");
+            //}
           }
 
           //Only update brightness if there are changes
@@ -152,6 +151,8 @@ namespace Q42.HueApi.Streaming.Extensions
         light.State.SetRGBColor(rgb.Value);
       if (brightness.HasValue)
         light.State.SetBrightnes(brightness.Value);
+
+      Debug.WriteLine($"Finished: {rgb?.ToHex()}, bri: {brightness}");
     }
   }
 }

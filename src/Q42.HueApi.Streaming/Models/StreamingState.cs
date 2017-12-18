@@ -2,6 +2,7 @@ using Q42.HueApi.ColorConverters;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Q42.HueApi.Streaming.Models
 {
@@ -24,6 +25,9 @@ namespace Q42.HueApi.Streaming.Models
 
     public void SetBrightnes(double brightness)
     {
+      brightness = brightness < 0 ? 0 : brightness;
+      brightness = brightness > 1 ? 1 : brightness;
+
       this.Brightness = brightness;
       IsDirty = true;
     }
@@ -32,9 +36,9 @@ namespace Q42.HueApi.Streaming.Models
     {
       IsDirty = false;
 
-      byte red = (byte)(RGBColor.R * Brightness * 255.99);
-      byte green = (byte)(RGBColor.G * Brightness * 255.99);
-      byte blue = (byte)(RGBColor.B * Brightness * 255.99);
+      byte red = (byte)(RGBColor.R * Brightness * 255);
+      byte green = (byte)(RGBColor.G * Brightness * 255);
+      byte blue = (byte)(RGBColor.B * Brightness * 255);
 
       List<byte> result = new List<byte>();
       result.Add(red);
