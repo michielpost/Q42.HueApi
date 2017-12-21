@@ -42,10 +42,10 @@ namespace Q42.HueApi.UniversalWindows.Sample.ViewModel
 
     public double Y
     {
-      get { return (LightLocation.Y * halfGridSize) + halfGridSize; }
+      get { return (LightLocation.Y * -halfGridSize) + halfGridSize; }
       set
       {
-        LightLocation.Y = (value - halfGridSize) / halfGridSize;
+        LightLocation.Y = (value - halfGridSize) / -halfGridSize;
         RaisePropertyChanged("Y");
       }
     }

@@ -1,7 +1,9 @@
 using Org.BouncyCastle.Crypto.Tls;
 using Org.BouncyCastle.Security;
 using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models.Groups;
 using Q42.HueApi.Streaming.Connection;
+using Q42.HueApi.Streaming.Extensions;
 using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
@@ -59,7 +61,7 @@ namespace Q42.HueApi.Streaming
       await _socket.ConnectAsync(IPAddress.Parse(_ip), 2100).ConfigureAwait(false);
       _udp = new UdpTransport(_socket);
 
-      if(!simulator)
+      if (!simulator)
         _dtlsTransport = clientProtocol.Connect(dtlsClient, _udp);
 
     }
@@ -89,14 +91,14 @@ namespace Q42.HueApi.Streaming
         while (!cancellationToken.IsCancellationRequested)
         {
           var msg = entGroup.GetCurrentState(forceUpdate: !onlySendDirtyStates);
-          if(msg != null)
+          if (msg != null)
           {
             Send(msg);
           }
           else
           {
             missedMessages++;
-            if(missedMessages > frequency)
+            if (missedMessages > frequency)
             {
               //If there are no updates, still send updates to keep connection open
               Send(entGroup.GetCurrentState(forceUpdate: true));
@@ -111,9 +113,34 @@ namespace Q42.HueApi.Streaming
 
     }
 
+    public void AutoCalculateEffectUpdate(StreamingGroup entGroup, CancellationToken cancellationToken = new CancellationToken())
+    {
+      Task.Run(async () => {
+        int waitTime = 50;
+
+        while (!cancellationToken.IsCancellationRequested)
+        {
+          foreach (var effect in entGroup.Effects.Where(x => x.State != null))
+          {
+            foreach (var light in entGroup)
+            {
+              var effectMultiplier = effect.GetEffectStrengthMultiplier(light);
+              if (effectMultiplier.HasValue)
+              {
+                light.SetState(effect.State.RGBColor, effect.State.Brightness * effectMultiplier.Value);
+              }
+            }
+          }
+
+          await Task.Delay(waitTime).ConfigureAwait(false);
+        }
+
+      }, cancellationToken);
+    }
+
     public void Send(List<byte[]> states)
     {
-      foreach(var state in states)
+      foreach (var state in states)
       {
         Send(state, 0, state.Length);
       }
@@ -133,13 +160,15 @@ namespace Q42.HueApi.Streaming
 
     public int Send(byte[] buffer, int offset, int count)
     {
-      if(!_simulator)
+      if (!_simulator)
         _dtlsTransport.Send(buffer, offset, count);
       else
         _udp.Send(buffer, offset, count);
 
       return count;
     }
+
+
 
   }
 }

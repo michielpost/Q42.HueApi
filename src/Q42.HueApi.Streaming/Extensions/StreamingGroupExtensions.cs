@@ -2,6 +2,7 @@ using Q42.HueApi.ColorConverters;
 using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,6 +10,16 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Streaming.Extensions
 {
+  public enum IteratorEffectMode
+  {
+    Cycle,
+    Bounce,
+    Single,
+    Random
+  }
+
+  public delegate void IteratorEffectFunc(StreamingLight current, StreamingLight previous);
+
   public static class StreamingGroupExtensions
   {
     public static IEnumerable<StreamingLight> GetLeft(this IEnumerable<StreamingLight> group)
@@ -34,6 +45,47 @@ namespace Q42.HueApi.Streaming.Extensions
     public static IEnumerable<StreamingLight> GetCenter(this IEnumerable<StreamingLight> group)
     {
       return group.Where(x => x.LightLocation.IsCenter);
+    }
+
+    public static async Task IteratorEffect(this IEnumerable<StreamingLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, TimeSpan? timeSpan, CancellationToken cancellationToken = new CancellationToken())
+    {
+      if (timeSpan == null)
+        timeSpan = TimeSpan.FromSeconds(1);
+
+      bool keepGoing = true;
+      var lights = group.ToList();
+      bool reverse = false;
+
+      while (keepGoing && !cancellationToken.IsCancellationRequested)
+      {
+        if (reverse)
+          lights.Reverse();
+        if (mode == IteratorEffectMode.Random)
+          lights = lights.OrderBy(x => Guid.NewGuid()).ToList();
+
+        for (int i = 0; i < lights.Count; i++)
+        {
+          //Default for Single and Cycle
+          int prevIndex = i == 0 ? lights.Count - 1 : i - 1;
+          if (mode == IteratorEffectMode.Bounce)
+          {
+            if (i == 0)
+              prevIndex = lights.Count > 1 ? 1 : 0;
+
+            //Always skip last light in bounce mode, it will be the first light in reverse
+            if (i + 1 == lights.Count)
+              continue;
+          }
+
+          Debug.WriteLine($"{i} and {prevIndex}");
+          effectFunction(lights[i], lights[prevIndex]);
+          await Task.Delay(timeSpan.Value);
+        }
+
+        keepGoing = mode == IteratorEffectMode.Single ? false : true;
+        if (mode == IteratorEffectMode.Bounce)
+          reverse = true;
+      }
     }
 
 

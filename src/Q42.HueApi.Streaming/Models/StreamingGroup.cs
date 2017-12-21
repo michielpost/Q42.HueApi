@@ -1,4 +1,5 @@
 using Q42.HueApi.Models.Groups;
+using Q42.HueApi.Streaming.Effects;
 using Q42.HueApi.Streaming.Extensions;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace Q42.HueApi.Streaming.Models
   public class StreamingGroup : List<StreamingLight>
   {
     public bool IsForSimulator { get; set; }
+
+    public List<BaseEffect> Effects { get; set; } = new List<BaseEffect>();
+
 
     private List<byte> _protocolName = Encoding.ASCII.GetBytes(new char[] { 'H', 'u', 'e', 'S', 't', 'r', 'e', 'a', 'm' }).ToList();
 
@@ -65,6 +69,11 @@ namespace Q42.HueApi.Streaming.Models
       }
 
       return result;
+    }
+
+    public void PlaceEffect(BaseEffect baseEffect)
+    {
+      this.Effects.Add(baseEffect);
     }
   }
 }

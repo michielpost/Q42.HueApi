@@ -28,6 +28,7 @@ namespace Q42.HueApi.Tests.Entertainment
     public async Task GetClientKey()
     {
       string ip = ConfigurationManager.AppSettings["ip"].ToString();
+      ip = "10.42.39.194";
       var client = new LocalHueClient(ip);
       var result = await client.RegisterAsync("unittest", "getclientkey", true);
 
