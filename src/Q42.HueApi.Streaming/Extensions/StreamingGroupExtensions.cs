@@ -18,7 +18,7 @@ namespace Q42.HueApi.Streaming.Extensions
     Random
   }
 
-  public delegate void IteratorEffectFunc(StreamingLight current, StreamingLight previous);
+  public delegate void IteratorEffectFunc(StreamingLight current, StreamingLight previous, TimeSpan? timeSpan = null);
 
   public static class StreamingGroupExtensions
   {
@@ -78,7 +78,7 @@ namespace Q42.HueApi.Streaming.Extensions
           }
 
           Debug.WriteLine($"{i} and {prevIndex}");
-          effectFunction(lights[i], lights[prevIndex]);
+          effectFunction(lights[i], lights[prevIndex], timeSpan);
           await Task.Delay(timeSpan.Value);
         }
 
