@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,7 +41,8 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 				"LLC011" /* Hue Bloom */,
 				"LLC012" /* Hue Bloom */,
 				"LLC013" /* Storylight */,
-				"LST001" /* Light Strips */
+				"LST001" /* Light Strips */,
+        "LLC014" /* Bloom, Aura (gen III) */
             };
 
 			List<string> gamutB = new List<string>() {
@@ -56,7 +57,11 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 				"LLC020" /* Hue Go */,
 				"LST002" /* Hue LightStrips Plus */,
 				"LCT011" /* Hue BR30 */,
-				"LCT012" /* Hue color candle */
+				"LCT012" /* Hue color candle */,
+        "LCT010" /* Hue A19 gen 3 */,
+        "LCT014" /* Hue A19 gen 3 */,
+        "LCT015" /* Hue A19 gen 3 */,
+        "LCT016" /* Hue A19 gen 3 */
             };
 
 			if (gamutA.Contains(modelId))
