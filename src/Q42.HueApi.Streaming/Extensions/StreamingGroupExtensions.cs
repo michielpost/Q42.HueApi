@@ -15,10 +15,11 @@ namespace Q42.HueApi.Streaming.Extensions
     Cycle,
     Bounce,
     Single,
-    Random
+    Random,
+    All,
   }
 
-  public delegate void IteratorEffectFunc(StreamingLight current, StreamingLight previous, TimeSpan? timeSpan = null);
+  public delegate void IteratorEffectFunc(StreamingLight current, TimeSpan? timeSpan = null);
 
   public static class StreamingGroupExtensions
   {
@@ -47,40 +48,39 @@ namespace Q42.HueApi.Streaming.Extensions
       return group.Where(x => x.LightLocation.IsCenter);
     }
 
-    public static async Task IteratorEffect(this IEnumerable<StreamingLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, TimeSpan? timeSpan, CancellationToken cancellationToken = new CancellationToken())
+    public static async Task IteratorEffect(this IEnumerable<StreamingLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
-      if (timeSpan == null)
-        timeSpan = TimeSpan.FromSeconds(1);
+      if (waitTime == null)
+        waitTime = TimeSpan.FromSeconds(1);
+      if (duration == null)
+        duration = TimeSpan.MaxValue;
 
       bool keepGoing = true;
       var lights = group.ToList();
       bool reverse = false;
 
-      while (keepGoing && !cancellationToken.IsCancellationRequested)
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+
+      while (keepGoing && !cancellationToken.IsCancellationRequested && !(sw.Elapsed > duration))
       {
         if (reverse)
           lights.Reverse();
         if (mode == IteratorEffectMode.Random)
           lights = lights.OrderBy(x => Guid.NewGuid()).ToList();
 
-        for (int i = 0; i < lights.Count; i++)
+        foreach(var light in lights.Skip(reverse ? 1 : 0))
         {
-          //Default for Single and Cycle
-          int prevIndex = i == 0 ? lights.Count - 1 : i - 1;
-          if (mode == IteratorEffectMode.Bounce)
-          {
-            if (i == 0)
-              prevIndex = lights.Count > 1 ? 1 : 0;
+          effectFunction(light, waitTime);
 
-            //Always skip last light in bounce mode, it will be the first light in reverse
-            if (i + 1 == lights.Count)
-              continue;
-          }
-
-          Debug.WriteLine($"{i} and {prevIndex}");
-          effectFunction(lights[i], lights[prevIndex], timeSpan);
-          await Task.Delay(timeSpan.Value);
+          //Dont wait for mode ALL, it is applied to ALL lights at the same time. Wait comes later
+          if(mode != IteratorEffectMode.All)
+            await Task.Delay(waitTime.Value.Value);
         }
+
+        //Wait after applying to all lights
+        if (mode== IteratorEffectMode.All)
+          await Task.Delay(waitTime.Value.Value);
 
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)

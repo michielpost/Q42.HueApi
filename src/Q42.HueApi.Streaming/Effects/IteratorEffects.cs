@@ -11,23 +11,28 @@ namespace Q42.HueApi.Streaming.Effects
 {
   public static class IteratorEffects
   {
-    public static Task QuickFlash(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, TimeSpan ? timeSpan = null, CancellationToken cancellationToken = new CancellationToken())
+    public static Task QuickFlash(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
-      if (timeSpan == null)
-        timeSpan = TimeSpan.FromMilliseconds(50);
-      return group.IteratorEffect(async (current, prev, t) => {
+      if (waitTime == null)
+        waitTime = TimeSpan.FromMilliseconds(50);
+      return group.IteratorEffect(async (current, t) => {
         current.SetState(color, 1, TimeSpan.FromMilliseconds(0));
-        await Task.Delay(t.Value);
-        current.SetBrightness(0, TimeSpan.FromMilliseconds(0));
-      }, mode, timeSpan, cancellationToken);
+        Task.Run(async () => { 
+          await Task.Delay(t.Value);
+          current.SetBrightness(0, TimeSpan.FromMilliseconds(0));
+        }, cancellationToken);
+      }, mode, waitTime, duration, cancellationToken);
     }
 
-    public static Task KnightRider(this IEnumerable<StreamingLight> group, CancellationToken cancellationToken = new CancellationToken())
+    public static Task KnightRider(this IEnumerable<StreamingLight> group, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
-      return group.IteratorEffect((current, prev, timeSpan) => {
+      return group.IteratorEffect((current, t) => {
         current.SetState(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromMilliseconds(0));
-        prev.SetBrightness(0, TimeSpan.FromMilliseconds(750));
-      }, IteratorEffectMode.Bounce, TimeSpan.FromMilliseconds(225), cancellationToken);
+        Task.Run(async () => {
+          await Task.Delay(t.Value);
+          current.SetBrightness(0, TimeSpan.FromMilliseconds(750));
+        }, cancellationToken);
+      }, IteratorEffectMode.Bounce, TimeSpan.FromMilliseconds(225), duration, cancellationToken);
     }
 
     public static async Task Christmas(this IEnumerable<StreamingLight> group, CancellationToken cancellationToken = new CancellationToken())
@@ -43,14 +48,14 @@ namespace Q42.HueApi.Streaming.Effects
 
     public static Task ChristmasInit(this IEnumerable<StreamingLight> group, bool startGreen = false, CancellationToken cancellationToken = new CancellationToken())
     {
-      return group.IteratorEffect((current, prev, timeSpan) => {
+      return group.IteratorEffect((current, timeSpan) => {
         if (startGreen)
           current.SetState(new Q42.HueApi.ColorConverters.RGBColor("00FF00"), 1, TimeSpan.FromSeconds(0));
         else
           current.SetState(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromSeconds(0));
 
         startGreen = !startGreen;
-      }, IteratorEffectMode.Single, TimeSpan.FromSeconds(0), cancellationToken);
+      }, IteratorEffectMode.Single, TimeSpan.FromSeconds(0), cancellationToken: cancellationToken);
     }
   }
 }
