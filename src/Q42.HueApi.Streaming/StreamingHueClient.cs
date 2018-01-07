@@ -73,7 +73,7 @@ namespace Q42.HueApi.Streaming
     /// <param name="frequency"></param>
     /// <param name="onlySendDirtyStates">Only send light states that have been changed since last update</param>
     /// <param name="cancellationToken"></param>
-    public void AutoUpdate(StreamingGroup entGroup, int frequency, bool onlySendDirtyStates = false, CancellationToken cancellationToken = new CancellationToken())
+    public void AutoUpdate(StreamingGroup entGroup, int frequency = 50, bool onlySendDirtyStates = false, CancellationToken cancellationToken = new CancellationToken())
     {
       if (!_simulator)
       {

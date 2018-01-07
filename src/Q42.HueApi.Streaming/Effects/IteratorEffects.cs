@@ -3,6 +3,7 @@ using Q42.HueApi.Streaming.Extensions;
 using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,27 @@ namespace Q42.HueApi.Streaming.Effects
 {
   public static class IteratorEffects
   {
+    public static Task SetRandomColorFromList(this IEnumerable<StreamingLight> group, List<RGBColor> colors, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    {
+      if (waitTime == null)
+        waitTime = TimeSpan.FromMilliseconds(50);
+      return group.IteratorEffect(async (current, t) => {
+        var color = colors.OrderBy(x => new Guid()).First();
+        current.SetState(color, 1, TimeSpan.FromMilliseconds(0));
+      }, mode, waitTime, duration, cancellationToken);
+    }
+
+    public static Task SetRandomColor(this IEnumerable<StreamingLight> group, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    {
+      if (waitTime == null)
+        waitTime = TimeSpan.FromMilliseconds(50);
+      return group.IteratorEffect(async (current, t) => {
+        var r = new Random();
+        var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+        current.SetState(color, 1, TimeSpan.FromMilliseconds(0));
+      }, mode, waitTime, duration, cancellationToken);
+    }
+
     public static Task QuickFlash(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)
