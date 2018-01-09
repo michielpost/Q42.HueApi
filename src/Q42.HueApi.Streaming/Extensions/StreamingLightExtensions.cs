@@ -11,8 +11,6 @@ namespace Q42.HueApi.Streaming.Extensions
 {
   public static class StreamingLightExtensions
   {
-    private static int _updateFrequencyMs = 50; //Max update per ms
-
     /// <summary>
     /// Brightness between 0 and 1
     /// </summary>
@@ -41,15 +39,21 @@ namespace Q42.HueApi.Streaming.Extensions
     public static Task SetState(this StreamingLight light, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
       //Create a new transition for this light
-      Transition transition = new Transition();
-      transition.TargetRgb = rgb;
-      transition.TargetBri = brightness;
-      transition.TimeSpan = timeSpan;
+      Transition transition = CreateTransition(rgb, brightness, timeSpan);
 
       light.Transitions.Add(transition);
 
       //Start the transition
       return transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
+    }
+
+    public static Transition CreateTransition(RGBColor? rgb, double? brightness, TimeSpan timeSpan)
+    {
+      Transition transition = new Transition();
+      transition.TargetRgb = rgb;
+      transition.TargetBri = brightness;
+      transition.TimeSpan = timeSpan;
+      return transition;
     }
   }
 }

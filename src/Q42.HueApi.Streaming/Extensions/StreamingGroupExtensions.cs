@@ -16,7 +16,7 @@ namespace Q42.HueApi.Streaming.Extensions
     Bounce,
     Single,
     Random,
-    All,
+    All
   }
 
   public delegate void IteratorEffectFunc(StreamingLight current, TimeSpan? timeSpan = null);
@@ -89,18 +89,20 @@ namespace Q42.HueApi.Streaming.Extensions
     }
 
 
+
     /// <summary>
     /// Brightness between 0 and 1
     /// </summary>
     /// <param name="group"></param>
     /// <param name="brightness">Between 0 and 1</param>
     /// <param name="timeSpan"></param>
+    /// <param name="inSync">Syncs the transition over all lights. Set to false if each light has a different starting rgb/bri for the transition</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static IEnumerable<StreamingLight> SetBrightness(this IEnumerable<StreamingLight> group,
-      double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+      double brightness, TimeSpan timeSpan = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
     {
-      group.SetState(null, brightness, timeSpan, cancellationToken);
+      group.SetState(null, brightness, timeSpan, inSync, cancellationToken);
 
       return group;
     }
@@ -111,25 +113,55 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="group"></param>
     /// <param name="rgb"></param>
     /// <param name="timeSpan"></param>
+    /// <param name="inSync">Syncs the transition over all lights. Set to false if each light has a different starting rgb/bri for the transition</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static IEnumerable<StreamingLight> SetColor(this IEnumerable<StreamingLight> group,
-      RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+      RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
     {
 
-      group.SetState(rgb, null, timeSpan, cancellationToken);
+      group.SetState(rgb, null, timeSpan, inSync, cancellationToken);
 
       //var p = Parallel.ForEach(group, (light) => light.SetColor(rgb, timeSpan, cancellationToken));
 
       return group;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="group"></param>
+    /// <param name="rgb"></param>
+    /// <param name="brightness"></param>
+    /// <param name="timeSpan"></param>
+    /// <param name="inSync">Syncs the transition over all lights. Set to false if each light has a different starting rgb/bri for the transition</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static IEnumerable<StreamingLight> SetState(this IEnumerable<StreamingLight> group,
-      RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+      RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
     {
-      foreach (var light in group)
+      //Re-use the same transition for all lights so transition is in sync. The transition will use the start rgb/bri from the first light in the group.
+      if (inSync)
       {
-        light.SetState(rgb, brightness, timeSpan, cancellationToken);
+        //Create a new transition
+        Transition transition = StreamingLightExtensions.CreateTransition(rgb, brightness, timeSpan);
+
+        //Add the same transition to all lights in this group
+        foreach (var light in group)
+        {
+          light.Transitions.Add(transition);
+        }
+
+        //Start the transition
+        var firstLight = group.FirstOrDefault();
+        transition.Start(firstLight.State.RGBColor, firstLight.State.Brightness, cancellationToken);
+      }
+      else
+      {
+        foreach (var light in group)
+        {
+          light.SetState(rgb, brightness, timeSpan, cancellationToken);
+        }
       }
 
       return group;
