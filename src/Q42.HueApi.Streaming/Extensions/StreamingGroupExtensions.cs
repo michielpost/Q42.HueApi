@@ -53,6 +53,16 @@ namespace Q42.HueApi.Streaming.Extensions
       return group.Where(x => x.LightLocation.IsCenter);
     }
 
+    /// <summary>
+    /// Apply the effectFunction repeatedly to a group of lights
+    /// </summary>
+    /// <param name="group"></param>
+    /// <param name="effectFunction"></param>
+    /// <param name="mode"></param>
+    /// <param name="waitTime"></param>
+    /// <param name="duration"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static async Task IteratorEffect(this IEnumerable<StreamingLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)

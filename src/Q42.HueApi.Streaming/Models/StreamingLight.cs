@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Q42.HueApi.Streaming.Models
 {
+  /// <summary>
+  /// Light that is included in a streaming group
+  /// </summary>
   public class StreamingLight
   {
     public LightLocation LightLocation { get; private set; }

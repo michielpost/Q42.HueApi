@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Streaming
 {
+  /// <summary>
+  /// Hue Client that supports streaming / hue entertainment api
+  /// </summary>
   public class StreamingHueClient
   {
     //Inspired by https://github.com/jinghongbo/Ssl.Net/tree/master/src/Ssl.Net/Ssl.Net
@@ -46,6 +49,12 @@ namespace Q42.HueApi.Streaming
     }
 
 
+    /// <summary>
+    /// Connect to a group to start streaming
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <param name="simulator"></param>
+    /// <returns></returns>
     public async Task Connect(string groupId, bool simulator = false)
     {
       _simulator = simulator;
@@ -113,6 +122,11 @@ namespace Q42.HueApi.Streaming
 
     }
 
+    /// <summary>
+    /// Used to auto update and apply effects that are added to the Effects list of the StreamingGroup
+    /// </summary>
+    /// <param name="entGroup"></param>
+    /// <param name="cancellationToken"></param>
     public void AutoCalculateEffectUpdate(StreamingGroup entGroup, CancellationToken cancellationToken = new CancellationToken())
     {
       Task.Run(async () => {
@@ -138,6 +152,10 @@ namespace Q42.HueApi.Streaming
       }, cancellationToken);
     }
 
+    /// <summary>
+    /// Send a list of states to the Hue Bridge
+    /// </summary>
+    /// <param name="states"></param>
     public void Send(List<byte[]> states)
     {
       foreach (var state in states)
@@ -146,6 +164,11 @@ namespace Q42.HueApi.Streaming
       }
     }
 
+    /// <summary>
+    /// Hex to byte conversion
+    /// </summary>
+    /// <param name="hex"></param>
+    /// <returns></returns>
     public static byte[] FromHex(string hex)
     {
       hex = hex.Replace("-", "");
@@ -157,7 +180,13 @@ namespace Q42.HueApi.Streaming
       return raw;
     }
 
-
+    /// <summary>
+    /// Send bytes to the hue bridge
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <param name="offset"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
     public int Send(byte[] buffer, int offset, int count)
     {
       if (!_simulator)

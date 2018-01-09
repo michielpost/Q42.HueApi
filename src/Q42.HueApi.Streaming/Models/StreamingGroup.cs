@@ -8,26 +8,43 @@ using System.Text;
 
 namespace Q42.HueApi.Streaming.Models
 {
+  /// <summary>
+  /// Group of lights that we're streaming to
+  /// </summary>
   public class StreamingGroup : List<StreamingLight>
   {
+    /// <summary>
+    /// Set to true if you're using the Hue simulator. Behaviour is slightly different then the real Hue Bridge
+    /// </summary>
     public bool IsForSimulator { get; set; }
 
+    /// <summary>
+    /// List of effects applied to this streaminggroup
+    /// </summary>
     public List<BaseEffect> Effects { get; set; } = new List<BaseEffect>();
 
 
-    private List<byte> _protocolName = Encoding.ASCII.GetBytes(new char[] { 'H', 'u', 'e', 'S', 't', 'r', 'e', 'a', 'm' }).ToList();
+    private readonly List<byte> _protocolName = Encoding.ASCII.GetBytes(new char[] { 'H', 'u', 'e', 'S', 't', 'r', 'e', 'a', 'm' }).ToList();
 
+    /// <summary>
+    /// Constructor without light locations
+    /// </summary>
+    /// <param name="lightIds"></param>
     public StreamingGroup(List<string> lightIds)
     {
       this.AddRange(lightIds.Select(x => new StreamingLight(x)));
     }
 
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    /// <param name="locations"></param>
     public StreamingGroup(Dictionary<string, LightLocation> locations)
     {
       this.AddRange(locations.Select(x => new StreamingLight(x.Key, x.Value)));
     }
 
-    public List<byte[]> GetCurrentState(bool forceUpdate = false)
+    internal List<byte[]> GetCurrentState(bool forceUpdate = false)
     {
       List<byte[]> result = new List<byte[]>();
 
@@ -71,6 +88,10 @@ namespace Q42.HueApi.Streaming.Models
       return result;
     }
 
+    /// <summary>
+    /// Adds an effect to the effect list
+    /// </summary>
+    /// <param name="baseEffect"></param>
     public void PlaceEffect(BaseEffect baseEffect)
     {
       this.Effects.Add(baseEffect);

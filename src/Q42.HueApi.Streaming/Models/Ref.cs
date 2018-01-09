@@ -5,6 +5,7 @@ using System.Text;
 namespace Q42.HueApi.Streaming.Models
 {
   /// <summary>
+  /// Helper to support passing structs as refs in async functions
   /// https://www.thomaslevesque.com/2014/11/04/passing-parameters-by-reference-to-an-asynchronous-method/
   /// </summary>
   /// <typeparam name="T"></typeparam>

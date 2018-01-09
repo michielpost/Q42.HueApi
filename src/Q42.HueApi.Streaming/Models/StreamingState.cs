@@ -6,6 +6,9 @@ using System.Threading;
 
 namespace Q42.HueApi.Streaming.Models
 {
+  /// <summary>
+  /// Contains state info for a single light
+  /// </summary>
   public class StreamingState
   {
     public RGBColor RGBColor { get; private set; } = new RGBColor();

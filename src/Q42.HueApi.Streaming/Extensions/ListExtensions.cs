@@ -6,7 +6,7 @@ using System.Text;
 namespace Q42.HueApi.Streaming.Extensions
 {
   /// <summary>
-  /// Helper methods for the lists.
+  /// Helper methods for lists.
   /// https://stackoverflow.com/questions/11463734/split-a-list-into-smaller-lists-of-n-size
   /// </summary>
   public static class ListExtensions
