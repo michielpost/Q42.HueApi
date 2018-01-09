@@ -19,7 +19,12 @@ namespace Q42.HueApi.Streaming.Extensions
     All
   }
 
-  public delegate void IteratorEffectFunc(StreamingLight current, TimeSpan? timeSpan = null);
+  /// <summary>
+  /// Function to apply light effects.
+  /// </summary>
+  /// <param name="current">Will contain 1 light, only contains multiple lights when IteratorEffectMode.All is used</param>
+  /// <param name="timeSpan"></param>
+  public delegate void IteratorEffectFunc(IEnumerable<StreamingLight> current, TimeSpan? timeSpan = null);
 
   public static class StreamingGroupExtensions
   {
@@ -64,6 +69,16 @@ namespace Q42.HueApi.Streaming.Extensions
 
       while (keepGoing && !cancellationToken.IsCancellationRequested && !(sw.Elapsed > duration))
       {
+        //Apply to whole group if mode is all
+        if(mode == IteratorEffectMode.All)
+        {
+          effectFunction(group, waitTime);
+
+          await Task.Delay(waitTime.Value.Value);
+
+          continue;
+        }
+
         if (reverse)
           lights.Reverse();
         if (mode == IteratorEffectMode.Random)
@@ -71,16 +86,10 @@ namespace Q42.HueApi.Streaming.Extensions
 
         foreach(var light in lights.Skip(reverse ? 1 : 0))
         {
-          effectFunction(light, waitTime);
+          effectFunction(new List<StreamingLight>() { light }, waitTime);
 
-          //Dont wait for mode ALL, it is applied to ALL lights at the same time. Wait comes later
-          if(mode != IteratorEffectMode.All)
-            await Task.Delay(waitTime.Value.Value);
-        }
-
-        //Wait after applying to all lights
-        if (mode== IteratorEffectMode.All)
           await Task.Delay(waitTime.Value.Value);
+        }
 
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)
