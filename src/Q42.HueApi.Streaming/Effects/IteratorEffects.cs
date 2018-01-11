@@ -68,7 +68,7 @@ namespace Q42.HueApi.Streaming.Effects
       }
     }
 
-    public static Task ChristmasInit(this IEnumerable<StreamingLight> group, bool startGreen = false, CancellationToken cancellationToken = new CancellationToken())
+    private static Task ChristmasInit(this IEnumerable<StreamingLight> group, bool startGreen = false, CancellationToken cancellationToken = new CancellationToken())
     {
       return group.IteratorEffect((current, timeSpan) => {
         if (startGreen)

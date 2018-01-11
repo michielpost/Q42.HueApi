@@ -47,6 +47,7 @@ namespace Q42.HueApi.Streaming.Models
     internal List<byte[]> GetCurrentState(bool forceUpdate = false)
     {
       //All transitions should update their state
+      //Use extra ToList to prevent exceptions about modified collections
       this.SelectMany(x => x.Transitions).ToList().Where(x => x.IsStarted).Distinct().ToList().ForEach(x => x.UpdateCurrentState());
 
       List<byte[]> result = new List<byte[]>();

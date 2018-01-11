@@ -16,7 +16,16 @@ namespace Q42.HueApi.Streaming.Extensions
     Bounce,
     Single,
     Random,
-    All
+    /// <summary>
+    /// Apply the effect on all lights at the same time, ignoring different start states.
+    /// Best for syncing all lights
+    /// </summary>
+    All,
+    /// <summary>
+    /// Apply the effect on all lights individually.
+    /// Best used for example random colors to all lights
+    /// </summary>
+    AllIndividual
   }
 
   /// <summary>
@@ -98,8 +107,12 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           effectFunction(new List<StreamingLight>() { light }, waitTime);
 
-          await Task.Delay(waitTime.Value.Value);
+          if(mode != IteratorEffectMode.AllIndividual)
+            await Task.Delay(waitTime.Value.Value);
         }
+
+        if(mode == IteratorEffectMode.AllIndividual)
+          await Task.Delay(waitTime.Value.Value);
 
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)
