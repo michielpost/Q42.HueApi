@@ -46,6 +46,9 @@ namespace Q42.HueApi.Streaming.Models
 
     internal List<byte[]> GetCurrentState(bool forceUpdate = false)
     {
+      //All transitions should update their state
+      this.SelectMany(x => x.Transitions).ToList().Where(x => x.IsStarted).Distinct().ToList().ForEach(x => x.UpdateCurrentState());
+
       List<byte[]> result = new List<byte[]>();
 
       //A streaming message contains max 10 light updates

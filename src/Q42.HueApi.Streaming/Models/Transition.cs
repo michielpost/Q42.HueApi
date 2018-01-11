@@ -19,109 +19,98 @@ namespace Q42.HueApi.Streaming.Models
     public double? TargetBri { get; internal set; }
     public TimeSpan TimeSpan { get; internal set; }
 
+    /// <summary>
+    /// Delta between TargetRgb and StartRgb
+    /// </summary>
+    public RGBColor? DeltaRgb { get; internal set; }
+
+    /// <summary>
+    /// Delta between TargetBri and StartBri
+    /// </summary>
+    public double? DeltaBri { get; internal set; }
+
+    public RGBColor StartRgb { get; internal set; }
+    public double StartBri { get; internal set; }
+
     public bool IsFinished { get; set; }
+
+    public bool IsStarted
+    {
+      get
+      {
+        return sw.IsRunning;
+      }
+    }
 
     /// <summary>
     /// Current state of the transition
     /// </summary>
     public StreamingState TransitionState { get; private set; } = new StreamingState();
 
+    private Stopwatch sw = new Stopwatch();
+    private CancellationToken cancellationToken;
 
-    /// <summary>
-    /// Start the transition
-    /// </summary>
-    /// <param name="startRgb"></param>
-    /// <param name="startBrightness"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public Task Start(RGBColor startRgb, double startBrightness, CancellationToken cancellationToken)
+    public void Start(RGBColor startRgb, double startBrightness, CancellationToken cancellationToken)
     {
       //Update should happen fast, so dont move between values but just set them
-        if (TimeSpan.TotalMilliseconds < (_updateFrequencyMs * 1.5))
+      if (TimeSpan.TotalMilliseconds < (_updateFrequencyMs))
       {
         SetFinalState(TargetRgb, TargetBri);
 
         IsFinished = true;
-        return Task.CompletedTask;
+        return;
       }
+
+      this.cancellationToken = cancellationToken;
+      this.StartRgb = startRgb;
+      this.StartBri = startBrightness;
+
+      this.DeltaBri = TargetBri.HasValue ? TargetBri - StartBri : null;
+      this.DeltaRgb = TargetRgb.HasValue ? new RGBColor(TargetRgb.Value.R - StartRgb.R, TargetRgb.Value.G - StartRgb.G, TargetRgb.Value.B - StartRgb.B) : (RGBColor?)null;
 
       TransitionState.SetRGBColor(startRgb);
       TransitionState.SetBrightnes(startBrightness);
 
-      return Task.Run(async () =>
-      {
-        var updates = (TimeSpan.TotalMilliseconds / _updateFrequencyMs) * 0.75;
-
-        if (TargetBri.HasValue
-        && TargetRgb.HasValue
-        && TargetBri.Value > 0.1
-        && startBrightness <= 0.1)
-        {
-          //If going from OFF to light, and a color transition, set the color direct, to prevent weird color flashes
-          TransitionState.SetRGBColor(TargetRgb.Value);
-
-          //Set rgb to null to prevent any other updates
-          TargetRgb = null;
-          Debug.WriteLine("Quick set rgb");
-        }
-
-        double? stepSizeR = null;
-        double? stepSizeG = null;
-        double? stepSizeB = null;
-        double? stepSizeBri = null;
-
-        if (TargetRgb.HasValue)
-        {
-          stepSizeR = (TargetRgb.Value.R - startRgb.R) / updates;
-          stepSizeG = (TargetRgb.Value.G - startRgb.G) / updates;
-          stepSizeB = (TargetRgb.Value.B - startRgb.B) / updates;
-        }
-
-        if (TargetBri.HasValue)
-        {
-          stepSizeBri = (TargetBri - startBrightness) / updates;
-        }
-
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
-        for (int i = 0; i < updates; i++)
-        {
-          if (cancellationToken.IsCancellationRequested)
-            return;
-
-          //Only update color if there are changes
-          if (TargetRgb.HasValue
-          && stepSizeR.HasValue && stepSizeG.HasValue && stepSizeB.HasValue)
-          {
-            TransitionState.SetRGBColor(new RGBColor(
-              TransitionState.RGBColor.R + stepSizeR.Value,
-              TransitionState.RGBColor.G + stepSizeG.Value,
-              TransitionState.RGBColor.B + stepSizeB.Value
-             ));
-          }
-
-          //Only update brightness if there are changes
-          if (TargetBri.HasValue && stepSizeBri.HasValue)
-          {
-            TransitionState.SetBrightnes(TransitionState.Brightness + stepSizeBri.Value);
-            Debug.WriteLine("Bri:" + TransitionState.Brightness);
-          }
-
-          await Task.Delay(_updateFrequencyMs).ConfigureAwait(false);
-
-          if (sw.ElapsedMilliseconds > TimeSpan.TotalMilliseconds)
-            break;
-        }
-
-        sw.Stop();
-
-        SetFinalState(TargetRgb, TargetBri);
-
-        IsFinished = true;
-
-      }, cancellationToken);
+      sw.Start();
     }
 
+    public void UpdateCurrentState()
+    {
+      if (cancellationToken.IsCancellationRequested)
+        IsFinished = true;
+
+      if (IsFinished)
+        return;
+
+      var progress = sw.Elapsed.TotalMilliseconds / this.TimeSpan.TotalMilliseconds;
+
+      if (progress > 1)
+      {
+        SetFinalState(TargetRgb, TargetBri);
+
+        sw.Stop();
+        IsFinished = true;
+        return;
+      }
+
+      //TODO: Apply easing function to progress
+
+      //Apply progress to Delta
+      if (DeltaRgb.HasValue)
+      {
+        TransitionState.SetRGBColor(new RGBColor(
+                StartRgb.R + (DeltaRgb.Value.R * progress),
+                StartRgb.G + (DeltaRgb.Value.G * progress),
+                StartRgb.B + (DeltaRgb.Value.B * progress)
+               ));
+      }
+
+      if (DeltaBri.HasValue)
+      {
+        TransitionState.SetBrightnes(StartBri + (DeltaBri.Value * progress));
+      }
+    }
+   
     private void SetFinalState(RGBColor? rgb, double? brightness)
     {
       if (rgb.HasValue)

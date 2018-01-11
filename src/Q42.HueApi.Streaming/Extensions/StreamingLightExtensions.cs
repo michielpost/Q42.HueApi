@@ -18,9 +18,9 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="brightness">between 0 and 1</param>
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
-    public static Task SetBrightness(this StreamingLight light, double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetBrightness(this StreamingLight light, double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
-      return light.SetState(null, brightness, timeSpan, cancellationToken);
+      light.SetState(null, brightness, timeSpan, cancellationToken);
     }
 
     /// <summary>
@@ -31,9 +31,9 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task SetColor(this StreamingLight light, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetColor(this StreamingLight light, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
-      return light.SetState(rgb, null, timeSpan, cancellationToken);
+      light.SetState(rgb, null, timeSpan, cancellationToken);
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task SetState(this StreamingLight light, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetState(this StreamingLight light, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
       //Create a new transition for this light
       Transition transition = CreateTransition(rgb, brightness, timeSpan);
@@ -53,7 +53,7 @@ namespace Q42.HueApi.Streaming.Extensions
       light.Transitions.Add(transition);
 
       //Start the transition
-      return transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
+      transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
     }
 
     /// <summary>
