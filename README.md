@@ -132,5 +132,5 @@ Xbox One
 Windows Desktop
 * [CastleOS](http://www.CastleOS.com/)
 
-MONO
-* [Command Line Tool](http://www.everyhue.com/vanilla/discussion/1061)
+Command Line Tools - Windows, Linux (x64 & ARM) and Windows 10 IOT (ARM)
+* [Command Line Tools](https://github.com/DigitalNut/HueCmdNetCore)
