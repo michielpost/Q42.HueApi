@@ -22,7 +22,9 @@ namespace Q42.HueApi.Streaming.Models
     /// <summary>
     /// Delta between TargetRgb and StartRgb
     /// </summary>
-    public RGBColor? DeltaRgb { get; internal set; }
+    public double? DeltaR { get; internal set; }
+    public double? DeltaG { get; internal set; }
+    public double? DeltaB { get; internal set; }
 
     /// <summary>
     /// Delta between TargetBri and StartBri
@@ -66,10 +68,16 @@ namespace Q42.HueApi.Streaming.Models
       this.StartBri = startBrightness;
 
       this.DeltaBri = TargetBri.HasValue ? TargetBri - StartBri : null;
-      this.DeltaRgb = TargetRgb.HasValue ? new RGBColor(TargetRgb.Value.R - StartRgb.R, TargetRgb.Value.G - StartRgb.G, TargetRgb.Value.B - StartRgb.B) : (RGBColor?)null;
+      if(TargetRgb.HasValue)
+      {
+        DeltaR = TargetRgb.Value.R - StartRgb.R;
+        DeltaG= TargetRgb.Value.G - StartRgb.G;
+        DeltaB = TargetRgb.Value.B - StartRgb.B;
+      }
 
       TransitionState.SetRGBColor(startRgb);
       TransitionState.SetBrightnes(startBrightness);
+      TransitionState.IsDirty = false;
 
       sw.Start();
     }
@@ -84,6 +92,8 @@ namespace Q42.HueApi.Streaming.Models
 
       var progress = sw.Elapsed.TotalMilliseconds / this.TimeSpan.TotalMilliseconds;
 
+      Debug.WriteLine("Progress: " + progress);
+
       if (progress > 1)
       {
         SetFinalState(TargetRgb, TargetBri);
@@ -96,12 +106,12 @@ namespace Q42.HueApi.Streaming.Models
       //TODO: Apply easing function to progress
 
       //Apply progress to Delta
-      if (DeltaRgb.HasValue)
+      if (DeltaR.HasValue)
       {
         TransitionState.SetRGBColor(new RGBColor(
-                StartRgb.R + (DeltaRgb.Value.R * progress),
-                StartRgb.G + (DeltaRgb.Value.G * progress),
-                StartRgb.B + (DeltaRgb.Value.B * progress)
+                StartRgb.R + (DeltaR.Value * progress),
+                StartRgb.G + (DeltaG.Value * progress),
+                StartRgb.B + (DeltaB.Value * progress)
                ));
       }
 
@@ -117,8 +127,6 @@ namespace Q42.HueApi.Streaming.Models
         TransitionState.SetRGBColor(rgb.Value);
       if (brightness.HasValue)
         TransitionState.SetBrightnes(brightness.Value);
-
-      Debug.WriteLine($"Finished: {rgb?.ToHex()}, bri: {brightness}");
     }
   }
 }

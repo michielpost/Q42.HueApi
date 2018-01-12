@@ -2,6 +2,7 @@ using Q42.HueApi.ColorConverters;
 using Q42.HueApi.Models.Groups;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -29,8 +30,6 @@ namespace Q42.HueApi.Streaming.Models
 
     internal IEnumerable<byte> GetState()
     {
-      ProcessTransitions();
-
       List<byte> result = new List<byte>();
 
       byte deviceType = 0x00; //Type of device 0x00 = Light; 0x01 = Area
@@ -47,9 +46,10 @@ namespace Q42.HueApi.Streaming.Models
     /// <summary>
     /// Changes the state based on one or more transition
     /// </summary>
-    private void ProcessTransitions()
+    internal void ProcessTransitions()
     {
-      var finishedStates = Transitions.Where(x => x.IsFinished);
+
+      var finishedStates = Transitions.Where(x => x?.IsFinished ?? false).ToList();
 
       if (finishedStates.Any())
       {
@@ -57,6 +57,8 @@ namespace Q42.HueApi.Streaming.Models
         {
           this.State.SetBrightnes(finished.TransitionState.Brightness);
           this.State.SetRGBColor(finished.TransitionState.RGBColor);
+
+          //Transitions.Remove(finished);
         }
 
         //Cancel and remove all transitions, last finished state is important
@@ -65,7 +67,7 @@ namespace Q42.HueApi.Streaming.Models
       else
       {
         //Get active transition
-        var activeTransition = Transitions.Where(x => x.TransitionState.IsDirty).LastOrDefault();
+        var activeTransition = Transitions.Where(x => x?.TransitionState.IsDirty ?? false).ToList().LastOrDefault();
         if (activeTransition != null)
         {
           this.State.SetBrightnes(activeTransition.TransitionState.Brightness);

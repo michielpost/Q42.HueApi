@@ -1,3 +1,4 @@
+using Q42.HueApi.ColorConverters;
 using Q42.HueApi.Streaming;
 using Q42.HueApi.Streaming.Effects;
 using Q42.HueApi.Streaming.Extensions;
@@ -54,20 +55,7 @@ namespace Q42.HueApi.Streaming.Sample
       //Optional: calculated effects that are placed in the room
       client.AutoCalculateEffectUpdate(entGroup);
 
-      //var redLightEffect = new RedLightEffect();
-      //entGroup.PlaceEffect(redLightEffect);
-
-      ////redLightEffect.X = -1;
-      ////redLightEffect.Y = -0.8;
-      //redLightEffect.Radius = 0;
-      //redLightEffect.Start();
-
-      //entGroup.GetFront().SetState(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1);
-      //entGroup.GetBack().SetState(new Q42.HueApi.ColorConverters.RGBColor("00FF00"), 1);
-
-      //Console.ReadLine();
-
-
+      //Order lights based on position in the room
       var orderedLeft = entGroup.GetLeft().OrderByDescending(x => x.LightLocation.Y).ThenBy(x => x.LightLocation.X);
       var orderedRight = entGroup.GetRight().OrderByDescending(x => x.LightLocation.Y).ThenByDescending(x => x.LightLocation.X);
       var allLightsOrdered = orderedLeft.Concat(orderedRight.Reverse()).ToArray();
@@ -86,55 +74,87 @@ namespace Q42.HueApi.Streaming.Sample
       entGroup.SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(250), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
-
       Console.WriteLine("Knight rider (works best with 6+ lights)");
       allLightsOrdered.KnightRider(cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
-
       Ref<TimeSpan?> waitTime = TimeSpan.FromMilliseconds(750);
 
-      Console.WriteLine("Quick flash lights (750ms), press enter to decrease by 100 ms");
-      allLightsOrdered.QuickFlash(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, waitTime: waitTime, cancellationToken: cst.Token);
+      Console.WriteLine("Flash lights (750ms), press enter to decrease by 200 ms");
+      allLightsOrdered.FlashQuick(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, waitTime: waitTime, cancellationToken: cst.Token);
+      Console.ReadLine();
+
+      waitTime.Value -= TimeSpan.FromMilliseconds(200);
+      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
+      Console.ReadLine();
+
+      waitTime.Value -= TimeSpan.FromMilliseconds(200);
+      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
+      Console.ReadLine();
+
+      waitTime.Value -= TimeSpan.FromMilliseconds(200);
+      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
       Console.ReadLine();
 
       waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Quick flash ({waitTime.Value.Value.TotalMilliseconds})");
-      Console.ReadLine();
-
-      waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Quick flash ({waitTime.Value.Value.TotalMilliseconds})");
-      Console.ReadLine();
-
-      waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Quick flash ({waitTime.Value.Value.TotalMilliseconds})");
-      Console.ReadLine();
-
-      waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Quick flash ({waitTime.Value.Value.TotalMilliseconds})");
-      Console.ReadLine();
-
-      waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Quick flash ({waitTime.Value.Value.TotalMilliseconds})");
-      Console.ReadLine();
-
-      waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Quick flash ({waitTime.Value.Value.TotalMilliseconds})");
-      Console.ReadLine();
-
-      waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Quick flash ({waitTime.Value.Value.TotalMilliseconds})");
+      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
       cst = WaitCancelAndNext(cst);
 
-      Console.WriteLine("Quick flash on random lights");
-      allLightsOrdered.QuickFlash(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Random, waitTime: waitTime, cancellationToken: cst.Token);
+      Console.WriteLine("Flash on random lights");
+      allLightsOrdered.FlashQuick(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Random, waitTime: waitTime, cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
-      Console.WriteLine("Quick flash on ALL lights");
-      allLightsOrdered.QuickFlash(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.All, waitTime: waitTime, cancellationToken: cst.Token);
+      Console.WriteLine("Flash on ALL lights");
+      waitTime.Value = TimeSpan.FromMilliseconds(150);
+      allLightsOrdered.Flash(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.All, waitTime: waitTime, cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
-      Console.WriteLine("Thank you for using Q42.Hue.Streaming. This library was developed during christmas.");
+      Console.WriteLine("Flash effect with transition times");
+      entGroup.GetLeft().Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), cancellationToken: cst.Token);
+      await Task.Delay(2000);
+      entGroup.GetRight().Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), cancellationToken: cst.Token);
+      cst = WaitCancelAndNext(cst);
+
+      //Console.WriteLine("Or build your own effects");
+      //Task.Run(async () =>
+      //{
+      //  while (true && !cst.Token.IsCancellationRequested)
+      //  {
+      //    entGroup.SetState(new RGBColor("0000FF"), 1, TimeSpan.FromSeconds(4), cancellationToken: cst.Token);
+      //    await Task.Delay(TimeSpan.FromSeconds(5));
+      //    entGroup.SetState(new RGBColor("FF0000"), 0.6, TimeSpan.FromSeconds(4), cancellationToken: cst.Token);
+      //    await Task.Delay(TimeSpan.FromSeconds(5));
+      //  }
+      //}, cst.Token);
+      //cst = WaitCancelAndNext(cst);
+
+      Console.WriteLine("A red light that is moving in horizontal direction and is placed on an XY grid, matching your entertainment setup");
+      var redLightEffect = new RedLightEffect();
+      redLightEffect.Radius = 0.5;
+      redLightEffect.Y = -1;
+      entGroup.PlaceEffect(redLightEffect);
+      redLightEffect.Start();
+
+      Task.Run(async () =>
+      {
+        double step = 0.1;
+        while (true)
+        {
+          redLightEffect.X += step;
+          await Task.Delay(100);
+          if (redLightEffect.X >= 1.5)
+            step = -0.1;
+          if (redLightEffect.X <= -1.5)
+            step = +0.1;
+        }
+      }, cst.Token);
+
+
+      cst = WaitCancelAndNext(cst);
+      redLightEffect.Stop();
+
+
+      Console.WriteLine("Thank you for using Q42.Hue.Streaming. This library was developed during christmas 2017.");
       await allLightsOrdered.Christmas(cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 

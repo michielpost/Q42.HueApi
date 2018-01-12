@@ -12,38 +12,103 @@ namespace Q42.HueApi.Streaming.Effects
 {
   public static class IteratorEffects
   {
-    public static Task SetRandomColorFromList(this IEnumerable<StreamingLight> group, List<RGBColor> colors, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static Task SetRandomColorFromList(this IEnumerable<StreamingLight> group, List<RGBColor> colors, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> transitionTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromMilliseconds(50);
+      if (transitionTime == null)
+        transitionTime = TimeSpan.FromMilliseconds(0);
+
       return group.IteratorEffect(async (current, t) => {
         var color = colors.OrderBy(x => new Guid()).First();
-        current.SetState(color, 1, TimeSpan.FromMilliseconds(0));
+        current.SetState(color, 1, transitionTime.Value.Value);
       }, mode, waitTime, duration, cancellationToken);
     }
 
-    public static Task SetRandomColor(this IEnumerable<StreamingLight> group, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static Task SetRandomColor(this IEnumerable<StreamingLight> group, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> transitionTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromMilliseconds(50);
+      if (transitionTime == null)
+        transitionTime = TimeSpan.FromMilliseconds(0);
+
       return group.IteratorEffect(async (current, t) => {
         var r = new Random();
         var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
-        current.SetState(color, 1, TimeSpan.FromMilliseconds(0));
+        current.SetState(color, 1, transitionTime.Value.Value);
       }, mode, waitTime, duration, cancellationToken);
     }
 
-    public static Task QuickFlash(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    /// <summary>
+    /// Does not wait for the previous flash to end
+    /// NOTE: Can not be used with mode All or AllIndividual
+    /// </summary>
+    /// <param name="group"></param>
+    /// <param name="color"></param>
+    /// <param name="mode"></param>
+    /// <param name="waitTime"></param>
+    /// <param name="onTime"></param>
+    /// <param name="transitionTimeOn"></param>
+    /// <param name="transitionTimeOff"></param>
+    /// <param name="duration"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static Task FlashQuick(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    {
+      if (mode == IteratorEffectMode.All || mode == IteratorEffectMode.AllIndividual)
+        return group.Flash(color, mode, waitTime, onTime, transitionTimeOn, transitionTimeOff, duration, cancellationToken);
+      else
+      {
+        if (waitTime == null)
+          waitTime = TimeSpan.FromMilliseconds(50);
+        if (onTime == null)
+          onTime = waitTime;
+        if (transitionTimeOn == null)
+          transitionTimeOn = TimeSpan.FromMilliseconds(0);
+        if (transitionTimeOff == null)
+          transitionTimeOff = TimeSpan.FromMilliseconds(0);
+
+        Ref<TimeSpan?> actualWaitTime = onTime.Value + transitionTimeOn.Value;
+
+        return group.IteratorEffect(async (current, t) =>
+        {
+          actualWaitTime.Value = onTime.Value.Value + transitionTimeOn.Value.Value;
+
+          current.SetState(color, 1, transitionTimeOn.Value.Value);
+          Task.Run(async () =>
+          {
+            await Task.Delay(onTime.Value.Value + transitionTimeOn.Value.Value);
+            current.SetBrightness(0, transitionTimeOff.Value.Value);
+          }, cancellationToken);
+        }, mode, actualWaitTime, duration, cancellationToken);
+
+      }
+    }
+
+    public static Task Flash(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromMilliseconds(50);
-      return group.IteratorEffect(async (current, t) => {
-        current.SetState(color, 1, TimeSpan.FromMilliseconds(0));
-        Task.Run(async () => { 
-          await Task.Delay(t.Value);
-          current.SetBrightness(0, TimeSpan.FromMilliseconds(0));
+      if (onTime == null)
+        onTime = waitTime;
+      if (transitionTimeOn == null)
+        transitionTimeOn = TimeSpan.FromMilliseconds(0);
+      if (transitionTimeOff == null)
+        transitionTimeOff = TimeSpan.FromMilliseconds(0);
+
+      Ref<TimeSpan?> actualWaitTime = waitTime.Value + onTime.Value + transitionTimeOn.Value + transitionTimeOff.Value;
+
+      return group.IteratorEffect(async (current, t) =>
+      {
+        actualWaitTime.Value = waitTime.Value.Value + onTime.Value.Value + transitionTimeOn.Value.Value + transitionTimeOff.Value.Value;
+
+        current.SetState(color, 1, transitionTimeOn.Value.Value);
+        Task.Run(async () =>
+        {
+          await Task.Delay(onTime.Value.Value + transitionTimeOn.Value.Value);
+          current.SetBrightness(0, transitionTimeOff.Value.Value);
         }, cancellationToken);
-      }, mode, waitTime, duration, cancellationToken);
+      }, mode, actualWaitTime, duration, cancellationToken);
     }
 
     public static Task KnightRider(this IEnumerable<StreamingLight> group, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())

@@ -9,6 +9,10 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj" />
     <ProjectReference Include="..\Q42.HueApi.Streaming\Q42.HueApi.Streaming.csproj" />
