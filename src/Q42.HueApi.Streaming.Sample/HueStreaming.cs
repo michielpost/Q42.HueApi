@@ -38,9 +38,9 @@ namespace Q42.HueApi.Streaming.Sample
       //Initialize streaming client
       StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
-      //Get the entertainment group (group 2 is used in this sample)
+      //Get the entertainment group
       var all = await client.LocalHueClient.GetBridgeAsync();
-      var group = all.Groups.Where(x => x.Id == "2").FirstOrDefault();
+      var group = all.Groups.Where(x => x.Type == HueApi.Models.Groups.GroupType.Entertainment).FirstOrDefault();
 
       //Create a streaming group
       var entGroup = new StreamingGroup(group.Locations);
@@ -154,7 +154,7 @@ namespace Q42.HueApi.Streaming.Sample
       redLightEffect.Stop();
 
 
-      Console.WriteLine("Thank you for using Q42.Hue.Streaming. This library was developed during christmas 2017.");
+      Console.WriteLine("Thank you for using Q42.Hue.Streaming. This library was developed during Christmas 2017.");
       await allLightsOrdered.Christmas(cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 

@@ -119,6 +119,7 @@ namespace Q42.HueApi.Streaming.Effects
           await Task.Delay(t.Value);
           current.SetBrightness(0, TimeSpan.FromMilliseconds(750));
         }, cancellationToken);
+        return Task.CompletedTask;
       }, IteratorEffectMode.Bounce, TimeSpan.FromMilliseconds(225), duration, cancellationToken);
     }
 
@@ -135,7 +136,7 @@ namespace Q42.HueApi.Streaming.Effects
 
     private static Task ChristmasInit(this IEnumerable<StreamingLight> group, bool startGreen = false, CancellationToken cancellationToken = new CancellationToken())
     {
-      return group.IteratorEffect((current, timeSpan) => {
+      return group.IteratorEffect(async (current, timeSpan) => {
         if (startGreen)
           current.SetState(new Q42.HueApi.ColorConverters.RGBColor("00FF00"), 1, TimeSpan.FromSeconds(0));
         else

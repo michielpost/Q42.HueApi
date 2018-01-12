@@ -33,7 +33,7 @@ namespace Q42.HueApi.Streaming.Extensions
   /// </summary>
   /// <param name="current">Will contain 1 light, only contains multiple lights when IteratorEffectMode.All is used</param>
   /// <param name="timeSpan"></param>
-  public delegate void IteratorEffectFunc(IEnumerable<StreamingLight> current, TimeSpan? timeSpan = null);
+  public delegate Task IteratorEffectFunc(IEnumerable<StreamingLight> current, TimeSpan? timeSpan = null);
 
   public static class StreamingGroupExtensions
   {
@@ -57,6 +57,11 @@ namespace Q42.HueApi.Streaming.Extensions
       return group.Where(x => x.LightLocation.IsBack);
     }
 
+    /// <summary>
+    /// X > -0.1 && X < 0.1
+    /// </summary>
+    /// <param name="group"></param>
+    /// <returns></returns>
     public static IEnumerable<StreamingLight> GetCenter(this IEnumerable<StreamingLight> group)
     {
       return group.Where(x => x.LightLocation.IsCenter);
@@ -91,7 +96,7 @@ namespace Q42.HueApi.Streaming.Extensions
         //Apply to whole group if mode is all
         if(mode == IteratorEffectMode.All)
         {
-          effectFunction(group, waitTime);
+          await effectFunction(group, waitTime);
 
           await Task.Delay(waitTime.Value.Value);
 
@@ -105,7 +110,7 @@ namespace Q42.HueApi.Streaming.Extensions
 
         foreach(var light in lights.Skip(reverse ? 1 : 0))
         {
-          effectFunction(new List<StreamingLight>() { light }, waitTime);
+          await effectFunction(new List<StreamingLight>() { light }, waitTime);
 
           if(mode != IteratorEffectMode.AllIndividual)
             await Task.Delay(waitTime.Value.Value);
