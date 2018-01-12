@@ -4,7 +4,8 @@ Q42.HueApi.Streaming
 Hue Entertainment API client to stream messages to the Hue Bridge.
 
 ## How to use?
-Some basic usage examples
+Some basic usage examples.  
+Please check the included sample app for a working demo (`Q42.HueApi.Streaming.Sample`).
 
 ### Register your app with the bridge
 Make sure to request access to the entertainment API by giving generateClientKey = true to the register method
@@ -17,7 +18,7 @@ LocalHueClient.RegisterAsync("ipAddress", "applicationName", "deviceName", true)
 //Initialize streaming client
 StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
-      //Get the entertainment group
+//Get the entertainment group
 var all = await client.LocalHueClient.GetBridgeAsync();
 var group = all.Groups.Where(x => x.Type == HueApi.Models.Groups.GroupType.Entertainment).FirstOrDefault();
 
@@ -49,13 +50,13 @@ https://developers.meethue.com/documentation/hue-edk-effect-creation
 
 #### Area Effects
 Supported by extension methods on the StreamingGroup
-`
+```
 GetLeft()
 GetRight()
 GetFront()
 GetBack()
 GetCenter() //X > -0.1 && X < 0.1
-`
+```
 
 Example usage:
 ```cs

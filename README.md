@@ -7,6 +7,12 @@ This library covers all the Philips hue API calls! You can set the state of your
 This Portable Library is compatible with: .Net45, Windows 8, Windows Phone 8, Windows 10 Universal Apps and the Xamarin Platform!
 Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
 
+---
+NEW: Support for Hue Entertainment.  
+Check out: https://github.com/Q42/Q42.HueApi/blob/master/EntertainmentApi.md  
+Read about the Philips Entertainment API: https://developers.meethue.com/entertainment-blog
+---
+
 ## How to use?
 Some basic usage examples
 
