@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -55,9 +56,40 @@ namespace Q42.HueApi.Models.Groups
 		[DataMember(Name = "state")]
 		public GroupState State { get; set; }
 
-	}
+    [DataMember(Name = "locations")]
+    public Dictionary<string, LightLocation> Locations { get; set; }
 
-	[DataContract]
+  }
+
+  public class LightLocation : List<double>
+  {
+    [JsonIgnore]
+    public double X
+    {
+      get { return this[0];  }
+      set { this[0] = value; }
+    }
+
+    [JsonIgnore]
+    public double Y
+    {
+      get { return this[1]; }
+      set { this[1] = value; }
+    }
+
+    public bool IsLeft => X <= 0; //Include 0 with left
+    public bool IsRight => X > 0;
+    public bool IsFront => Y >= 0; //Include 0 with front
+    public bool IsBack => Y < 0;
+
+    /// <summary>
+    /// X > -0.1 && X < 0.1
+    /// </summary>
+    public bool IsCenter => X > -0.1 && X < 0.1 ;
+
+  }
+
+  [DataContract]
 	public class GroupState
 	{
 		[DataMember(Name = "any_on")]
@@ -80,8 +112,10 @@ namespace Q42.HueApi.Models.Groups
 		[EnumMember(Value = "Luminaire")]
 		Luminaire,
 		[EnumMember(Value = "LightSource")]
-		LightSource
-	}
+		LightSource,
+    [EnumMember(Value = "Entertainment")]
+    Entertainment
+  }
 
 	/// <summary>
 	/// Possible room types
@@ -125,7 +159,9 @@ namespace Q42.HueApi.Models.Groups
 		[EnumMember(Value = "Driveway")]
 		Driveway,
 		[EnumMember(Value = "Carport")]
-		Carport
-	}
+		Carport,
+    [EnumMember(Value = "TV")]
+    TV
+  }
 
 }

@@ -24,6 +24,12 @@ namespace Q42.HueApi
 
     private readonly string _ip;
 
+    /// <summary>
+    /// Client Key for streaming api
+    /// </summary>
+    protected string _clientKey;
+
+    public bool IsStreamingInitialized { get; protected set; }
 
 
     /// <summary>
@@ -87,8 +93,16 @@ namespace Q42.HueApi
       Initialize(appKey);
     }
 
+    public LocalHueClient(string ip, string appKey, string clientKey)
+      : this(ip, appKey)
+    {
+      InitializeStreaming(clientKey);
+    }
 
-  
-
+    public void InitializeStreaming(string clientKey)
+    {
+      IsStreamingInitialized = true;
+      this._clientKey = clientKey;
+    }
   }
 }

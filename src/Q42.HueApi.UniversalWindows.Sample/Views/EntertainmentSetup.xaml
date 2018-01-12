@@ -1,0 +1,39 @@
+<Page
+    x:Class="Q42.HueApi.UniversalWindows.Sample.Views.EntertainmentSetup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Q42.HueApi.UniversalWindows.Sample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+    mc:Ignorable="d">
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Button Name="CreateEntGroup" Click="CreateEntGroup_Click">Create new entertainment group</Button>
+    <TextBlock>Entertainment Group Only:</TextBlock>
+    <TextBox Name="EntGroupId"></TextBox>
+    <Button Click="LoadButton_Click">Load</Button>
+    <Button Click="SaveButton_Click">Save</Button>
+      
+    <ItemsControl Name="EntGrid" Width="400" Height="400" ItemsSource="{Binding GroupForPositioning}">
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate>
+          <Canvas Background="Black" />
+      </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+    <ItemsControl.ItemTemplate>
+      <DataTemplate>
+          <Ellipse Width="20" Height="20" Fill="Red"
+                   Tapped="Ellipse_Tapped"
+                   ManipulationMode="All" ManipulationDelta="Ellipse_ManipulationDelta">
+            <Ellipse.RenderTransform>
+              <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+            </Ellipse.RenderTransform>
+          </Ellipse>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    </StackPanel>
+</Page>

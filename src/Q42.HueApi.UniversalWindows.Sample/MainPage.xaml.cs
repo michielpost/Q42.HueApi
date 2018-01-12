@@ -1,4 +1,4 @@
-﻿using Q42.HueApi.UniversalWindows.Sample.Views;
+using Q42.HueApi.UniversalWindows.Sample.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,5 +59,11 @@ namespace Q42.HueApi.UniversalWindows.Sample
 					NavFrame.Navigate(typeof(LightCommandsPage));
 
 				}
+
+    private void EntertainmentButton_Click(object sender, RoutedEventArgs e)
+    {
+      NavFrame.Navigate(typeof(EntertainmentSetup));
+
     }
+  }
 }

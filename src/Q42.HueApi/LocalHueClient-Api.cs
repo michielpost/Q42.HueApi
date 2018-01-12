@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using Q42.HueApi.Models;
+using Q42.HueApi.Models.Bridge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +15,50 @@ namespace Q42.HueApi
   /// </summary>
   public partial class LocalHueClient
   {
+    public async Task<string> RegisterAsync(string applicationName, string deviceName)
+    {
+      var result = await RegisterAsync(applicationName, deviceName, false);
+      return result.Username;
+    }
+
+
     /// <summary>
     /// Register your <paramref name="applicationName"/> and <paramref name="deviceName"/> at the Hue Bridge.
     /// </summary>
     /// <param name="applicationName">The name of your app.</param>
     /// <param name="deviceName">The name of the device.</param>
+    /// <param name="generateClientKey">Set to true if you want a client key to use the streaming api</param>
     /// <returns>Secret key for the app to communicate with the bridge.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="applicationName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="applicationName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
-    public async Task<string> RegisterAsync(string applicationName, string deviceName)
+
+    public async Task<RegisterEntertainmentResult> RegisterAsync(string applicationName, string deviceName, bool generateClientKey)
+    {
+      var result = await LocalHueClient.RegisterAsync(_ip, applicationName, deviceName, generateClientKey);
+
+      if(result != null)
+      {
+        Initialize(result.Username);
+
+        if (!string.IsNullOrWhiteSpace(result.StreamingClientKey))
+          InitializeStreaming(result.StreamingClientKey);
+      }
+
+      return result;
+    }
+
+
+    /// <summary>
+    /// Register your <paramref name="applicationName"/> and <paramref name="deviceName"/> at the Hue Bridge.
+    /// </summary>
+    /// <param name="ip">ip address of bridge</param>
+    /// <param name="applicationName">The name of your app.</param>
+    /// <param name="deviceName">The name of the device.</param>
+    /// <param name="generateClientKey">Set to true if you want a client key to use the streaming api</param>
+    /// <returns>Secret key for the app to communicate with the bridge.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="applicationName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="applicationName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
+    public static async Task<RegisterEntertainmentResult> RegisterAsync(string ip, string applicationName, string deviceName, bool generateClientKey)
     {
       if (applicationName == null)
         throw new ArgumentNullException(nameof(applicationName));
@@ -30,7 +66,7 @@ namespace Q42.HueApi
         throw new ArgumentException("applicationName must not be empty", nameof(applicationName));
       if (applicationName.Length > 20)
         throw new ArgumentException("applicationName max is 20 characters.", nameof(applicationName));
-      if(applicationName.Contains(" "))
+      if (applicationName.Contains(" "))
         throw new ArgumentException("Cannot contain spaces.", nameof(applicationName));
 
       if (deviceName == null)
@@ -47,8 +83,11 @@ namespace Q42.HueApi
       JObject obj = new JObject();
       obj["devicetype"] = fullName;
 
+      if (generateClientKey)
+        obj["generateclientkey"] = true;
+
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
-      var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", _ip)), new JsonContent(obj.ToString())).ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", ip)), new JsonContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       JObject result;
@@ -72,10 +111,15 @@ namespace Q42.HueApi
           throw new Exception(error["description"].Value<string>());
       }
 
-      var key = result["success"]["username"].Value<string>();
-      Initialize(key);
+      var username = result["success"]["username"].Value<string>();
+      var streamingClientKey = result["success"]["clientkey"]?.Value<string>();
 
-      return key;
+      return new RegisterEntertainmentResult()
+      {
+        Ip = ip,
+        Username = username,
+        StreamingClientKey = streamingClientKey
+      };
     }
 
     public async Task<bool> CheckConnection()

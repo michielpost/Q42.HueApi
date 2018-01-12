@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
@@ -25,7 +25,7 @@ namespace Q42.HueApi
 	/// <param name="name">Optional name</param>
 	/// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
 	/// <returns></returns>
-	public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null)
+	public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room)
     {
       CheckInitialized();
 
@@ -41,7 +41,7 @@ namespace Q42.HueApi
 	  if(roomClass.HasValue)
 	  {
 		jsonObj.Class = roomClass.Value;
-		jsonObj.Type = GroupType.Room;
+		jsonObj.Type = groupType;
 	  }
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
@@ -155,6 +155,12 @@ namespace Q42.HueApi
 
     }
 
+    public async Task<Group> GetEntertainmentGroup()
+    {
+      var allGroups = await GetGroupsAsync();
+      return allGroups.Where(x => x.Type == Models.Groups.GroupType.Entertainment).First();
+    }
+
     /// <summary>
     /// Get the state of a single group
     /// </summary>
@@ -166,9 +172,9 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id))).ConfigureAwait(false);
 
-#if DEBUG
-      stringResult = "{ \"type\": null,  \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
-#endif
+//#if DEBUG
+//      stringResult = "{ \"type\": null,  \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
+//#endif
 
       Group group = DeserializeResult<Group>(stringResult);
 
@@ -201,6 +207,49 @@ namespace Q42.HueApi
 
       if(!string.IsNullOrEmpty(name))
         jsonObj.name = name;
+
+      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      return DeserializeDefaultHueResult(jsonResult);
+
+    }
+
+    public async Task<HueResults> UpdateGroupLocationsAsync(string id, Dictionary<string, LightLocation> locations)
+    {
+      if (id == null)
+        throw new ArgumentNullException(nameof(id));
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id must not be empty", nameof(id));
+      if (locations == null || !locations.Any())
+        throw new ArgumentNullException(nameof(locations));
+
+      dynamic jsonObj = new ExpandoObject();
+      jsonObj.locations = locations;
+
+      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      return DeserializeDefaultHueResult(jsonResult);
+
+    }
+
+    public async Task<HueResults> SetStreamingAsync(string id, bool active = true)
+    {
+      if (id == null)
+        throw new ArgumentNullException(nameof(id));
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id must not be empty", nameof(id));
+
+      dynamic jsonObj = new ExpandoObject();
+      jsonObj.stream = new ExpandoObject();
+      jsonObj.stream.active = active;
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
