@@ -11,6 +11,8 @@
     <PackageIconUrl>https://nugetgallery.blob.core.windows.net/icons/DotLessMinification.0.42.1.png</PackageIconUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>philips hue lights entertainment</PackageTags>
+    <PackageId>Q42.HueApi.Entertainment</PackageId>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
