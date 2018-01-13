@@ -37,13 +37,13 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id))).ConfigureAwait(false);
 
-#if DEBUG
-      //Normal result example
-      stringResult = "{    \"state\": {        \"hue\": 50000,        \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,        \"sat\": 200,        \"ct\": 500,        \"xy\": [0.5, 0.5],        \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
+//#if DEBUG
+//      //Normal result example
+//      stringResult = "{    \"state\": {        \"hue\": 50000,        \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,        \"sat\": 200,        \"ct\": 500,        \"xy\": [0.5, 0.5],        \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
       
-      //Lux result
-      stringResult = "{    \"state\": {       \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,           \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
-#endif
+//      //Lux result
+//      stringResult = "{    \"state\": {       \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,           \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
+//#endif
 
       JToken token = JToken.Parse(stringResult);
       if (token.Type == JTokenType.Array)

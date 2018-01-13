@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
@@ -45,6 +45,9 @@ namespace Q42.HueApi
 		[JsonConverter(typeof(TransitionTimeConverter))]
 		public TimeSpan? TransitionTime { get; set; }
 
+    [DataMember(Name = "mode")]
+    public string Mode { get; set; }
 
-	}
+
+  }
 }
