@@ -50,6 +50,6 @@ namespace Q42.HueApi.Interfaces
     /// Returns the entertainment group
     /// </summary>
     /// <returns></returns>
-    Task<Group> GetEntertainmentGroup();
+    Task<IReadOnlyList<Group>> GetEntertainmentGroups();
   }
 }

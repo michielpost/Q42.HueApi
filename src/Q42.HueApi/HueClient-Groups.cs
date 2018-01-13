@@ -155,10 +155,10 @@ namespace Q42.HueApi
 
     }
 
-    public async Task<Group> GetEntertainmentGroup()
+    public async Task<IReadOnlyList<Group>> GetEntertainmentGroups()
     {
       var allGroups = await GetGroupsAsync();
-      return allGroups.Where(x => x.Type == Models.Groups.GroupType.Entertainment).First();
+      return allGroups.Where(x => x.Type == Models.Groups.GroupType.Entertainment).ToList();
     }
 
     /// <summary>

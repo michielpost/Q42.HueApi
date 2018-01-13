@@ -92,8 +92,6 @@ namespace Q42.HueApi.Streaming.Models
 
       var progress = sw.Elapsed.TotalMilliseconds / this.TimeSpan.TotalMilliseconds;
 
-      Debug.WriteLine("Progress: " + progress);
-
       if (progress > 1)
       {
         SetFinalState(TargetRgb, TargetBri);

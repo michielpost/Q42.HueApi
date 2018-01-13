@@ -5,6 +5,7 @@ using Q42.HueApi.Streaming.Extensions;
 using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -39,8 +40,13 @@ namespace Q42.HueApi.Streaming.Sample
       StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
       //Get the entertainment group
-      var all = await client.LocalHueClient.GetBridgeAsync();
-      var group = all.Groups.Where(x => x.Type == HueApi.Models.Groups.GroupType.Entertainment).FirstOrDefault();
+      var all = await client.LocalHueClient.GetEntertainmentGroups();
+      var group = all.FirstOrDefault();
+
+      if (group == null)
+        throw new Exception("No Entertainment Group found. Create one using the Q42.HueApi.UniversalWindows.Sample");
+      else
+        Console.WriteLine($"Using Entertainment Group {group.Id}");
 
       //Create a streaming group
       var entGroup = new StreamingGroup(group.Locations);
@@ -54,6 +60,10 @@ namespace Q42.HueApi.Streaming.Sample
 
       //Optional: calculated effects that are placed in the room
       client.AutoCalculateEffectUpdate(entGroup);
+
+      //Optional: Check if streaming is currently active
+      var bridgeInfo = await client.LocalHueClient.GetBridgeAsync();
+      Console.WriteLine(bridgeInfo.IsStreamingActive ? "Streaming is active" : "Streaming is not active");
 
       //Order lights based on position in the room
       var orderedLeft = entGroup.GetLeft().OrderByDescending(x => x.LightLocation.Y).ThenBy(x => x.LightLocation.X);
@@ -130,21 +140,22 @@ namespace Q42.HueApi.Streaming.Sample
 
       Console.WriteLine("A red light that is moving in horizontal direction and is placed on an XY grid, matching your entertainment setup");
       var redLightEffect = new RedLightEffect();
-      redLightEffect.Radius = 0.5;
-      redLightEffect.Y = -1;
+      redLightEffect.Radius = 0.3;
+      redLightEffect.Y = -0.8;
+      redLightEffect.X = -0.8;
       entGroup.PlaceEffect(redLightEffect);
       redLightEffect.Start();
 
       Task.Run(async () =>
       {
-        double step = 0.1;
+        double step = 0.2;
         while (true)
         {
-          redLightEffect.X += step;
+          redLightEffect.Y += step;
           await Task.Delay(100);
-          if (redLightEffect.X >= 1.5)
+          if (redLightEffect.Y >= 2)
             step = -0.1;
-          if (redLightEffect.X <= -1.5)
+          if (redLightEffect.Y <= -2)
             step = +0.1;
         }
       }, cst.Token);

@@ -49,7 +49,7 @@ namespace Q42.HueApi
     /// Light info from the bridge
     /// </summary>
     public IEnumerable<Light> Lights { get; private set; }
-    public IEnumerable<Group> Groups { get; private set; }
+    public IEnumerable<Group> Groups { get; private set; } = Enumerable.Empty<Group>();
 
     /// <summary>
     /// Bridge config info
@@ -60,6 +60,17 @@ namespace Q42.HueApi
     /// Light info from the bridge
     /// </summary>
     public IEnumerable<WhiteList> WhiteList { get; private set; }
+
+    /// <summary>
+    /// Is Hue Entertainment API used on a group right now?
+    /// </summary>
+    public bool IsStreamingActive
+    {
+      get
+      {
+        return Groups.Any(x => x.Stream?.Active ?? false);
+      }
+    }
 
   }
 }

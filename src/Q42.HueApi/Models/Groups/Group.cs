@@ -59,6 +59,12 @@ namespace Q42.HueApi.Models.Groups
     [DataMember(Name = "locations")]
     public Dictionary<string, LightLocation> Locations { get; set; }
 
+    [DataMember(Name = "recycle")]
+    public bool? Recycle { get; set; }
+
+    [DataMember(Name = "stream")]
+    public Stream Stream { get; set; }
+
   }
 
   public class LightLocation : List<double>
@@ -162,6 +168,19 @@ namespace Q42.HueApi.Models.Groups
 		Carport,
     [EnumMember(Value = "TV")]
     TV
+  }
+
+  [DataContract]
+  public class Stream
+  {
+		[DataMember(Name = "proxymode")]
+    public string ProxyMode { get; set; }
+		[DataMember(Name = "proxynode")]
+    public string ProxyNode { get; set; }
+		[DataMember(Name = "active")]
+    public bool Active { get; set; }
+		[DataMember(Name = "owner")]
+    public string Owner { get; set; }
   }
 
 }
