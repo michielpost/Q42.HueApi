@@ -27,10 +27,13 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task CreateGroup()
     {
-      //make sure you have lights 1 and 2 in your HUE environment
-      List<string> lights = new List<string>() { "1", "2" };
+      var lights = await _client.GetLightsAsync();
 
-      string groupId = await _client.CreateGroupAsync(lights);
+      List<string> newLights = new List<string>();
+      newLights.Add(lights.First().Id);
+      newLights.Add(lights.Last().Id);
+
+      string groupId = await _client.CreateGroupAsync(newLights);
 
       Assert.IsFalse(string.IsNullOrEmpty(groupId));
 
@@ -40,7 +43,7 @@ namespace Q42.HueApi.Tests
       await _client.DeleteGroupAsync(groupId);
 
       Assert.IsTrue(group.Lights.Any());
-      Assert.AreEqual<int>(lights.Count, group.Lights.Count, "Should have the same number of lights");
+      Assert.AreEqual<int>(newLights.Count, group.Lights.Count, "Should have the same number of lights");
     }
 
     [TestMethod]
@@ -96,16 +99,14 @@ namespace Q42.HueApi.Tests
     {
       var lights = await _client.GetLightsAsync();
 
-      List<string> newLights = new List<string>();
-      newLights.Add(lights.First().Id);
-      newLights.Add(lights.Last().Id);
+      var grouap = await _client.GetGroupAsync("1");
 
-      await _client.UpdateGroupAsync("1", newLights, "test update");
+      await _client.UpdateGroupAsync("1", lights.Select(x => x.Id).ToList(), "Keuken", RoomClass.Kitchen);
 
       var group = await _client.GetGroupAsync("1");
 
       Assert.IsNotNull(group);
-      Assert.IsTrue(group.Lights.Count == 2);
+      Assert.IsTrue(group.Lights.Count == lights.Count());
 
     }
 

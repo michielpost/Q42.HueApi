@@ -88,8 +88,9 @@ namespace Q42.HueApi.Interfaces
     /// <param name="id">Group ID</param>
     /// <param name="lights">List of light IDs</param>
     /// <param name="name">Group Name (optional)</param>
+    /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
     /// <returns></returns>
-    Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null);
+    Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null, RoomClass? roomClass = null);
 
     Task<HueResults> UpdateGroupLocationsAsync(string id, Dictionary<string, LightLocation> locations);
 #endregion

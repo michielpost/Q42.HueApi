@@ -192,21 +192,25 @@ namespace Q42.HueApi
     /// <param name="id">Group ID</param>
     /// <param name="lights">List of light IDs</param>
     /// <param name="name">Group Name</param>
+	  /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
     /// <returns></returns>
-    public async Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null)
+    public async Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null, RoomClass? roomClass = null)
     {
       if (id == null)
         throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
         throw new ArgumentException("id must not be empty", nameof(id));
       if (lights == null)
-        throw new ArgumentNullException(nameof(lights));      
+        throw new ArgumentNullException(nameof(lights));
 
-      dynamic jsonObj = new ExpandoObject();
-      jsonObj.lights = lights;
+      CreateGroupRequest jsonObj = new CreateGroupRequest();
+      jsonObj.Lights = lights;
 
       if(!string.IsNullOrEmpty(name))
-        jsonObj.name = name;
+        jsonObj.Name = name;
+
+      if (roomClass.HasValue)
+        jsonObj.Class = roomClass.Value;
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
