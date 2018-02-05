@@ -203,7 +203,7 @@ namespace Q42.HueApi
       if (lights == null)
         throw new ArgumentNullException(nameof(lights));
 
-      CreateGroupRequest jsonObj = new CreateGroupRequest();
+      UpdateroupRequest jsonObj = new UpdateroupRequest();
       jsonObj.Lights = lights;
 
       if(!string.IsNullOrEmpty(name))
