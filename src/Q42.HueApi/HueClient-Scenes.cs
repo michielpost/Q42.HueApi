@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -211,7 +211,7 @@ namespace Q42.HueApi
       string jsonCommand = JsonConvert.SerializeObject(command, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
-      var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}/lights/{1}/lightstate", ApiBase, sceneId, lightId)), new JsonContent(jsonCommand)).ConfigureAwait(false);
+      var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}/lights/{2}/state", ApiBase, sceneId, lightId)), new JsonContent(jsonCommand)).ConfigureAwait(false);
 
       var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
