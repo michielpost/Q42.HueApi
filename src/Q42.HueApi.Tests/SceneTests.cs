@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
@@ -35,7 +35,7 @@ namespace Q42.HueApi.Tests
 	[TestMethod]
 	public async Task GetSingle()
 	{
-		var result = await _client.GetSceneAsync("1");
+		var result = await _client.GetSceneAsync("VA8wtm8-L8JqqwZ");
 
 		Assert.AreNotEqual(0, result.LightStates.Count);
 	}
@@ -55,7 +55,7 @@ namespace Q42.HueApi.Tests
     [TestMethod]
     public async Task ModifyScene()
     {
-      var result = await _client.ModifySceneAsync("scene1", "2", new LightCommand().TurnOn());
+      var result = await _client.ModifySceneAsync("VA8wtm8-L8JqqwZ", "2", new LightCommand() { Brightness = 60 });
 
       Assert.AreNotEqual(0, result.Count);
     }

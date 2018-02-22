@@ -31,11 +31,6 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes", ApiBase))).ConfigureAwait(false);
 
-#if DEBUG
-      stringResult = "{    \"1\": {        \"name\": \"My Scene 1\",        \"lights\": [            \"1\",            \"2\",            \"3\"        ],        \"recycle\": true    },    \"2\": {        \"name\": \"My Scene 2\",        \"lights\": [            \"1\",            \"2\",            \"3\"        ],        \"recycle\": true    }}";
-#endif
-
-
       List<Scene> results = new List<Scene>();
 
       JToken token = JToken.Parse(stringResult);
@@ -259,10 +254,6 @@ namespace Q42.HueApi
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id))).ConfigureAwait(false);
-
-#if DEBUG
-			stringResult = "{	\"name\": \"Cozy dinner\",	\"lights\": [\"1\"],	\"owner\": \"newdeveloper\",	\"recycle\": true,	\"locked\": false,	\"appdata\": {},	\"picture\": \"\",	\"lastupdated\": \"2015-12-03T10:09:22\",	\"version\": 2,	\"lightstates\": {		\"1\": {			\"on\": true,			\"bri\": 237,			\"xy\": [0.5806, 0.3903]		}	}}";
-#endif
 
 			Scene scene = DeserializeResult<Scene>(stringResult);
 
