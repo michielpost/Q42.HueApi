@@ -53,10 +53,16 @@ namespace Q42.HueApi.Streaming.Effects
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task FlashQuick(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static Task FlashQuick(this IEnumerable<StreamingLight> group, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
+      if(!color.HasValue)
+      {
+        var r = new Random();
+        color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+      }
+
       if (mode == IteratorEffectMode.All || mode == IteratorEffectMode.AllIndividual)
-        return group.Flash(color, mode, waitTime, onTime, transitionTimeOn, transitionTimeOff, duration, cancellationToken);
+        return group.Flash(color.Value, mode, waitTime, onTime, transitionTimeOn, transitionTimeOff, duration, cancellationToken);
       else
       {
         if (waitTime == null)
@@ -85,8 +91,14 @@ namespace Q42.HueApi.Streaming.Effects
       }
     }
 
-    public static Task Flash(this IEnumerable<StreamingLight> group, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static Task Flash(this IEnumerable<StreamingLight> group, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
+      if (!color.HasValue)
+      {
+        var r = new Random();
+        color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+      }
+
       if (waitTime == null)
         waitTime = TimeSpan.FromMilliseconds(50);
       if (onTime == null)
