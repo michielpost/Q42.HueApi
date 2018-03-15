@@ -41,7 +41,7 @@ namespace Q42.HueApi.Tests
 	}
 
 		[TestMethod]
-    public async Task Create()
+    public async Task SceneCRUDTest()
     {
 	  Scene test = new Scene();
 	  test.Name = "scene1";
@@ -50,6 +50,17 @@ namespace Q42.HueApi.Tests
 	  var result = await _client.CreateSceneAsync(test);
 
       Assert.IsNotNull(result);
+
+      //Get scene
+      var newScene = await _client.GetSceneAsync(result);
+      Assert.IsNotNull(newScene);
+
+      //Delete scene
+      await _client.DeleteSceneAsync(result);
+
+      var deletedScene = await _client.GetSceneAsync(result);
+      Assert.IsNull(deletedScene);
+
     }
 
     [TestMethod]
