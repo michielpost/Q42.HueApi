@@ -19,7 +19,7 @@ namespace Q42.HueApi.Streaming.Models
 
     public StreamingState State { get; set; } = new StreamingState();
 
-    public List<Transition> Transitions { get; set; } = new List<Transition>();
+   // public List<Transition> Transitions { get; set; } = new List<Transition>();
 
 
     public StreamingLight(string id, LightLocation location = null)
@@ -43,36 +43,20 @@ namespace Q42.HueApi.Streaming.Models
       return result;
     }
 
-    /// <summary>
-    /// Changes the state based on one or more transition
-    /// </summary>
-    internal void ProcessTransitions()
+    internal void SetStateFor(StreamingLight light, List<EntertainmentLayer> layers)
     {
+      //Base state does not check IsDirty flag
+      var baseState = layers.Where(x => x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id).Select(x => x.GetState()).LastOrDefault();
+      var lightState = layers.Where(x => !x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id && l.State.Brightness > 0).Select(x => x.GetState()).LastOrDefault();
 
-      var finishedStates = Transitions.Where(x => x?.IsFinished ?? false).ToList();
-
-      if (finishedStates.Any())
+      var currentState = lightState ?? baseState;
+      if(currentState != null)
       {
-        foreach (var finished in finishedStates)
-        {
-          this.State.SetBrightnes(finished.TransitionState.Brightness);
-          this.State.SetRGBColor(finished.TransitionState.RGBColor);
+        if(light.State.RGBColor != currentState.RGBColor)
+          light.State.SetRGBColor(currentState.RGBColor);
 
-          //Transitions.Remove(finished);
-        }
-
-        //Cancel and remove all transitions, last finished state is important
-        Transitions.Clear();
-      }
-      else
-      {
-        //Get active transition
-        var activeTransition = Transitions.Where(x => x?.TransitionState.IsDirty ?? false).ToList().LastOrDefault();
-        if (activeTransition != null)
-        {
-          this.State.SetBrightnes(activeTransition.TransitionState.Brightness);
-          this.State.SetRGBColor(activeTransition.TransitionState.RGBColor);
-        }
+        if(light.State.Brightness != currentState.Brightness)
+          light.State.SetBrightnes(currentState.Brightness);
       }
     }
   }

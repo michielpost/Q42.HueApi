@@ -47,7 +47,7 @@ namespace Q42.HueApi.Streaming.Models
     /// <summary>
     /// Current state of the transition
     /// </summary>
-    public StreamingState TransitionState { get; private set; } = new StreamingState();
+    public EntertainmentState TransitionState { get; private set; } = new EntertainmentState();
 
     private Stopwatch sw = new Stopwatch();
     private CancellationToken cancellationToken;

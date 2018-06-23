@@ -93,6 +93,15 @@ namespace Q42.HueApi.Models.Groups
     /// </summary>
     public bool IsCenter => X > -0.1 && X < 0.1 ;
 
+    public double Distance(double x, double y)
+    {
+      var x2 = this.X;
+      var y2 = this.Y;
+
+      return Math.Sqrt((Math.Pow(x - x2, 2) + Math.Pow(y - y2, 2)));
+    }
+
+
   }
 
   [DataContract]

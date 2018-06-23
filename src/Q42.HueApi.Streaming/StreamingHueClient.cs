@@ -122,35 +122,7 @@ namespace Q42.HueApi.Streaming
 
     }
 
-    /// <summary>
-    /// Used to auto update and apply effects that are added to the Effects list of the StreamingGroup
-    /// </summary>
-    /// <param name="entGroup"></param>
-    /// <param name="cancellationToken"></param>
-    public void AutoCalculateEffectUpdate(StreamingGroup entGroup, CancellationToken cancellationToken = new CancellationToken())
-    {
-      Task.Run(async () => {
-        int waitTime = 50;
-
-        while (!cancellationToken.IsCancellationRequested)
-        {
-          foreach (var effect in entGroup.Effects.Where(x => x.State != null))
-          {
-            foreach (var light in entGroup)
-            {
-              var effectMultiplier = effect.GetEffectStrengthMultiplier(light);
-              if (effectMultiplier.HasValue)
-              {
-                light.SetState(effect.State.RGBColor, effect.State.Brightness * effectMultiplier.Value);
-              }
-            }
-          }
-
-          await Task.Delay(waitTime).ConfigureAwait(false);
-        }
-
-      }, cancellationToken);
-    }
+  
 
     /// <summary>
     /// Send a list of states to the Hue Bridge

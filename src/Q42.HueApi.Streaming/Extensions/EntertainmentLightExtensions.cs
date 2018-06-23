@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Streaming.Extensions
 {
-  public static class StreamingLightExtensions
+  public static class EntertainmentLightExtensions
   {
     /// <summary>
     /// Brightness between 0 and 1
@@ -18,7 +18,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="brightness">between 0 and 1</param>
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
-    public static void SetBrightness(this StreamingLight light, double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetBrightness(this EntertainmentLight light, double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
       light.SetState(null, brightness, timeSpan, cancellationToken);
     }
@@ -31,7 +31,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static void SetColor(this StreamingLight light, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetColor(this EntertainmentLight light, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
       light.SetState(rgb, null, timeSpan, cancellationToken);
     }
@@ -45,7 +45,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static void SetState(this StreamingLight light, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetState(this EntertainmentLight light, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
     {
       //Create a new transition for this light
       Transition transition = CreateTransition(rgb, brightness, timeSpan);

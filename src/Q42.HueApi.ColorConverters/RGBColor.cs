@@ -14,8 +14,8 @@ namespace Q42.HueApi.ColorConverters
 	/// Represents a color with red, green and blue components.
 	/// All values are between 0.0 and 1.0.
 	/// </summary>
-	public struct RGBColor
-	{
+	public struct RGBColor : IEquatable<RGBColor>
+  {
     public double R;
     public double G;
     public double B;
@@ -99,8 +99,19 @@ namespace Q42.HueApi.ColorConverters
 			return string.Format("{0}{1}{2}", red.ToString("X2"), green.ToString("X2"), blue.ToString("X2"));
 		}
 
-    
+    public bool Equals(RGBColor other)
+    {
+      return R == other.R && G == other.G && B == other.B;
+    }
 
+    public static bool operator ==(RGBColor c1, RGBColor c2)
+    {
+      return c1.Equals(c2);
+    }
 
+    public static bool operator !=(RGBColor c1, RGBColor c2)
+    {
+      return !c1.Equals(c2);
+    }
   }
 }

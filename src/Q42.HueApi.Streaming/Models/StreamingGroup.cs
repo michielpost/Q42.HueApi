@@ -18,10 +18,9 @@ namespace Q42.HueApi.Streaming.Models
     /// </summary>
     public bool IsForSimulator { get; set; }
 
-    /// <summary>
-    /// List of effects applied to this streaminggroup
-    /// </summary>
-    public List<BaseEffect> Effects { get; set; } = new List<BaseEffect>();
+    
+
+    public List<EntertainmentLayer> Layers { get; set; } = new List<EntertainmentLayer>();
 
 
     private readonly List<byte> _protocolName = Encoding.ASCII.GetBytes(new char[] { 'H', 'u', 'e', 'S', 't', 'r', 'e', 'a', 'm' }).ToList();
@@ -44,12 +43,38 @@ namespace Q42.HueApi.Streaming.Models
       this.AddRange(locations.Select(x => new StreamingLight(x.Key, x.Value)));
     }
 
+    /// <summary>
+    /// Creates a new layer
+    /// </summary>
+    /// <param name="isBaseLayer">Base layers keep updating their state to the light, even if there are no changes</param>
+    /// <returns></returns>
+    public EntertainmentLayer GetNewLayer(bool isBaseLayer = false)
+    {
+      var layer = new EntertainmentLayer(isBaseLayer);
+      var all = this.Select(x => new EntertainmentLight(x.Id, x.LightLocation));
+      layer.AddRange(all);
+
+      this.Layers.Add(layer);
+
+      return layer;
+    }
+
     internal List<byte[]> GetCurrentState(bool forceUpdate = false)
     {
       //All transitions should update their state
       //Use extra ToList to prevent exceptions about modified collections
-      this.SelectMany(x => x.Transitions.Where(t => t?.IsStarted ?? false).ToList()).ToList().Distinct().ToList().ForEach(x => x?.UpdateCurrentState());
-      this.ForEach(x => x.ProcessTransitions());
+      var transitions = this.Layers.SelectMany(x => x.SelectMany(z => z.Transitions).ToList()).ToList();
+      transitions.Where(t => t?.IsStarted ?? false)
+                            .ToList()
+                            .Distinct()
+                            .ToList()
+                            .ForEach(x => x?.UpdateCurrentState());
+
+      this.Layers.ForEach(x => x.ProcessTransitions());
+
+      //Calculate state based on all layers
+      this.ForEach(x => x.SetStateFor(x, this.Layers));
+
 
       List<byte[]> result = new List<byte[]>();
 
@@ -93,13 +118,6 @@ namespace Q42.HueApi.Streaming.Models
       return result;
     }
 
-    /// <summary>
-    /// Adds an effect to the effect list
-    /// </summary>
-    /// <param name="baseEffect"></param>
-    public void PlaceEffect(BaseEffect baseEffect)
-    {
-      this.Effects.Add(baseEffect);
-    }
+   
   }
 }

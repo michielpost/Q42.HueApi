@@ -14,6 +14,9 @@ namespace Q42.HueApi.Streaming.Extensions
   {
     Cycle,
     Bounce,
+    /// <summary>
+    /// Only Once
+    /// </summary>
     Single,
     Random,
     /// <summary>
@@ -33,26 +36,26 @@ namespace Q42.HueApi.Streaming.Extensions
   /// </summary>
   /// <param name="current">Will contain 1 light, only contains multiple lights when IteratorEffectMode.All is used</param>
   /// <param name="timeSpan"></param>
-  public delegate Task IteratorEffectFunc(IEnumerable<StreamingLight> current, TimeSpan? timeSpan = null);
+  public delegate Task IteratorEffectFunc(IEnumerable<EntertainmentLight> current, TimeSpan? timeSpan = null);
 
-  public static class StreamingGroupExtensions
+  public static class EntertainmentGroupExtensions
   {
-    public static IEnumerable<StreamingLight> GetLeft(this IEnumerable<StreamingLight> group)
+    public static IEnumerable<EntertainmentLight> GetLeft(this IEnumerable<EntertainmentLight> group)
     {
       return group.Where(x => x.LightLocation.IsLeft);
     }
 
-    public static IEnumerable<StreamingLight> GetRight(this IEnumerable<StreamingLight> group)
+    public static IEnumerable<EntertainmentLight> GetRight(this IEnumerable<EntertainmentLight> group)
     {
       return group.Where(x => x.LightLocation.IsRight);
     }
 
-    public static IEnumerable<StreamingLight> GetFront(this IEnumerable<StreamingLight> group)
+    public static IEnumerable<EntertainmentLight> GetFront(this IEnumerable<EntertainmentLight> group)
     {
       return group.Where(x => x.LightLocation.IsFront);
     }
 
-    public static IEnumerable<StreamingLight> GetBack(this IEnumerable<StreamingLight> group)
+    public static IEnumerable<EntertainmentLight> GetBack(this IEnumerable<EntertainmentLight> group)
     {
       return group.Where(x => x.LightLocation.IsBack);
     }
@@ -62,7 +65,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// </summary>
     /// <param name="group"></param>
     /// <returns></returns>
-    public static IEnumerable<StreamingLight> GetCenter(this IEnumerable<StreamingLight> group)
+    public static IEnumerable<EntertainmentLight> GetCenter(this IEnumerable<EntertainmentLight> group)
     {
       return group.Where(x => x.LightLocation.IsCenter);
     }
@@ -77,7 +80,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task IteratorEffect(this IEnumerable<StreamingLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static async Task IteratorEffect(this IEnumerable<EntertainmentLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromSeconds(1);
@@ -110,7 +113,7 @@ namespace Q42.HueApi.Streaming.Extensions
 
         foreach(var light in lights.Skip(reverse ? 1 : 0))
         {
-          await effectFunction(new List<StreamingLight>() { light }, waitTime);
+          await effectFunction(new List<EntertainmentLight>() { light }, waitTime);
 
           if(mode != IteratorEffectMode.AllIndividual)
             await Task.Delay(waitTime.Value.Value);
@@ -136,7 +139,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="inSync">Syncs the transition over all lights. Set to false if each light has a different starting rgb/bri for the transition</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static IEnumerable<StreamingLight> SetBrightness(this IEnumerable<StreamingLight> group,
+    public static IEnumerable<EntertainmentLight> SetBrightness(this IEnumerable<EntertainmentLight> group,
       double brightness, TimeSpan transitionTime = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
     {
       group.SetState(null, brightness, transitionTime, inSync, cancellationToken);
@@ -153,13 +156,10 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="inSync">Syncs the transition over all lights. Set to false if each light has a different starting rgb/bri for the transition</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static IEnumerable<StreamingLight> SetColor(this IEnumerable<StreamingLight> group,
+    public static IEnumerable<EntertainmentLight> SetColor(this IEnumerable<EntertainmentLight> group,
       RGBColor rgb, TimeSpan transitionTime = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
     {
-
       group.SetState(rgb, null, transitionTime, inSync, cancellationToken);
-
-      //var p = Parallel.ForEach(group, (light) => light.SetColor(rgb, timeSpan, cancellationToken));
 
       return group;
     }
@@ -174,14 +174,14 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="inSync">Syncs the transition over all lights. Set to false if each light has a different starting rgb/bri for the transition</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static IEnumerable<StreamingLight> SetState(this IEnumerable<StreamingLight> group,
+    public static IEnumerable<EntertainmentLight> SetState(this IEnumerable<EntertainmentLight> group,
       RGBColor? rgb = null, double? brightness = null, TimeSpan transitionTime = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
     {
       //Re-use the same transition for all lights so transition is in sync. The transition will use the start rgb/bri from the first light in the group.
       if (inSync)
       {
         //Create a new transition
-        Transition transition = StreamingLightExtensions.CreateTransition(rgb, brightness, transitionTime);
+        Transition transition = EntertainmentLightExtensions.CreateTransition(rgb, brightness, transitionTime);
 
         //Add the same transition to all lights in this group
         foreach (var light in group)

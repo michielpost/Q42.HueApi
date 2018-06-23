@@ -18,57 +18,17 @@ namespace Q42.HueApi.Streaming.Sample
   {
     public async Task Start()
     {
+      StreamingGroup stream = await StreamingSetup.SetupAndReturnGroup();
+      var entGroup = stream.GetNewLayer(isBaseLayer: true);
 
-      //string ip = "192.168.0.4";
-      //string key = "8JwWAj5J1tSsKLxyUOdAkWmcCQFcNc51AKRhxdH9";
-      //string entertainmentKey = "AFFD322C34C993C19503D369481869FD";
-      //var useSimulator = false;
-
-
-      //string ip = "10.42.39.194";
-      //string key = "tocjq6GmPJ8KX5DyLDKXQreZE6txQVQ5oBqbYDFn";
-      //string entertainmentKey = "DB088F63639524B5A8CDC8AEEAC9C322";
-      //var useSimulator = false;
-
-      string ip = "127.0.0.1";
-      string key = "aSimulatedUser";
-      string entertainmentKey = "01234567890123456789012345678901";
-      var useSimulator = true;
-
-
-      //Initialize streaming client
-      StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
-
-      //Get the entertainment group
-      var all = await client.LocalHueClient.GetEntertainmentGroups();
-      var group = all.FirstOrDefault();
-
-      if (group == null)
-        throw new Exception("No Entertainment Group found. Create one using the Q42.HueApi.UniversalWindows.Sample");
-      else
-        Console.WriteLine($"Using Entertainment Group {group.Id}");
-
-      //Create a streaming group
-      var entGroup = new StreamingGroup(group.Locations);
-      entGroup.IsForSimulator = useSimulator;
-
-      //Connect to the streaming group
-      await client.Connect(group.Id, simulator: useSimulator);
-
-      //Start auto updating this entertainment group
-      client.AutoUpdate(entGroup, 50);
-
-      //Optional: calculated effects that are placed in the room
-      client.AutoCalculateEffectUpdate(entGroup);
-
-      //Optional: Check if streaming is currently active
-      var bridgeInfo = await client.LocalHueClient.GetBridgeAsync();
-      Console.WriteLine(bridgeInfo.IsStreamingActive ? "Streaming is active" : "Streaming is not active");
+      //Optional: calculated effects that are placed on this layer
+      entGroup.AutoCalculateEffectUpdate();
 
       //Order lights based on position in the room
       var orderedLeft = entGroup.GetLeft().OrderByDescending(x => x.LightLocation.Y).ThenBy(x => x.LightLocation.X);
       var orderedRight = entGroup.GetRight().OrderByDescending(x => x.LightLocation.Y).ThenByDescending(x => x.LightLocation.X);
       var allLightsOrdered = orderedLeft.Concat(orderedRight.Reverse()).ToArray();
+      var orderedByDistance = entGroup.OrderBy(x => x.LightLocation.Distance(0, 0));
 
       var allLightsReverse = allLightsOrdered.ToList();
       allLightsReverse.Reverse();
@@ -77,11 +37,38 @@ namespace Q42.HueApi.Streaming.Sample
       CancellationTokenSource cst = new CancellationTokenSource();
 
       Console.WriteLine("Random color on all lights");
-      entGroup.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(250), cancellationToken: cst.Token);
+      entGroup.SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
+
+      //Uncomment for demo using a secondary layer
+      //var secondGroup = stream.GetNewLayer();
+      //secondGroup.FlashQuick(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, waitTime: TimeSpan.FromMilliseconds(500));
+
       cst = WaitCancelAndNext(cst);
 
+      //Random color from center
+      Console.WriteLine("Fill white color from center");
+      await orderedByDistance.SetColor(new RGBColor("FFFFFF"), IteratorEffectMode.Single, TimeSpan.FromMilliseconds(50), cancellationToken: cst.Token);
+      cst = WaitCancelAndNext(cst);
+
+      Console.WriteLine("A pulse of random color is placed on an XY grid, matching your entertainment setup");
+      var randomPulseEffect = new RandomPulseEffect();
+      entGroup.PlaceEffect(randomPulseEffect);
+      randomPulseEffect.Start();
+
+      cst = WaitCancelAndNext(cst);
+      randomPulseEffect.Stop();
+
+      Console.WriteLine("A pulse of random color is placed on an XY grid, matching your entertainment setup");
+      var randomPulseEffectNoFade = new RandomPulseEffect(false);
+      entGroup.PlaceEffect(randomPulseEffectNoFade);
+      randomPulseEffectNoFade.Start();
+
+      cst = WaitCancelAndNext(cst);
+      randomPulseEffectNoFade.Stop();
+
+
       Console.WriteLine("Different random colors on all lights");
-      entGroup.SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(250), cancellationToken: cst.Token);
+      entGroup.SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Knight rider (works best with 6+ lights)");
@@ -138,9 +125,9 @@ namespace Q42.HueApi.Streaming.Sample
       //}, cst.Token);
       //cst = WaitCancelAndNext(cst);
 
-      Console.WriteLine("A red light that is moving in horizontal direction and is placed on an XY grid, matching your entertainment setup");
+      Console.WriteLine("A red light that is moving in vertical direction and is placed on an XY grid, matching your entertainment setup");
       var redLightEffect = new RedLightEffect();
-      redLightEffect.Radius = 0.3;
+      redLightEffect.Radius = 0.7;
       redLightEffect.Y = -0.8;
       redLightEffect.X = -0.8;
       entGroup.PlaceEffect(redLightEffect);

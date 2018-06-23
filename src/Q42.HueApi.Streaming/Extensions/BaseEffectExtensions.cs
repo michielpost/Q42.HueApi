@@ -18,7 +18,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="effect"></param>
     /// <param name="light"></param>
     /// <returns></returns>
-    public static double? GetEffectStrengthMultiplier(this BaseEffect effect, StreamingLight light)
+    public static double? GetEffectStrengthMultiplier(this BaseEffect effect, EntertainmentLight light)
     {
       var distance = Distance(effect, light.LightLocation);
       double? multiplier = effect.Radius - distance;
@@ -37,12 +37,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <returns></returns>
     public static double Distance(this BaseEffect effect, LightLocation lightLocation)
     {
-      var x1 = effect.X;
-      var y1 = effect.Y;
-      var x2 = lightLocation.X;
-      var y2 = lightLocation.Y;
-
-      return Math.Sqrt((Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2)));
+      return lightLocation.Distance(effect.X, effect.Y);
     }
   }
 }
