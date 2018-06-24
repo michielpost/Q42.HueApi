@@ -46,8 +46,8 @@ namespace Q42.HueApi.Streaming.Models
     internal void SetStateFor(StreamingLight light, List<EntertainmentLayer> layers)
     {
       //Base state does not check IsDirty flag
-      var baseState = layers.Where(x => x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id).Select(x => x.GetState()).LastOrDefault();
-      var lightState = layers.Where(x => !x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id && l.State.Brightness > 0).Select(x => x.GetState()).LastOrDefault();
+      var baseState = layers.Where(x => x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id).Select(x => x.State).LastOrDefault();
+      var lightState = layers.Where(x => !x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id && l.State.Brightness > 0).Select(x => x.State).LastOrDefault();
 
       var currentState = lightState ?? baseState;
       if(currentState != null)

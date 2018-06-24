@@ -123,11 +123,5 @@ namespace Q42.HueApi.Streaming.Models
         }
       }
     }
-
-    internal EntertainmentState GetState()
-    {
-      State.IsDirty = false;
-      return State;
-    }
   }
 }

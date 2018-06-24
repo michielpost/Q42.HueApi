@@ -1,4 +1,5 @@
 using Q42.HueApi.ColorConverters;
+using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +12,15 @@ namespace Q42.HueApi.Streaming.Effects
   {
     private CancellationTokenSource _cts;
     private bool _fadeToZero;
+    private Ref<TimeSpan?> _waitTime;
 
-    public RandomPulseEffect(bool fadeToZero = true)
+    public RandomPulseEffect(bool fadeToZero = true, Ref<TimeSpan?> waitTime = null)
     {
       _fadeToZero = fadeToZero;
+      _waitTime = waitTime;
+
+      if (_waitTime == null)
+        _waitTime = TimeSpan.FromMilliseconds(50);
 
       Radius = 0;
     }
@@ -37,7 +43,7 @@ namespace Q42.HueApi.Streaming.Effects
         while (true)
         {
           Radius += step;
-          await Task.Delay(50);
+          await Task.Delay(_waitTime.Value.Value);
           if (Radius >= 2)
           {
             if (_fadeToZero)

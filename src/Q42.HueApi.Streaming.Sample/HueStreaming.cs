@@ -29,6 +29,11 @@ namespace Q42.HueApi.Streaming.Sample
       var orderedRight = entGroup.GetRight().OrderByDescending(x => x.LightLocation.Y).ThenByDescending(x => x.LightLocation.X);
       var allLightsOrdered = orderedLeft.Concat(orderedRight.Reverse()).ToArray();
       var orderedByDistance = entGroup.OrderBy(x => x.LightLocation.Distance(0, 0));
+      var line1 = entGroup.Where(x => x.LightLocation.X <= -0.6).ToList();
+      var line2 = entGroup.Where(x => x.LightLocation.X > -0.6 && x.LightLocation.X <= -0.1).ToList();
+      var line3 = entGroup.Where(x => x.LightLocation.X > -0.1 && x.LightLocation.X <= 0.1).ToList();
+      var line4 = entGroup.Where(x => x.LightLocation.X > 0.1 && x.LightLocation.X  <= 0.6).ToList();
+      var line5 = entGroup.Where(x => x.LightLocation.X > 0.6).ToList();
 
       var allLightsReverse = allLightsOrdered.ToList();
       allLightsReverse.Reverse();
@@ -37,13 +42,27 @@ namespace Q42.HueApi.Streaming.Sample
       CancellationTokenSource cst = new CancellationTokenSource();
 
       Console.WriteLine("Random color on all lights");
-      entGroup.SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
+      entGroup.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
 
       //Uncomment for demo using a secondary layer
       //var secondGroup = stream.GetNewLayer();
       //secondGroup.FlashQuick(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, waitTime: TimeSpan.FromMilliseconds(500));
 
       cst = WaitCancelAndNext(cst);
+
+      //Group demo
+      Console.WriteLine("Group demo");
+      var groups = new List<IEnumerable<EntertainmentLight>>() { line1, line2, line3, line4, line5 };
+      groups.IteratorEffect(async (current, duration) => {
+        //var r = new Random();
+        //var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+        //current.SetState(color, 1);
+
+        current.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), duration: duration, cancellationToken: cst.Token);
+
+      }, IteratorEffectMode.Bounce, TimeSpan.FromMilliseconds(100), cancellationToken: cst.Token);
+      cst = WaitCancelAndNext(cst);
+
 
       //Random color from center
       Console.WriteLine("Fill white color from center");
@@ -112,18 +131,6 @@ namespace Q42.HueApi.Streaming.Sample
       entGroup.GetRight().Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
-      //Console.WriteLine("Or build your own effects");
-      //Task.Run(async () =>
-      //{
-      //  while (true && !cst.Token.IsCancellationRequested)
-      //  {
-      //    entGroup.SetState(new RGBColor("0000FF"), 1, TimeSpan.FromSeconds(4), cancellationToken: cst.Token);
-      //    await Task.Delay(TimeSpan.FromSeconds(5));
-      //    entGroup.SetState(new RGBColor("FF0000"), 0.6, TimeSpan.FromSeconds(4), cancellationToken: cst.Token);
-      //    await Task.Delay(TimeSpan.FromSeconds(5));
-      //  }
-      //}, cst.Token);
-      //cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("A red light that is moving in vertical direction and is placed on an XY grid, matching your entertainment setup");
       var redLightEffect = new RedLightEffect();

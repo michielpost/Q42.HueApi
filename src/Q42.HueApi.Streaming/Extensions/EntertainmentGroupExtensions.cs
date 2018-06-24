@@ -128,6 +128,66 @@ namespace Q42.HueApi.Streaming.Extensions
       }
     }
 
+    /// <summary>
+    /// Apply the groupFunction repeatedly to a list of groups of lights
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="groupFunction"></param>
+    /// <param name="mode"></param>
+    /// <param name="waitTime"></param>
+    /// <param name="duration"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task IteratorEffect(this IEnumerable<IEnumerable<EntertainmentLight>> list, IteratorEffectFunc groupFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    {
+      if (waitTime == null)
+        waitTime = TimeSpan.FromSeconds(1);
+      if (duration == null)
+        duration = TimeSpan.MaxValue;
+
+      bool keepGoing = true;
+      var groups = list.ToList();
+      bool reverse = false;
+
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+
+      while (keepGoing && !cancellationToken.IsCancellationRequested && !(sw.Elapsed > duration))
+      {
+        //Apply to all groups if mode is all
+        if (mode == IteratorEffectMode.All)
+        {
+          foreach (var group in list)
+          {
+            await groupFunction(group, waitTime);
+            await Task.Delay(waitTime.Value.Value);
+          }
+
+          continue;
+        }
+
+        if (reverse)
+          groups.Reverse();
+        if (mode == IteratorEffectMode.Random)
+          groups = groups.OrderBy(x => Guid.NewGuid()).ToList();
+
+        foreach (var group in groups.Skip(reverse ? 1 : 0))
+        {
+          await groupFunction(group, waitTime);
+
+          if (mode != IteratorEffectMode.AllIndividual)
+            await Task.Delay(waitTime.Value.Value);
+        }
+
+        if (mode == IteratorEffectMode.AllIndividual)
+          await Task.Delay(waitTime.Value.Value);
+
+        keepGoing = mode == IteratorEffectMode.Single ? false : true;
+        if (mode == IteratorEffectMode.Bounce)
+          reverse = true;
+      }
+    }
+
 
 
     /// <summary>
