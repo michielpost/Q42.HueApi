@@ -40,7 +40,7 @@ namespace Q42.HueApi.Streaming.Effects
       Task.Run(async () =>
       {
         double step = 0.2;
-        while (true)
+        while (true && !_cts.IsCancellationRequested)
         {
           Radius += step;
           await Task.Delay(_waitTime.Value.Value);
@@ -71,6 +71,7 @@ namespace Q42.HueApi.Streaming.Effects
       base.Stop();
 
       _cts.Cancel();
+      Radius = 0;
     }
 
     private RGBColor GetRandomColor()
