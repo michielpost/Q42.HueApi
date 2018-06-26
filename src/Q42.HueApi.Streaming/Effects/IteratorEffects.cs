@@ -121,7 +121,7 @@ namespace Q42.HueApi.Streaming.Effects
       return group.IteratorEffect(async (current, t) =>
       {
         if (!waitTillFinished)
-          actualWaitTime = waitTime.Value;
+          actualWaitTime.Value = waitTime.Value;
         else
           actualWaitTime.Value = waitTime.Value.Value + onTime.Value.Value + transitionTimeOn.Value.Value + transitionTimeOff.Value.Value;
 
