@@ -68,7 +68,7 @@ namespace Q42.HueApi.Streaming.Effects
       }
 
       if (mode == IteratorEffectMode.All || mode == IteratorEffectMode.AllIndividual)
-        return group.Flash(color.Value, mode, waitTime, onTime, transitionTimeOn, transitionTimeOff, duration, cancellationToken);
+        return group.Flash(color.Value, mode, waitTime, onTime, transitionTimeOn, transitionTimeOff, true, duration, cancellationToken);
       else
       {
         if (waitTime == null)
@@ -97,7 +97,7 @@ namespace Q42.HueApi.Streaming.Effects
       }
     }
 
-    public static Task Flash(this IEnumerable<EntertainmentLight> group, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static Task Flash(this IEnumerable<EntertainmentLight> group, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, bool waitTillFinished = true, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       if (!color.HasValue)
       {
@@ -115,10 +115,15 @@ namespace Q42.HueApi.Streaming.Effects
         transitionTimeOff = TimeSpan.FromMilliseconds(0);
 
       Ref<TimeSpan?> actualWaitTime = waitTime.Value + onTime.Value + transitionTimeOn.Value + transitionTimeOff.Value;
+      if (!waitTillFinished)
+        actualWaitTime = waitTime.Value;
 
       return group.IteratorEffect(async (current, t) =>
       {
-        actualWaitTime.Value = waitTime.Value.Value + onTime.Value.Value + transitionTimeOn.Value.Value + transitionTimeOff.Value.Value;
+        if (!waitTillFinished)
+          actualWaitTime = waitTime.Value;
+        else
+          actualWaitTime.Value = waitTime.Value.Value + onTime.Value.Value + transitionTimeOn.Value.Value + transitionTimeOff.Value.Value;
 
         current.SetState(color, 1, transitionTimeOn.Value.Value);
         Task.Run(async () =>

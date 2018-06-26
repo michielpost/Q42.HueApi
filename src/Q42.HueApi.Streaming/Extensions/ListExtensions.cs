@@ -19,5 +19,14 @@ namespace Q42.HueApi.Streaming.Extensions
           .Select(x => x.Select(v => v.Value).ToList())
           .ToList();
     }
+
+    public static IEnumerable<IEnumerable<T>> ChunkByGroupNumber<T>(this IEnumerable<T> source, int groups)
+    {
+      return source
+          .Select((x, i) => new { Index = i, Value = x })
+          .GroupBy(x => x.Index % groups)
+          .Select(x => x.Select(v => v.Value).ToList())
+          .ToList();
+    }
   }
 }

@@ -27,8 +27,9 @@ namespace Q42.HueApi.Streaming.Sample
       //Order lights based on position in the room
       var orderedLeft = entGroup.GetLeft().OrderByDescending(x => x.LightLocation.Y).ThenBy(x => x.LightLocation.X);
       var orderedRight = entGroup.GetRight().OrderByDescending(x => x.LightLocation.Y).ThenByDescending(x => x.LightLocation.X);
-      var allLightsOrdered = orderedLeft.Concat(orderedRight.Reverse()).ToArray();
+      var allLightsOrdered = entGroup.OrderBy(x => x.LightLocation.X).ThenBy(x => x.LightLocation.Y).ToList();
       var orderedByDistance = entGroup.OrderBy(x => x.LightLocation.Distance(0, 0));
+      var orderedByAngle = entGroup.OrderBy(x => x.LightLocation.Angle(0, 0));
       var line1 = entGroup.Where(x => x.LightLocation.X <= -0.6).ToList();
       var line2 = entGroup.Where(x => x.LightLocation.X > -0.6 && x.LightLocation.X <= -0.1).ToList();
       var line3 = entGroup.Where(x => x.LightLocation.X > -0.1 && x.LightLocation.X <= 0.1).ToList();
@@ -52,7 +53,9 @@ namespace Q42.HueApi.Streaming.Sample
 
       //Group demo
       Console.WriteLine("Group demo");
-      var groups = new List<IEnumerable<EntertainmentLight>>() { line1, line2, line3, line4, line5 };
+      //var groups = new List<IEnumerable<EntertainmentLight>>() { line1, line2, line3, line4, line5 };
+      var groups = orderedByAngle.ChunkBy(4);
+      var groupstest = orderedByAngle.ChunkByGroupNumber(4);
       groups.IteratorEffect(async (current, duration) => {
         //var r = new Random();
         //var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
@@ -60,13 +63,18 @@ namespace Q42.HueApi.Streaming.Sample
 
         current.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), duration: duration, cancellationToken: cst.Token);
 
-      }, IteratorEffectMode.Bounce, TimeSpan.FromMilliseconds(100), cancellationToken: cst.Token);
+      }, IteratorEffectMode.Cycle, TimeSpan.FromMilliseconds(100), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
 
       //Random color from center
       Console.WriteLine("Fill white color from center");
       await orderedByDistance.SetColor(new RGBColor("FFFFFF"), IteratorEffectMode.Single, TimeSpan.FromMilliseconds(50), cancellationToken: cst.Token);
+      cst = WaitCancelAndNext(cst);
+
+      //Random color from center
+      Console.WriteLine("Fill red color order by angle from center");
+      await orderedByAngle.SetColor(new RGBColor("FF0000"), IteratorEffectMode.Single, TimeSpan.FromMilliseconds(50), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("A pulse of random color is placed on an XY grid, matching your entertainment setup");
@@ -90,9 +98,16 @@ namespace Q42.HueApi.Streaming.Sample
       entGroup.SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
+
+      Console.WriteLine("Trailing light effect with transition times");
+      allLightsOrdered.Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.Cycle, waitTime: TimeSpan.FromMilliseconds(500), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), waitTillFinished: false, cancellationToken: cst.Token);
+      cst = WaitCancelAndNext(cst);
+
       Console.WriteLine("Knight rider (works best with 6+ lights)");
       allLightsOrdered.KnightRider(cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
+
+
 
       Ref<TimeSpan?> waitTime = TimeSpan.FromMilliseconds(750);
 

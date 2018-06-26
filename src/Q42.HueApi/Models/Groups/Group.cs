@@ -101,6 +101,14 @@ namespace Q42.HueApi.Models.Groups
       return Math.Sqrt((Math.Pow(x - x2, 2) + Math.Pow(y - y2, 2)));
     }
 
+    public double Angle(double x, double y)
+    {
+      var lengthX = this.X - x;
+      var lengthY = this.Y - y;
+
+      return Math.Atan2(lengthY, lengthX) * (180 / Math.PI);
+    }
+
 
   }
 
