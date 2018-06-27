@@ -101,7 +101,7 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           await effectFunction(group, waitTime);
 
-          await Task.Delay(waitTime.Value.Value);
+          await Task.Delay(waitTime.Value.Value, cancellationToken);
 
           continue;
         }
@@ -113,14 +113,17 @@ namespace Q42.HueApi.Streaming.Extensions
 
         foreach(var light in lights.Skip(reverse ? 1 : 0))
         {
-          await effectFunction(new List<EntertainmentLight>() { light }, waitTime);
+          if (!cancellationToken.IsCancellationRequested)
+          {
+            await effectFunction(new List<EntertainmentLight>() { light }, waitTime);
 
-          if(mode != IteratorEffectMode.AllIndividual)
-            await Task.Delay(waitTime.Value.Value);
+            if (mode != IteratorEffectMode.AllIndividual)
+              await Task.Delay(waitTime.Value.Value, cancellationToken);
+          }
         }
 
         if(mode == IteratorEffectMode.AllIndividual)
-          await Task.Delay(waitTime.Value.Value);
+          await Task.Delay(waitTime.Value.Value, cancellationToken);
 
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)
@@ -159,8 +162,11 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           foreach (var group in list)
           {
-            await groupFunction(group, waitTime);
-            await Task.Delay(waitTime.Value.Value);
+            if (!cancellationToken.IsCancellationRequested)
+            {
+              await groupFunction(group, waitTime);
+              await Task.Delay(waitTime.Value.Value);
+            }
           }
 
           continue;
@@ -176,11 +182,11 @@ namespace Q42.HueApi.Streaming.Extensions
           await groupFunction(group, waitTime);
 
           if (mode != IteratorEffectMode.AllIndividual)
-            await Task.Delay(waitTime.Value.Value);
+            await Task.Delay(waitTime.Value.Value, cancellationToken);
         }
 
         if (mode == IteratorEffectMode.AllIndividual)
-          await Task.Delay(waitTime.Value.Value);
+          await Task.Delay(waitTime.Value.Value, cancellationToken);
 
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)
@@ -246,7 +252,8 @@ namespace Q42.HueApi.Streaming.Extensions
         //Add the same transition to all lights in this group
         foreach (var light in group)
         {
-          light.Transitions.Add(transition);
+          if(!cancellationToken.IsCancellationRequested)
+            light.Transitions.Add(transition);
         }
 
         //Start the transition
@@ -257,7 +264,8 @@ namespace Q42.HueApi.Streaming.Extensions
       {
         foreach (var light in group)
         {
-          light.SetState(rgb, brightness, transitionTime, cancellationToken);
+          if (!cancellationToken.IsCancellationRequested)
+            light.SetState(rgb, brightness, transitionTime, cancellationToken);
         }
       }
 

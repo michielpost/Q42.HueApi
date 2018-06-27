@@ -27,7 +27,7 @@ namespace Q42.HueApi.Streaming.Effects
 
       return group.IteratorEffect(async (current, t) => {
         var color = colors.OrderBy(x => new Guid()).First();
-        current.SetState(color, 1, transitionTime.Value.Value);
+        current.SetState(color, 1, transitionTime.Value.Value, cancellationToken: cancellationToken);
       }, mode, waitTime, duration, cancellationToken);
     }
 
@@ -41,7 +41,7 @@ namespace Q42.HueApi.Streaming.Effects
       return group.IteratorEffect(async (current, t) => {
         var r = new Random();
         var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
-        current.SetState(color, 1, transitionTime.Value.Value);
+        current.SetState(color, 1, transitionTime.Value.Value, cancellationToken: cancellationToken);
       }, mode, waitTime, duration, cancellationToken);
     }
 
@@ -86,11 +86,11 @@ namespace Q42.HueApi.Streaming.Effects
         {
           actualWaitTime.Value = onTime.Value.Value + transitionTimeOn.Value.Value;
 
-          current.SetState(color, 1, transitionTimeOn.Value.Value);
+          current.SetState(color, 1, transitionTimeOn.Value.Value, cancellationToken: cancellationToken);
           Task.Run(async () =>
           {
-            await Task.Delay(onTime.Value.Value + transitionTimeOn.Value.Value);
-            current.SetBrightness(0, transitionTimeOff.Value.Value);
+            await Task.Delay(onTime.Value.Value + transitionTimeOn.Value.Value, cancellationToken);
+            current.SetBrightness(0, transitionTimeOff.Value.Value, cancellationToken: cancellationToken);
           }, cancellationToken);
         }, mode, actualWaitTime, duration, cancellationToken);
 
@@ -125,11 +125,11 @@ namespace Q42.HueApi.Streaming.Effects
         else
           actualWaitTime.Value = waitTime.Value.Value + onTime.Value.Value + transitionTimeOn.Value.Value + transitionTimeOff.Value.Value;
 
-        current.SetState(color, 1, transitionTimeOn.Value.Value);
+        current.SetState(color, 1, transitionTimeOn.Value.Value, cancellationToken: cancellationToken);
         Task.Run(async () =>
         {
           await Task.Delay(onTime.Value.Value + transitionTimeOn.Value.Value);
-          current.SetBrightness(0, transitionTimeOff.Value.Value);
+          current.SetBrightness(0, transitionTimeOff.Value.Value, cancellationToken: cancellationToken);
         }, cancellationToken);
       }, mode, actualWaitTime, duration, cancellationToken);
     }
@@ -137,9 +137,9 @@ namespace Q42.HueApi.Streaming.Effects
     public static Task KnightRider(this IEnumerable<EntertainmentLight> group, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
     {
       return group.IteratorEffect((current, t) => {
-        current.SetState(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromMilliseconds(0));
+        current.SetState(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromMilliseconds(0), cancellationToken: cancellationToken);
         Task.Run(async () => {
-          await Task.Delay(t.Value);
+          await Task.Delay(t.Value, cancellationToken);
           current.SetBrightness(0, TimeSpan.FromMilliseconds(750));
         }, cancellationToken);
         return Task.CompletedTask;
@@ -152,7 +152,7 @@ namespace Q42.HueApi.Streaming.Effects
       while(!cancellationToken.IsCancellationRequested)
       {
         await group.ChristmasInit(startGreen, cancellationToken);
-        await Task.Delay(TimeSpan.FromSeconds(5));
+        await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
         startGreen = !startGreen;
       }
     }
@@ -161,9 +161,9 @@ namespace Q42.HueApi.Streaming.Effects
     {
       return group.IteratorEffect(async (current, timeSpan) => {
         if (startGreen)
-          current.SetState(new Q42.HueApi.ColorConverters.RGBColor("00FF00"), 1, TimeSpan.FromSeconds(0));
+          current.SetState(new Q42.HueApi.ColorConverters.RGBColor("00FF00"), 1, TimeSpan.FromSeconds(0), cancellationToken: cancellationToken);
         else
-          current.SetState(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromSeconds(0));
+          current.SetState(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromSeconds(0), cancellationToken: cancellationToken);
 
         startGreen = !startGreen;
       }, IteratorEffectMode.Single, TimeSpan.FromSeconds(0), cancellationToken: cancellationToken);
