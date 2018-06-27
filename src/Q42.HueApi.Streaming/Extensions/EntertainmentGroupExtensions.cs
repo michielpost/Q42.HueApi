@@ -163,11 +163,10 @@ namespace Q42.HueApi.Streaming.Extensions
           foreach (var group in list)
           {
             if (!cancellationToken.IsCancellationRequested)
-            {
               await groupFunction(group, waitTime);
-              await Task.Delay(waitTime.Value.Value);
-            }
           }
+
+          await Task.Delay(waitTime.Value.Value);
 
           continue;
         }

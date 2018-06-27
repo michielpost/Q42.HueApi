@@ -54,16 +54,16 @@ namespace Q42.HueApi.Streaming.Sample
       //Group demo
       Console.WriteLine("Group demo");
       //var groups = new List<IEnumerable<EntertainmentLight>>() { line1, line2, line3, line4, line5 };
-      var groups = orderedByAngle.ChunkBy(4);
-      var groupstest = orderedByAngle.ChunkByGroupNumber(4);
+      var groups = allLightsOrdered.ChunkBy(5);
+      var groupstest = allLightsOrdered.ChunkByGroupNumber(4);
       groups.IteratorEffect(async (current, duration) => {
         //var r = new Random();
         //var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
         //current.SetState(color, 1);
 
-        current.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), duration: duration, cancellationToken: cst.Token);
+        current.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(5000), duration: duration, cancellationToken: cst.Token);
 
-      }, IteratorEffectMode.Cycle, TimeSpan.FromMilliseconds(100), cancellationToken: cst.Token);
+      }, IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
 
