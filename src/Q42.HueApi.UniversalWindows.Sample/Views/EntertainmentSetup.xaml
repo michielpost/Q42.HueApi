@@ -10,17 +10,44 @@
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+   
+
     <Button Name="CreateEntGroup" Click="CreateEntGroup_Click">Create new entertainment group</Button>
     <TextBlock>Entertainment Group Only:</TextBlock>
     <TextBox Name="EntGroupId"></TextBox>
     <Button Click="LoadButton_Click">Load</Button>
     <Button Click="SaveButton_Click">Save</Button>
+
+    <Canvas>
+      <Canvas Width="400" Height="400" Background="Black">
+        <Line X1="200" X2="200" Y1="0" Y2="400" Stroke="Red" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="200" Y2="200" Stroke="Red" StrokeThickness="1"/>
+
+        <Line X1="40" X2="40" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="80" X2="80" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="120" X2="120" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="160" X2="160" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="240" X2="240" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="280" X2="280" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="320" X2="320" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="360" X2="360" Y1="0" Y2="400" Stroke="Blue" StrokeThickness="1"/>
+
+        <Line X1="0" X2="400" Y1="40" Y2="40" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="80" Y2="80" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="120" Y2="120" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="160" Y2="160" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="240" Y2="240" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="280" Y2="280" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="320" Y2="320" Stroke="Blue" StrokeThickness="1"/>
+        <Line X1="0" X2="400" Y1="360" Y2="360" Stroke="Blue" StrokeThickness="1"/>
+
+      </Canvas>
       
-    <ItemsControl Name="EntGrid" Width="400" Height="400" ItemsSource="{Binding GroupForPositioning}">
+      <ItemsControl Name="EntGrid" Width="400" Height="400" ItemsSource="{Binding GroupForPositioning}">
     <ItemsControl.ItemsPanel>
       <ItemsPanelTemplate>
-          <Canvas Background="Black" />
-      </ItemsPanelTemplate>
+          <Canvas />
+        </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
       <DataTemplate>
@@ -35,5 +62,7 @@
     </ItemsControl.ItemTemplate>
     </ItemsControl>
 
-    </StackPanel>
+
+    </Canvas>
+  </StackPanel>
 </Page>
