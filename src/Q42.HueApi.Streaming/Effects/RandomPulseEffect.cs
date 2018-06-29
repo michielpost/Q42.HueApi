@@ -1,4 +1,5 @@
 using Q42.HueApi.ColorConverters;
+using Q42.HueApi.Streaming.Effects.BasEffects;
 using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi.Streaming.Effects
 {
-  public class RandomPulseEffect : BaseEffect
+  public class RandomPulseEffect : SinglePointEffect
   {
     private CancellationTokenSource _cts;
     private bool _fadeToZero;

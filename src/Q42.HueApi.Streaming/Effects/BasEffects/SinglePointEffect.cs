@@ -1,27 +1,39 @@
 using Q42.HueApi.Models.Groups;
-using Q42.HueApi.Streaming.Effects;
 using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Q42.HueApi.Streaming.Extensions
+namespace Q42.HueApi.Streaming.Effects.BasEffects
 {
-  /// <summary>
-  /// Extension methods for BaseEffect
-  /// </summary>
-  public static class BaseEffectExtensions
+  public abstract class SinglePointEffect : BaseEffect
   {
+
+    /// <summary>
+    /// Between -1 and 1
+    /// </summary>
+    public double X { get; set; }
+
+    /// <summary>
+    /// Between -1 and 1
+    /// </summary>
+    public double Y { get; set; }
+
+    /// <summary>
+    /// Between 0 and 1
+    /// </summary>
+    public double Radius { get; set; }
+
     /// <summary>
     /// Get the multiplier for an effect on a light
     /// </summary>
     /// <param name="effect"></param>
     /// <param name="light"></param>
     /// <returns></returns>
-    public static double? GetEffectStrengthMultiplier(this BaseEffect effect, EntertainmentLight light)
+    public override double? GetEffectStrengthMultiplier(EntertainmentLight light)
     {
-      var distance = Distance(effect, light.LightLocation);
-      double? multiplier = effect.Radius - distance;
+      var distance = Distance(light.LightLocation);
+      double? multiplier = this.Radius - distance;
 
       multiplier = multiplier > 1 ? 1 : multiplier;
       multiplier = multiplier < 0 ? null : multiplier;
@@ -35,9 +47,9 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="effect"></param>
     /// <param name="lightLocation"></param>
     /// <returns></returns>
-    public static double Distance(this BaseEffect effect, LightLocation lightLocation)
+    public double Distance(LightLocation lightLocation)
     {
-      return lightLocation.Distance(effect.X, effect.Y);
+      return lightLocation.Distance(this.X, this.Y);
     }
   }
 }

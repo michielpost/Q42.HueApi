@@ -42,6 +42,13 @@ namespace Q42.HueApi.Streaming.Sample
 
       CancellationTokenSource cst = new CancellationTokenSource();
 
+      Console.WriteLine("Blue line on 90 degree angle");
+      var blueLineEffect = new BlueLineEffect();
+      entGroup.PlaceEffect(blueLineEffect);
+      blueLineEffect.Start();
+      cst = WaitCancelAndNext(cst);
+      blueLineEffect.Stop();
+
       Console.WriteLine("Random color on all lights");
       entGroup.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
 
