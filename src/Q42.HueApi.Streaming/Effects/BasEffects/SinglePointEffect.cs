@@ -36,7 +36,7 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
       double? multiplier = this.Radius - distance;
 
       multiplier = multiplier > 1 ? 1 : multiplier;
-      multiplier = multiplier < 0 ? null : multiplier;
+      multiplier = multiplier < 0 ? 0 : multiplier;
 
       return multiplier;
     }

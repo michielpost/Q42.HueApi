@@ -42,12 +42,12 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
       var dif1 = Math.Abs(CurrentAngle - angle);
       var dif2 = Math.Abs(CurrentAngle - angle - 360);
 
-      var diff = Math.Min(dif1, dif2) / 25;
+      var diff = Math.Min(dif1, dif2) / 60;
 
       double? multiplier = this.Width - diff;
 
       multiplier = multiplier > 1 ? 1 : multiplier;
-      multiplier = multiplier < 0 ? null : multiplier;
+      multiplier = multiplier < 0 ? 0 : multiplier;
 
       return multiplier;
     }
@@ -63,21 +63,28 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
       return lightLocation.Angle(this.X, this.Y);
     }
 
-    public Task Rotate(Ref<TimeSpan?> waitTime = null, CancellationToken cancellationToken = new CancellationToken())
+    public Task Rotate(Ref<int?> stepSize = null, Ref<TimeSpan?> waitTime = null, CancellationToken cancellationToken = new CancellationToken())
     {
+      if (stepSize == null)
+        stepSize = 20;
+      else if (!stepSize.Value.HasValue)
+        stepSize.Value = 20;
+
       if (waitTime == null)
-        waitTime = TimeSpan.FromMilliseconds(5);
+        waitTime = TimeSpan.FromMilliseconds(50);
       else if(!waitTime.Value.HasValue)
-        waitTime.Value = TimeSpan.FromMilliseconds(5);
+        waitTime.Value = TimeSpan.FromMilliseconds(50);
 
       return Task.Run(async () =>
       {
         while (!cancellationToken.IsCancellationRequested)
         {
-          CurrentAngle += 1;
+          CurrentAngle += stepSize.Value.Value;
           await Task.Delay(waitTime.Value.Value, cancellationToken);
           if (CurrentAngle >= 360)
             CurrentAngle = 0;
+          if (CurrentAngle < 0)
+            CurrentAngle = 360;
         }
       }, cancellationToken);
     }

@@ -25,8 +25,6 @@ namespace Q42.HueApi.Streaming.Effects
       state.SetRGBColor(new ColorConverters.RGBColor("0000FF"));
 
       this.State = state;
-
-      Rotate();
     }
   }
 }

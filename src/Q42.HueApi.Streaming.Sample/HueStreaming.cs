@@ -46,6 +46,33 @@ namespace Q42.HueApi.Streaming.Sample
       var blueLineEffect = new BlueLineEffect();
       entGroup.PlaceEffect(blueLineEffect);
       blueLineEffect.Start();
+
+      Ref<int?> stepSize = 20;
+      blueLineEffect.Rotate(stepSize);
+
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+      Console.ReadLine();
+      stepSize.Value -= 5;
+
+      Console.WriteLine("Finished");
+
       cst = WaitCancelAndNext(cst);
       blueLineEffect.Stop();
 
