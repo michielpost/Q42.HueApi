@@ -160,13 +160,17 @@ namespace Q42.HueApi.Streaming.Extensions
         //Apply to all groups if mode is all
         if (mode == IteratorEffectMode.All)
         {
-          foreach (var group in list)
-          {
-            if (!cancellationToken.IsCancellationRequested)
-              await groupFunction(group, waitTime);
-          }
+          var flatGroup = list.SelectMany(x => x);
+          if (!cancellationToken.IsCancellationRequested)
+               await groupFunction(flatGroup, waitTime);
 
-          await Task.Delay(waitTime.Value.Value);
+            //foreach (var group in list)
+            //{
+            //  if (!cancellationToken.IsCancellationRequested)
+            //    await groupFunction(group, waitTime);
+            //}
+
+            await Task.Delay(waitTime.Value.Value);
 
           continue;
         }

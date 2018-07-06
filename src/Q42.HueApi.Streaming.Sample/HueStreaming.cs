@@ -25,11 +25,12 @@ namespace Q42.HueApi.Streaming.Sample
       entGroup.AutoCalculateEffectUpdate();
 
       //Order lights based on position in the room
-      var orderedLeft = entGroup.GetLeft().OrderByDescending(x => x.LightLocation.Y).ThenBy(x => x.LightLocation.X);
+      var orderedLeft = entGroup.GetLeft().OrderByDescending(x => x.LightLocation.Y).ThenBy(x => x.LightLocation.X).To2DGroup();
       var orderedRight = entGroup.GetRight().OrderByDescending(x => x.LightLocation.Y).ThenByDescending(x => x.LightLocation.X);
-      var allLightsOrdered = entGroup.OrderBy(x => x.LightLocation.X).ThenBy(x => x.LightLocation.Y).ToList();
-      var orderedByDistance = entGroup.OrderBy(x => x.LightLocation.Distance(0, 0));
-      var orderedByAngle = entGroup.OrderBy(x => x.LightLocation.Angle(0, 0));
+      var allLightsOrdered = entGroup.OrderBy(x => x.LightLocation.X).ThenBy(x => x.LightLocation.Y).ToList().To2DGroup();
+      var allLightsOrderedFlat = entGroup.OrderBy(x => x.LightLocation.X).ThenBy(x => x.LightLocation.Y).ToList();
+      var orderedByDistance = entGroup.OrderBy(x => x.LightLocation.Distance(0, 0)).To2DGroup();
+      var orderedByAngle = entGroup.OrderBy(x => x.LightLocation.Angle(0, 0)).To2DGroup();
       var line1 = entGroup.Where(x => x.LightLocation.X <= -0.6).ToList();
       var line2 = entGroup.Where(x => x.LightLocation.X > -0.6 && x.LightLocation.X <= -0.1).ToList();
       var line3 = entGroup.Where(x => x.LightLocation.X > -0.1 && x.LightLocation.X <= 0.1).ToList();
@@ -77,7 +78,7 @@ namespace Q42.HueApi.Streaming.Sample
       blueLineEffect.Stop();
 
       Console.WriteLine("Random color on all lights");
-      entGroup.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
+      entGroup.To2DGroup().SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
 
       //Uncomment for demo using a secondary layer
       //var secondGroup = stream.GetNewLayer();
@@ -86,19 +87,19 @@ namespace Q42.HueApi.Streaming.Sample
       cst = WaitCancelAndNext(cst);
 
       //Group demo
-      Console.WriteLine("Group demo");
-      //var groups = new List<IEnumerable<EntertainmentLight>>() { line1, line2, line3, line4, line5 };
-      var groups = allLightsOrdered.ChunkBy(5);
-      var groupstest = allLightsOrdered.ChunkByGroupNumber(4);
-      groups.IteratorEffect(async (current, duration) => {
-        //var r = new Random();
-        //var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
-        //current.SetState(color, 1);
+      //Console.WriteLine("Group demo");
+      ////var groups = new List<IEnumerable<EntertainmentLight>>() { line1, line2, line3, line4, line5 };
+      //var groups = allLightsOrderedFlat.ChunkBy(5);
+      //var groupstest = allLightsOrderedFlat.ChunkByGroupNumber(4);
+      //groups.IteratorEffect(async (current, duration) => {
+      //  //var r = new Random();
+      //  //var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+      //  //current.SetState(color, 1);
 
-        current.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(5000), duration: duration, cancellationToken: cst.Token);
+      //  current.SetRandomColor(IteratorEffectMode.All, TimeSpan.FromMilliseconds(5000), duration: duration, cancellationToken: cst.Token);
 
-      }, IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
-      cst = WaitCancelAndNext(cst);
+      //}, IteratorEffectMode.All, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
+      //cst = WaitCancelAndNext(cst);
 
 
       //Random color from center
@@ -129,7 +130,7 @@ namespace Q42.HueApi.Streaming.Sample
 
 
       Console.WriteLine("Different random colors on all lights");
-      entGroup.SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
+      entGroup.To2DGroup().SetRandomColor(IteratorEffectMode.AllIndividual, TimeSpan.FromMilliseconds(500), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
 
@@ -175,9 +176,9 @@ namespace Q42.HueApi.Streaming.Sample
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Flash effect with transition times");
-      entGroup.GetLeft().Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), cancellationToken: cst.Token);
+      entGroup.GetLeft().To2DGroup().Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), cancellationToken: cst.Token);
       await Task.Delay(2000);
-      entGroup.GetRight().Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), cancellationToken: cst.Token);
+      entGroup.GetRight().To2DGroup().Flash(new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
 
