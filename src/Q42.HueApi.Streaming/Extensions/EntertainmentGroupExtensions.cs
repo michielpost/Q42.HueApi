@@ -12,13 +12,26 @@ namespace Q42.HueApi.Streaming.Extensions
 {
   public enum IteratorEffectMode
   {
+    /// <summary>
+    /// Loops the lights one by one
+    /// </summary>
     Cycle,
+    /// <summary>
+    /// Each light one by one, bounces back on the end of the list
+    /// </summary>
     Bounce,
     /// <summary>
     /// Only Once
     /// </summary>
     Single,
+    /// <summary>
+    /// Will select a random light each iteration
+    /// </summary>
     Random,
+    /// <summary>
+    /// Order lights random and do each light once
+    /// </summary>
+    RandomOrdered,
     /// <summary>
     /// Apply the effect on all lights at the same time, ignoring different start states.
     /// Best for syncing all lights
@@ -80,7 +93,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task IteratorEffect(this IEnumerable<EntertainmentLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static async Task IteratorEffect(this IEnumerable<EntertainmentLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromSeconds(1);
@@ -94,7 +107,8 @@ namespace Q42.HueApi.Streaming.Extensions
       Stopwatch sw = new Stopwatch();
       sw.Start();
 
-      while (keepGoing && !cancellationToken.IsCancellationRequested && !(sw.Elapsed > duration))
+      int i = 0;
+      while (keepGoing && !cancellationToken.IsCancellationRequested && !(sw.Elapsed > duration) && i < maxIterations)
       {
         //Apply to whole group if mode is all
         if(mode == IteratorEffectMode.All)
@@ -103,6 +117,7 @@ namespace Q42.HueApi.Streaming.Extensions
 
           await Task.Delay(waitTime.Value.Value, cancellationToken);
 
+          i++;
           continue;
         }
 
@@ -128,6 +143,8 @@ namespace Q42.HueApi.Streaming.Extensions
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)
           reverse = true;
+
+        i++;
       }
     }
 
@@ -141,37 +158,62 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task IteratorEffect(this IEnumerable<IEnumerable<EntertainmentLight>> list, IteratorEffectFunc groupFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, CancellationToken cancellationToken = new CancellationToken())
+    public static async Task IteratorEffect(this IEnumerable<IEnumerable<EntertainmentLight>> list, IteratorEffectFunc groupFunction, IteratorEffectMode mode, IteratorEffectMode secondaryMode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue, CancellationToken cancellationToken = new CancellationToken())
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromSeconds(1);
       if (duration == null)
         duration = TimeSpan.MaxValue;
 
+      int secondaryMaxIterations = 1;
+      //Normalize secondary iterator mode
+      switch (secondaryMode)
+      {
+        case IteratorEffectMode.Bounce:
+          secondaryMaxIterations = 2;
+          break;
+        case IteratorEffectMode.Cycle:
+        case IteratorEffectMode.Single:
+          secondaryMode = IteratorEffectMode.Single;
+          break;
+        case IteratorEffectMode.Random:
+        case IteratorEffectMode.RandomOrdered:
+          secondaryMode = IteratorEffectMode.RandomOrdered;
+          break;
+        case IteratorEffectMode.All:
+        case IteratorEffectMode.AllIndividual:
+        default:
+          break;
+      }
+
       bool keepGoing = true;
       var groups = list.ToList();
       bool reverse = false;
 
+      if(mode == IteratorEffectMode.RandomOrdered)
+        groups = groups.OrderBy(x => Guid.NewGuid()).ToList();
+
       Stopwatch sw = new Stopwatch();
       sw.Start();
 
-      while (keepGoing && !cancellationToken.IsCancellationRequested && !(sw.Elapsed > duration))
+      int i = 0;
+      while (keepGoing && !cancellationToken.IsCancellationRequested && !(sw.Elapsed > duration) && i < maxIterations)
       {
         //Apply to all groups if mode is all
         if (mode == IteratorEffectMode.All)
         {
           var flatGroup = list.SelectMany(x => x);
           if (!cancellationToken.IsCancellationRequested)
-               await groupFunction(flatGroup, waitTime);
+            await groupFunction(flatGroup, waitTime);
 
-            //foreach (var group in list)
-            //{
-            //  if (!cancellationToken.IsCancellationRequested)
-            //    await groupFunction(group, waitTime);
-            //}
+          //foreach (var group in list)
+          //{
+          //  if (!cancellationToken.IsCancellationRequested)
+          //    await groupFunction(group, waitTime);
+          //}
 
-            await Task.Delay(waitTime.Value.Value);
-
+          await Task.Delay(waitTime.Value.Value);
+          i++;
           continue;
         }
 
@@ -182,18 +224,22 @@ namespace Q42.HueApi.Streaming.Extensions
 
         foreach (var group in groups.Skip(reverse ? 1 : 0))
         {
-          await groupFunction(group, waitTime);
+          await group.IteratorEffect(groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations, cancellationToken: cancellationToken);
 
-          if (mode != IteratorEffectMode.AllIndividual)
-            await Task.Delay(waitTime.Value.Value, cancellationToken);
+          //await groupFunction(group, waitTime);
+
+          //if (mode != IteratorEffectMode.AllIndividual)
+          //  await Task.Delay(waitTime.Value.Value, cancellationToken);
         }
 
         if (mode == IteratorEffectMode.AllIndividual)
           await Task.Delay(waitTime.Value.Value, cancellationToken);
 
-        keepGoing = mode == IteratorEffectMode.Single ? false : true;
+        keepGoing = mode == IteratorEffectMode.Single || mode == IteratorEffectMode.RandomOrdered ? false : true;
         if (mode == IteratorEffectMode.Bounce)
           reverse = true;
+
+        i++;
       }
     }
 
