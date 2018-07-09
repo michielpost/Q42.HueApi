@@ -98,7 +98,7 @@ namespace Q42.HueApi.Streaming.Sample
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Flash on lights Cycle / Single");
-      quarter.FlashQuick(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Single, IteratorEffectMode.All, waitTime: TimeSpan.FromMilliseconds(50), cancellationToken: cst.Token);
+      quarter.FlashQuick(new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, IteratorEffectMode.Single, waitTime: TimeSpan.FromMilliseconds(50), cancellationToken: cst.Token);
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Random color Cycle / All");
