@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,11 +67,15 @@ namespace Q42.HueApi.Converters
 				recurrences = string.Format("R{0}", Convert.ToString(hueDateTimeValue.NumberOfRecurrences.Value));
 			}
 
-			if (!string.IsNullOrEmpty(daysRecurring))//recurrenceday
+			if (!string.IsNullOrEmpty(daysRecurring) && !string.IsNullOrEmpty(timerTimeValue))//recurrenceday with a timerTime
 			{
 				returnValue = string.Format("{0}/{1}{2}", daysRecurring, timerTimeValue, randomTimeValue);
 			}
-			else if (!string.IsNullOrEmpty(timerTimeValue))// (timertime only when in timers and weekdays)
+      if (!string.IsNullOrEmpty(daysRecurring) && !string.IsNullOrEmpty(dateTimeValue))//recurrenceday with a dateTimeValue
+      {
+        returnValue = string.Format("{0}/{1}{2}", daysRecurring, dateTimeValue, randomTimeValue);
+      }
+      else if (!string.IsNullOrEmpty(timerTimeValue))// (timertime only when in timers and weekdays)
 			{
 				returnValue = string.Format("P{0}{1}", timerTimeValue, randomTimeValue);
 
