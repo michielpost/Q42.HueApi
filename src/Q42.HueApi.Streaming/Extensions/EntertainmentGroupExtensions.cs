@@ -113,7 +113,7 @@ namespace Q42.HueApi.Streaming.Extensions
         //Apply to whole group if mode is all
         if(mode == IteratorEffectMode.All)
         {
-          await effectFunction(group, waitTime);
+          effectFunction(group, waitTime);
 
           await Task.Delay(waitTime.Value.Value, cancellationToken);
 
@@ -130,7 +130,7 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           if (!cancellationToken.IsCancellationRequested)
           {
-            await effectFunction(new List<EntertainmentLight>() { light }, waitTime);
+            effectFunction(new List<EntertainmentLight>() { light }, waitTime);
 
             if (mode != IteratorEffectMode.AllIndividual)
               await Task.Delay(waitTime.Value.Value, cancellationToken);
@@ -204,7 +204,7 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           var flatGroup = list.SelectMany(x => x);
           if (!cancellationToken.IsCancellationRequested)
-            await groupFunction(flatGroup, waitTime);
+            groupFunction(flatGroup, waitTime);
 
           //foreach (var group in list)
           //{
@@ -212,7 +212,7 @@ namespace Q42.HueApi.Streaming.Extensions
           //    await groupFunction(group, waitTime);
           //}
 
-          await Task.Delay(waitTime.Value.Value);
+          await Task.Delay(waitTime.Value.Value, cancellationToken);
           i++;
           continue;
         }
@@ -222,18 +222,25 @@ namespace Q42.HueApi.Streaming.Extensions
         if (mode == IteratorEffectMode.Random)
           groups = groups.OrderBy(x => Guid.NewGuid()).ToList();
 
-        foreach (var group in groups.Skip(reverse ? 1 : 0))
-        {
-          await group.IteratorEffect(groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations, cancellationToken: cancellationToken);
-
-          //await groupFunction(group, waitTime);
-
-          //if (mode != IteratorEffectMode.AllIndividual)
-          //  await Task.Delay(waitTime.Value.Value, cancellationToken);
-        }
-
         if (mode == IteratorEffectMode.AllIndividual)
-          await Task.Delay(waitTime.Value.Value, cancellationToken);
+        {
+          List<Task> allIndividualTasks = new List<Task>();
+          foreach (var group in groups.Skip(reverse ? 1 : 0))
+          {
+            //Do not await, AllIndividual runs them all at the same time
+            var t = group.IteratorEffect(groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations, cancellationToken: cancellationToken);
+            allIndividualTasks.Add(t);
+          }
+
+          await Task.WhenAll(allIndividualTasks);
+        }
+        else
+        {
+          foreach (var group in groups.Skip(reverse ? 1 : 0))
+          {
+            await group.IteratorEffect(groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations, cancellationToken: cancellationToken);
+          }
+        }
 
         keepGoing = mode == IteratorEffectMode.Single || mode == IteratorEffectMode.RandomOrdered ? false : true;
         if (mode == IteratorEffectMode.Bounce)

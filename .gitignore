@@ -115,3 +115,4 @@ UpgradeLog*.XML
 /src/.vs/config
 /src/.vs/Q42.HueApi/v15/Server/sqlite3
 /src/.vs/Q42.HueApi/v15/sqlite3
+/src/.vs/Q42.HueApi/DesignTimeBuild/*.dtbcache
