@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Models;
 using Q42.HueApi.Models.Groups;
@@ -64,10 +64,6 @@ namespace Q42.HueApi
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules/{1}", ApiBase, id))).ConfigureAwait(false);
-
-#if DEBUG
-			stringResult = "{	\"name\": \"Wake up\",	\"description\": \"My wake up alarm\",	\"command\": {		\"address\": \"/api/<username>/groups/1/action\",		\"method\": \"PUT\",		\"body\": {			\"on\": true		}	},	\"time\": \"W124/T06:00:00\"}";
-#endif
 
 			Schedule schedule = DeserializeResult<Schedule>(stringResult);
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
@@ -52,7 +52,7 @@ namespace Q42.HueApi.Tests
 	[TestMethod]
 	public async Task GetSingleDebugTest()
 	{
-		var single = await _client.GetScheduleAsync("1");
+		var single = await _client.GetScheduleAsync("5");
 
 		Assert.IsNotNull(single);
 	}
@@ -63,9 +63,10 @@ namespace Q42.HueApi.Tests
       Schedule schedule = new Schedule();
       schedule.Name = "t1";
       schedule.Description = "test";
-			schedule.LocalTime = new HueDateTime()
-			{
-				DateTime = DateTime.Now.AddDays(1)
+      schedule.LocalTime = new HueDateTime()
+      {
+        TimerTime = TimeSpan.FromHours(10),
+        RecurringDay = RecurringDay.RecurringMonday | RecurringDay.RecurringThursday
 			};
       schedule.Command = new InternalBridgeCommand();
 

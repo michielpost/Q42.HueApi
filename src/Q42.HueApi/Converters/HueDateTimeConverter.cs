@@ -71,9 +71,9 @@ namespace Q42.HueApi.Converters
 			{
 				returnValue = string.Format("{0}/{1}{2}", daysRecurring, timerTimeValue, randomTimeValue);
 			}
-      if (!string.IsNullOrEmpty(daysRecurring) && !string.IsNullOrEmpty(dateTimeValue))//recurrenceday with a dateTimeValue
+      else if (!string.IsNullOrEmpty(daysRecurring) && !string.IsNullOrEmpty(dateTimeValue))//recurrenceday with a dateTimeValue
       {
-        returnValue = string.Format("{0}/{1}{2}", daysRecurring, dateTimeValue, randomTimeValue);
+        throw new Exception("Please set TimerTime when using RecurringDay");
       }
       else if (!string.IsNullOrEmpty(timerTimeValue))// (timertime only when in timers and weekdays)
 			{
