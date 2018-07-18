@@ -18,9 +18,9 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="brightness">between 0 and 1</param>
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
-    public static void SetBrightness(this EntertainmentLight light, double brightness, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetBrightness(this EntertainmentLight light, CancellationToken cancellationToken, double brightness, TimeSpan timeSpan = default(TimeSpan))
     {
-      light.SetState(null, brightness, timeSpan, cancellationToken);
+      light.SetState(cancellationToken, null, brightness, timeSpan);
     }
 
     /// <summary>
@@ -31,9 +31,9 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static void SetColor(this EntertainmentLight light, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetColor(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan))
     {
-      light.SetState(rgb, null, timeSpan, cancellationToken);
+      light.SetState(cancellationToken, rgb, null, timeSpan);
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static void SetState(this EntertainmentLight light, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan), CancellationToken cancellationToken = default(CancellationToken))
+    public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan))
     {
       //Create a new transition for this light
       Transition transition = CreateTransition(rgb, brightness, timeSpan);

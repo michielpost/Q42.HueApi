@@ -46,7 +46,7 @@ namespace Q42.HueApi.Streaming.Models
     /// </summary>
     /// <param name="entGroup"></param>
     /// <param name="cancellationToken"></param>
-    public void AutoCalculateEffectUpdate(CancellationToken cancellationToken = new CancellationToken())
+    public void AutoCalculateEffectUpdate(CancellationToken cancellationToken)
     {
       Task.Run(async () => {
         int waitTime = 50;
@@ -60,12 +60,12 @@ namespace Q42.HueApi.Streaming.Models
               var effectMultiplier = effect.GetEffectStrengthMultiplier(light);
               if (effectMultiplier.HasValue)
               {
-                light.SetState(effect.State.RGBColor, effect.State.Brightness * effectMultiplier.Value);
+                light.SetState(cancellationToken, effect.State.RGBColor, effect.State.Brightness * effectMultiplier.Value);
               }
             }
           }
 
-          await Task.Delay(waitTime).ConfigureAwait(false);
+          await Task.Delay(waitTime, cancellationToken).ConfigureAwait(false);
         }
 
       }, cancellationToken);

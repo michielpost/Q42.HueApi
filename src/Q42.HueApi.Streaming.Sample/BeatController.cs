@@ -27,7 +27,7 @@ namespace Q42.HueApi.Streaming.Sample
 
     private void _timer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      EffectFunction?.Invoke(_lights, CurrentBeat);
+      EffectFunction?.Invoke(_lights, new System.Threading.CancellationToken(), CurrentBeat);
     }
 
     public void StartAutoTimer(TimeSpan interval)

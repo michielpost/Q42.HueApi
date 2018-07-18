@@ -49,7 +49,7 @@ namespace Q42.HueApi.Streaming.Sample
       await client.Connect(group.Id, simulator: useSimulator);
 
       //Start auto updating this entertainment group
-      client.AutoUpdate(stream, 50);
+      client.AutoUpdate(stream, new System.Threading.CancellationToken(), 50);
 
       //Optional: Check if streaming is currently active
       var bridgeInfo = await client.LocalHueClient.GetBridgeAsync();

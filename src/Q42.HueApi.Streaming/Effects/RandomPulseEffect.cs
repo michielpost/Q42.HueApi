@@ -44,7 +44,7 @@ namespace Q42.HueApi.Streaming.Effects
         while (true && !_cts.IsCancellationRequested)
         {
           Radius += step;
-          await Task.Delay(_waitTime.Value.Value);
+          await Task.Delay(_waitTime.Value.Value, _cts.Token).ConfigureAwait(false);
           if (Radius >= 2)
           {
             if (_fadeToZero)

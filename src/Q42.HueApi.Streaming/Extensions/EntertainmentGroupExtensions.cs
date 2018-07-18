@@ -49,7 +49,7 @@ namespace Q42.HueApi.Streaming.Extensions
   /// </summary>
   /// <param name="current">Will contain 1 light, only contains multiple lights when IteratorEffectMode.All is used</param>
   /// <param name="timeSpan"></param>
-  public delegate Task IteratorEffectFunc(IEnumerable<EntertainmentLight> current, TimeSpan? timeSpan = null);
+  public delegate Task IteratorEffectFunc(IEnumerable<EntertainmentLight> current, CancellationToken cancellationToken, TimeSpan? timeSpan = null);
 
   public static class EntertainmentGroupExtensions
   {
@@ -93,7 +93,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task IteratorEffect(this IEnumerable<EntertainmentLight> group, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue, CancellationToken cancellationToken = new CancellationToken())
+    public static async Task IteratorEffect(this IEnumerable<EntertainmentLight> group, CancellationToken cancellationToken, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue)
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromSeconds(1);
@@ -113,9 +113,9 @@ namespace Q42.HueApi.Streaming.Extensions
         //Apply to whole group if mode is all
         if(mode == IteratorEffectMode.All)
         {
-          effectFunction(group, waitTime);
+          effectFunction(group, cancellationToken, waitTime);
 
-          await Task.Delay(waitTime.Value.Value, cancellationToken);
+          await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
 
           i++;
           continue;
@@ -130,15 +130,15 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           if (!cancellationToken.IsCancellationRequested)
           {
-            effectFunction(new List<EntertainmentLight>() { light }, waitTime);
+            effectFunction(new List<EntertainmentLight>() { light }, cancellationToken, waitTime);
 
             if (mode != IteratorEffectMode.AllIndividual)
-              await Task.Delay(waitTime.Value.Value, cancellationToken);
+              await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
           }
         }
 
         if(mode == IteratorEffectMode.AllIndividual)
-          await Task.Delay(waitTime.Value.Value, cancellationToken);
+          await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
 
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)
@@ -158,7 +158,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task IteratorEffect(this IEnumerable<IEnumerable<EntertainmentLight>> list, IteratorEffectFunc groupFunction, IteratorEffectMode mode, IteratorEffectMode secondaryMode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue, CancellationToken cancellationToken = new CancellationToken())
+    public static async Task IteratorEffect(this IEnumerable<IEnumerable<EntertainmentLight>> list, CancellationToken cancellationToken, IteratorEffectFunc groupFunction, IteratorEffectMode mode, IteratorEffectMode secondaryMode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue)
     {
       if (waitTime == null)
         waitTime = TimeSpan.FromSeconds(1);
@@ -204,7 +204,7 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           var flatGroup = list.SelectMany(x => x);
           if (!cancellationToken.IsCancellationRequested)
-            groupFunction(flatGroup, waitTime);
+            groupFunction(flatGroup, cancellationToken, waitTime);
 
           //foreach (var group in list)
           //{
@@ -212,7 +212,7 @@ namespace Q42.HueApi.Streaming.Extensions
           //    await groupFunction(group, waitTime);
           //}
 
-          await Task.Delay(waitTime.Value.Value, cancellationToken);
+          await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
           i++;
           continue;
         }
@@ -228,7 +228,7 @@ namespace Q42.HueApi.Streaming.Extensions
           foreach (var group in groups.Skip(reverse ? 1 : 0))
           {
             //Do not await, AllIndividual runs them all at the same time
-            var t = group.IteratorEffect(groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations, cancellationToken: cancellationToken);
+            var t = group.IteratorEffect(cancellationToken, groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations);
             allIndividualTasks.Add(t);
           }
 
@@ -238,7 +238,7 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           foreach (var group in groups.Skip(reverse ? 1 : 0))
           {
-            await group.IteratorEffect(groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations, cancellationToken: cancellationToken);
+            await group.IteratorEffect(cancellationToken, groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations);
           }
         }
 
@@ -262,9 +262,10 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static IEnumerable<EntertainmentLight> SetBrightness(this IEnumerable<EntertainmentLight> group,
-      double brightness, TimeSpan transitionTime = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
+      CancellationToken cancellationToken,
+      double brightness, TimeSpan transitionTime = default(TimeSpan), bool inSync = true)
     {
-      group.SetState(null, brightness, transitionTime, inSync, cancellationToken);
+      group.SetState(cancellationToken, null, brightness, transitionTime, inSync);
 
       return group;
     }
@@ -279,9 +280,10 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static IEnumerable<EntertainmentLight> SetColor(this IEnumerable<EntertainmentLight> group,
-      RGBColor rgb, TimeSpan transitionTime = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
+      CancellationToken cancellationToken,
+      RGBColor rgb, TimeSpan transitionTime = default(TimeSpan), bool inSync = true)
     {
-      group.SetState(rgb, null, transitionTime, inSync, cancellationToken);
+      group.SetState(cancellationToken, rgb, null, transitionTime, inSync);
 
       return group;
     }
@@ -297,7 +299,8 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static IEnumerable<EntertainmentLight> SetState(this IEnumerable<EntertainmentLight> group,
-      RGBColor? rgb = null, double? brightness = null, TimeSpan transitionTime = default(TimeSpan), bool inSync = true, CancellationToken cancellationToken = default(CancellationToken))
+      CancellationToken cancellationToken,
+      RGBColor? rgb = null, double? brightness = null, TimeSpan transitionTime = default(TimeSpan), bool inSync = true)
     {
       //Re-use the same transition for all lights so transition is in sync. The transition will use the start rgb/bri from the first light in the group.
       if (inSync)
@@ -321,7 +324,7 @@ namespace Q42.HueApi.Streaming.Extensions
         foreach (var light in group)
         {
           if (!cancellationToken.IsCancellationRequested)
-            light.SetState(rgb, brightness, transitionTime, cancellationToken);
+            light.SetState(cancellationToken, rgb, brightness, transitionTime);
         }
       }
 
