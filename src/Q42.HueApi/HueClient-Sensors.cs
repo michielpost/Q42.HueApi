@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +29,9 @@ namespace Q42.HueApi
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}sensors", ApiBase))).ConfigureAwait(false);
 
-#if DEBUG
-			stringResult = "{    \"1\": {        \"state\": {            \"daylight\": false,            \"lastupdated\": \"2014-06-27T07:38:51\"        },        \"config\": {            \"on\": true,            \"long\": \"none\",            \"lat\": \"none\",            \"sunriseoffset\": 50,            \"sunsetoffset\": 50        },        \"name\": \"Daylight\",        \"type\": \"Daylight\",        \"modelid\": \"PHDL00\",        \"manufacturername\": \"Philips\",        \"swversion\": \"1.0\"    },    \"2\": {        \"state\": {            \"buttonevent\": 0,            \"lastupdated\": \"none\"        },        \"config\": {            \"on\": true        },        \"name\": \"Tap Switch 2\",        \"type\": \"ZGPSwitch\",        \"modelid\": \"ZGPSWITCH\",        \"manufacturername\": \"Philips\",        \"uniqueid\": \"00:00:00:00:00:40:03:50-f2\"    }}";
-#endif
+//#if DEBUG
+//			stringResult = "{    \"1\": {        \"state\": {            \"daylight\": false,            \"lastupdated\": \"2014-06-27T07:38:51\"        },        \"config\": {            \"on\": true,            \"long\": \"none\",            \"lat\": \"none\",            \"sunriseoffset\": 50,            \"sunsetoffset\": 50        },        \"name\": \"Daylight\",        \"type\": \"Daylight\",        \"modelid\": \"PHDL00\",        \"manufacturername\": \"Philips\",        \"swversion\": \"1.0\"    },    \"2\": {        \"state\": {            \"buttonevent\": 0,            \"lastupdated\": \"none\"        },        \"config\": {            \"on\": true        },        \"name\": \"Tap Switch 2\",        \"type\": \"ZGPSwitch\",        \"modelid\": \"ZGPSWITCH\",        \"manufacturername\": \"Philips\",        \"uniqueid\": \"00:00:00:00:00:40:03:50-f2\"    }}";
+//#endif
 
 
 			List<Sensor> results = new List<Sensor>();
@@ -116,9 +116,9 @@ namespace Q42.HueApi
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}sensors/new", ApiBase))).ConfigureAwait(false);
 
-#if DEBUG
-			//stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
-#endif
+//#if DEBUG
+//			//stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
+//#endif
 
 			List<Sensor> results = new List<Sensor>();
 
@@ -163,9 +163,9 @@ namespace Q42.HueApi
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}sensors/{1}", ApiBase, id))).ConfigureAwait(false);
 
-#if DEBUG
-			stringResult = "{\"state\":{         \"buttonevent\": 34,         \"lastupdated\":\"2013-03-25T13:32:34\", },\"name\": \"Wall tap 1\", \"modelid\":\"ZGPSWITCH\",  \"uniqueid\":\"01:23:45:67:89:AB-12\",\"manufacturername\": \"Philips\",\"swversion\":\"1.0\", \"type\":  \"ZGPSwitch\"}";
-#endif
+//#if DEBUG
+//			stringResult = "{\"state\":{         \"buttonevent\": 34,         \"lastupdated\":\"2013-03-25T13:32:34\", },\"name\": \"Wall tap 1\", \"modelid\":\"ZGPSWITCH\",  \"uniqueid\":\"01:23:45:67:89:AB-12\",\"manufacturername\": \"Philips\",\"swversion\":\"1.0\", \"type\":  \"ZGPSwitch\"}";
+//#endif
 
 			JToken token = JToken.Parse(stringResult);
 			if (token.Type == JTokenType.Array)
@@ -300,9 +300,9 @@ namespace Q42.HueApi
 
 			string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-#if DEBUG
-			jsonResult = "[{\"success\":\"/sensors/" + id + " deleted\"}]";
-#endif
+//#if DEBUG
+//			jsonResult = "[{\"success\":\"/sensors/" + id + " deleted\"}]";
+//#endif
 
 			return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 

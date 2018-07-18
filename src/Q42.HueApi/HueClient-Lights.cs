@@ -210,9 +210,9 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/new", ApiBase))).ConfigureAwait(false);
 
-#if DEBUG
-      //stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
-#endif
+//#if DEBUG
+//      //stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
+//#endif
 
       List<Light> results = new List<Light>();
 
@@ -255,9 +255,9 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-#if DEBUG
-      jsonResult = "[{\"success\":\"/lights/" + id + " deleted\"}]";
-#endif
+//#if DEBUG
+//      jsonResult = "[{\"success\":\"/lights/" + id + " deleted\"}]";
+//#endif
 
       return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 

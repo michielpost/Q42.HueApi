@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +30,10 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}rules", ApiBase))).ConfigureAwait(false);
 
-#if DEBUG
-			//stringResult = "{\"1\": {    \"name\": \"Wall Switch Rule\",    \"lasttriggered\": \"2013-10-17T01:23:20\",    \"creationtime\": \"2013-10-10T21:11:45\",    \"timestriggered\": 27,    \"owner\": \"78H56B12BA\",    \"status\": \"enabled\",    \"conditions\": [        {            \"address\": \"/sensors/2/state/buttonevent\",            \"operator\": \"eq\",            \"value\": \"16\"        },        {            \"address\": \"/sensors/2/state/lastupdated\",            \"operator\": \"dx\"        }    ],    \"actions\": [        {            \"address\": \"/groups/0/action\",            \"method\": \"PUT\",            \"body\": {                \"scene\": \"S3\"            }        }    ]} }";
-			stringResult = "{    \"29\": {        \"name\": \"MotionSensor 13.day-on\",        \"owner\": \"Ftg8b0E4NVk3vVpodvV-Nh-rg8q3XfB0sDUZv3Hy\",        \"created\": \"2016-10-15T12:01:33\",        \"lasttriggered\": \"2016-10-23T08:59:32\",        \"timestriggered\": 5,        \"status\": \"enabled\",        \"recycle\": true,        \"conditions\": [            {                \"address\": \"/config/localtime\",                \"operator\": \"in\",                \"value\": \"T08:00:00/T23:00:00\"            },            {                \"address\": \"/sensors/13/state/presence\",                \"operator\": \"eq\",                \"value\": \"true\"            },            {                \"address\": \"/sensors/13/state/presence\",                \"operator\": \"dx\"            },            {               \"address\": \"/sensors/15/state/status\",                \"operator\": \"lt\",                \"value\": \"1\"            },            {                \"address\": \"/sensors/14/state/dark\",                \"operator\": \"eq\",                \"value\": \"true\"            }        ],        \"actions\": [            {                \"address\": \"/groups/3/action\",                \"method\": \"PUT\",                \"body\": {                    \"scene\": \"kZvpr1yJTqvHyQA\"                }            },            {                \"address\": \"/sensors/15/state\",                \"method\": \"PUT\",                \"body\": {                    \"status\": 1                }            }        ]    }}";
-#endif
+//#if DEBUG
+//			//stringResult = "{\"1\": {    \"name\": \"Wall Switch Rule\",    \"lasttriggered\": \"2013-10-17T01:23:20\",    \"creationtime\": \"2013-10-10T21:11:45\",    \"timestriggered\": 27,    \"owner\": \"78H56B12BA\",    \"status\": \"enabled\",    \"conditions\": [        {            \"address\": \"/sensors/2/state/buttonevent\",            \"operator\": \"eq\",            \"value\": \"16\"        },        {            \"address\": \"/sensors/2/state/lastupdated\",            \"operator\": \"dx\"        }    ],    \"actions\": [        {            \"address\": \"/groups/0/action\",            \"method\": \"PUT\",            \"body\": {                \"scene\": \"S3\"            }        }    ]} }";
+//			stringResult = "{    \"29\": {        \"name\": \"MotionSensor 13.day-on\",        \"owner\": \"Ftg8b0E4NVk3vVpodvV-Nh-rg8q3XfB0sDUZv3Hy\",        \"created\": \"2016-10-15T12:01:33\",        \"lasttriggered\": \"2016-10-23T08:59:32\",        \"timestriggered\": 5,        \"status\": \"enabled\",        \"recycle\": true,        \"conditions\": [            {                \"address\": \"/config/localtime\",                \"operator\": \"in\",                \"value\": \"T08:00:00/T23:00:00\"            },            {                \"address\": \"/sensors/13/state/presence\",                \"operator\": \"eq\",                \"value\": \"true\"            },            {                \"address\": \"/sensors/13/state/presence\",                \"operator\": \"dx\"            },            {               \"address\": \"/sensors/15/state/status\",                \"operator\": \"lt\",                \"value\": \"1\"            },            {                \"address\": \"/sensors/14/state/dark\",                \"operator\": \"eq\",                \"value\": \"true\"            }        ],        \"actions\": [            {                \"address\": \"/groups/3/action\",                \"method\": \"PUT\",                \"body\": {                    \"scene\": \"kZvpr1yJTqvHyQA\"                }            },            {                \"address\": \"/sensors/15/state\",                \"method\": \"PUT\",                \"body\": {                    \"status\": 1                }            }        ]    }}";
+//#endif
 
 
       List<Rule> results = new List<Rule>();
@@ -74,9 +74,9 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}rules/{1}", ApiBase, id))).ConfigureAwait(false);
 
-#if DEBUG
-      stringResult = "{    \"name\": \"Wall Switch Rule\",    \"owner\": \"ruleOwner\",    \"created\": \"2014-07-23T15:02:56\",    \"lasttriggered\": \"none\",    \"timestriggered\": 0,    \"status\": \"enabled\",    \"conditions\": [        {            \"address\": \"/sensors/2/state/buttonevent\",            \"operator\": \"eq\",            \"value\": \"16\"        },        {            \"address\": \"/sensors/2/state/lastupdated\",            \"operator\": \"dx\"        }    ],    \"actions\": [        {            \"address\": \"/groups/0/action\",            \"method\": \"PUT\",            \"body\": {                \"scene\": \"S3\"            }        }    ]}";
-#endif
+//#if DEBUG
+//      stringResult = "{    \"name\": \"Wall Switch Rule\",    \"owner\": \"ruleOwner\",    \"created\": \"2014-07-23T15:02:56\",    \"lasttriggered\": \"none\",    \"timestriggered\": 0,    \"status\": \"enabled\",    \"conditions\": [        {            \"address\": \"/sensors/2/state/buttonevent\",            \"operator\": \"eq\",            \"value\": \"16\"        },        {            \"address\": \"/sensors/2/state/lastupdated\",            \"operator\": \"dx\"        }    ],    \"actions\": [        {            \"address\": \"/groups/0/action\",            \"method\": \"PUT\",            \"body\": {                \"scene\": \"S3\"            }        }    ]}";
+//#endif
 
       JToken token = JToken.Parse(stringResult);
       if (token.Type == JTokenType.Array)
