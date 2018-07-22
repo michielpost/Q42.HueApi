@@ -49,6 +49,9 @@ namespace Q42.HueApi
     [DataMember(Name = "capabilities")]
     public LightCapabilities Capabilities { get; set; }
 
+    [DataMember(Name = "config")]
+    public LightConfig Config { get; set; }
+
     [DataMember(Name = "swupdate")]
     public SwUpdate SwUpdate { get; set; }
 
@@ -77,5 +80,18 @@ namespace Q42.HueApi
   {
     [DataMember(Name = "streaming")]
     public StreamingLightCapabilities Streaming { get; set; }
+  }
+
+  [DataContract]
+  public class LightConfig
+  {
+    [DataMember(Name = "archetype")]
+    public string ArcheType { get; set; }
+
+    [DataMember(Name = "function")]
+    public string Function { get; set; }
+
+    [DataMember(Name = "direction")]
+    public string Direction { get; set; }
   }
 }
