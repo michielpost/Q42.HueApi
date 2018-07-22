@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Bridge;
 using System;
@@ -15,7 +15,7 @@ namespace Q42.HueApi
 	/// </summary>
   public class HttpBridgeLocator : IBridgeLocator
   {
-    private readonly Uri NuPnPUrl = new Uri("https://www.meethue.com/api/nupnp");
+    private readonly Uri NuPnPUrl = new Uri("https://discovery.meethue.com");
 
 
 		/// <summary>

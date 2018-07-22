@@ -1,4 +1,4 @@
-﻿using Q42.HueApi.Interfaces;
+using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Bridge;
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,7 @@ namespace Q42.HueApi.NET
         var thd = new Thread(() => GetSocketResponse(socket));
         socket.SendTo(broadcastMessage, 0, broadcastMessage.Length, SocketFlags.None, new IPEndPoint(multicastAddress, multicastPort));
         thd.Start();
-        Thread.Sleep(timeout);
+        await Task.Delay(timeout);
         socket.Close();
       }
 
