@@ -23,7 +23,7 @@ namespace Q42.HueApi.Streaming.Models
     public List<EntertainmentLayer> Layers { get; set; } = new List<EntertainmentLayer>();
 
 
-    private readonly List<byte> _protocolName = Encoding.ASCII.GetBytes(new char[] { 'H', 'u', 'e', 'S', 't', 'r', 'e', 'a', 'm' }).ToList();
+    private static readonly List<byte> protocolName = Encoding.ASCII.GetBytes(new char[] { 'H', 'u', 'e', 'S', 't', 'r', 'e', 'a', 'm' }).ToList();
 
     /// <summary>
     /// Constructor without light locations
@@ -59,31 +59,13 @@ namespace Q42.HueApi.Streaming.Models
       return layer;
     }
 
-    internal List<byte[]> GetCurrentState(bool forceUpdate = false)
+    internal static List<byte[]> GetCurrentStateAsByteArray(IEnumerable<IEnumerable<StreamingLight>> chunks)
     {
-      //All transitions should update their state
-      //Use extra ToList to prevent exceptions about modified collections
-      var transitions = this.Layers.SelectMany(x => x.SelectMany(z => z.Transitions).ToList()).ToList();
-      transitions.Where(t => t?.IsStarted ?? false)
-                            .ToList()
-                            .Distinct()
-                            .ToList()
-                            .ForEach(x => x?.UpdateCurrentState());
-
-      this.Layers.ForEach(x => x.ProcessTransitions());
-
-      //Calculate state based on all layers
-      this.ForEach(x => x.SetStateFor(x, this.Layers));
-
-
-      List<byte[]> result = new List<byte[]>();
-
-      //A streaming message contains max 10 light updates
-      var chunks = this.Where(x => x.State.IsDirty || forceUpdate).ChunkBy(IsForSimulator ? 100 : 10);
-
       //Nothing to update
       if (!chunks.Any())
         return null;
+
+      List<byte[]> result = new List<byte[]>();
 
       foreach (var chunk in chunks)
       {
@@ -104,7 +86,7 @@ namespace Q42.HueApi.Streaming.Models
     };
 
         //Add protocol in front of message
-        resultLightState = _protocolName.Concat(baseStateMsg).ToList();
+        resultLightState = protocolName.Concat(baseStateMsg).ToList();
 
         //Add state of lights to message
         foreach (var light in chunk)
@@ -118,6 +100,26 @@ namespace Q42.HueApi.Streaming.Models
       return result;
     }
 
-   
+    internal IEnumerable<IEnumerable<StreamingLight>> GetChunksForUpdate(bool forceUpdate)
+    {
+      //All transitions should update their state
+      //Use extra ToList to prevent exceptions about modified collections
+      var transitions = this.Layers.SelectMany(x => x.SelectMany(z => z.Transitions).ToList()).ToList();
+      transitions.Where(t => t?.IsStarted ?? false)
+                            .ToList()
+                            .Distinct()
+                            .ToList()
+                            .ForEach(x => x?.UpdateCurrentState());
+
+      this.Layers.ForEach(x => x.ProcessTransitions());
+
+      //Calculate state based on all layers
+      this.ForEach(x => x.SetStateFor(x, this.Layers));
+
+      //A streaming message contains max 10 light updates
+      var chunks = this.Where(x => x.State.IsDirty || forceUpdate).ChunkBy(IsForSimulator ? 100 : 10);
+      return chunks;
+    }
+
   }
 }

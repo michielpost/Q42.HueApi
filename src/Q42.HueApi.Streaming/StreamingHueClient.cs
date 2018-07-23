@@ -99,10 +99,10 @@ namespace Q42.HueApi.Streaming
         int missedMessages = 0;
         while (!cancellationToken.IsCancellationRequested)
         {
-          var msg = entGroup.GetCurrentState(forceUpdate: !onlySendDirtyStates);
-          if (msg != null)
+          IEnumerable<IEnumerable<StreamingLight>> chunks = entGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
+          if (chunks != null)
           {
-            Send(msg);
+            Send(chunks);
           }
           else
           {
@@ -110,7 +110,8 @@ namespace Q42.HueApi.Streaming
             if (missedMessages > frequency)
             {
               //If there are no updates, still send updates to keep connection open
-              Send(entGroup.GetCurrentState(forceUpdate: true));
+              chunks = entGroup.GetChunksForUpdate(forceUpdate: true);
+              Send(chunks);
               missedMessages = 0;
             }
           }
@@ -122,13 +123,19 @@ namespace Q42.HueApi.Streaming
 
     }
 
-  
+    protected void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)
+    {
+      var msg = StreamingGroup.GetCurrentStateAsByteArray(chunks);
+      Send(msg);
+    }
+
+
 
     /// <summary>
     /// Send a list of states to the Hue Bridge
     /// </summary>
     /// <param name="states"></param>
-    public void Send(List<byte[]> states)
+    protected void Send(List<byte[]> states)
     {
       foreach (var state in states)
       {
@@ -141,7 +148,7 @@ namespace Q42.HueApi.Streaming
     /// </summary>
     /// <param name="hex"></param>
     /// <returns></returns>
-    public static byte[] FromHex(string hex)
+    protected static byte[] FromHex(string hex)
     {
       hex = hex.Replace("-", "");
       byte[] raw = new byte[hex.Length / 2];
@@ -159,7 +166,7 @@ namespace Q42.HueApi.Streaming
     /// <param name="offset"></param>
     /// <param name="count"></param>
     /// <returns></returns>
-    public int Send(byte[] buffer, int offset, int count)
+    protected int Send(byte[] buffer, int offset, int count)
     {
       if (!_simulator)
         _dtlsTransport.Send(buffer, offset, count);
