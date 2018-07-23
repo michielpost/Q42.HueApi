@@ -123,19 +123,17 @@ namespace Q42.HueApi.Streaming
 
     }
 
-    protected void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)
+    protected virtual void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)
     {
       var msg = StreamingGroup.GetCurrentStateAsByteArray(chunks);
       Send(msg);
     }
 
-
-
     /// <summary>
     /// Send a list of states to the Hue Bridge
     /// </summary>
     /// <param name="states"></param>
-    protected void Send(List<byte[]> states)
+    protected virtual void Send(List<byte[]> states)
     {
       foreach (var state in states)
       {
@@ -148,7 +146,7 @@ namespace Q42.HueApi.Streaming
     /// </summary>
     /// <param name="hex"></param>
     /// <returns></returns>
-    protected static byte[] FromHex(string hex)
+    private static byte[] FromHex(string hex)
     {
       hex = hex.Replace("-", "");
       byte[] raw = new byte[hex.Length / 2];
@@ -166,7 +164,7 @@ namespace Q42.HueApi.Streaming
     /// <param name="offset"></param>
     /// <param name="count"></param>
     /// <returns></returns>
-    protected int Send(byte[] buffer, int offset, int count)
+    protected virtual int Send(byte[] buffer, int offset, int count)
     {
       if (!_simulator)
         _dtlsTransport.Send(buffer, offset, count);
@@ -175,8 +173,5 @@ namespace Q42.HueApi.Streaming
 
       return count;
     }
-
-
-
   }
 }
