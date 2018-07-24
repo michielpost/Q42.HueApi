@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ namespace Q42.HueApi.ColorConverters.HSB
 	/// <summary>
 	/// Based on code contributed by https://github.com/CharlyTheKid
 	/// </summary>
-	internal class HSB
+	public class HSB
 	{
 		public int Hue { get; set; }
 		public int Saturation { get; set; }

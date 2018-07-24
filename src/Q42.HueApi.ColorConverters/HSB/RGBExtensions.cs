@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +9,9 @@ namespace Q42.HueApi.ColorConverters.HSB
 	/// <summary>
 	/// Based on code contributed by https://github.com/CharlyTheKid
 	/// </summary>
-	internal static class RGBExtensions
+	public static class RGBExtensions
 	{
-		internal static HSB GetHSB(this RGBColor rgb)
+		public static HSB GetHSB(this RGBColor rgb)
 		{
 			var hsb = new HSB
 			{
@@ -22,7 +22,7 @@ namespace Q42.HueApi.ColorConverters.HSB
 			return hsb;
 		}
 
-		internal static double GetHue(this RGBColor rgb)
+		public static double GetHue(this RGBColor rgb)
 		{
 			var R = rgb.R;
 			var G = rgb.G;
@@ -53,7 +53,7 @@ namespace Q42.HueApi.ColorConverters.HSB
 			return hue * 182.04f;
 		}
 
-		internal static double GetSaturation(this RGBColor rgb)
+    public static double GetSaturation(this RGBColor rgb)
 		{
 			var R = rgb.R;
 			var G = rgb.G;
@@ -67,7 +67,7 @@ namespace Q42.HueApi.ColorConverters.HSB
 			return ((max.AlmostEquals(0f)) ? 0f : 1f - (1f * min / max)) * 255;
 		}
 
-		internal static double GetBrightness(this RGBColor rgb)
+    public static double GetBrightness(this RGBColor rgb)
 		{
 			var R = rgb.R;
 			var G = rgb.G;
