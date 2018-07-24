@@ -19,7 +19,7 @@ namespace Q42.HueApi.Streaming.Effects
       base.Start();
 
       var state = new Models.StreamingState();
-      state.SetBrightnes(1);
+      state.SetBrightness(1);
       state.SetRGBColor(new ColorConverters.RGBColor("FF0000"));
 
       this.State = state;

@@ -26,7 +26,7 @@ namespace Q42.HueApi.Streaming.Models
       IsDirty = true;
     }
 
-    public void SetBrightnes(double brightness)
+    public void SetBrightness(double brightness)
     {
       brightness = brightness < 0 ? 0 : brightness;
       brightness = brightness > 1 ? 1 : brightness;

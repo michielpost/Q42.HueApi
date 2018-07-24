@@ -21,7 +21,7 @@ namespace Q42.HueApi.Streaming.Effects
       CurrentAngle = 90;
 
       var state = new Models.StreamingState();
-      state.SetBrightnes(1);
+      state.SetBrightness(1);
       state.SetRGBColor(new ColorConverters.RGBColor("0000FF"));
 
       this.State = state;

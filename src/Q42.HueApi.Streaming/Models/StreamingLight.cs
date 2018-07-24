@@ -43,7 +43,7 @@ namespace Q42.HueApi.Streaming.Models
       return result;
     }
 
-    internal void SetStateFor(StreamingLight light, List<EntertainmentLayer> layers)
+    internal void SetStateFor(StreamingLight light, List<EntertainmentLayer> layers, double? brightnessFilter)
     {
       //Base state does not check IsDirty flag
       var baseState = layers.Where(x => x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id).Select(x => x.State).LastOrDefault();
@@ -52,11 +52,18 @@ namespace Q42.HueApi.Streaming.Models
       var currentState = lightState ?? baseState;
       if(currentState != null)
       {
+        var finalBri = currentState.Brightness;
+        if(brightnessFilter.HasValue && brightnessFilter > 0)
+        {
+          //Filter brightness
+          finalBri -= finalBri * brightnessFilter.Value;
+        }
+
         if(light.State.RGBColor != currentState.RGBColor)
           light.State.SetRGBColor(currentState.RGBColor);
 
-        if(light.State.Brightness != currentState.Brightness)
-          light.State.SetBrightnes(currentState.Brightness);
+        if(light.State.Brightness != finalBri)
+          light.State.SetBrightness(finalBri);
       }
     }
   }

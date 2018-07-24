@@ -18,7 +18,10 @@ namespace Q42.HueApi.Streaming.Models
     /// </summary>
     public bool IsForSimulator { get; set; }
 
-    
+    /// <summary>
+    /// 0 does not filter, 1 filters all brightness
+    /// </summary>
+    public double? BrightnessFilter { get; set; }
 
     public List<EntertainmentLayer> Layers { get; set; } = new List<EntertainmentLayer>();
 
@@ -114,7 +117,7 @@ namespace Q42.HueApi.Streaming.Models
       this.Layers.ForEach(x => x.ProcessTransitions());
 
       //Calculate state based on all layers
-      this.ForEach(x => x.SetStateFor(x, this.Layers));
+      this.ForEach(x => x.SetStateFor(x, this.Layers, this.BrightnessFilter));
 
       //A streaming message contains max 10 light updates
       var chunks = this.Where(x => x.State.IsDirty || forceUpdate).ChunkBy(IsForSimulator ? 100 : 10);

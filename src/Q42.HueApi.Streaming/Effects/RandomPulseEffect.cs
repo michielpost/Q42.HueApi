@@ -31,7 +31,7 @@ namespace Q42.HueApi.Streaming.Effects
       base.Start();
 
       var state = new Models.EntertainmentState();
-      state.SetBrightnes(1);
+      state.SetBrightness(1);
       state.SetRGBColor(GetRandomColor());
 
       this.State = state;

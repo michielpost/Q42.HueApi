@@ -76,7 +76,7 @@ namespace Q42.HueApi.Streaming.Models
       }
 
       TransitionState.SetRGBColor(startRgb);
-      TransitionState.SetBrightnes(startBrightness);
+      TransitionState.SetBrightness(startBrightness);
       TransitionState.IsDirty = false;
 
       sw.Start();
@@ -115,7 +115,7 @@ namespace Q42.HueApi.Streaming.Models
 
       if (DeltaBri.HasValue)
       {
-        TransitionState.SetBrightnes(StartBri + (DeltaBri.Value * progress));
+        TransitionState.SetBrightness(StartBri + (DeltaBri.Value * progress));
       }
     }
    
@@ -124,7 +124,7 @@ namespace Q42.HueApi.Streaming.Models
       if (rgb.HasValue)
         TransitionState.SetRGBColor(rgb.Value);
       if (brightness.HasValue)
-        TransitionState.SetBrightnes(brightness.Value);
+        TransitionState.SetBrightness(brightness.Value);
     }
   }
 }

@@ -103,7 +103,7 @@ namespace Q42.HueApi.Streaming.Models
       {
         foreach (var finished in finishedStates)
         {
-          this.State.SetBrightnes(finished.TransitionState.Brightness);
+          this.State.SetBrightness(finished.TransitionState.Brightness);
           this.State.SetRGBColor(finished.TransitionState.RGBColor);
 
           //Transitions.Remove(finished);
@@ -118,7 +118,7 @@ namespace Q42.HueApi.Streaming.Models
         var activeTransition = Transitions.Where(x => x?.TransitionState.IsDirty ?? false).ToList().LastOrDefault();
         if (activeTransition != null)
         {
-          this.State.SetBrightnes(activeTransition.TransitionState.Brightness);
+          this.State.SetBrightness(activeTransition.TransitionState.Brightness);
           this.State.SetRGBColor(activeTransition.TransitionState.RGBColor);
         }
       }
