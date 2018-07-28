@@ -19,8 +19,8 @@ LocalHueClient.RegisterAsync("ipAddress", "applicationName", "deviceName", true)
 StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
 //Get the entertainment group
-var all = await client.LocalHueClient.GetBridgeAsync();
-var group = all.Groups.Where(x => x.Type == HueApi.Models.Groups.GroupType.Entertainment).FirstOrDefault();
+var all = await client.LocalHueClient.GetEntertainmentGroups();
+var group = all.FirstOrDefault();
 
 //Create a streaming group
 var entGroup = new StreamingGroup(group.Locations);
@@ -32,16 +32,26 @@ await client.Connect(group.Id);
 client.AutoUpdate(entGroup, 50);
 ```
 
-When you're connected and auto-updating, it's possible to change the color and brightness or the lights in a StreamingGroup
+### Layers
+When you're connected and auto-updating, it's possible to change the color and brightness or the lights in a StreamingGroup. We do this by first creating a layer.
+There are two types of layers. Base layers and effect layers. You should always have 1 base layer which you can use for all operations. If you want to run a new effect but keep the current effect running on the base layer, you can start the second effect on a new effect layer.
+Base and effect layers are the same, the only difference is that when the brightness of a light on an effect layer is 0, the effect layer will be ignored and the state of the light on the base layer will be used. 
+```cs
+//Create new base layer
+var entLayer = stream.GetNewLayer(isBaseLayer: true);
+```
+
+### CancellationTokens
+CancellationTokens are used on almost every method call. This makes sure long running background tasks can be cancelled if needed.
 
 ### Basics
 ```cs
 //Change brightness and color
-entGroup.SetBrightness(1);
-entGroup.SetColor(new RGBColor("FF0000"));
+entLayer.SetBrightness(CancellationToken.None, 1);
+entLayer.SetColor(CancellationToken.None, new RGBColor("FF0000"));
 
 //Change them both at the same time with a transition time of 1 second
-entGroup.SetState(new RGBColor("FF0000"), 1, TimeSpan.FromSeconds(1));
+entLayer.SetState(CancellationToken.None, new RGBColor("FF0000"), 1, TimeSpan.FromSeconds(1));
 ```
 
 ### Effects
@@ -49,7 +59,7 @@ Philips Hue defines different types of effects. Read about them here:
 https://developers.meethue.com/documentation/hue-edk-effect-creation
 
 #### Area Effects
-Supported by extension methods on the StreamingGroup
+Supported by extension methods on the EntertainmentLayer
 ```
 GetLeft()
 GetRight()
@@ -60,7 +70,7 @@ GetCenter() //X > -0.1 && X < 0.1
 
 Example usage:
 ```cs
-entGroup.GetLeft().GetBack().SetBrightness(0);
+entLayer.GetLeft().GetBack().SetBrightness(CancellationToken.None, 0);
 ```
 
 #### LightIteratorEffect
@@ -75,13 +85,16 @@ There IteratorEffect supports different `IteratorEffectMode`s:
 - All: apply the effect to all lights in sync (recommanded over AllIndividual)
 - AllIndividual: apply the effect to all lights and give each light a custom transition. Only needed when lights have different starting colors/brightness.
 
+An IteratorEffect can run on a list of EntertainmentLights, or a two dimensional list of EntertainmentLights for more advanced scenario's.
+Check the sample app for some usage.
+
 Example to set a random color:
 ```cs
-return entGroup.IteratorEffect(async (current, t) => {
+entLayer.IteratorEffect(CancellationToken.None, async (current, cancel, t) => {
   var r = new Random();
   var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
-  current.SetState(color, 1, transitionTime.Value.Value);
-}, mode, waitTime, duration, cancellationToken);
+  current.SetState(cancel, color, 1, TimeSpan.FromMilliseconds(500));
+}, IteratorEffectMode.Cycle, waitTime: TimeSpan.FromMilliseconds(500), duration: TimeSpan.FromSeconds(30));
 ```
 
 You can combine the Area and LightIteratorEffect:
@@ -103,7 +116,7 @@ A few example effects are included:
 Make sure to enable this optional feature on the StreamingHueClient:
 ```cs
  //Optional: calculated effects that are placed in the room
-client.AutoCalculateEffectUpdate(entGroup);
+ entLayer.AutoCalculateEffectUpdate(new CancellationToken());
 ```
 
 You can then place effects on the XY grid. See Q42.HueApi.Streaming.Sample for a moving RedLight example
@@ -111,7 +124,7 @@ You can then place effects on the XY grid. See Q42.HueApi.Streaming.Sample for a
 var redLightEffect = new RedLightEffect();
 redLightEffect.Radius = 0.5;
 redLightEffect.Y = -1;
-entGroup.PlaceEffect(redLightEffect);
+entLayer.PlaceEffect(redLightEffect);
 redLightEffect.Start();
 ```
 
