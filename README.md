@@ -119,6 +119,13 @@ Contributions are welcome. Fork this repository and send a pull request if you h
 ## Apps that use Q42.HueAPI
 Are you using Q42.HueAPI? Get your app listed here! Edit this page and send a pull request.
 
+Windows
+* [My Hue Light Switch](http://apps.microsoft.com/windows/app/my-hue-light-switch/1193bff8-dec8-4997-82e3-a0f9aedacbb2)
+* [DarkLights](http://apps.microsoft.com/windows/app/09fb8d8b-cefc-4215-b3b2-a87a483d6690)
+* [Huetro for Hue](http://apps.microsoft.com/windows/app/33553060-d57c-467d-8348-5e88071360c5)
+* [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
+* [CastleOS](http://www.CastleOS.com/)
+
 Windows Phone
 * [My Hue Light Switch](http://www.windowsphone.com/s?appid=669c9e16-b417-43c6-b0cc-724e8dfd5866)
 * [iControlHue](http://www.windowsphone.com/s?appid=f1b2bcb5-82e4-4a04-9894-c9e08b85a55d)
@@ -126,18 +133,12 @@ Windows Phone
 * [Huetro for Hue](http://www.windowsphone.com/s?appid=f14faa22-179d-42e4-99ca-88b44d10449b)
 * [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
 
-Windows
-* [My Hue Light Switch](http://apps.microsoft.com/windows/app/my-hue-light-switch/1193bff8-dec8-4997-82e3-a0f9aedacbb2)
-* [DarkLights](http://apps.microsoft.com/windows/app/09fb8d8b-cefc-4215-b3b2-a87a483d6690)
-* [Huetro for Hue](http://apps.microsoft.com/windows/app/33553060-d57c-467d-8348-5e88071360c5)
-* [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
-
 Xbox One
 * [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
-
-Windows Desktop
-* [CastleOS](http://www.CastleOS.com/)
 
 Command Line Tools - Windows, Linux (x64 & ARM) and Windows 10 IOT (ARM)
 * [Command Line Tools](https://github.com/DigitalNut/HueCmdNetCore)  -- Control your Hue from your command line
 * [C# Script Command Line Tool](https://github.com/DigitalNut/HueScript)  -- Use C# as your scripting language
+
+Other
+* [Hue Light DJ](https://github.com/michielpost/HueLightDJ)
