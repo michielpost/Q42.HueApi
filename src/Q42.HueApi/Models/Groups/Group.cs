@@ -106,7 +106,7 @@ namespace Q42.HueApi.Models.Groups
       var lengthX = this.X - x;
       var lengthY = this.Y - y;
 
-      return Math.Atan2(lengthY, lengthX) * (180 / Math.PI);
+      return (Math.Atan2(lengthY, lengthX) * (180 / Math.PI)) + 180;
     }
 
 
