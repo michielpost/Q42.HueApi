@@ -63,24 +63,20 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
       return lightLocation.Angle(this.X, this.Y);
     }
 
-    public Task Rotate(CancellationToken cancellationToken, Ref<int?> stepSize = null, Ref<TimeSpan?> waitTime = null)
+    public Task Rotate(CancellationToken cancellationToken, Func<int> stepSize = null, Func<TimeSpan> waitTime = null)
     {
       if (stepSize == null)
-        stepSize = 20;
-      else if (!stepSize.Value.HasValue)
-        stepSize.Value = 20;
+        stepSize = () => 20;
 
       if (waitTime == null)
-        waitTime = TimeSpan.FromMilliseconds(50);
-      else if(!waitTime.Value.HasValue)
-        waitTime.Value = TimeSpan.FromMilliseconds(50);
+        waitTime = () => TimeSpan.FromMilliseconds(50);
 
       return Task.Run(async () =>
       {
         while (!cancellationToken.IsCancellationRequested)
         {
-          CurrentAngle += stepSize.Value.Value;
-          await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
+          CurrentAngle += stepSize();
+          await Task.Delay(waitTime(), cancellationToken).ConfigureAwait(false);
           if (CurrentAngle >= 360)
             CurrentAngle = 0;
           if (CurrentAngle < 0)

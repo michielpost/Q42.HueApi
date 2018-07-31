@@ -13,15 +13,15 @@ namespace Q42.HueApi.Streaming.Effects
   {
     private CancellationTokenSource _cts;
     private bool _fadeToZero;
-    private Ref<TimeSpan?> _waitTime;
+    private Func<TimeSpan> _waitTime;
 
-    public RandomPulseEffect(bool fadeToZero = true, Ref<TimeSpan?> waitTime = null)
+    public RandomPulseEffect(bool fadeToZero = true, Func<TimeSpan> waitTime = null)
     {
       _fadeToZero = fadeToZero;
       _waitTime = waitTime;
 
       if (_waitTime == null)
-        _waitTime = TimeSpan.FromMilliseconds(50);
+        _waitTime = () => TimeSpan.FromMilliseconds(50);
 
       Radius = 0;
     }
@@ -44,7 +44,7 @@ namespace Q42.HueApi.Streaming.Effects
         while (true && !_cts.IsCancellationRequested)
         {
           Radius += step;
-          await Task.Delay(_waitTime.Value.Value, _cts.Token).ConfigureAwait(false);
+          await Task.Delay(_waitTime(), _cts.Token).ConfigureAwait(false);
           if (Radius >= 2)
           {
             if (_fadeToZero)

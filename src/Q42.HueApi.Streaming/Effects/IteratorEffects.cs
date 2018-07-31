@@ -17,41 +17,41 @@ namespace Q42.HueApi.Streaming.Effects
       return group.Select(x => new List<EntertainmentLight> { x });
     }
 
-    public static Task SetColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> transitionTime = null, TimeSpan? duration = null)
+    public static Task SetColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> transitionTime = null, TimeSpan? duration = null)
     {
       var list = new List<RGBColor>() { color };
       return SetRandomColorFromList(group, cancellationToken, list, mode, secondaryIteratorMode, waitTime, transitionTime, duration);
     }
 
 
-    public static Task SetRandomColorFromList(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, List<RGBColor> colors, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> transitionTime = null, TimeSpan? duration = null)
+    public static Task SetRandomColorFromList(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, List<RGBColor> colors, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> transitionTime = null, TimeSpan? duration = null)
     {
       if (waitTime == null)
-        waitTime = TimeSpan.FromMilliseconds(50);
+        waitTime = () => TimeSpan.FromMilliseconds(50);
       if (transitionTime == null)
-        transitionTime = TimeSpan.FromMilliseconds(0);
+        transitionTime = () => TimeSpan.FromMilliseconds(0);
 
       return group.IteratorEffect(cancellationToken, async(current, ct, t) =>
       {
         var color = colors.OrderBy(x => new Guid()).First();
-        current.SetState(ct, color, 1, transitionTime.Value.Value);
+        current.SetState(ct, color, 1, transitionTime());
       }, mode, secondaryIteratorMode, waitTime, duration);
     }
 
 
-    public static Task SetRandomColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> transitionTime = null, TimeSpan? duration = null)
+    public static Task SetRandomColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> transitionTime = null, TimeSpan? duration = null)
     {
       if (waitTime == null)
-        waitTime = TimeSpan.FromMilliseconds(50);
+        waitTime = () => TimeSpan.FromMilliseconds(50);
       if (transitionTime == null)
-        transitionTime = TimeSpan.FromMilliseconds(0);
+        transitionTime = () => TimeSpan.FromMilliseconds(0);
 
       return group.IteratorEffect(cancellationToken, async(current, ct, t) =>
       {
         var r = new Random();
         var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
 
-        current.SetState(ct, color, 1, transitionTime.Value.Value);
+        current.SetState(ct, color, 1, transitionTime());
       }, mode, secondaryIteratorMode, waitTime, duration);
     }
 
@@ -71,7 +71,7 @@ namespace Q42.HueApi.Streaming.Effects
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task FlashQuick(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, TimeSpan? duration = null)
+    public static Task FlashQuick(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> onTime = null, Func<TimeSpan> transitionTimeOn = null, Func<TimeSpan> transitionTimeOff = null, TimeSpan? duration = null)
     {
       if (!color.HasValue)
       {
@@ -84,25 +84,23 @@ namespace Q42.HueApi.Streaming.Effects
       else
       {
         if (waitTime == null)
-          waitTime = TimeSpan.FromMilliseconds(50);
+          waitTime = () => TimeSpan.FromMilliseconds(50);
         if (onTime == null)
           onTime = waitTime;
         if (transitionTimeOn == null)
-          transitionTimeOn = TimeSpan.FromMilliseconds(0);
+          transitionTimeOn = () => TimeSpan.FromMilliseconds(0);
         if (transitionTimeOff == null)
-          transitionTimeOff = TimeSpan.FromMilliseconds(0);
+          transitionTimeOff = () => TimeSpan.FromMilliseconds(0);
 
-        Ref<TimeSpan?> actualWaitTime = onTime.Value + transitionTimeOn.Value;
+        Func<TimeSpan> actualWaitTime = () => onTime() + transitionTimeOn();
 
         return group.IteratorEffect(cancellationToken, async(current, ct, t) =>
         {
-          actualWaitTime.Value = onTime.Value.Value + transitionTimeOn.Value.Value;
-
-          current.SetState(ct, color, 1, transitionTimeOn.Value.Value);
+          current.SetState(ct, color, 1, transitionTimeOn());
           Task.Run(async () =>
           {
-            await Task.Delay(onTime.Value.Value + transitionTimeOn.Value.Value, ct).ConfigureAwait(false);
-            current.SetBrightness(ct, 0, transitionTimeOff.Value.Value);
+            await Task.Delay(onTime() + transitionTimeOn(), ct).ConfigureAwait(false);
+            current.SetBrightness(ct, 0, transitionTimeOff());
           }, ct);
         }, mode, secondaryIteratorMode, actualWaitTime, duration);
 
@@ -110,7 +108,7 @@ namespace Q42.HueApi.Streaming.Effects
     }
 
 
-    public static Task Flash(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Ref<TimeSpan?> waitTime = null, Ref<TimeSpan?> onTime = null, Ref<TimeSpan?> transitionTimeOn = null, Ref<TimeSpan?> transitionTimeOff = null, bool waitTillFinished = true, TimeSpan? duration = null)
+    public static Task Flash(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> onTime = null, Func<TimeSpan> transitionTimeOn = null, Func<TimeSpan> transitionTimeOff = null, bool waitTillFinished = true, TimeSpan? duration = null)
     {
       if (!color.HasValue)
       {
@@ -119,30 +117,30 @@ namespace Q42.HueApi.Streaming.Effects
       }
 
       if (waitTime == null)
-        waitTime = TimeSpan.FromMilliseconds(50);
+        waitTime = () => TimeSpan.FromMilliseconds(50);
       if (onTime == null)
         onTime = waitTime;
       if (transitionTimeOn == null)
-        transitionTimeOn = TimeSpan.FromMilliseconds(0);
+        transitionTimeOn = () => TimeSpan.FromMilliseconds(0);
       if (transitionTimeOff == null)
-        transitionTimeOff = TimeSpan.FromMilliseconds(0);
+        transitionTimeOff = () => TimeSpan.FromMilliseconds(0);
 
-      Ref<TimeSpan?> actualWaitTime = waitTime.Value + onTime.Value + transitionTimeOn.Value + transitionTimeOff.Value;
+      Func<TimeSpan> actualWaitTime = () => waitTime() + onTime() + transitionTimeOn() + transitionTimeOff();
       if (!waitTillFinished)
-        actualWaitTime = waitTime.Value;
+        actualWaitTime = waitTime;
 
       return group.IteratorEffect(cancellationToken, async(current, ct, t) =>
       {
         if (!waitTillFinished)
-          actualWaitTime.Value = waitTime.Value;
+          actualWaitTime = waitTime;
         else
-          actualWaitTime.Value = waitTime.Value.Value + onTime.Value.Value + transitionTimeOn.Value.Value + transitionTimeOff.Value.Value;
+          actualWaitTime = () => waitTime() + onTime() + transitionTimeOn() + transitionTimeOff();
 
-        current.SetState(ct, color, 1, transitionTimeOn.Value.Value);
+        current.SetState(ct, color, 1, transitionTimeOn());
         Task.Run(async () =>
         {
-          await Task.Delay(onTime.Value.Value + transitionTimeOn.Value.Value, ct).ConfigureAwait(false);
-          current.SetBrightness(ct, 0, transitionTimeOff.Value.Value);
+          await Task.Delay(onTime() + transitionTimeOn(), ct).ConfigureAwait(false);
+          current.SetBrightness(ct, 0, transitionTimeOff());
         }, ct);
       }, mode, secondaryIteratorMode, actualWaitTime, duration);
     }
@@ -155,11 +153,11 @@ namespace Q42.HueApi.Streaming.Effects
         current.SetState(ct, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromMilliseconds(0));
         Task.Run(async () =>
         {
-          await Task.Delay(t.Value, ct).ConfigureAwait(false);
+          await Task.Delay(t, ct).ConfigureAwait(false);
           current.SetBrightness(ct, 0, TimeSpan.FromMilliseconds(750));
         }, ct);
         return Task.CompletedTask;
-      }, IteratorEffectMode.Bounce, IteratorEffectMode.All, TimeSpan.FromMilliseconds(225), duration);
+      }, IteratorEffectMode.Bounce, IteratorEffectMode.All, () => TimeSpan.FromMilliseconds(225), duration);
     }
 
     public static async Task Christmas(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken)
@@ -183,7 +181,7 @@ namespace Q42.HueApi.Streaming.Effects
           current.SetState(ct, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), 1, TimeSpan.FromSeconds(0));
 
         startGreen = !startGreen;
-      }, IteratorEffectMode.Single, IteratorEffectMode.All, TimeSpan.FromSeconds(0));
+      }, IteratorEffectMode.Single, IteratorEffectMode.All, () => TimeSpan.FromSeconds(0));
     }
   }
 }

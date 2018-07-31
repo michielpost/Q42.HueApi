@@ -80,50 +80,50 @@ namespace Q42.HueApi.Streaming.Sample
       var quarter = new[] { baseEntLayer.GetLeft().GetFront(), baseEntLayer.GetLeft().GetBack(), baseEntLayer.GetRight().GetBack(), baseEntLayer.GetRight().GetFront() }.ToList();
 
       Console.WriteLine("Random color All / All");
-      quarter.SetRandomColor(cst.Token, IteratorEffectMode.All, IteratorEffectMode.All, waitTime: TimeSpan.FromMilliseconds(500));
+      quarter.SetRandomColor(cst.Token, IteratorEffectMode.All, IteratorEffectMode.All, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
 
       Console.WriteLine("Flash on lights Cycle / Random");
-      quarter.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, IteratorEffectMode.Random, waitTime: TimeSpan.FromMilliseconds(50));
+      quarter.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, IteratorEffectMode.Random, waitTime: () => TimeSpan.FromMilliseconds(50));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("SetColor white Single / Single");
-      quarter.SetColor(cst.Token, new RGBColor("FFFFFF"), IteratorEffectMode.Single, IteratorEffectMode.Single, waitTime: TimeSpan.FromMilliseconds(200));
+      quarter.SetColor(cst.Token, new RGBColor("FFFFFF"), IteratorEffectMode.Single, IteratorEffectMode.Single, waitTime: () => TimeSpan.FromMilliseconds(200));
       cst = WaitCancelAndNext(cst);
 
 
       Console.WriteLine("Flash on lights Cycle / All");
-      quarter.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, IteratorEffectMode.All, waitTime: TimeSpan.FromMilliseconds(50));
+      quarter.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, IteratorEffectMode.All, waitTime: () => TimeSpan.FromMilliseconds(50));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Flash on lights Cycle / Single");
-      quarter.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, IteratorEffectMode.Single, waitTime: TimeSpan.FromMilliseconds(50));
+      quarter.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, IteratorEffectMode.Single, waitTime: () => TimeSpan.FromMilliseconds(50));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Random color Cycle / All");
-      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.All, waitTime: TimeSpan.FromMilliseconds(500));
+      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.All, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Random color Cycle / AllIndividual");
-      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.AllIndividual, waitTime: TimeSpan.FromMilliseconds(500));
+      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.AllIndividual, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Random color Cycle / Single");
-      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.Single, waitTime: TimeSpan.FromMilliseconds(500));
+      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.Single, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Random color Cycle / Random");
-      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.Random, waitTime: TimeSpan.FromMilliseconds(500));
+      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.Random, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Random color Cycle / Bounce");
-      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.Bounce, waitTime: TimeSpan.FromMilliseconds(500));
+      quarter.SetRandomColor(cst.Token, IteratorEffectMode.Cycle, IteratorEffectMode.Bounce, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
 
       Console.WriteLine("Random color on all lights");
-      baseEntLayer.To2DGroup().SetRandomColor(cst.Token, IteratorEffectMode.All, waitTime: TimeSpan.FromMilliseconds(500));
+      baseEntLayer.To2DGroup().SetRandomColor(cst.Token, IteratorEffectMode.All, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
       //Uncomment for demo using a secondary layer
@@ -150,12 +150,12 @@ namespace Q42.HueApi.Streaming.Sample
 
       //Random color from center
       Console.WriteLine("Fill white color from center");
-      await orderedByDistance.SetColor(cst.Token, new RGBColor("FFFFFF"), IteratorEffectMode.Single, waitTime: TimeSpan.FromMilliseconds(50));
+      await orderedByDistance.SetColor(cst.Token, new RGBColor("FFFFFF"), IteratorEffectMode.Single, waitTime: () => TimeSpan.FromMilliseconds(50));
       cst = WaitCancelAndNext(cst);
 
       //Random color from center
       Console.WriteLine("Fill red color order by angle from center");
-      await orderedByAngle.SetColor(cst.Token, new RGBColor("FF0000"), IteratorEffectMode.Single, waitTime: TimeSpan.FromMilliseconds(50));
+      await orderedByAngle.SetColor(cst.Token, new RGBColor("FF0000"), IteratorEffectMode.Single, waitTime: () => TimeSpan.FromMilliseconds(50));
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("A pulse of random color is placed on an XY grid, matching your entertainment setup");
@@ -176,12 +176,12 @@ namespace Q42.HueApi.Streaming.Sample
 
 
       Console.WriteLine("Different random colors on all lights");
-      baseEntLayer.To2DGroup().SetRandomColor(cst.Token, IteratorEffectMode.AllIndividual, waitTime: TimeSpan.FromMilliseconds(500));
+      baseEntLayer.To2DGroup().SetRandomColor(cst.Token, IteratorEffectMode.AllIndividual, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
 
 
       Console.WriteLine("Trailing light effect with transition times");
-      allLightsOrdered.Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.Cycle, waitTime: TimeSpan.FromMilliseconds(500), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000), waitTillFinished: false);
+      allLightsOrdered.Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.Cycle, waitTime: () => TimeSpan.FromMilliseconds(500), transitionTimeOn: () => TimeSpan.FromMilliseconds(1000), transitionTimeOff: () => TimeSpan.FromMilliseconds(1000), waitTillFinished: false);
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Knight rider (works best with 6+ lights)");
@@ -190,41 +190,41 @@ namespace Q42.HueApi.Streaming.Sample
 
 
 
-      Ref<TimeSpan?> waitTime = TimeSpan.FromMilliseconds(750);
+      Ref<TimeSpan> waitTime = TimeSpan.FromMilliseconds(750);
 
       Console.WriteLine("Flash lights (750ms), press enter to decrease by 200 ms");
-      allLightsOrdered.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, waitTime: waitTime);
+      allLightsOrdered.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Cycle, waitTime: () => waitTime);
       Console.ReadLine();
 
       waitTime.Value -= TimeSpan.FromMilliseconds(200);
-      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
+      Console.WriteLine($"Flash ({waitTime.Value.TotalMilliseconds})");
       Console.ReadLine();
 
       waitTime.Value -= TimeSpan.FromMilliseconds(200);
-      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
+      Console.WriteLine($"Flash ({waitTime.Value.TotalMilliseconds})");
       Console.ReadLine();
 
       waitTime.Value -= TimeSpan.FromMilliseconds(200);
-      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
+      Console.WriteLine($"Flash ({waitTime.Value.TotalMilliseconds})");
       Console.ReadLine();
 
       waitTime.Value -= TimeSpan.FromMilliseconds(100);
-      Console.WriteLine($"Flash ({waitTime.Value.Value.TotalMilliseconds})");
+      Console.WriteLine($"Flash ({waitTime.Value.TotalMilliseconds})");
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Flash on random lights");
-      allLightsOrdered.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Random, waitTime: waitTime);
+      allLightsOrdered.FlashQuick(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.Random, waitTime: () => waitTime);
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Flash on ALL lights");
       waitTime.Value = TimeSpan.FromMilliseconds(150);
-      allLightsOrdered.Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.All, waitTime: waitTime);
+      allLightsOrdered.Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FFFFFF"), IteratorEffectMode.All, waitTime: () => waitTime);
       cst = WaitCancelAndNext(cst);
 
       Console.WriteLine("Flash effect with transition times");
-      baseEntLayer.GetLeft().To2DGroup().Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000));
+      baseEntLayer.GetLeft().To2DGroup().Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: () => TimeSpan.FromSeconds(1), transitionTimeOn: () => TimeSpan.FromMilliseconds(1000), transitionTimeOff: () => TimeSpan.FromMilliseconds(1000));
       await Task.Delay(2000);
-      baseEntLayer.GetRight().To2DGroup().Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: TimeSpan.FromSeconds(1), transitionTimeOn: TimeSpan.FromMilliseconds(1000), transitionTimeOff: TimeSpan.FromMilliseconds(1000));
+      baseEntLayer.GetRight().To2DGroup().Flash(cst.Token, new Q42.HueApi.ColorConverters.RGBColor("FF0000"), IteratorEffectMode.All, waitTime: () => TimeSpan.FromSeconds(1), transitionTimeOn: () => TimeSpan.FromMilliseconds(1000), transitionTimeOff: () => TimeSpan.FromMilliseconds(1000));
       cst = WaitCancelAndNext(cst);
 
 

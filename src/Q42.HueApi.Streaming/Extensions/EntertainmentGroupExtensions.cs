@@ -49,7 +49,7 @@ namespace Q42.HueApi.Streaming.Extensions
   /// </summary>
   /// <param name="current">Will contain 1 light, only contains multiple lights when IteratorEffectMode.All is used</param>
   /// <param name="timeSpan"></param>
-  public delegate Task IteratorEffectFunc(IEnumerable<EntertainmentLight> current, CancellationToken cancellationToken, TimeSpan? timeSpan = null);
+  public delegate Task IteratorEffectFunc(IEnumerable<EntertainmentLight> current, CancellationToken cancellationToken, TimeSpan timeSpan);
 
   public static class EntertainmentGroupExtensions
   {
@@ -93,10 +93,10 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task IteratorEffect(this IEnumerable<EntertainmentLight> group, CancellationToken cancellationToken, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue)
+    public static async Task IteratorEffect(this IEnumerable<EntertainmentLight> group, CancellationToken cancellationToken, IteratorEffectFunc effectFunction, IteratorEffectMode mode, Func<TimeSpan> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue)
     {
       if (waitTime == null)
-        waitTime = TimeSpan.FromSeconds(1);
+        waitTime = () => TimeSpan.FromSeconds(1);
       if (duration == null)
         duration = TimeSpan.MaxValue;
 
@@ -113,9 +113,9 @@ namespace Q42.HueApi.Streaming.Extensions
         //Apply to whole group if mode is all
         if(mode == IteratorEffectMode.All)
         {
-          effectFunction(group, cancellationToken, waitTime);
+          effectFunction(group, cancellationToken, waitTime());
 
-          await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
+          await Task.Delay(waitTime(), cancellationToken).ConfigureAwait(false);
 
           i++;
           continue;
@@ -130,15 +130,15 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           if (!cancellationToken.IsCancellationRequested)
           {
-            effectFunction(new List<EntertainmentLight>() { light }, cancellationToken, waitTime);
+            effectFunction(new List<EntertainmentLight>() { light }, cancellationToken, waitTime());
 
             if (mode != IteratorEffectMode.AllIndividual)
-              await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
+              await Task.Delay(waitTime(), cancellationToken).ConfigureAwait(false);
           }
         }
 
         if(mode == IteratorEffectMode.AllIndividual)
-          await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
+          await Task.Delay(waitTime(), cancellationToken).ConfigureAwait(false);
 
         keepGoing = mode == IteratorEffectMode.Single ? false : true;
         if (mode == IteratorEffectMode.Bounce)
@@ -158,10 +158,10 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task IteratorEffect(this IEnumerable<IEnumerable<EntertainmentLight>> list, CancellationToken cancellationToken, IteratorEffectFunc groupFunction, IteratorEffectMode mode, IteratorEffectMode secondaryMode, Ref<TimeSpan?> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue)
+    public static async Task IteratorEffect(this IEnumerable<IEnumerable<EntertainmentLight>> list, CancellationToken cancellationToken, IteratorEffectFunc groupFunction, IteratorEffectMode mode, IteratorEffectMode secondaryMode, Func<TimeSpan> waitTime, TimeSpan? duration = null, int maxIterations = int.MaxValue)
     {
       if (waitTime == null)
-        waitTime = TimeSpan.FromSeconds(1);
+        waitTime = () => TimeSpan.FromSeconds(1);
       if (duration == null)
         duration = TimeSpan.MaxValue;
 
@@ -204,7 +204,7 @@ namespace Q42.HueApi.Streaming.Extensions
         {
           var flatGroup = list.SelectMany(x => x);
           if (!cancellationToken.IsCancellationRequested)
-            groupFunction(flatGroup, cancellationToken, waitTime);
+            groupFunction(flatGroup, cancellationToken, waitTime());
 
           //foreach (var group in list)
           //{
@@ -212,7 +212,7 @@ namespace Q42.HueApi.Streaming.Extensions
           //    await groupFunction(group, waitTime);
           //}
 
-          await Task.Delay(waitTime.Value.Value, cancellationToken).ConfigureAwait(false);
+          await Task.Delay(waitTime(), cancellationToken).ConfigureAwait(false);
           i++;
           continue;
         }
