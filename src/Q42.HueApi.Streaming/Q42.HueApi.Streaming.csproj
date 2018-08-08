@@ -12,7 +12,7 @@
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>philips hue lights entertainment</PackageTags>
     <PackageId>Q42.HueApi.Entertainment</PackageId>
-    <Version>1.5.0</Version>
+    <Version>1.5.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
