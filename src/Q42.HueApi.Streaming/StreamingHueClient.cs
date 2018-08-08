@@ -135,9 +135,12 @@ namespace Q42.HueApi.Streaming
     /// <param name="states"></param>
     protected virtual void Send(List<byte[]> states)
     {
-      foreach (var state in states)
+      if (states != null)
       {
-        Send(state, 0, state.Length);
+        foreach (var state in states)
+        {
+          Send(state, 0, state.Length);
+        }
       }
     }
 

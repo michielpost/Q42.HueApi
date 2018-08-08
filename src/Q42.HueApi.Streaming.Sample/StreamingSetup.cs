@@ -16,10 +16,9 @@ namespace Q42.HueApi.Streaming.Sample
       //string entertainmentKey = "AFFD322C34C993C19503D369481869FD";
       //var useSimulator = false;
 
-
-      //string ip = "10.42.39.194";
-      //string key = "tocjq6GmPJ8KX5DyLDKXQreZE6txQVQ5oBqbYDFn";
-      //string entertainmentKey = "DB088F63639524B5A8CDC8AEEAC9C322";
+      //string ip = "10.70.16.29";
+      //string key = "WzWypCKxLFGvmC8xRyaANsSsrbMX7NXitFO6wXru";
+      //string entertainmentKey = "77168F2CCF453508EC6D5A37EC1F4B09";
       //var useSimulator = false;
 
       string ip = "127.0.0.1";
@@ -49,7 +48,7 @@ namespace Q42.HueApi.Streaming.Sample
       await client.Connect(group.Id, simulator: useSimulator);
 
       //Start auto updating this entertainment group
-      client.AutoUpdate(stream, new System.Threading.CancellationToken(), 50);
+      client.AutoUpdate(stream, new System.Threading.CancellationToken(), 50, onlySendDirtyStates: true);
 
       //Optional: Check if streaming is currently active
       var bridgeInfo = await client.LocalHueClient.GetBridgeAsync();
