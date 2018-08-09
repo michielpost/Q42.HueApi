@@ -7,6 +7,7 @@ using Q42.HueApi.Streaming.Extensions;
 using Q42.HueApi.Streaming.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -92,13 +93,15 @@ namespace Q42.HueApi.Streaming
       else
         onlySendDirtyStates = false; //Simulator does not understand partial updates
 
-      var waitTime = (int)TimeSpan.FromSeconds(1).TotalMilliseconds / frequency;
+      var waitTime = TimeSpan.FromMilliseconds(TimeSpan.FromSeconds(1).TotalMilliseconds / frequency);
 
       Task.Run(async () =>
       {
         int missedMessages = 0;
         while (!cancellationToken.IsCancellationRequested)
         {
+          var sw = Stopwatch.StartNew();
+
           IEnumerable<IEnumerable<StreamingLight>> chunks = entGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
           if (chunks != null)
           {
@@ -115,8 +118,10 @@ namespace Q42.HueApi.Streaming
               missedMessages = 0;
             }
           }
-
-          await Task.Delay(waitTime, cancellationToken).ConfigureAwait(false);
+          sw.Stop();
+          Debug.WriteLine(sw.ElapsedMilliseconds);
+          if(sw.Elapsed < waitTime)
+            await Task.Delay(waitTime - sw.Elapsed, cancellationToken).ConfigureAwait(false);
         }
 
       });
