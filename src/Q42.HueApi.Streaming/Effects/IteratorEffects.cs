@@ -48,8 +48,7 @@ namespace Q42.HueApi.Streaming.Effects
 
       return group.IteratorEffect(cancellationToken, async(current, ct, t) =>
       {
-        var r = new Random();
-        var color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+        var color = RGBColor.Random();
 
         current.SetState(ct, color, 1, transitionTime());
       }, mode, secondaryIteratorMode, waitTime, duration);
@@ -75,8 +74,7 @@ namespace Q42.HueApi.Streaming.Effects
     {
       if (!color.HasValue)
       {
-        var r = new Random();
-        color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+        color = RGBColor.Random();
       }
 
       if (mode == IteratorEffectMode.All || mode == IteratorEffectMode.AllIndividual)
@@ -112,8 +110,7 @@ namespace Q42.HueApi.Streaming.Effects
     {
       if (!color.HasValue)
       {
-        var r = new Random();
-        color = new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
+        color = RGBColor.Random();
       }
 
       if (waitTime == null)

@@ -32,7 +32,7 @@ namespace Q42.HueApi.Streaming.Effects
 
       var state = new Models.EntertainmentState();
       state.SetBrightness(1);
-      state.SetRGBColor(GetRandomColor());
+      state.SetRGBColor(RGBColor.Random());
 
       this.State = state;
 
@@ -54,13 +54,13 @@ namespace Q42.HueApi.Streaming.Effects
             else
             {
               Radius = 0;
-              state.SetRGBColor(GetRandomColor());
+              state.SetRGBColor(RGBColor.Random());
             }
           }
           if (Radius <= 0)
           {
             step = 0.2;
-            state.SetRGBColor(GetRandomColor());
+            state.SetRGBColor(RGBColor.Random());
           }
         }
       }, _cts.Token);
@@ -74,12 +74,5 @@ namespace Q42.HueApi.Streaming.Effects
       _cts.Cancel();
       Radius = 0;
     }
-
-    private RGBColor GetRandomColor()
-    {
-      var r = new Random();
-      return new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());
-    }
-
   }
 }

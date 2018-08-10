@@ -1,6 +1,7 @@
 using Q42.HueApi.ColorConverters;
 using Q42.HueApi.Streaming;
 using Q42.HueApi.Streaming.Effects;
+using Q42.HueApi.Streaming.Effects.Examples;
 using Q42.HueApi.Streaming.Extensions;
 using Q42.HueApi.Streaming.Models;
 using System;
@@ -20,9 +21,11 @@ namespace Q42.HueApi.Streaming.Sample
     {
       StreamingGroup stream = await StreamingSetup.SetupAndReturnGroup();
       var baseEntLayer = stream.GetNewLayer(isBaseLayer: true);
+      var effectLayer = stream.GetNewLayer();
 
       //Optional: calculated effects that are placed on this layer
       baseEntLayer.AutoCalculateEffectUpdate(new CancellationToken());
+      effectLayer.AutoCalculateEffectUpdate(new CancellationToken());
 
       //Order lights based on position in the room
       var orderedLeft = baseEntLayer.GetLeft().OrderByDescending(x => x.LightLocation.Y).ThenBy(x => x.LightLocation.X).To2DGroup();
@@ -43,10 +46,12 @@ namespace Q42.HueApi.Streaming.Sample
 
       CancellationTokenSource cst = new CancellationTokenSource();
 
-      //Console.WriteLine("Blue line on 90 degree angle");
-      //var blueLineEffect = new BlueLineEffect();
-      //entGroup.PlaceEffect(blueLineEffect);
-      //blueLineEffect.Start();
+      Console.WriteLine("Blue line on 90 degree angle");
+      var blueLineEffect = new HorizontalScanLineEffect();
+      baseEntLayer.PlaceEffect(blueLineEffect);
+      blueLineEffect.Start();
+      cst = WaitCancelAndNext(cst);
+      blueLineEffect.Stop();
 
       //Ref<int?> stepSize = 20;
       //blueLineEffect.Rotate(stepSize);
