@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="Q42.HueApi.UniversalWindows.Sample.Views.RegisterPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -14,7 +14,11 @@
 
             <Button Margin="0,20,0,0" x:Name="RegisterButton" Click="RegisterButton_Click">Register and initialize (press the button!)</Button>
             <ProgressBar HorizontalAlignment="Left" Width="200" Margin="0,0" DataContext="{Binding LocateBridgeDataLoader}" IsIndeterminate="{Binding IsBusy}"></ProgressBar>
-            <TextBlock Width="300" HorizontalAlignment="Left" Text="{Binding RegisterSuccess}">Success?</TextBlock>
+      <TextBlock Width="300" HorizontalAlignment="Left" Text="{Binding RegisterSuccess}">Success?</TextBlock>
+
+      <TextBlock Width="300" HorizontalAlignment="Left">Key and Streaming key:</TextBlock>
+      <TextBox Width="300" HorizontalAlignment="Left" Text="{Binding RegisterEntertainmentResult.Username}" IsReadOnly="True"></TextBox>
+      <TextBox Width="300" HorizontalAlignment="Left" Text="{Binding RegisterEntertainmentResult.StreamingClientKey}" IsReadOnly="True"></TextBox>
 
             <Button Margin="0,20,0,0" x:Name="InitButton" Click="InitButton_Click">Initialize only</Button>
             

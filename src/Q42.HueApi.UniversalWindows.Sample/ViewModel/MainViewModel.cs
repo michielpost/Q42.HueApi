@@ -146,6 +146,18 @@ namespace Q42.HueApi.UniversalWindows.Sample.ViewModel
       }
     }
 
+    private RegisterEntertainmentResult _registerEntertainmentResult;
+
+    public RegisterEntertainmentResult RegisterEntertainmentResult
+    {
+      get { return _registerEntertainmentResult; }
+      set
+      {
+        _registerEntertainmentResult = value;
+        RaisePropertyChanged("RegisterEntertainmentResult");
+      }
+    }
+
     private string _getLights;
 
     public string GetLights
@@ -226,9 +238,10 @@ namespace Q42.HueApi.UniversalWindows.Sample.ViewModel
 
     internal async void Register(string p)
     {
-      var result = await RegisterDataLoader.LoadAsync(() => _hueClient.RegisterAsync(p, p));
+      var result = await RegisterDataLoader.LoadAsync(() => _hueClient.RegisterAsync(p, p, generateClientKey: true));
 
-      RegisterSuccess = !string.IsNullOrEmpty(result);
+      RegisterEntertainmentResult = result;
+      RegisterSuccess = !string.IsNullOrEmpty(result.Username);
     }
 
     internal void Initialize(string p)
