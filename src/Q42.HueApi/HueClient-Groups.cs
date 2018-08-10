@@ -18,31 +18,31 @@ namespace Q42.HueApi
   /// </summary>
   public partial class HueClient
   {
-	/// <summary>
-	/// Create a group for a list of lights
-	/// </summary>
-	/// <param name="lights">List of lights in the group</param>
-	/// <param name="name">Optional name</param>
-	/// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
-	/// <returns></returns>
-	public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room)
+    /// <summary>
+    /// Create a group for a list of lights
+    /// </summary>
+    /// <param name="lights">List of lights in the group</param>
+    /// <param name="name">Optional name</param>
+    /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
+    /// <returns></returns>
+    public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room)
     {
       CheckInitialized();
 
       if (lights == null)
         throw new ArgumentNullException(nameof(lights));
 
-			CreateGroupRequest jsonObj = new CreateGroupRequest();
+      CreateGroupRequest jsonObj = new CreateGroupRequest();
       jsonObj.Lights = lights;
 
       if (!string.IsNullOrEmpty(name))
         jsonObj.Name = name;
 
-	  if(roomClass.HasValue)
-	  {
-		jsonObj.Class = roomClass.Value;
-		jsonObj.Type = groupType;
-	  }
+      if (!roomClass.HasValue)
+        roomClass = RoomClass.Other;
+
+      jsonObj.Class = roomClass.Value;
+      jsonObj.Type = groupType;
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
