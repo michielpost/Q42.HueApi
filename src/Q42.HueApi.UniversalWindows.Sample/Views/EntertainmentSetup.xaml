@@ -51,6 +51,7 @@
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
       <DataTemplate>
+            <Grid>
           <Ellipse Width="20" Height="20" Fill="Red"
                    Tapped="Ellipse_Tapped"
                    ManipulationMode="All" ManipulationDelta="Ellipse_ManipulationDelta">
@@ -58,7 +59,13 @@
               <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
             </Ellipse.RenderTransform>
           </Ellipse>
-        </DataTemplate>
+            <TextBlock Text="{Binding Id}" Foreground="Blue">
+                <TextBlock.RenderTransform>
+                <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+            </Grid>
+          </DataTemplate>
     </ItemsControl.ItemTemplate>
     </ItemsControl>
 

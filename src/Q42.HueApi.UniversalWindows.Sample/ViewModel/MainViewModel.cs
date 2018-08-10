@@ -347,7 +347,7 @@ namespace Q42.HueApi.UniversalWindows.Sample.ViewModel
     {
       var allLights = await _hueClient.GetLightsAsync();
 
-      var newGroupId = await _hueClient.CreateGroupAsync(allLights.Select(x => x.Id), "New Entertainment Group", RoomClass.TV, GroupType.Entertainment);
+      var newGroupId = await _hueClient.CreateGroupAsync(allLights.Take(10).Select(x => x.Id), "New Entertainment Group", RoomClass.TV, GroupType.Entertainment);
 
       return newGroupId;
     }
