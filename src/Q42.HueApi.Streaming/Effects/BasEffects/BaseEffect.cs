@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Q42.HueApi.Streaming.Effects
 {
@@ -22,7 +23,13 @@ namespace Q42.HueApi.Streaming.Effects
 
     public virtual void Stop()
     {
-      State = null;
+      State.SetBrightness(0);
+
+      //Wait, because we want to make sure we set the state on the lights before we set the state to null
+      Task.Run(async () => {
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
+        State = null;
+      });
     }
 
     public abstract double? GetEffectStrengthMultiplier(EntertainmentLight light);

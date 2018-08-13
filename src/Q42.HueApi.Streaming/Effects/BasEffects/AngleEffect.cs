@@ -10,8 +10,6 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
 {
   public abstract class AngleEffect : BaseEffect
   {
-
-
     /// <summary>
     /// Between -1 and 1
     /// </summary>

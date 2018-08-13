@@ -3,6 +3,7 @@ using Q42.HueApi.Models.Groups;
 using Q42.HueApi.Streaming.Effects;
 using Q42.HueApi.Streaming.Extensions;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -53,14 +54,14 @@ namespace Q42.HueApi.Streaming.Models
 
         while (!cancellationToken.IsCancellationRequested)
         {
-          foreach (var effect in this.Effects.Where(x => x.State != null))
+          foreach (var effect in this.Effects.Where(x => x.State != null).ToList())
           {
             foreach (var light in this)
             {
               var effectMultiplier = effect.GetEffectStrengthMultiplier(light);
               if (effectMultiplier.HasValue)
               {
-                light.SetState(cancellationToken, effect.State.RGBColor, effect.State.Brightness * effectMultiplier.Value);
+                light.SetState(cancellationToken, effect.State?.RGBColor, effect.State?.Brightness * effectMultiplier.Value);
               }
             }
           }
@@ -83,7 +84,7 @@ namespace Q42.HueApi.Streaming.Models
 
     public EntertainmentState State { get; set; } = new EntertainmentState();
 
-    public List<Transition> Transitions { get; set; } = new List<Transition>();
+    public BlockingCollection<Transition> Transitions { get; set; } = new BlockingCollection<Transition>();
 
 
     public EntertainmentLight(byte id, LightLocation location = null)
@@ -110,7 +111,7 @@ namespace Q42.HueApi.Streaming.Models
         }
 
         //Cancel and remove all transitions, last finished state is important
-        Transitions.Clear();
+        Transitions = new BlockingCollection<Transition>();
       }
       else
       {
