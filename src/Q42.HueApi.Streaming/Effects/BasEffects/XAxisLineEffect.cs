@@ -28,7 +28,7 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
     public override double? GetEffectStrengthMultiplier(EntertainmentLight light)
     {
       var distance = Distance(light.LightLocation);
-      double? multiplier = this.Radius - distance;
+      double? multiplier = this.Radius - (distance * 2);
 
       multiplier = multiplier > 1 ? 1 : multiplier;
       multiplier = multiplier < 0 ? 0 : multiplier;

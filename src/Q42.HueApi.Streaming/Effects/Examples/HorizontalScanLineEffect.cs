@@ -16,6 +16,10 @@ namespace Q42.HueApi.Streaming.Effects.Examples
     private Func<TimeSpan> _waitTime;
     private RGBColor _color;
 
+    public double StepSize { get; set; } = 0.15;
+    public bool AutoRepeat { get; set; } = true;
+    public double TurningPoint { get; set; } = 1.5;
+
     public HorizontalScanLineEffect(Func<TimeSpan> waitTime = null, RGBColor? color = null)
     {
       _waitTime = waitTime;
@@ -25,7 +29,7 @@ namespace Q42.HueApi.Streaming.Effects.Examples
 
       _color = color ?? RGBColor.Random();
 
-      Radius = 0.6;
+      Radius = 1;
     }
 
     public override void Start()
@@ -42,17 +46,26 @@ namespace Q42.HueApi.Streaming.Effects.Examples
 
       Task.Run(async () =>
       {
-        double step = 0.1;
+        double step = StepSize;
+        if (this.X > 0)
+          step = -1 * StepSize;
+
         while (true && !_cts.IsCancellationRequested)
         {
           await Task.Delay(_waitTime(), _cts.Token).ConfigureAwait(false);
-          if (this.X >= 1.5)
+          if (this.X >= TurningPoint)
           {
-            step = -0.1;
+            if (!AutoRepeat)
+              break;
+
+            step = -1 * Math.Abs(step);
           }
-          else if (this.X <= -1.5)
+          else if (this.X <= (-1 * TurningPoint))
           {
-            step = 0.1;
+            if (!AutoRepeat)
+              break;
+
+            step = Math.Abs(step);
           }
 
           this.X += step;
