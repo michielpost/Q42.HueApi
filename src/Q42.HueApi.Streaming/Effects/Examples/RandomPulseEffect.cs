@@ -15,6 +15,8 @@ namespace Q42.HueApi.Streaming.Effects
     private bool _fadeToZero;
     private Func<TimeSpan> _waitTime;
 
+    public double MaxRadius { get; set; } = 3;
+
     public RandomPulseEffect(bool fadeToZero = true, Func<TimeSpan> waitTime = null)
     {
       _fadeToZero = fadeToZero;
@@ -45,7 +47,7 @@ namespace Q42.HueApi.Streaming.Effects
         {
           Radius += step;
           await Task.Delay(_waitTime(), _cts.Token).ConfigureAwait(false);
-          if (Radius >= 2)
+          if (Radius >= MaxRadius)
           {
             if (_fadeToZero)
             {
