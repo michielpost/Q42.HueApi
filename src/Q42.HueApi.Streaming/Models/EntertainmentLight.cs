@@ -54,15 +54,25 @@ namespace Q42.HueApi.Streaming.Models
 
         while (!cancellationToken.IsCancellationRequested)
         {
-          foreach (var effect in this.Effects.Where(x => x.State != null).ToList())
+          foreach (var light in this)
           {
-            foreach (var light in this)
+            double? finalMultiplier = null;
+            BaseEffect finalEffect = null;
+
+            //Only activate effect with strongest effect multiplier
+            foreach (var effect in this.Effects.Where(x => x.State != null).ToList())
             {
               var effectMultiplier = effect.GetEffectStrengthMultiplier(light);
-              if (effectMultiplier.HasValue)
+              if (effectMultiplier > finalMultiplier || !finalMultiplier.HasValue)
               {
-                light.SetState(cancellationToken, effect.State?.RGBColor, effect.State?.Brightness * effectMultiplier.Value);
+                finalMultiplier = effectMultiplier;
+                finalEffect = effect;
               }
+            }
+
+            if (finalMultiplier.HasValue)
+            {
+              light.SetState(cancellationToken, finalEffect.State?.RGBColor, finalEffect.State?.Brightness * finalMultiplier.Value);
             }
           }
 
