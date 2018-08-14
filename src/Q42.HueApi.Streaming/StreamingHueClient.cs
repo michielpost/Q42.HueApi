@@ -28,7 +28,7 @@ namespace Q42.HueApi.Streaming
 
     private Socket _socket;
     private ILocalHueClient _localHueClient;
-    private string _ip, _appKey, _clientKey;
+    protected string _ip, _appKey, _clientKey;
 
     public ILocalHueClient LocalHueClient => _localHueClient;
 
