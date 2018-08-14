@@ -79,15 +79,15 @@ namespace Q42.HueApi.Streaming
     /// <summary>
     /// Auto update the streamgroup
     /// </summary>
-    /// <param name="entGroup"></param>
+    /// <param name="streamingGroup"></param>
     /// <param name="frequency"></param>
     /// <param name="onlySendDirtyStates">Only send light states that have been changed since last update</param>
     /// <param name="cancellationToken"></param>
-    public void AutoUpdate(StreamingGroup entGroup, CancellationToken cancellationToken, int frequency = 50, bool onlySendDirtyStates = false)
+    public void AutoUpdate(StreamingGroup streamingGroup, CancellationToken cancellationToken, int frequency = 50, bool onlySendDirtyStates = false)
     {
       if (!_simulator)
       {
-        int groupCount = (entGroup.Count / 10) + 1;
+        int groupCount = (streamingGroup.Count / 10) + 1;
         frequency = frequency / groupCount;
       }
       else
@@ -102,7 +102,7 @@ namespace Q42.HueApi.Streaming
         {
           var sw = Stopwatch.StartNew();
 
-          IEnumerable<IEnumerable<StreamingLight>> chunks = entGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
+          IEnumerable<IEnumerable<StreamingLight>> chunks = streamingGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
           if (chunks != null)
           {
             Send(chunks);
@@ -113,7 +113,7 @@ namespace Q42.HueApi.Streaming
             if (missedMessages > frequency)
             {
               //If there are no updates, still send updates to keep connection open
-              chunks = entGroup.GetChunksForUpdate(forceUpdate: true);
+              chunks = streamingGroup.GetChunksForUpdate(forceUpdate: true);
               Send(chunks);
               missedMessages = 0;
             }
