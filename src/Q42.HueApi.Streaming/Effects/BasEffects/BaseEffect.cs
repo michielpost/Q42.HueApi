@@ -13,8 +13,6 @@ namespace Q42.HueApi.Streaming.Effects
   /// </summary>
   public abstract class BaseEffect
   {
-    
-
     public EntertainmentState State { get; set; }
 
     public virtual void Start()
@@ -23,7 +21,7 @@ namespace Q42.HueApi.Streaming.Effects
 
     public virtual void Stop()
     {
-      State.SetBrightness(0);
+      State?.SetBrightness(0);
 
       //Wait, because we want to make sure we set the state on the lights before we set the state to null
       Task.Run(async () => {
