@@ -123,7 +123,7 @@ namespace Q42.HueApi.Streaming.Extensions
 
         if (reverse)
           lights.Reverse();
-        if (mode == IteratorEffectMode.Random)
+        if (mode == IteratorEffectMode.Random || mode == IteratorEffectMode.RandomOrdered)
           lights = lights.OrderBy(x => Guid.NewGuid()).ToList();
 
         foreach(var light in lights.Skip(reverse ? 1 : 0))
