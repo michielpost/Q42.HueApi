@@ -13,12 +13,12 @@ namespace Q42.HueApi.ColorConverters.HSB
 	{
 		public static HSB GetHSB(this RGBColor rgb)
 		{
-			var hsb = new HSB
-			{
-				Hue = (int)rgb.GetHue(),
-				Saturation = (int)rgb.GetSaturation(),
-				Brightness = (int)rgb.GetBrightness()
-			};
+      var hsb = new HSB
+      (
+          (int)rgb.GetHue(),
+          (int)rgb.GetSaturation(),
+          (int)rgb.GetBrightness()
+      );
 			return hsb;
 		}
 

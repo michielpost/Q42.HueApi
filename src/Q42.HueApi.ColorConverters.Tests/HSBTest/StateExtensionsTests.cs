@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Q42.HueApi.ColorConverters.HSB;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.ColorConverters.Tests.HSB
+namespace Q42.HueApi.ColorConverters.Tests.HSBTest
 {
 	[TestClass]
 	public class StateExtensionsTests

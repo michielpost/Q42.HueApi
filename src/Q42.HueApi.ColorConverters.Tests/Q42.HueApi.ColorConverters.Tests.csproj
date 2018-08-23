@@ -50,7 +50,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="HSB\StateExtensionsTests.cs" />
+    <Compile Include="HSBTest\HSBTests.cs" />
+    <Compile Include="HSBTest\StateExtensionsTests.cs" />
     <Compile Include="OriginalWithModel\ColorConverterTests-Arrays.cs" />
     <Compile Include="OriginalWithModel\ColorConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

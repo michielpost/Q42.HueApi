@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +10,7 @@ namespace Q42.HueApi.ColorConverters.HSB
 	{
 		public static RGBColor ToRgb(this State state)
 		{
-			HSB hsb = new HSB();
-			hsb.Brightness = state.Brightness;
-			if (state.Hue.HasValue)
-				hsb.Hue = state.Hue.Value;
-
-			if (state.Saturation.HasValue)
-				hsb.Saturation = state.Saturation.Value;
-
+			HSB hsb = new HSB(state.Hue ?? 0, state.Saturation ?? 0, state.Brightness);
 			return hsb.GetRGB();
 		}
 

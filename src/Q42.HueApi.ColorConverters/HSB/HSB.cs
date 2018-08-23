@@ -11,9 +11,53 @@ namespace Q42.HueApi.ColorConverters.HSB
 	/// </summary>
 	public class HSB
 	{
-		public int Hue { get; set; }
+    private int _hsb;
+
+    /// <summary>
+    /// HSB Constructor
+    /// </summary>
+    /// <param name="hue">This is a wrapping value between 0 and 65535</param>
+    /// <param name="saturation">Between 0 and 255</param>
+    /// <param name="brightness">Between 0 and 255</param>
+    public HSB(int hue, int saturation, int brightness)
+    {
+      Hue = hue;
+      Saturation = saturation;
+      Brightness = brightness;
+    }
+
+    /// <summary>
+    /// This is a wrapping value between 0 and 65535
+    /// </summary>
+    public int Hue
+    {
+      get
+      {
+        return _hsb;
+      }
+      set
+      {
+        if (value >= 65535)
+        {
+          double sectorPos = (double)value / 65535;
+          int sectorNumber = (int)(Math.Floor(sectorPos));
+          // get the fractional part of the sector
+          _hsb = (int)((sectorPos - sectorNumber) * 65535);
+        }
+        else
+          _hsb = value;
+      }
+    }
+
+    /// <summary>
+    /// Between 0 and 255
+    /// </summary>
 		public int Saturation { get; set; }
-		public int Brightness { get; set; }        // = Brightness
+
+    /// <summary>
+    /// Between 0 and 255
+    /// </summary>
+    public int Brightness { get; set; }        // = Brightness
 
 		public RGBColor GetRGB()
 		{
