@@ -38,10 +38,9 @@ namespace Q42.HueApi
       if (!string.IsNullOrEmpty(name))
         jsonObj.Name = name;
 
-      if (!roomClass.HasValue)
-        roomClass = RoomClass.Other;
+      if (roomClass.HasValue)
+        jsonObj.Class = roomClass.Value;
 
-      jsonObj.Class = roomClass.Value;
       jsonObj.Type = groupType;
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
