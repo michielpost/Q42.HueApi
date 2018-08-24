@@ -20,7 +20,7 @@ namespace Q42.HueApi.ColorConverters.Tests.HSBTest
 
       hsb.Hue += 65535 + 10;
 
-      Assert.IsTrue(hsb.Hue == 9);
+      Assert.IsTrue(hsb.Hue == 10);
 
     }
 
@@ -29,7 +29,15 @@ namespace Q42.HueApi.ColorConverters.Tests.HSBTest
     {
       var hsb = new HSB.HSB(65535 + 1, 0, 0);
 
-      Assert.IsTrue(hsb.Hue == 0);
+      Assert.IsTrue(hsb.Hue == 1);
+    }
+
+    [TestMethod]
+    public void TestHSBNegativeContructor()
+    {
+      var hsb = new HSB.HSB(-1, 0, 0);
+
+      Assert.IsTrue(hsb.Hue == HSB.HSB.HueMaxValue - 1);
     }
   }
 }

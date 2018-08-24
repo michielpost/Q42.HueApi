@@ -13,6 +13,8 @@ namespace Q42.HueApi.ColorConverters.HSB
 	{
     private int _hsb;
 
+    public static readonly int HueMaxValue = 65535;
+
     /// <summary>
     /// HSB Constructor
     /// </summary>
@@ -37,15 +39,8 @@ namespace Q42.HueApi.ColorConverters.HSB
       }
       set
       {
-        if (value >= 65535)
-        {
-          double sectorPos = (double)value / 65535;
-          int sectorNumber = (int)(Math.Floor(sectorPos));
-          // get the fractional part of the sector
-          _hsb = (int)((sectorPos - sectorNumber) * 65535);
-        }
-        else
-          _hsb = value;
+        //Value must be between 0 and HueMaxValue (like 0 and 360 degrees)
+        _hsb = ((value % HueMaxValue) + HueMaxValue) % HueMaxValue;
       }
     }
 
