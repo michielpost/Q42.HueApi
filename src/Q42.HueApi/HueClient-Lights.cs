@@ -172,6 +172,7 @@ namespace Q42.HueApi
     /// <summary>
     /// Start searching for new lights
     /// </summary>
+    /// <param name="deviceIds">The maxiumum number of serial numbers in any request is 10.</param>
     /// <returns></returns>
     public async Task<HueResults> SearchNewLightsAsync(IEnumerable<string> deviceIds = null)
     {
@@ -182,7 +183,7 @@ namespace Q42.HueApi
       if(deviceIds != null)
       {
         dynamic jsonObj = new ExpandoObject();
-        jsonObj.deviceid = deviceIds;
+        jsonObj.deviceid = deviceIds.Take(10);
 
         string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
