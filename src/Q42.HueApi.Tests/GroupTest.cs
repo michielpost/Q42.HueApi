@@ -33,7 +33,7 @@ namespace Q42.HueApi.Tests
       newLights.Add(lights.First().Id);
       newLights.Add(lights.Last().Id);
 
-      string groupId = await _client.CreateGroupAsync(newLights);
+      string groupId = await _client.CreateGroupAsync(newLights, groupType: GroupType.LightGroup);
 
       Assert.IsFalse(string.IsNullOrEmpty(groupId));
 
