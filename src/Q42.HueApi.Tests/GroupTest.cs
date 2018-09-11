@@ -168,5 +168,16 @@ namespace Q42.HueApi.Tests
 
       Assert.AreEqual(GroupType.Room, group.Type);
     }
+
+    [TestMethod]
+    public void NewLightLocationTest()
+    {
+      var location = new LightLocation(1, 0, 0.5);
+
+      Assert.IsNotNull(location);
+      Assert.AreEqual(1, location.X);
+      Assert.AreEqual(0, location.Y);
+      Assert.AreEqual(0.5, location.Z);
+    }
   }
 }

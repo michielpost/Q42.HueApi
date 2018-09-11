@@ -14,7 +14,6 @@ namespace Q42.HueApi.Models.Groups
 	[DataContract]
 	public class Group
 	{
-
 		[DataMember]
 		public string Id { get; set; }
 
@@ -81,6 +80,27 @@ namespace Q42.HueApi.Models.Groups
     {
       get { return this[1]; }
       set { this[1] = value; }
+    }
+
+    [JsonIgnore]
+    public double Z
+    {
+      get { return this[2]; }
+      set { this[2] = value; }
+    }
+
+    /// <summary>
+    /// Default constructor used for json deserialization
+    /// </summary>
+    public LightLocation()
+    {
+    }
+
+    public LightLocation(double x, double y, double z)
+    {
+      this.Add(x);
+      this.Add(y);
+      this.Add(z);
     }
 
     public bool IsLeft => X <= 0; //Include 0 with left
