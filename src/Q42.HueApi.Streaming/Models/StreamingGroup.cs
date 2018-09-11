@@ -107,7 +107,7 @@ namespace Q42.HueApi.Streaming.Models
     {
       //All transitions should update their state
       //Use extra ToList to prevent exceptions about modified collections
-      var transitions = this.Layers.SelectMany(x => x.SelectMany(z => z.Transitions).ToList()).ToList();
+      var transitions = this.Layers.SelectMany(x => x.Select(z => z.Transition).ToList()).ToList();
       transitions.Where(t => t?.IsStarted ?? false)
                             .ToList()
                             .Distinct()

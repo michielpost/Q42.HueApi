@@ -48,28 +48,12 @@ namespace Q42.HueApi.Streaming.Extensions
     public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan))
     {
       //Create a new transition for this light
-      Transition transition = CreateTransition(rgb, brightness, timeSpan);
+      Transition transition = new Transition(rgb, brightness, timeSpan);
 
-      light.Transitions.Add(transition);
+      light.Transition = transition;
 
       //Start the transition
       transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
-    }
-
-    /// <summary>
-    /// Get the transition to the speciffied rg and brightness
-    /// </summary>
-    /// <param name="rgb"></param>
-    /// <param name="brightness"></param>
-    /// <param name="timeSpan"></param>
-    /// <returns></returns>
-    internal static Transition CreateTransition(RGBColor? rgb, double? brightness, TimeSpan timeSpan)
-    {
-      Transition transition = new Transition();
-      transition.TargetRgb = rgb;
-      transition.TargetBri = brightness;
-      transition.TimeSpan = timeSpan;
-      return transition;
     }
   }
 }

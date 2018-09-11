@@ -306,13 +306,13 @@ namespace Q42.HueApi.Streaming.Extensions
       if (inSync)
       {
         //Create a new transition
-        Transition transition = EntertainmentLightExtensions.CreateTransition(rgb, brightness, transitionTime);
+        Transition transition = new Transition(rgb, brightness, transitionTime);
 
         //Add the same transition to all lights in this group
         foreach (var light in group)
         {
           if(!cancellationToken.IsCancellationRequested)
-            light.Transitions.Add(transition);
+            light.Transition = transition;
         }
 
         //Start the transition

@@ -15,24 +15,24 @@ namespace Q42.HueApi.Streaming.Models
   {
     private static int _updateFrequencyMs = 50; //Max update per ms
 
-    public RGBColor? TargetRgb { get; internal set; }
-    public double? TargetBri { get; internal set; }
-    public TimeSpan TimeSpan { get; internal set; }
+    private RGBColor? _targetRgb;
+    private double? _targetBri;
+    private TimeSpan _timeSpan;
 
     /// <summary>
     /// Delta between TargetRgb and StartRgb
     /// </summary>
-    public double? DeltaR { get; internal set; }
-    public double? DeltaG { get; internal set; }
-    public double? DeltaB { get; internal set; }
+    private double? _deltaR;
+    private double? _deltaG;
+    private double? _deltaB;
 
     /// <summary>
     /// Delta between TargetBri and StartBri
     /// </summary>
-    public double? DeltaBri { get; internal set; }
+    private double? _deltaBri;
 
-    public RGBColor StartRgb { get; internal set; }
-    public double StartBri { get; internal set; }
+    private RGBColor _startRgb;
+    private double _startBri;
 
     public bool IsFinished { get; set; }
 
@@ -52,27 +52,34 @@ namespace Q42.HueApi.Streaming.Models
     private Stopwatch sw = new Stopwatch();
     private CancellationToken cancellationToken;
 
+    public Transition(RGBColor? targetRgb, double? targetBri, TimeSpan timeSpan)
+    {
+      _targetRgb = targetRgb;
+      _targetBri = targetBri;
+      _timeSpan = timeSpan;
+    }
+
     public void Start(RGBColor startRgb, double startBrightness, CancellationToken cancellationToken)
     {
       //Update should happen fast, so dont move between values but just set them
-      if (TimeSpan.TotalMilliseconds < (_updateFrequencyMs))
+      if (_timeSpan.TotalMilliseconds < (_updateFrequencyMs))
       {
-        SetFinalState(TargetRgb, TargetBri);
+        SetFinalState(_targetRgb, _targetBri);
 
         IsFinished = true;
         return;
       }
 
       this.cancellationToken = cancellationToken;
-      this.StartRgb = startRgb;
-      this.StartBri = startBrightness;
+      _startRgb = startRgb;
+      _startBri = startBrightness;
 
-      this.DeltaBri = TargetBri.HasValue ? TargetBri - StartBri : null;
-      if(TargetRgb.HasValue)
+      _deltaBri = _targetBri.HasValue ? _targetBri - _startBri : null;
+      if(_targetRgb.HasValue)
       {
-        DeltaR = TargetRgb.Value.R - StartRgb.R;
-        DeltaG= TargetRgb.Value.G - StartRgb.G;
-        DeltaB = TargetRgb.Value.B - StartRgb.B;
+        _deltaR = _targetRgb.Value.R - _startRgb.R;
+        _deltaG= _targetRgb.Value.G - _startRgb.G;
+        _deltaB = _targetRgb.Value.B - _startRgb.B;
       }
 
       TransitionState.SetRGBColor(startRgb);
@@ -90,11 +97,11 @@ namespace Q42.HueApi.Streaming.Models
       if (IsFinished)
         return;
 
-      var progress = sw.Elapsed.TotalMilliseconds / this.TimeSpan.TotalMilliseconds;
+      var progress = sw.Elapsed.TotalMilliseconds / this._timeSpan.TotalMilliseconds;
 
       if (progress > 1)
       {
-        SetFinalState(TargetRgb, TargetBri);
+        SetFinalState(_targetRgb, _targetBri);
 
         sw.Stop();
         IsFinished = true;
@@ -104,18 +111,18 @@ namespace Q42.HueApi.Streaming.Models
       //TODO: Apply easing function to progress
 
       //Apply progress to Delta
-      if (DeltaR.HasValue)
+      if (_deltaR.HasValue)
       {
         TransitionState.SetRGBColor(new RGBColor(
-                StartRgb.R + (DeltaR.Value * progress),
-                StartRgb.G + (DeltaG.Value * progress),
-                StartRgb.B + (DeltaB.Value * progress)
+                _startRgb.R + (_deltaR.Value * progress),
+                _startRgb.G + (_deltaG.Value * progress),
+                _startRgb.B + (_deltaB.Value * progress)
                ));
       }
 
-      if (DeltaBri.HasValue)
+      if (_deltaBri.HasValue)
       {
-        TransitionState.SetBrightness(StartBri + (DeltaBri.Value * progress));
+        TransitionState.SetBrightness(_startBri + (_deltaBri.Value * progress));
       }
     }
    

@@ -130,6 +130,7 @@ namespace Q42.HueApi.Streaming
 
     protected virtual void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)
     {
+      Console.WriteLine("Send " + chunks.First().First().State.RGBColor.ToHex());
       var msg = StreamingGroup.GetCurrentStateAsByteArray(chunks);
       Send(msg);
     }
