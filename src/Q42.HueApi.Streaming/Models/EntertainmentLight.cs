@@ -88,13 +88,29 @@ namespace Q42.HueApi.Streaming.Models
   /// </summary>
   public class EntertainmentLight
   {
+    private readonly object transitionLock = new object();
+
     public LightLocation LightLocation { get; private set; }
 
     public byte Id { get; set; }
 
     public EntertainmentState State { get; set; } = new EntertainmentState();
 
-    public BlockingCollection<Transition> Transitions { get; set; } = new BlockingCollection<Transition>();
+    private Transition _transition;
+    public Transition Transition
+    {
+      get
+      {
+        return _transition;
+      }
+      set
+      {
+        lock (transitionLock)
+        {
+          _transition = value;
+        }
+      }
+    }
 
 
     public EntertainmentLight(byte id, LightLocation location = null)
@@ -108,30 +124,16 @@ namespace Q42.HueApi.Streaming.Models
     /// </summary>
     internal void ProcessTransitions()
     {
-      var finishedStates = Transitions.Where(x => x?.IsFinished ?? false).ToList();
-
-      if (finishedStates.Any())
+      lock (transitionLock)
       {
-        foreach (var finished in finishedStates)
-        {
-          this.State.SetBrightness(finished.TransitionState.Brightness);
-          this.State.SetRGBColor(finished.TransitionState.RGBColor);
+        if (Transition == null)
+          return;
 
-          //Transitions.Remove(finished);
-        }
+        this.State.SetBrightness(Transition.TransitionState.Brightness);
+        this.State.SetRGBColor(Transition.TransitionState.RGBColor);
 
-        //Cancel and remove all transitions, last finished state is important
-        Transitions = new BlockingCollection<Transition>();
-      }
-      else
-      {
-        //Get active transition
-        var activeTransition = Transitions.Where(x => x?.TransitionState.IsDirty ?? false).ToList().LastOrDefault();
-        if (activeTransition != null)
-        {
-          this.State.SetBrightness(activeTransition.TransitionState.Brightness);
-          this.State.SetRGBColor(activeTransition.TransitionState.RGBColor);
-        }
+        if (Transition.IsFinished)
+          Transition = null;
       }
     }
   }
