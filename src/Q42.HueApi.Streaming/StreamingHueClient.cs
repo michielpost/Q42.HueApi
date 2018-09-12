@@ -98,8 +98,10 @@ namespace Q42.HueApi.Streaming
       Task.Run(() =>
       {
         int missedMessages = 0;
+#if DEBUG
         int lastSecond = 0;
         int msgPerSecondCount = 0;
+#endif
         while (!cancellationToken.IsCancellationRequested)
         {
           var sw = Stopwatch.StartNew();
@@ -120,9 +122,10 @@ namespace Q42.HueApi.Streaming
               missedMessages = 0;
             }
           }
-          msgPerSecondCount++;
           sw.Stop();
+#if DEBUG
           //Debug.WriteLine("Elasped: " + sw.ElapsedMilliseconds);
+          msgPerSecondCount++;
           if (DateTime.Now.Second != lastSecond)
           {
             Debug.WriteLine("Msg per second: " + msgPerSecondCount);
@@ -130,8 +133,9 @@ namespace Q42.HueApi.Streaming
             lastSecond = DateTime.Now.Second;
 
           }
+#endif
           if (sw.Elapsed < waitTime)
-            Thread.Sleep(waitTime - sw.Elapsed);
+            Thread.Sleep(waitTime - sw.Elapsed); //Better performance than Task.Delay
         }
 
       });
