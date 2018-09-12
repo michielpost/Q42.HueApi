@@ -162,8 +162,8 @@ namespace Q42.HueApi.Streaming.Effects
       bool startGreen = false;
       while (!cancellationToken.IsCancellationRequested)
       {
-        await group.ChristmasInit(cancellationToken, startGreen);
-        await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
+        await group.ChristmasInit(cancellationToken, startGreen).ConfigureAwait(false);
+        await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken).ConfigureAwait(false);
         startGreen = !startGreen;
       }
     }

@@ -25,7 +25,7 @@ namespace Q42.HueApi.Streaming.Effects
 
       //Wait, because we want to make sure we set the state on the lights before we set the state to null
       Task.Run(async () => {
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
+        await Task.Delay(TimeSpan.FromMilliseconds(200)).ConfigureAwait(false);
         State = null;
       });
     }

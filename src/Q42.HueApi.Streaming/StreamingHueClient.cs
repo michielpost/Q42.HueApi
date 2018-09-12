@@ -98,6 +98,8 @@ namespace Q42.HueApi.Streaming
       Task.Run(async () =>
       {
         int missedMessages = 0;
+        int lastSecond = 0;
+        int msgPerSecondCount = 0;
         while (!cancellationToken.IsCancellationRequested)
         {
           var sw = Stopwatch.StartNew();
@@ -118,9 +120,17 @@ namespace Q42.HueApi.Streaming
               missedMessages = 0;
             }
           }
+          msgPerSecondCount++;
           sw.Stop();
-          Debug.WriteLine(sw.ElapsedMilliseconds);
-          if(sw.Elapsed < waitTime)
+          //Debug.WriteLine("Elasped: " + sw.ElapsedMilliseconds);
+          if(DateTime.Now.Second != lastSecond)
+          {
+            Debug.WriteLine("Msg per second: " + msgPerSecondCount);
+            msgPerSecondCount = 0;
+            lastSecond = DateTime.Now.Second;
+
+          }
+          if (sw.Elapsed < waitTime)
             await Task.Delay(waitTime - sw.Elapsed, cancellationToken).ConfigureAwait(false);
         }
 
@@ -130,7 +140,6 @@ namespace Q42.HueApi.Streaming
 
     protected virtual void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)
     {
-      Console.WriteLine("Send " + chunks.First().First().State.RGBColor.ToHex());
       var msg = StreamingGroup.GetCurrentStateAsByteArray(chunks);
       Send(msg);
     }

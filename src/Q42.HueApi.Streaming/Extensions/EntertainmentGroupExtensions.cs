@@ -232,13 +232,13 @@ namespace Q42.HueApi.Streaming.Extensions
             allIndividualTasks.Add(t);
           }
 
-          await Task.WhenAll(allIndividualTasks);
+          await Task.WhenAll(allIndividualTasks).ConfigureAwait(false);
         }
         else
         {
           foreach (var group in groups.Skip(reverse ? 1 : 0))
           {
-            await group.IteratorEffect(cancellationToken, groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations);
+            await group.IteratorEffect(cancellationToken, groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations).ConfigureAwait(false);
           }
         }
 
