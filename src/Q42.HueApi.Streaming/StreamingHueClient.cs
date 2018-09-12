@@ -95,7 +95,7 @@ namespace Q42.HueApi.Streaming
 
       var waitTime = TimeSpan.FromMilliseconds(TimeSpan.FromSeconds(1).TotalMilliseconds / frequency);
 
-      Task.Run(async () =>
+      Task.Run(() =>
       {
         int missedMessages = 0;
         int lastSecond = 0;
@@ -123,7 +123,7 @@ namespace Q42.HueApi.Streaming
           msgPerSecondCount++;
           sw.Stop();
           //Debug.WriteLine("Elasped: " + sw.ElapsedMilliseconds);
-          if(DateTime.Now.Second != lastSecond)
+          if (DateTime.Now.Second != lastSecond)
           {
             Debug.WriteLine("Msg per second: " + msgPerSecondCount);
             msgPerSecondCount = 0;
@@ -131,7 +131,7 @@ namespace Q42.HueApi.Streaming
 
           }
           if (sw.Elapsed < waitTime)
-            await Task.Delay(waitTime - sw.Elapsed, cancellationToken).ConfigureAwait(false);
+            Thread.Sleep(waitTime - sw.Elapsed);
         }
 
       });
