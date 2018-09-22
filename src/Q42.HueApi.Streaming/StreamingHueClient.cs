@@ -82,9 +82,9 @@ namespace Q42.HueApi.Streaming
     /// Auto update the streamgroup
     /// </summary>
     /// <param name="streamingGroup"></param>
+    /// <param name="cancellationToken"></param>
     /// <param name="frequency"></param>
     /// <param name="onlySendDirtyStates">Only send light states that have been changed since last update</param>
-    /// <param name="cancellationToken"></param>
     public void AutoUpdate(StreamingGroup streamingGroup, CancellationToken cancellationToken, int frequency = 50, bool onlySendDirtyStates = false)
     {
       if (!_simulator)
@@ -142,6 +142,20 @@ namespace Q42.HueApi.Streaming
 
       });
 
+    }
+
+    /// <summary>
+    /// Can be used if you dont want to use the AutoUpdate, but need the same logic for sending updated to the bridge
+    /// </summary>
+    /// <param name="streamingGroup"></param>
+    /// <param name="onlySendDirtyStates"></param>
+    public void ManualUpdate(StreamingGroup streamingGroup, bool onlySendDirtyStates = false)
+    {
+      IEnumerable<IEnumerable<StreamingLight>> chunks = streamingGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
+      if (chunks != null)
+      {
+        Send(chunks);
+      }
     }
 
     protected virtual void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)

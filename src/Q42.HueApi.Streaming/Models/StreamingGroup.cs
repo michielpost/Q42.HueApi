@@ -103,7 +103,7 @@ namespace Q42.HueApi.Streaming.Models
       return result;
     }
 
-    internal IEnumerable<IEnumerable<StreamingLight>> GetChunksForUpdate(bool forceUpdate)
+    public IEnumerable<IEnumerable<StreamingLight>> GetChunksForUpdate(bool forceUpdate)
     {
       //All transitions should update their state
       //Use extra ToList to prevent exceptions about modified collections
