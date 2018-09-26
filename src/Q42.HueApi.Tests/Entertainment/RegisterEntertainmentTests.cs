@@ -43,7 +43,7 @@ namespace Q42.HueApi.Tests.Entertainment
       if(!groups.Where(x => x.Type == Models.Groups.GroupType.Entertainment).Any())
       {
         var allLights = await _client.GetLightsAsync();
-        var createResult = await _client.CreateGroupAsync(allLights.Select(x => x.Id), "Entertainment", Models.Groups.RoomClass.Other, Models.Groups.GroupType.Entertainment);
+        var createResult = await _client.CreateGroupAsync(allLights.Select(x => x.Id), "Entertainment", Models.Groups.RoomClass.TV, Models.Groups.GroupType.Entertainment);
 
         Assert.IsNotNull(createResult);
       }
