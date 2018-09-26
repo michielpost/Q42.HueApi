@@ -61,7 +61,7 @@ namespace Q42.HueApi.Streaming.Connection
 
       }
 
-      throw new NotImplementedException();
+      throw new Exception("Receiving data but socket not connected");
     }
 
     public void Send(byte[] buf, int off, int len)
@@ -74,7 +74,7 @@ namespace Q42.HueApi.Streaming.Connection
       }
       else
       {
-        throw new NotImplementedException();
+        throw new Exception("Sending data but socket is not connected");
       }
     }
   }
