@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using Q42.HueApi.ColorConverters.OriginalWithModel;
 
-namespace Q42.HueApi.NET.Tests
+namespace Q42.HueApi.ColorConverters.Tests
 {
     [TestClass]
     public class HueColorConverterTests

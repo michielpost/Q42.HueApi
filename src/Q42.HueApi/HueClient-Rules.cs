@@ -117,15 +117,14 @@ namespace Q42.HueApi
       if (actions.Count() > 8)
         throw new ArgumentException("Max 8 actions allowed", nameof(actions));
 
-      dynamic jsonObj = new ExpandoObject();
-
+      JObject jsonObj = new JObject();
       if (conditions != null && conditions.Any())
-        jsonObj.conditions = conditions;
+        jsonObj.Add("conditions", JToken.FromObject(conditions));
       if (actions != null && actions.Any())
-        jsonObj.actions = actions;
+        jsonObj.Add("actions", JToken.FromObject(actions));
 
       if (!string.IsNullOrEmpty(name))
-        jsonObj.name = name;
+        jsonObj.Add("name", name);
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -163,17 +162,16 @@ namespace Q42.HueApi
         throw new ArgumentNullException(nameof(id));
       if (id.Trim() == String.Empty)
         throw new ArgumentException("id must not be empty", nameof(id));
-     
 
-      dynamic jsonObj = new ExpandoObject();
 
-      if(conditions != null && conditions.Any())
-        jsonObj.conditions = conditions;
+      JObject jsonObj = new JObject();
+      if (conditions != null && conditions.Any())
+        jsonObj.Add("conditions", JToken.FromObject(conditions));
       if (actions != null && actions.Any())
-        jsonObj.actions = actions;
+        jsonObj.Add("actions", JToken.FromObject(actions));
 
       if (!string.IsNullOrEmpty(name))
-        jsonObj.name = name;
+        jsonObj.Add("name", name);
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 

@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.NET
+namespace Q42.HueApi
 {
   public class SSDPBridgeLocator : IBridgeLocator
   {
@@ -58,7 +58,7 @@ namespace Q42.HueApi.NET
       }
 
       return await FilterBridges(_discoveredDevices).ConfigureAwait(false);
-    
+
     }
 
     public void GetSocketResponse(Socket socket)
@@ -99,7 +99,6 @@ namespace Q42.HueApi.NET
     {
       List<LocatedBridge> bridges = new List<LocatedBridge>();
 
-
       var endpoints = discoveredDevices.Where(s => s.EndsWith("/description.xml")).ToList();
 
       var filteredEndpoints = endpoints.Distinct();
@@ -111,9 +110,9 @@ namespace Q42.HueApi.NET
         //Not in the list yet?
         if (!bridges.Where(x => x.IpAddress == ip).Any())
         {
-		  //Check if it is Hue Bridge
-		  string serialNumber = await IsHue(endpoint).ConfigureAwait(false);
-		  if (!string.IsNullOrWhiteSpace(serialNumber))
+          //Check if it is Hue Bridge
+          string serialNumber = await IsHue(endpoint).ConfigureAwait(false);
+          if (!string.IsNullOrWhiteSpace(serialNumber))
           {
             //Add ip
             bridges.Add(new LocatedBridge() { IpAddress = ip, BridgeId = serialNumber });
@@ -134,20 +133,20 @@ namespace Q42.HueApi.NET
         var res = await http.GetStringAsync(discoveryUrl).ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(res))
         {
-			res = res.ToLower();
+          res = res.ToLower();
 
-			if (res.Contains("philips hue bridge"))
-			{
-				int startSerial = res.IndexOf("<serialnumber>");
-				if (startSerial > 0)
-				{
-					int endSerial = res.IndexOf("</", startSerial);
+          if (res.Contains("philips hue bridge"))
+          {
+            int startSerial = res.IndexOf("<serialnumber>");
+            if (startSerial > 0)
+            {
+              int endSerial = res.IndexOf("</", startSerial);
 
-					int startPoint = startSerial + 14;
-					return res.Substring(startPoint, endSerial - startPoint);
-				}
-			}
-		}
+              int startPoint = startSerial + 14;
+              return res.Substring(startPoint, endSerial - startPoint);
+            }
+          }
+        }
       }
       catch
       {

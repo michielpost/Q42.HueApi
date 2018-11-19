@@ -120,24 +120,25 @@ namespace Q42.HueApi
 		if (lights == null)
 			throw new ArgumentNullException(nameof(lights));
 
-		dynamic jsonObj = new ExpandoObject();
-		jsonObj.lights = lights;
+      JObject jsonObj = new JObject();
+      jsonObj.Add("lights", JToken.FromObject(lights));
 
-		if (storeLightState.HasValue)
+      if (storeLightState.HasValue)
 		{
-			jsonObj.storelightstate = storeLightState.Value;
+        jsonObj.Add("storelightstate", storeLightState.Value);
 
 			//Transitiontime can only be used in combination with storeLightState
 			if (transitionTime.HasValue)
 			{
-				jsonObj.transitiontime = (uint)transitionTime.Value.TotalSeconds * 10;
+          jsonObj.Add("transitiontime", (uint)transitionTime.Value.TotalSeconds * 10);
 			}
 		}
 
 		if (!string.IsNullOrEmpty(name))
-			jsonObj.name = name;
+        jsonObj.Add("name", name);
 
-		string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
 		HttpClient client = await GetHttpClient().ConfigureAwait(false);
 		var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);

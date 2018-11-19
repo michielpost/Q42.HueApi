@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using Q42.HueApi.Interfaces;
 using System.Linq;
 
-namespace Q42.HueApi.NET.Tests
+namespace Q42.HueApi.Tests
 {
   [TestClass]
-  public class BridgeDiscoveryTests
+  public class SSDPBridgeDiscoveryTests
   {
     [TestMethod]
     public async Task TestSSDPBridgeLocator()
