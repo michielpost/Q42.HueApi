@@ -2,6 +2,7 @@ using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Bridge;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -45,20 +46,75 @@ namespace Q42.HueApi
 
       _discoveredDevices = new List<string>();
 
-
-      using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+      using (Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
       {
-        socket.Bind(new IPEndPoint(IPAddress.Any, unicastPort));
-        socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(multicastAddress, IPAddress.Any));
-        var thd = new Thread(() => GetSocketResponse(socket));
-        socket.SendTo(broadcastMessage, 0, broadcastMessage.Length, SocketFlags.None, new IPEndPoint(multicastAddress, multicastPort));
-        thd.Start();
+
+        IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 8081);
+
+        udpSocket.Bind(remoteEndPoint);
+
+        SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+        byte[] buffer = new byte[1024];
+        e.SetBuffer(buffer, 0, buffer.Length);
+        e.RemoteEndPoint = remoteEndPoint;
+        e.Completed += ReceiveFromCallback;
+        udpSocket.SendTo(broadcastMessage, 0, broadcastMessage.Length, SocketFlags.None, new IPEndPoint(multicastAddress, multicastPort));
+
+        if (!udpSocket.ReceiveFromAsync(e))
+        {
+          ReceiveFromCallback(udpSocket, e);
+        }
+
         await Task.Delay(timeout);
-        socket.Close();
       }
+
+      //using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+      //{
+
+      //  socket.Bind(new IPEndPoint(IPAddress.Any, unicastPort));
+      //  socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(multicastAddress, IPAddress.Any));
+      //  var thd = new Thread(() => GetSocketResponse(socket));
+      //  socket.SendTo(broadcastMessage, 0, broadcastMessage.Length, SocketFlags.None, new IPEndPoint(multicastAddress, multicastPort));
+      //  thd.Start();
+      //  await Task.Delay(timeout);
+      //  socket.Close();
+      //}
 
       return await FilterBridges(_discoveredDevices).ConfigureAwait(false);
 
+    }
+
+    private void ReceiveFromCallback(object sender, SocketAsyncEventArgs e)
+    {
+      if (e.SocketError != SocketError.Success)
+      {
+        Debug.WriteLine(e.SocketError);
+        return;
+      }
+
+      Socket udpSocket = sender as Socket;
+
+      byte[] buffer = e.Buffer;
+      Debug.WriteLine(Encoding.UTF8.GetString(buffer, 0, e.BytesTransferred));
+
+      try
+      {
+        var receivedString = Encoding.UTF8.GetString(buffer, 0, e.BytesTransferred);
+
+        var location = receivedString.Substring(receivedString.IndexOf("LOCATION:", System.StringComparison.Ordinal) + 9);
+        receivedString = location.Substring(0, location.IndexOf("\r", System.StringComparison.Ordinal)).Trim();
+
+        _discoveredDevices.Add(receivedString);
+      }
+      catch
+      {
+        //Not a UTF8 string, ignore this response.
+      }
+
+      if (!udpSocket.ReceiveFromAsync(e))
+      {
+        ReceiveFromCallback(udpSocket, e);
+      }
     }
 
     public void GetSocketResponse(Socket socket)
