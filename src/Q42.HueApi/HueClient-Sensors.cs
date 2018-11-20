@@ -201,8 +201,8 @@ namespace Q42.HueApi
 			if (string.IsNullOrEmpty(newName))
 				throw new ArgumentNullException(nameof(newName));
 
-			dynamic jsonObj = new ExpandoObject();
-			jsonObj.name = newName;
+      JObject jsonObj = new JObject();
+      jsonObj.Add("name", newName);
 
 			string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 

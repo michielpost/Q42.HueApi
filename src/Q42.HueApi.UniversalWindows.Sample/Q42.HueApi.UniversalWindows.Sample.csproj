@@ -165,19 +165,22 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.5</Version>
+      <Version>6.2.2</Version>
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1</Version>
+      <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="NETStandard.Library">
-      <Version>2.0.1</Version>
+      <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Q42.WinRT">
       <Version>1.5.2.42</Version>
+    </PackageReference>
+    <PackageReference Include="Q42.WinRT.Portable">
+      <Version>1.2.3.42</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,6 @@ using Q42.HueApi.ColorConverters.OriginalWithModel;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Bridge;
 using Q42.HueApi.Models.Groups;
-using Q42.WinRT.Data;
 using Q42.WinRT.Portable.Data;
 using System;
 using System.Collections.Generic;

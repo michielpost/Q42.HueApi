@@ -182,8 +182,8 @@ namespace Q42.HueApi
 
       if(deviceIds != null)
       {
-        dynamic jsonObj = new ExpandoObject();
-        jsonObj.deviceid = deviceIds.Take(10);
+        JObject jsonObj = new JObject();
+        jsonObj.Add("deviceid", JToken.FromObject(deviceIds.Take(10)));
 
         string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 

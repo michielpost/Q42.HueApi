@@ -1,0 +1,16 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+shallow_clone: true
+before_build:
+- cmd: nuget restore src\Q42.HueApi.sln
+build:
+  verbosity: minimal
+test: off
+artifacts:
+- path: src\Q42.HueApi\bin\Release\*.nupkg
+- path: src\Q42.HueApi\bin\Release\*.snupkg
+- path: src\Q42.HueApi.ColorConverters\bin\Release\*.nupkg
+- path: src\Q42.HueApi.ColorConverters\bin\Release\*.snupkg
+- path: src\Q42.HueApi.Streaming\bin\Release\*.nupkg
+- path: src\Q42.HueApi.Streaming\bin\Release\*.snupkg

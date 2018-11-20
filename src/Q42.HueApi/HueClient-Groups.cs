@@ -230,8 +230,8 @@ namespace Q42.HueApi
       if (locations == null || !locations.Any())
         throw new ArgumentNullException(nameof(locations));
 
-      dynamic jsonObj = new ExpandoObject();
-      jsonObj.locations = locations;
+      JObject jsonObj = new JObject();
+      jsonObj.Add("locations", JToken.FromObject(locations));
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -250,9 +250,8 @@ namespace Q42.HueApi
       if (id.Trim() == String.Empty)
         throw new ArgumentException("id must not be empty", nameof(id));
 
-      dynamic jsonObj = new ExpandoObject();
-      jsonObj.stream = new ExpandoObject();
-      jsonObj.stream.active = active;
+      JObject jsonObj = new JObject();
+      jsonObj.Add("stream", JToken.FromObject(new { active = true }));
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
