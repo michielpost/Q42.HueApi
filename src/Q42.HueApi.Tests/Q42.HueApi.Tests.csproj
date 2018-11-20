@@ -83,7 +83,6 @@
     <Compile Include="GroupTest.cs" />
     <Compile Include="LightsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SSDPBridgeDiscoveryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

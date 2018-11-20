@@ -104,7 +104,7 @@ namespace Q42.HueApi.UniversalWindows.Sample.ViewModel
       _hueClient.SendCommandAsync(new LightCommand() { Alert = Alert.Once }, new[] { id });
     }
 
-    IBridgeLocator ssdpLocator = new SSDPBridgeLocator();
+    IBridgeLocator ssdpLocator = new HttpBridgeLocator();
 
     LocalHueClient _hueClient;
 
