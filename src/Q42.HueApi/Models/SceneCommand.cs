@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -27,13 +27,12 @@ namespace Q42.HueApi
     /// <summary>
     /// Scene ID to activate
     /// </summary>
-    [DataMember (Name = "scene")]
+    [DataMember(Name = "scene")]
     public string Scene { get; set; }
 
+    [DataMember(Name = "storelightstate")]
+    public bool? StoreLightState { get; set; }
 
-	[DataMember(Name = "storelightstate")]
-	public bool? StoreLightState { get; set; }
-
-	}
+  }
 
 }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
@@ -68,8 +68,14 @@ namespace Q42.HueApi.Models
 		[DataMember(Name = "lightstates")]
 		public Dictionary<string, State> LightStates { get; set; }
 
+    [DataMember(Name = "type")]
+    public string Type { get; set; }
 
-	}
+    [DataMember(Name = "group")]
+    public string Group { get; set; }
+
+
+  }
 
 	[DataContract]
 	public class SceneAppData

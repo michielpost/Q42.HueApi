@@ -64,6 +64,60 @@ namespace Q42.HueApi.Models.Groups
     [DataMember(Name = "stream")]
     public Stream Stream { get; set; }
 
+    [DataMember(Name = "sensors")]
+    public List<string> Sensors { get; set; }
+
+    [DataMember(Name = "presence")]
+    public GroupPresence Presence { get; set; }
+
+    [DataMember(Name = "lightlevel")]
+    public GroupLightLevel LightLevel { get; set; }
+
+  }
+
+  public class GroupPresence
+  {
+    [DataMember(Name = "State")]
+    public State State { get; set; }
+
+    [JsonProperty("lastupdated")]
+    public string Lastupdated { get; set; }
+
+    [JsonProperty("presence")]
+    public bool Presence { get; set; }
+
+    [JsonProperty("presence_all")]
+    public bool PresenceAll { get; set; }
+  }
+
+  public class GroupLightLevel
+  {
+    [DataMember(Name = "State")]
+    public SensorState State { get; set; }
+
+    [JsonProperty("lastupdated")]
+    public string Lastupdated { get; set; }
+
+    [JsonProperty("dark")]
+    public bool Dark { get; set; }
+
+    [JsonProperty("dark_all")]
+    public bool DarkAll { get; set; }
+
+    [JsonProperty("daylight")]
+    public bool Daylight { get; set; }
+
+    [JsonProperty("daylight_any")]
+    public bool DaylightAny { get; set; }
+
+    [JsonProperty("lightlevel")]
+    public int LightLevel { get; set; }
+
+    [JsonProperty("lightlevel_min")]
+    public int LightLevelMin { get; set; }
+
+    [JsonProperty("lightlevel_max")]
+    public int LightLevelMax { get; set; }
   }
 
   public class LightLocation : List<double>
