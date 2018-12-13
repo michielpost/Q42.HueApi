@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -93,5 +95,42 @@ namespace Q42.HueApi
 
     [DataMember(Name = "direction")]
     public string Direction { get; set; }
+
+    [DataMember(Name = "startup")]
+    public LightStartup Startup { get; set; }
+  }
+
+  [DataContract]
+  public class LightStartup
+  {
+    [DataMember(Name = "mode")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public StartupMode? Mode { get; set; }
+
+    [DataMember(Name = "configured")]
+    public bool? Configured { get; set; }
+
+    /// <summary>
+    /// Only bri, xy, ct properties are used
+    /// </summary>
+    [DataMember(Name = "customsettings")]
+    public LightCommand CustomSettings { get; set; }
+  }
+
+  /// <summary>
+  /// Defined on https://developers.meethue.com/develop/hue-api/supported-devices/
+  /// </summary>
+  public enum StartupMode
+  {
+    [EnumMember(Value = "safety")]
+    Safety,
+    [EnumMember(Value = "powerfail")]
+    Powerfail,
+    [EnumMember(Value = "lastonstate")]
+    LastOnState,
+    [EnumMember(Value = "custom")]
+    Custom,
+    [EnumMember(Value = "unknown")]
+    Unknown
   }
 }

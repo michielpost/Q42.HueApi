@@ -128,6 +128,14 @@ namespace Q42.HueApi.Interfaces
     Task<HueResults> SetLightNameAsync(string id, string name);
 
     /// <summary>
+    /// Update Light Config
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="config"></param>
+    /// <returns></returns>
+    Task<HueResults> LightConfigUpdate(string id, LightConfigUpdate config);
+
+    /// <summary>
     /// Send a raw string / json command
     /// </summary>
     /// <param name="command">json</param>

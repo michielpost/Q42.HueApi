@@ -88,6 +88,31 @@ namespace Q42.HueApi
     }
 
     /// <summary>
+    /// Sets the light name
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public async Task<HueResults> LightConfigUpdate(string id, LightConfigUpdate config)
+    {
+      if (id == null)
+        throw new ArgumentNullException(nameof(id));
+      if (config == null)
+        throw new ArgumentNullException(nameof(config));
+
+      CheckInitialized();
+
+      string jsonCommand = JsonConvert.SerializeObject(config, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var result = await client.PutAsync(new Uri(String.Format("{0}lights/{1}/config", ApiBase, id)), new JsonContent(jsonCommand)).ConfigureAwait(false);
+
+      var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+      return DeserializeDefaultHueResult(jsonResult);
+    }
+
+    /// <summary>
     /// Asynchronously gets all lights registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="Light"/>s registered with the bridge.</returns>

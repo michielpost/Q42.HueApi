@@ -87,9 +87,25 @@ namespace Q42.HueApi.Tests
     public async Task GetLightAsyncTest()
     {
       //Get single light
-      var result = await _client.GetLightAsync("19");
+      var result = await _client.GetLightAsync("2");
 
       Assert.IsNotNull(result);
+
+
+    }
+
+    [TestMethod]
+    public async Task UpdateLightConfigAsync()
+    {
+      //var updateResult = await _client.LightConfigUpdate("2", new Models.LightConfigUpdate() { Startup = new LightStartup() { Mode = StartupMode.LastOnState } });
+      var updateResult = await _client.LightConfigUpdate("2", new Models.LightConfigUpdate() { Startup = new LightStartup() {  CustomSettings = new LightCommand() { Brightness = 150 } } });
+      Assert.IsFalse(updateResult.Errors.Any());
+
+
+      //Get single light
+      var result = await _client.GetLightAsync("2");
+      Assert.IsNotNull(result);
+      Assert.AreEqual(result.Config.Startup.Mode, StartupMode.LastOnState);
 
 
     }
