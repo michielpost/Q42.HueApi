@@ -68,9 +68,15 @@ namespace Q42.HueApi.Models
 		[DataMember(Name = "lightstates")]
 		public Dictionary<string, State> LightStates { get; set; }
 
+    /// <summary>
+    /// null defaults to LightScene
+    /// </summary>
     [DataMember(Name = "type")]
-    public string Type { get; set; }
+    public SceneType? Type { get; set; }
 
+    /// <summary>
+    /// When using SceneType.GroupScene: group ID that a scene is linked to.
+    /// </summary>
     [DataMember(Name = "group")]
     public string Group { get; set; }
 
@@ -85,4 +91,12 @@ namespace Q42.HueApi.Models
 		[DataMember(Name = "data")]
 		public string Data { get; set; }
 	}
+
+  public enum SceneType
+  {
+    [EnumMember(Value = "LightScene")]
+    LightScene,
+    [EnumMember(Value = "GroupScene")]
+    GroupScene,
+  }
 }
