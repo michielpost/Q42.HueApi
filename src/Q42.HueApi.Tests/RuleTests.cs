@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
@@ -55,6 +55,25 @@ namespace Q42.HueApi.Tests
       };
 
       var result = await _client.CreateRule(rule);
+
+      Assert.IsNotNull(result);
+    }
+
+    [TestMethod]
+    public async Task UpdateRuleTest()
+    {
+      Rule rule = new Rule()
+      {
+        Id = "10",
+        Name = "test",
+        Actions = new List<InternalBridgeCommand>() {
+          new InternalBridgeCommand() { Address = "/groups/0/action", Body = new SceneCommand() { Scene = "S3" }, Method = HttpMethod.Put } ,
+          new InternalBridgeCommand() { Address = "/groups/1/action", Body = new LightCommand() { On = true }, Method = HttpMethod.Put }
+        },
+        Conditions = new List<RuleCondition>() { new RuleCondition() { Address = "/sensors/2/state/buttonevent", Operator = RuleOperator.Equal } }
+      };
+
+      var result = await _client.UpdateRule(rule);
 
       Assert.IsNotNull(result);
     }

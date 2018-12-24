@@ -119,9 +119,9 @@ namespace Q42.HueApi
 
       JObject jsonObj = new JObject();
       if (conditions != null && conditions.Any())
-        jsonObj.Add("conditions", JToken.FromObject(conditions));
+        jsonObj.Add("conditions", JToken.FromObject(conditions, new JsonSerializer { NullValueHandling = NullValueHandling.Ignore }));
       if (actions != null && actions.Any())
-        jsonObj.Add("actions", JToken.FromObject(actions));
+        jsonObj.Add("actions", JToken.FromObject(actions, new JsonSerializer { NullValueHandling = NullValueHandling.Ignore }));
 
       if (!string.IsNullOrEmpty(name))
         jsonObj.Add("name", name);
@@ -166,9 +166,9 @@ namespace Q42.HueApi
 
       JObject jsonObj = new JObject();
       if (conditions != null && conditions.Any())
-        jsonObj.Add("conditions", JToken.FromObject(conditions));
+        jsonObj.Add("conditions", JToken.FromObject(conditions, new JsonSerializer { NullValueHandling = NullValueHandling.Ignore }));
       if (actions != null && actions.Any())
-        jsonObj.Add("actions", JToken.FromObject(actions));
+        jsonObj.Add("actions", JToken.FromObject(actions, new JsonSerializer { NullValueHandling = NullValueHandling.Ignore }));
 
       if (!string.IsNullOrEmpty(name))
         jsonObj.Add("name", name);
