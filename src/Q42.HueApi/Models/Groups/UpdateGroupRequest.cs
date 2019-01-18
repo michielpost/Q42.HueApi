@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Q42.HueApi.Models.Groups
 {
   [DataContract]
-  internal class UpdateroupRequest
+  internal class UpdateGroupRequest
   {
     [DataMember(Name = "name")]
     public string Name { get; set; }

@@ -90,8 +90,10 @@ namespace Q42.HueApi.ColorConverters.Tests.HSBTest
 
 			var rgb = state.ToRgb();
 
-			
+      Assert.AreEqual(143d/255d, rgb.R, 0.002d);
+      Assert.AreEqual(188d/255d, rgb.G, 0.002d);
+      Assert.AreEqual(139d/255d, rgb.B, 0.002d);
 
-		}
+    }
 	}
 }

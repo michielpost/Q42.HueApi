@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
@@ -23,7 +23,7 @@ namespace Q42.HueApi.Tests
         public void AbsoluteTimeHueDateTimeType()
         {
             string timeValue = "\"2014-09-20T19:35:26\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
@@ -41,7 +41,7 @@ namespace Q42.HueApi.Tests
         public void RandomizedDateTimeType()
         {
             string timeValue = "\"2014-09-20T19:35:26A00:30:00\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
@@ -60,7 +60,7 @@ namespace Q42.HueApi.Tests
         public void RecurringDateTimeType()
         {
             string timeValue = "\"W32/T19:45:00\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
@@ -80,7 +80,7 @@ namespace Q42.HueApi.Tests
         public void RecurringRandomizedDateTimeType()
         {
             string timeValue = "\"W127/T19:45:00A00:30:00\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
@@ -100,7 +100,7 @@ namespace Q42.HueApi.Tests
         public void NormalTimerDateTimeType()
         {
             string timeValue = "\"PT19:45:00\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
@@ -119,7 +119,7 @@ namespace Q42.HueApi.Tests
         public void TimerRandomizedDateTimeType()
         {
             string timeValue = "\"PT19:45:00A00:30:00\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
@@ -138,7 +138,7 @@ namespace Q42.HueApi.Tests
         public void RecurringTimerDateTimeType()
         {
             string timeValue = "\"R65/PT19:45:00\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
@@ -160,7 +160,7 @@ namespace Q42.HueApi.Tests
         public void RecurringTimerRandomizedDateTimeType()
         {
             string timeValue = "\"R65/PT19:45:00A00:30:00\"";
-            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"time\": " + timeValue + "}";
+            string jsonString = "{ \"name\": \"some name\",\"description\": \"\",\"localtime\": " + timeValue + "}";
 
             Schedule schedule = JsonConvert.DeserializeObject<Schedule>(jsonString);
 
