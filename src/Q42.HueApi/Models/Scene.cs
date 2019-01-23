@@ -56,7 +56,8 @@ namespace Q42.HueApi.Models
 		public int? Version { get; set; }
 
 		[DataMember(Name = "lastupdated")]
-		public DateTime? LastUpdated { get; set; }
+    [JsonConverter(typeof(NullableDateTimeConverter))]
+    public DateTime? LastUpdated { get; set; }
 
 		[DataMember(Name = "storelightstate")]
 		public bool? StoreLightState { get; set; }

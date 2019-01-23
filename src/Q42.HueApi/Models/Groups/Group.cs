@@ -81,7 +81,8 @@ namespace Q42.HueApi.Models.Groups
     public State State { get; set; }
 
     [JsonProperty("lastupdated")]
-    public string Lastupdated { get; set; }
+    [JsonConverter(typeof(NullableDateTimeConverter))]
+    public DateTime? Lastupdated { get; set; }
 
     [JsonProperty("presence")]
     public bool Presence { get; set; }
@@ -96,7 +97,8 @@ namespace Q42.HueApi.Models.Groups
     public SensorState State { get; set; }
 
     [JsonProperty("lastupdated")]
-    public string Lastupdated { get; set; }
+    [JsonConverter(typeof(NullableDateTimeConverter))]
+    public DateTime? Lastupdated { get; set; }
 
     [JsonProperty("dark")]
     public bool Dark { get; set; }

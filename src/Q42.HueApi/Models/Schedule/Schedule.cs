@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
@@ -30,12 +30,14 @@ namespace Q42.HueApi.Models
     public HueDateTime LocalTime { get; set; }
     
     [DataMember(Name = "created")]
+    [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? Created { get; set; }
 
     /// <summary>
     /// UTC time that the timer was started. Only provided for timers.
     /// </summary>
     [DataMember(Name = "starttime")]
+    [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? StartTime { get; set; }
 
     //TODO: Create Enum with enabled and disabled option

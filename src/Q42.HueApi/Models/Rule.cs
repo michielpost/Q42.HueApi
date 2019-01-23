@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,11 @@ namespace Q42.HueApi.Models
     public string Name { get; set; }
 
     [DataMember(Name = "Lasttriggered")]
-    public string LastTriggered { get; set; } //Can be "none", so don't convert to DateTime
+    [JsonConverter(typeof(NullableDateTimeConverter))]
+    public DateTime? LastTriggered { get; set; } //Can be "none", so don't convert to DateTime
 
     [DataMember(Name = "creationtime")]
+    [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? CreationTime { get; set; }
 
     [DataMember(Name = "timestriggered")]

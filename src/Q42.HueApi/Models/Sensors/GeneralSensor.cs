@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -48,6 +48,6 @@ namespace Q42.HueApi.Models.Sensors
 
 	public interface GeneralSensorState
 	{
-		string Lastupdated { get; set; }
+		DateTime? Lastupdated { get; set; }
 	}
 }

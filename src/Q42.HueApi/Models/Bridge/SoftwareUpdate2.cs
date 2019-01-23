@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -30,6 +31,7 @@ namespace Q42.HueApi
     /// Timestamp of last change in system configuration
     /// </summary>
     [DataMember(Name = "lastchange")]
+    [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTimeOffset? LastChange { get; set; }
 
     [DataMember(Name = "autoinstall")]
@@ -47,6 +49,7 @@ namespace Q42.HueApi
     /// Time of last software update.
     /// </summary>
     [DataMember(Name = "lastinstall")]
+    [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTimeOffset? LastInstall { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
