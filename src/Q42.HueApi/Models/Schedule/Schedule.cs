@@ -1,12 +1,7 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models
 {
@@ -40,14 +35,13 @@ namespace Q42.HueApi.Models
     [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? StartTime { get; set; }
 
-    //TODO: Create Enum with enabled and disabled option
     /// <summary>
     /// "enabled"  Schedule is enabled
     /// "disabled"  Schedule is disabled by user.
     /// Application is only allowed to set “enabled” or “disabled”. Disabled causes a timer to reset when activated (i.e. stop & reset). “enabled” when not provided on creation.
     /// </summary>
     [DataMember(Name = "status")]
-    public string Status { get; set; }
+    public ScheduleStatus? Status { get; set; }
 
     /// <summary>
     /// If set to true, the schedule will be removed automatically if expired, if set to false it will be disabled. Default is true
@@ -57,4 +51,11 @@ namespace Q42.HueApi.Models
 
   }
 
+  public enum ScheduleStatus
+  {
+    [EnumMember(Value = "enabled")]
+    Enabled,
+    [EnumMember(Value = "disabled")]
+    Disabled,
+  }
 }
