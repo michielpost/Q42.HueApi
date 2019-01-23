@@ -71,6 +71,7 @@
     <Compile Include="CapabilitiesTest.cs" />
     <Compile Include="Entertainment\RegisterEntertainmentTests.cs" />
     <Compile Include="HueApiTests.cs" />
+    <Compile Include="NullableDateTimeConverterTests.cs" />
     <Compile Include="Remote\RemoteLightsTests.cs" />
     <Compile Include="RuleTests.cs" />
     <Compile Include="Schedule-GenericScheduleCommandTests.cs" />
