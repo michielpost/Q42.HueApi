@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Q42.HueApi.Models;
 using System;
 using Q42.HueApi.Models.Bridge;
+using Q42.HueApi.Converters;
 
 namespace Q42.HueApi
 {
@@ -35,10 +36,9 @@ namespace Q42.HueApi
     [DataMember(Name = "gateway")]
     public string Gateway { get; set; }
 
-    //Cant be a DateTime? because when value is not available, HueBridge sends value "none"
-    //TODO: Create custom json deserializer
     [DataMember(Name = "UTC")]
-    public string Utc { get; set; }
+    [JsonConverter(typeof(NullableDateTimeConverter))]
+    public DateTime? Utc { get; set; }
 
     [DataMember(Name = "swversion")]
     public string SoftwareVersion { get; set; }
@@ -65,10 +65,9 @@ namespace Q42.HueApi
     [DataMember(Name = "apiversion")]
     public string ApiVersion { get; set; }
 
-    //Cant be a DateTime? because when value is not available, HueBridge sends value "none"
-    //TODO: Create custom json deserializer
     [DataMember(Name = "localtime")]
-    public string LocalTime { get; set; }
+    [JsonConverter(typeof(NullableDateTimeConverter))]
+    public DateTime? LocalTime { get; set; }
 
     [DataMember(Name = "timezone")]
     public string TimeZone { get; set; }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
+using Q42.HueApi.Converters;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Sensors.CLIP;
 using Q42.HueApi.Models.Sensors.ZigBee;
@@ -50,8 +51,10 @@ namespace Q42.HueApi.Models
 		
 		[JsonProperty("swconfigid")]
 		public string SwConfigId { get; set; }
+
 		[JsonProperty("swversion")]
 		public string SwVersion { get; set; }
+
 		[JsonProperty("type")]
 		public string Type { get; set; }
 
@@ -84,11 +87,13 @@ namespace Q42.HueApi.Models
 
 		[JsonProperty("flag")]
 		public bool? Flag { get; set; }
+
 		[JsonProperty("humidity")]
 		public int? Humidity { get; set; }
 
 		[JsonProperty("lastupdated")]
-		public string Lastupdated { get; set; }
+    [JsonConverter(typeof(NullableDateTimeConverter))]
+    public DateTime? Lastupdated { get; set; }
 
 		[JsonProperty("lightlevel")]
 		public long? LightLevel { get; set; }

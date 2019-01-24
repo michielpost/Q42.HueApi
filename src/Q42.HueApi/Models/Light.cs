@@ -64,6 +64,7 @@ namespace Q42.HueApi
   {
     [DataMember(Name = "state")]
     public string State { get; set; }
+
     [DataMember(Name = "lastinstall")]
     public DateTime? Lastinstall { get; set; }
   }
