@@ -57,8 +57,8 @@ entLayer.SetState(CancellationToken.None, new RGBColor("FF0000"), 1, TimeSpan.Fr
 ### Basics for a single light
 ```cs
 //The EntertainmentLayer contains all the lights, you can make subselections
-var light1 = baseEntLayer.Where(x => x.Id == 1).FirstOrDefault();
-var lightsOnRightSide = baseEntLayer.GetRight();
+var light1 = entLayer.Where(x => x.Id == 1).FirstOrDefault();
+var lightsOnRightSide = entLayer.GetRight();
 
 //Change the color of the single light
 light1.SetColor(CancellationToken.None, new RGBColor("FF0000"));
