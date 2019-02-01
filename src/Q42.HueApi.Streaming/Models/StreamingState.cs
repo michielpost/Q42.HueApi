@@ -11,23 +11,41 @@ namespace Q42.HueApi.Streaming.Models
   /// </summary>
   public class StreamingState : EntertainmentState
   {
-    public byte[] ToByteArray()
+    public byte[] ToByteArray(StreamingColorMode colorMode)
     {
       IsDirty = false;
-
-      byte red = (byte)(RGBColor.R * Brightness * 255);
-      byte green = (byte)(RGBColor.G * Brightness * 255);
-      byte blue = (byte)(RGBColor.B * Brightness * 255);
-
       List<byte> result = new List<byte>();
-      result.Add(red);
-      result.Add(red);
-      result.Add(green);
-      result.Add(green);
-      result.Add(blue);
-      result.Add(blue);
+
+      if (colorMode == StreamingColorMode.RGB)
+      {
+
+        byte red = (byte)(RGBColor.R * Brightness * 255);
+        byte green = (byte)(RGBColor.G * Brightness * 255);
+        byte blue = (byte)(RGBColor.B * Brightness * 255);
+
+        result.Add(red);
+        result.Add(red);
+        result.Add(green);
+        result.Add(green);
+        result.Add(blue);
+        result.Add(blue);
+
+      }
+      else if(colorMode == StreamingColorMode.XY)
+      {
+        double maxValue = 65535;
+        var x = BitConverter.GetBytes(this.ColorCoordinates[0] * maxValue‭‬);
+        var y= BitConverter.GetBytes(this.ColorCoordinates[1] * maxValue‭‬);
+        var bri = BitConverter.GetBytes(this.Brightness * maxValue‭‬);
+
+        result.AddRange(x);
+        result.AddRange(y);
+        result.AddRange(bri);
+
+      }
 
       return result.ToArray();
+
     }
   }
 }

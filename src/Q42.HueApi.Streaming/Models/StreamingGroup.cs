@@ -62,7 +62,7 @@ namespace Q42.HueApi.Streaming.Models
       return layer;
     }
 
-    internal static List<byte[]> GetCurrentStateAsByteArray(IEnumerable<IEnumerable<StreamingLight>> chunks)
+    internal static List<byte[]> GetCurrentStateAsByteArray(IEnumerable<IEnumerable<StreamingLight>> chunks, StreamingColorMode colorMode)
     {
       //Nothing to update
       if (!chunks.Any())
@@ -78,7 +78,7 @@ namespace Q42.HueApi.Streaming.Models
         0x01, 0x00, //version 1.0
         0x01, //sequence number 1
         0x00, 0x00, //reserved
-        0x00, //color mode RGB
+        colorMode == StreamingColorMode.RGB ? (byte)0x00 : (byte)0x00, //color mode RGB or XY
         0x00, //OR 0x01, //linear filter
         //0x00, 0x00, 0x01, //light 1
         //0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -94,7 +94,7 @@ namespace Q42.HueApi.Streaming.Models
         //Add state of lights to message
         foreach (var light in chunk)
         {
-          resultLightState.AddRange(light.GetState());
+          resultLightState.AddRange(light.GetState(colorMode));
         }
 
         result.Add(resultLightState.ToArray());

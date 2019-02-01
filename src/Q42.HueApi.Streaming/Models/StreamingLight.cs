@@ -28,7 +28,7 @@ namespace Q42.HueApi.Streaming.Models
       LightLocation = location;
     }
 
-    internal IEnumerable<byte> GetState()
+    internal IEnumerable<byte> GetState(StreamingColorMode colorMode)
     {
       List<byte> result = new List<byte>();
 
@@ -38,7 +38,7 @@ namespace Q42.HueApi.Streaming.Models
       result.Add(deviceType);
       result.Add(0x00);
       result.Add(this.Id);
-      result.AddRange(this.State.ToByteArray());
+      result.AddRange(this.State.ToByteArray(colorMode));
 
       return result;
     }

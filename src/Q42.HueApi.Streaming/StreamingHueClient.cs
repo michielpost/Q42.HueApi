@@ -25,6 +25,7 @@ namespace Q42.HueApi.Streaming
     private DtlsTransport _dtlsTransport;
     private UdpTransport _udp;
     private bool _simulator;
+    private StreamingColorMode _colorMode;
 
     private Socket _socket;
     private ILocalHueClient _localHueClient;
@@ -32,11 +33,12 @@ namespace Q42.HueApi.Streaming
 
     public ILocalHueClient LocalHueClient => _localHueClient;
 
-    public StreamingHueClient(string ip, string appKey, string clientKey)
+    public StreamingHueClient(string ip, string appKey, string clientKey, StreamingColorMode colorMode = StreamingColorMode.RGB)
     {
       _ip = ip;
       _appKey = appKey;
       _clientKey = clientKey;
+      _colorMode = colorMode;
 
       _localHueClient = new LocalHueClient(ip, appKey, clientKey);
 
@@ -159,7 +161,7 @@ namespace Q42.HueApi.Streaming
 
     protected virtual void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)
     {
-      var msg = StreamingGroup.GetCurrentStateAsByteArray(chunks);
+      var msg = StreamingGroup.GetCurrentStateAsByteArray(chunks, _colorMode);
       Send(msg);
     }
 
