@@ -54,6 +54,19 @@ entLayer.SetColor(CancellationToken.None, new RGBColor("FF0000"));
 entLayer.SetState(CancellationToken.None, new RGBColor("FF0000"), 1, TimeSpan.FromSeconds(1));
 ```
 
+### Basics for a single light
+```cs
+//The EntertainmentLayer contains all the lights, you can make subselections
+var light1 = baseEntLayer.Where(x => x.Id == 1).FirstOrDefault();
+var lightsOnRightSide = baseEntLayer.GetRight();
+
+//Change the color of the single light
+light1.SetColor(CancellationToken.None, new RGBColor("FF0000"));
+
+//Change the subgroup of lights on the right side
+lightsOnRightSide.SetColor(CancellationToken.None, new RGBColor("FF0000"));
+```
+
 ### Effects
 Philips Hue defines different types of effects. Read about them here:
 https://developers.meethue.com/documentation/hue-edk-effect-creation
