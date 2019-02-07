@@ -19,50 +19,65 @@ Some basic usage examples
 ### Bridge
 Before you can communicate with the Philips Hue Bridge, you need to find the bridge and register your application:
 
+```cs
 	IBridgeLocator locator = new HttpBridgeLocator();
-	
+
 	//For Windows 8 and .NET45 projects you can use the SSDPBridgeLocator which actually scans your network. 
 	//See the included BridgeDiscoveryTests and the specific .NET and .WinRT projects
-    IEnumerable<string> bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+	IEnumerable<string> bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+```
 	
 Register your application
 	
+```cs
 	ILocalHueClient client = new LocalHueClient("ip");
 	//Make sure the user has pressed the button on the bridge before calling RegisterAsync
 	//It will throw an Exception if the user did not press the button
 	var appKey = await client.RegisterAsync("mypersonalappname", "mydevicename");
 	//Save the app key for later use
-	
+```
+
 If you already registered an appname, you can initialize the HueClient with the app's key:	
 
+```cs
 	client.Initialize("mypersonalappkey");
+```
 
 ### Control the lights
 Main usage of this library is to be able to control your lights. We use a LightCommand for that. A LightCommand can be send to one or more / multiple lights. A LightCommand can hold a color, effect, on/off etc.
 
+```cs
 	var command = new LightCommand();
 	command.On = true;
+```
 	
 There are some helpers to set a color on a command:
 	
+```cs
 	//Turn the light on and set a Hex color for the command (see the section about Color Converters)
     command.TurnOn().SetColor(new RGBColor("FF00AA"))
-	
-LightCommands also support Effects and Alerts
+```
 
+LightCommands also support Effects and Alerts
+```cs
 	//Blink once
 	command.Alert = Alert.Once;
 	
 	//Or start a colorloop
 	command.Effect = Effect.ColorLoop;
-	
+```
+
 Once you have composed your command, send it to one or more lights
 
+```cs
 	client.SendCommandAsync(command, new List<string> { "1" });
-	
+```
+
 Or send it to all lights
 
+```cs
 	client.SendCommandAsync(command);
+```
 
 ### Color Conversion
 The Philips Hue lights work with Brightness, Saturation, Hue and X, Y properties. More info can be found in the Philips Hue Developer documentation: http://www.developers.meethue.com/documentation/core-concepts#color_gets_more_complicated
