@@ -28,6 +28,8 @@ Before you can communicate with the Philips Hue Bridge, you need to find the bri
 Register your application
 	
 	ILocalHueClient client = new LocalHueClient("ip");
+	//Make sure the user has pressed the button on the bridge before calling RegisterAsync
+	//It will throw an Exception if the user did not press the button
 	var appKey = await client.RegisterAsync("mypersonalappname", "mydevicename");
 	//Save the app key for later use
 	
@@ -49,10 +51,10 @@ There are some helpers to set a color on a command:
 LightCommands also support Effects and Alerts
 
 	//Blink once
-	command.Alert = Alerts.Once;
+	command.Alert = Alert.Once;
 	
 	//Or start a colorloop
-	command.Effect = Effects.ColorLoop;
+	command.Effect = Effect.ColorLoop;
 	
 Once you have composed your command, send it to one or more lights
 
