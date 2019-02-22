@@ -47,7 +47,8 @@ namespace Q42.HueApi.Streaming
     public void Close()
     {
       _dtlsTransport?.Close();
-      _socket.Disconnect(true);
+      _socket.Shutdown(SocketShutdown.Both);
+      _socket.Close();
     }
 
 
