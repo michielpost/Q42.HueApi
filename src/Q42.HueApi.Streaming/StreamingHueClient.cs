@@ -85,7 +85,7 @@ namespace Q42.HueApi.Streaming
     /// <param name="cancellationToken"></param>
     /// <param name="frequency"></param>
     /// <param name="onlySendDirtyStates">Only send light states that have been changed since last update</param>
-    public void AutoUpdate(StreamingGroup streamingGroup, CancellationToken cancellationToken, int frequency = 50, bool onlySendDirtyStates = false)
+    public Task AutoUpdate(StreamingGroup streamingGroup, CancellationToken cancellationToken, int frequency = 50, bool onlySendDirtyStates = false)
     {
       if (!_simulator)
       {
@@ -97,7 +97,7 @@ namespace Q42.HueApi.Streaming
 
       var waitTime = TimeSpan.FromMilliseconds(TimeSpan.FromSeconds(1).TotalMilliseconds / frequency);
 
-      Task.Run(() =>
+      return Task.Run(() =>
       {
         int missedMessages = 0;
 #if DEBUG
