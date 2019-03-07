@@ -11,7 +11,7 @@
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>philips hue lights entertainment</PackageTags>
     <PackageId>Q42.HueApi.Entertainment</PackageId>
-    <Version>3.8.2</Version>
+    <Version>3.8.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
