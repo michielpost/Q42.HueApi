@@ -15,9 +15,8 @@ namespace Q42.HueApi.Streaming.Models
   {
     private static int _updateFrequencyMs = 50; //Max update per ms
 
-    private RGBColor? _targetRgb;
-    private double? _targetBri;
-    private TimeSpan _timeSpan;
+    private readonly TimeSpan _rgbTimeSpan;
+    private readonly TimeSpan _briTimeSpan;
 
     /// <summary>
     /// Delta between TargetRgb and StartRgb
@@ -33,6 +32,20 @@ namespace Q42.HueApi.Streaming.Models
 
     private RGBColor _startRgb;
     private double _startBri;
+
+    public RGBColor? TargetRgb { get; }
+
+    public double? TargetBri { get; }
+
+    public TimeSpan ElapsedTime => sw.Elapsed;
+
+    public TimeSpan RgbRemainingTime => _rgbTimeSpan - ElapsedTime;
+
+    public TimeSpan BrightnessRemainingTime => _briTimeSpan - ElapsedTime;
+
+    public bool IsBrightnessFinished { get; private set; }
+
+    public bool IsRgbFinished { get; private set; }
 
     public bool IsFinished { get; set; }
 
@@ -54,18 +67,58 @@ namespace Q42.HueApi.Streaming.Models
 
     public Transition(RGBColor? targetRgb, double? targetBri, TimeSpan timeSpan)
     {
-      _targetRgb = targetRgb;
-      _targetBri = targetBri;
-      _timeSpan = timeSpan;
+      TargetRgb = targetRgb;
+      TargetBri = targetBri;
+      _rgbTimeSpan = timeSpan;
+      _briTimeSpan = timeSpan;
+
+      IsRgbFinished = !targetRgb.HasValue;
+      IsBrightnessFinished = !targetBri.HasValue;
+    }
+
+    public Transition(RGBColor targetRgb, double targetBri, TimeSpan rgbTimeSpan, TimeSpan briTimeSpan)
+    {
+      TargetRgb = targetRgb;
+      TargetBri = targetBri;
+      _rgbTimeSpan = rgbTimeSpan;
+      _briTimeSpan = briTimeSpan;
+    }
+
+    public Transition(RGBColor targetRgb, TimeSpan rgbTimeSpan)
+    {
+      TargetRgb = targetRgb;
+      TargetBri = null;
+      _rgbTimeSpan = rgbTimeSpan;
+      _briTimeSpan = TimeSpan.Zero;
+
+      IsBrightnessFinished = true;
+    }
+
+    public Transition(double targetBri, TimeSpan briTimeSpan)
+    {
+      TargetRgb = null;
+      TargetBri = targetBri;
+      _rgbTimeSpan = TimeSpan.Zero;
+      _briTimeSpan = briTimeSpan;
+
+      IsRgbFinished = true;
     }
 
     public void Start(RGBColor startRgb, double startBrightness, CancellationToken cancellationToken)
     {
       //Update should happen fast, so dont move between values but just set them
-      if (_timeSpan.TotalMilliseconds < (_updateFrequencyMs))
+      if (!TargetRgb.HasValue || _rgbTimeSpan.TotalMilliseconds < (_updateFrequencyMs))
       {
-        SetFinalState(_targetRgb, _targetBri);
+        SetFinalState(TargetRgb ?? startRgb, null);
+        IsRgbFinished = true;
+      }
 
+      if (!TargetBri.HasValue || _briTimeSpan.TotalMilliseconds < (_updateFrequencyMs)) {
+        SetFinalState(null, TargetBri ?? startBrightness);
+        IsBrightnessFinished = true;
+      }
+
+      if (IsRgbFinished && IsBrightnessFinished) {
         IsFinished = true;
         return;
       }
@@ -74,18 +127,23 @@ namespace Q42.HueApi.Streaming.Models
       _startRgb = startRgb;
       _startBri = startBrightness;
 
-      _deltaBri = _targetBri.HasValue ? _targetBri - _startBri : null;
-      if(_targetRgb.HasValue)
+      _deltaBri = TargetBri.HasValue ? TargetBri - _startBri : null;
+      if(TargetRgb.HasValue)
       {
-        _deltaR = _targetRgb.Value.R - _startRgb.R;
-        _deltaG= _targetRgb.Value.G - _startRgb.G;
-        _deltaB = _targetRgb.Value.B - _startRgb.B;
+        _deltaR = TargetRgb.Value.R - _startRgb.R;
+        _deltaG= TargetRgb.Value.G - _startRgb.G;
+        _deltaB = TargetRgb.Value.B - _startRgb.B;
       }
 
-      TransitionState.SetRGBColor(startRgb);
-      TransitionState.SetBrightness(startBrightness);
-      TransitionState.IsDirty = false;
-
+      if (!IsRgbFinished) {
+        TransitionState.SetRGBColor(startRgb);
+        TransitionState.IsDirty = false;
+      }
+      if (!IsBrightnessFinished) {
+        TransitionState.SetBrightness(startBrightness);
+        TransitionState.IsDirty = false;
+      }
+      
       sw.Start();
     }
 
@@ -97,12 +155,21 @@ namespace Q42.HueApi.Streaming.Models
       if (IsFinished)
         return;
 
-      var progress = sw.Elapsed.TotalMilliseconds / this._timeSpan.TotalMilliseconds;
+      var rgbProgress = sw.Elapsed.TotalMilliseconds / this._rgbTimeSpan.TotalMilliseconds;
+      var briProgress = sw.Elapsed.TotalMilliseconds / this._briTimeSpan.TotalMilliseconds;
 
-      if (progress > 1)
+      if (!IsRgbFinished && rgbProgress > 1)
       {
-        SetFinalState(_targetRgb, _targetBri);
+        SetFinalState(TargetRgb, null);
+        IsRgbFinished = true;
+      }
 
+      if (!IsBrightnessFinished && briProgress > 1) {
+        SetFinalState(null, TargetBri);
+        IsBrightnessFinished = true;
+      }
+
+      if (IsRgbFinished && IsBrightnessFinished) {
         sw.Stop();
         IsFinished = true;
         return;
@@ -111,18 +178,18 @@ namespace Q42.HueApi.Streaming.Models
       //TODO: Apply easing function to progress
 
       //Apply progress to Delta
-      if (_deltaR.HasValue)
+      if (_deltaR.HasValue && !IsRgbFinished)
       {
         TransitionState.SetRGBColor(new RGBColor(
-                _startRgb.R + (_deltaR.Value * progress),
-                _startRgb.G + (_deltaG.Value * progress),
-                _startRgb.B + (_deltaB.Value * progress)
+                _startRgb.R + (_deltaR.Value * rgbProgress),
+                _startRgb.G + (_deltaG.Value * rgbProgress),
+                _startRgb.B + (_deltaB.Value * rgbProgress)
                ));
       }
 
-      if (_deltaBri.HasValue)
+      if (_deltaBri.HasValue && !IsBrightnessFinished)
       {
-        TransitionState.SetBrightness(_startBri + (_deltaBri.Value * progress));
+        TransitionState.SetBrightness(_startBri + (_deltaBri.Value * briProgress));
       }
     }
    
