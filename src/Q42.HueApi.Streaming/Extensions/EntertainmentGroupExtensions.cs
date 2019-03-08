@@ -53,35 +53,20 @@ namespace Q42.HueApi.Streaming.Extensions
 
   public static class EntertainmentGroupExtensions
   {
-    public static IEnumerable<EntertainmentLight> GetLeft(this IEnumerable<EntertainmentLight> group)
-    {
-      return group.Where(x => x.LightLocation.IsLeft);
-    }
+    public static IEnumerable<EntertainmentLight> GetLeft(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsLeft);
 
-    public static IEnumerable<EntertainmentLight> GetRight(this IEnumerable<EntertainmentLight> group)
-    {
-      return group.Where(x => x.LightLocation.IsRight);
-    }
+    public static IEnumerable<EntertainmentLight> GetRight(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsRight);
 
-    public static IEnumerable<EntertainmentLight> GetFront(this IEnumerable<EntertainmentLight> group)
-    {
-      return group.Where(x => x.LightLocation.IsFront);
-    }
+    public static IEnumerable<EntertainmentLight> GetFront(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsFront);
 
-    public static IEnumerable<EntertainmentLight> GetBack(this IEnumerable<EntertainmentLight> group)
-    {
-      return group.Where(x => x.LightLocation.IsBack);
-    }
+    public static IEnumerable<EntertainmentLight> GetBack(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsBack);
 
     /// <summary>
     /// X > -0.1 && X < 0.1
     /// </summary>
     /// <param name="group"></param>
     /// <returns></returns>
-    public static IEnumerable<EntertainmentLight> GetCenter(this IEnumerable<EntertainmentLight> group)
-    {
-      return group.Where(x => x.LightLocation.IsCenter);
-    }
+    public static IEnumerable<EntertainmentLight> GetCenter(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsCenter);
 
     /// <summary>
     /// Apply the effectFunction repeatedly to a group of lights
@@ -225,7 +210,7 @@ namespace Q42.HueApi.Streaming.Extensions
         if (mode == IteratorEffectMode.AllIndividual)
         {
           List<Task> allIndividualTasks = new List<Task>();
-          foreach (var group in groups.Skip(reverse ? 1 : 0))
+          foreach (var group in groups.Skip(reverse ? 1 : 0).Where(x => x.Any()))
           {
             //Do not await, AllIndividual runs them all at the same time
             var t = group.IteratorEffect(cancellationToken, groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations);
@@ -236,7 +221,7 @@ namespace Q42.HueApi.Streaming.Extensions
         }
         else
         {
-          foreach (var group in groups.Skip(reverse ? 1 : 0))
+          foreach (var group in groups.Skip(reverse ? 1 : 0).Where(x => x.Any()))
           {
             await group.IteratorEffect(cancellationToken, groupFunction, secondaryMode, waitTime, maxIterations: secondaryMaxIterations).ConfigureAwait(false);
           }
@@ -288,6 +273,8 @@ namespace Q42.HueApi.Streaming.Extensions
       return group;
     }
 
+   
+
     /// <summary>
     /// 
     /// </summary>
@@ -300,8 +287,11 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <returns></returns>
     public static IEnumerable<EntertainmentLight> SetState(this IEnumerable<EntertainmentLight> group,
       CancellationToken cancellationToken,
-      RGBColor? rgb = null, double? brightness = null, TimeSpan transitionTime = default(TimeSpan), bool inSync = true)
+      RGBColor? rgb = null, double? brightness = null, TimeSpan transitionTime = default, bool inSync = true)
     {
+      if (!group.Any())
+        return group;
+
       //Re-use the same transition for all lights so transition is in sync. The transition will use the start rgb/bri from the first light in the group.
       if (inSync)
       {
@@ -316,7 +306,7 @@ namespace Q42.HueApi.Streaming.Extensions
         }
 
         //Start the transition
-        var firstLight = group.FirstOrDefault();
+        var firstLight = group.First();
         transition.Start(firstLight.State.RGBColor, firstLight.State.Brightness, cancellationToken);
       }
       else
@@ -326,6 +316,20 @@ namespace Q42.HueApi.Streaming.Extensions
           if (!cancellationToken.IsCancellationRequested)
             light.SetState(cancellationToken, rgb, brightness, transitionTime);
         }
+      }
+
+      return group;
+    }
+
+    public static IEnumerable<EntertainmentLight> SetState(this IEnumerable<EntertainmentLight> group, CancellationToken cancellationToken, RGBColor? rgb = null, TimeSpan rgbTimeSpan = default, double? brightness = null, TimeSpan briTimeSpan = default, bool overwriteExistingTransition = true)
+    {
+      if (!group.Any())
+        return group;
+
+      foreach (var light in group)
+      {
+        if (!cancellationToken.IsCancellationRequested)
+          light.SetState(cancellationToken, rgb, rgbTimeSpan, brightness, briTimeSpan, overwriteExistingTransition);
       }
 
       return group;

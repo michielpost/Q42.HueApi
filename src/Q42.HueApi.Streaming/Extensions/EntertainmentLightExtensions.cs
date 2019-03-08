@@ -18,7 +18,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="brightness">between 0 and 1</param>
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
-    public static void SetBrightness(this EntertainmentLight light, CancellationToken cancellationToken, double brightness, TimeSpan timeSpan = default(TimeSpan))
+    public static void SetBrightness(this EntertainmentLight light, CancellationToken cancellationToken, double brightness, TimeSpan timeSpan = default)
     {
       light.SetState(cancellationToken, null, brightness, timeSpan);
     }
@@ -31,7 +31,7 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <param name="timeSpan"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static void SetColor(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor rgb, TimeSpan timeSpan = default(TimeSpan))
+    public static void SetColor(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor rgb, TimeSpan timeSpan = default)
     {
       light.SetState(cancellationToken, rgb, null, timeSpan);
     }
@@ -53,6 +53,58 @@ namespace Q42.HueApi.Streaming.Extensions
       light.Transition = transition;
 
       //Start the transition
+      transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
+    }
+
+    //Source: https://github.com/Q42/Q42.HueApi/pull/174
+    public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor? rgb = null, TimeSpan rgbTimeSpan = default, double? brightness = null, TimeSpan briTimeSpan = default, bool overwriteExistingTransition = true)
+    {
+      if (light == null) throw new ArgumentNullException(nameof(light));
+
+      // No change in state required.
+      if (!rgb.HasValue && !brightness.HasValue) return;
+
+      var currentTransition = light.Transition;
+      bool hasExistingTransition = currentTransition != null && !currentTransition.IsFinished;
+      bool canCombineTransitions = hasExistingTransition &&
+                                   (!rgb.HasValue || !brightness.HasValue) &&
+                                   (!rgb.HasValue || !currentTransition.IsBrightnessFinished) &&
+                                   (!brightness.HasValue || !currentTransition.IsRgbFinished);
+
+      Transition transition;
+
+      // If we can't combine the existing transition (if there is one) with the new transition, start a fresh transition.
+      if (!canCombineTransitions || overwriteExistingTransition)
+      {
+        if (rgb.HasValue && brightness.HasValue)
+        {
+          transition = new Transition(rgb.Value, brightness.Value, rgbTimeSpan, briTimeSpan);
+        }
+        else if (rgb.HasValue)
+        {
+          transition = new Transition(rgb.Value, rgbTimeSpan);
+        }
+        else
+        {
+          transition = new Transition(brightness.Value, briTimeSpan);
+        }
+      }
+      else
+      {
+        // A transition is currently in progress, which we need to combine with the colour or brightness that was specified.
+        if (rgb.HasValue)
+        {
+          // Combine new colour transition with existing brightness transition.
+          transition = new Transition(rgb.Value, currentTransition.TargetBri.Value, rgbTimeSpan, currentTransition.BrightnessRemainingTime);
+        }
+        else
+        {
+          // Combine new brightness transition with existing colour transition.
+          transition = new Transition(currentTransition.TargetRgb.Value, brightness.Value, currentTransition.RgbRemainingTime, briTimeSpan);
+        }
+      }
+
+      light.Transition = transition;
       transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
     }
   }

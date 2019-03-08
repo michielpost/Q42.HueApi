@@ -46,12 +46,12 @@ namespace Q42.HueApi.Streaming.Sample
 
       CancellationTokenSource cst = new CancellationTokenSource();
 
-      Console.WriteLine("Blue line on 90 degree angle");
-      var blueLineEffect = new HorizontalScanLineEffect();
-      baseEntLayer.PlaceEffect(blueLineEffect);
-      blueLineEffect.Start();
-      cst = WaitCancelAndNext(cst);
-      blueLineEffect.Stop();
+      //Console.WriteLine("Blue line on 90 degree angle");
+      //var blueLineEffect = new HorizontalScanLineEffect();
+      //baseEntLayer.PlaceEffect(blueLineEffect);
+      //blueLineEffect.Start();
+      //cst = WaitCancelAndNext(cst);
+      //blueLineEffect.Stop();
 
       //Ref<int?> stepSize = 20;
       //blueLineEffect.Rotate(stepSize);
@@ -84,6 +84,19 @@ namespace Q42.HueApi.Streaming.Sample
 
       var quarter = new[] { baseEntLayer.GetLeft().GetFront(), baseEntLayer.GetLeft().GetBack(), baseEntLayer.GetRight().GetBack(), baseEntLayer.GetRight().GetFront() }.ToList();
 
+      baseEntLayer.SetState(cst.Token, new RGBColor("FFFFFF"), 1);
+      cst = WaitCancelAndNext(cst);
+      Console.WriteLine("Transition to red in 10 seconds");
+      baseEntLayer.SetState(cst.Token, new RGBColor("FF0000"), TimeSpan.FromSeconds(10));
+      Console.ReadLine();
+      Console.WriteLine("Transition to bri 0.25");
+      baseEntLayer.SetState(cst.Token, null, default, 0.25, TimeSpan.FromSeconds(1), true);
+      Console.ReadLine();
+      Console.WriteLine("Transition to bri 1");
+      baseEntLayer.SetState(cst.Token, new RGBColor("0000FF"), TimeSpan.FromSeconds(5), 1, TimeSpan.FromSeconds(1), false);
+      Console.ReadLine();
+
+      cst = WaitCancelAndNext(cst);
       Console.WriteLine("Random color All / All");
       quarter.SetRandomColor(cst.Token, IteratorEffectMode.All, IteratorEffectMode.All, waitTime: () => TimeSpan.FromMilliseconds(500));
       cst = WaitCancelAndNext(cst);
