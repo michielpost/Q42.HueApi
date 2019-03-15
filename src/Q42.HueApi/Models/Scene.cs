@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,7 @@ namespace Q42.HueApi.Models
     /// null defaults to LightScene
     /// </summary>
     [DataMember(Name = "type")]
+    [JsonConverter(typeof(StringEnumConverter))]
     public SceneType? Type { get; set; }
 
     /// <summary>

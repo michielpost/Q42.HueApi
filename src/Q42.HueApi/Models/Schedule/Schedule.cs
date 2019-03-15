@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
 using System.Runtime.Serialization;
@@ -41,6 +42,7 @@ namespace Q42.HueApi.Models
     /// Application is only allowed to set “enabled” or “disabled”. Disabled causes a timer to reset when activated (i.e. stop & reset). “enabled” when not provided on creation.
     /// </summary>
     [DataMember(Name = "status")]
+    [JsonConverter(typeof(StringEnumConverter))]
     public ScheduleStatus? Status { get; set; }
 
     /// <summary>

@@ -113,6 +113,7 @@ namespace Q42.HueApi.Tests
 			Schedule schedule = new Schedule();
 			schedule.Id = "1";
 			schedule.Name = "test";
+      schedule.Status = ScheduleStatus.Enabled;
 
 			await _client.UpdateScheduleAsync(schedule.Id, schedule);
 
