@@ -213,7 +213,9 @@ namespace Q42.HueApi.Models.Groups
 		[EnumMember(Value = "LightSource")]
 		LightSource,
     [EnumMember(Value = "Entertainment")]
-    Entertainment
+    Entertainment,
+    [EnumMember(Value = "Zone")]
+    Zone
   }
 
 	/// <summary>
@@ -260,7 +262,47 @@ namespace Q42.HueApi.Models.Groups
 		[EnumMember(Value = "Carport")]
 		Carport,
     [EnumMember(Value = "TV")]
-    TV
+    TV,
+    [EnumMember(Value = "Home")]
+    Home,
+    [EnumMember(Value = "Downstairs")]
+    Downstairs,
+    [EnumMember(Value = "Upstairs")]
+    Upstairs,
+    [EnumMember(Value = "Top floor")]
+    TopFloor,
+    [EnumMember(Value = "Attic")]
+    Attic,
+    [EnumMember(Value = "Guest room")]
+    GuestRoom,
+    [EnumMember(Value = "Staircase")]
+    Staircase,
+    [EnumMember(Value = "Lounge")]
+    Lounge,
+    [EnumMember(Value = "Man cave")]
+    ManCave,
+    [EnumMember(Value = "Computer")]
+    Computer,
+    [EnumMember(Value = "Studio")]
+    Studio,
+    [EnumMember(Value = "Music")]
+    Music,
+    [EnumMember(Value = "Reading")]
+    Reading,
+    [EnumMember(Value = "Closet")]
+    Closet,
+    [EnumMember(Value = "Storage")]
+    Storage,
+    [EnumMember(Value = "Laundry room")]
+    LaundryRoom,
+    [EnumMember(Value = "Balcony")]
+    Balcony,
+    [EnumMember(Value = "Porch")]
+    Porch,
+    [EnumMember(Value = "Barbecue")]
+    Barbecue,
+    [EnumMember(Value = "Pool")]
+    Pool
   }
 
   [DataContract]
