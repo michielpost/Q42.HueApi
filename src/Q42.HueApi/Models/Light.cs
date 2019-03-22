@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Q42.HueApi.Models.Gamut;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -81,8 +82,45 @@ namespace Q42.HueApi
   [DataContract]
   public class LightCapabilities
   {
+    [DataMember(Name = "certified")]
+    public bool Certified { get; set; }
+
+    [DataMember(Name = "control")]
+    public Control Control { get; set; }
+
     [DataMember(Name = "streaming")]
     public StreamingLightCapabilities Streaming { get; set; }
+  }
+
+  [DataContract]
+  public class Control
+  {
+    [DataMember(Name = "mindimlevel")]
+    public int? MinDimLevel { get; set; }
+
+    [DataMember(Name = "maxlumen")]
+    public int? MaxLumen { get; set; }
+
+    /// <summary>
+    /// A, B or C
+    /// </summary>
+    [DataMember(Name = "colorgamuttype")]
+    public string ColorGamutType { get; set; }
+
+    [DataMember(Name = "colorgamut")]
+    public CIE1931Gamut? ColorGamut { get; set; }
+
+    [DataMember(Name = "ct")]
+    public ColorTemperature ColorTemperature { get; set; }
+  }
+
+  [DataContract]
+  public class ColorTemperature
+  {
+    [DataMember(Name = "min")]
+    public int Min { get; set; }
+    [DataMember(Name = "max")]
+    public int Max { get; set; }
   }
 
   [DataContract]

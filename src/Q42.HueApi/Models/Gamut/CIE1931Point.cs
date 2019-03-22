@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.ColorConverters.OriginalWithModel
+namespace Q42.HueApi.Models.Gamut
 {
-	/// <summary>
-	/// Represents a point in CIE1931 color space.
-	/// </summary>
-	internal struct CIE1931Point
+  /// <summary>
+  /// Represents a point in CIE1931 color space.
+  /// </summary>
+  public struct CIE1931Point
 	{
 		/// <summary>
 		/// The D65 White Point.

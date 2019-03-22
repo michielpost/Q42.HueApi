@@ -1,5 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Q42.HueApi.ColorConverters.OriginalWithModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Q42.HueApi.ColorConverters.Gamut;
+using Q42.HueApi.Models.Gamut;
 using System;
 
 namespace Q42.HueApi.ColorConverters.Tests
@@ -17,12 +18,12 @@ namespace Q42.HueApi.ColorConverters.Tests
             foreach (string model in models)
             {
                 // Make sure that Philips' white point resolves to #FFFFFF for all lights.
-                var rgb = HueColorConverter.XYToRgb(CIE1931Point.PhilipsWhite, model);
+                var rgb = HueColorConverter.XYToRgb(CIE1931Point.PhilipsWhite, CIE1931Gamut.ForModel(model));
                 Assert.AreEqual(rgb.R, 1.0, 0.0001);
                 Assert.AreEqual(rgb.G, 1.0, 0.0001);
                 Assert.AreEqual(rgb.B, 1.0, 0.0001);
 
-                var xy = HueColorConverter.RgbToXY(new RGBColor(1.0, 1.0, 1.0), model);
+                var xy = HueColorConverter.RgbToXY(new RGBColor(1.0, 1.0, 1.0), CIE1931Gamut.ForModel(model));
                 AssertAreEqual(CIE1931Point.PhilipsWhite, xy, 0.0001);
             }
         }
@@ -51,8 +52,8 @@ namespace Q42.HueApi.ColorConverters.Tests
             // A color green outside Gamut A.
             CIE1931Point greenOutsideGamut = new CIE1931Point(0.21, 0.75);
 
-            var a = HueColorConverter.XYToRgb(gamutGreen, "LST001");
-            var b = HueColorConverter.XYToRgb(greenOutsideGamut, "LST001");
+            var a = HueColorConverter.XYToRgb(gamutGreen, CIE1931Gamut.ForModel("LST001"));
+            var b = HueColorConverter.XYToRgb(greenOutsideGamut, CIE1931Gamut.ForModel("LST001"));
 
             // Points should be equal, since the green outside the gamut should
             // be adjusted the the nearest green in-gamut.
@@ -76,7 +77,7 @@ namespace Q42.HueApi.ColorConverters.Tests
                 var referenceXy = ReferenceColorConverter.XyFromColor(red, green, blue);
 
                 // LCT001 uses Gamut B, which is the gamut used in the reference implementation.
-                var actualXy = HueColorConverter.RgbToXY(new RGBColor(red, green, blue), "LCT001");
+                var actualXy = HueColorConverter.RgbToXY(new RGBColor(red, green, blue), CIE1931Gamut.ForModel("LCT001"));
 
                 AssertAreEqual(referenceXy, actualXy, 0.0001);
             }
@@ -115,8 +116,8 @@ namespace Q42.HueApi.ColorConverters.Tests
                     || !ReferenceColorConverter.CheckPointInLampsReach(originalXy)
                     || !CIE1931Gamut.PhilipsWideGamut.Contains(originalXy));
 
-                RGBColor rgb = HueColorConverter.XYToRgb(originalXy, "LCT001");
-                var xy = HueColorConverter.RgbToXY(rgb, "LCT001");
+                RGBColor rgb = HueColorConverter.XYToRgb(originalXy, CIE1931Gamut.ForModel("LCT001"));
+                var xy = HueColorConverter.RgbToXY(rgb, CIE1931Gamut.ForModel("LCT001"));
                 
                 AssertAreEqual(originalXy, xy, 0.0001);
             }
@@ -139,8 +140,8 @@ namespace Q42.HueApi.ColorConverters.Tests
                 }
                 while (originalXy.x + originalXy.y >= 1.0);
 
-                RGBColor rgb = HueColorConverter.XYToRgb(originalXy, "LCT001");
-                var xy = HueColorConverter.RgbToXY(rgb, "LCT001");
+                RGBColor rgb = HueColorConverter.XYToRgb(originalXy, CIE1931Gamut.ForModel("LCT001"));
+                var xy = HueColorConverter.RgbToXY(rgb, CIE1931Gamut.ForModel("LCT001"));
 
                 // We expect a point that is both inside the lamp's gamut and the "wide gamut" 
                 // used for XYZ->RGB and RGB->XYZ conversion. 

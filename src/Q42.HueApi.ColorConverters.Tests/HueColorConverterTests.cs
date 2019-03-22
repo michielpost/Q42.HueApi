@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-using Q42.HueApi.ColorConverters.OriginalWithModel;
+using Q42.HueApi.Models.Gamut;
+using Q42.HueApi.ColorConverters.Gamut;
 
 namespace Q42.HueApi.ColorConverters.Tests
 {
@@ -32,7 +33,7 @@ namespace Q42.HueApi.ColorConverters.Tests
                 for (int y = 0; y < dimension; y++)
                 {
                     CIE1931Point point = new CIE1931Point(x / (dimension * 1.0), y / (dimension * 1.0));
-                    var rgb = HueColorConverter.XYToRgb(point, model);
+                    var rgb = HueColorConverter.XYToRgb(point, CIE1931Gamut.ForModel(model));
 
                     Color c;
                     if (point.x + point.y > 1.0)

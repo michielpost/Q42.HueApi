@@ -1,11 +1,12 @@
-﻿using Q42.HueApi.ColorConverters;
+using Q42.HueApi.ColorConverters;
+using Q42.HueApi.Models.Gamut;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.ColorConverters.OriginalWithModel
+namespace Q42.HueApi.ColorConverters.Gamut
 {
     /// <summary>
     /// Used to convert colors between XY and RGB
@@ -16,7 +17,7 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
     /// </remarks>
     internal static class HueColorConverter
     {
-		public static CIE1931Point RgbToXY(RGBColor color, string model)
+		public static CIE1931Point RgbToXY(RGBColor color, CIE1931Gamut? gamut)
 		{
             // Apply gamma correction. Convert non-linear RGB colour components
             // to linear color intensity levels.
@@ -61,13 +62,10 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
                 xyPoint = new CIE1931Point(X / (X + Y + Z), Y / (X + Y + Z));
             }
 
-            if (model != null)
+            if (gamut.HasValue)
             {
-                //Check if the given XY value is within the colourreach of our lamps.
-                CIE1931Gamut gamut = CIE1931Gamut.ForModel(model);
-
                 // The point, adjusted it to the nearest point that is within the gamut of the lamp, if neccessary.
-                return gamut.NearestContainedPoint(xyPoint);
+                return gamut.Value.NearestContainedPoint(xyPoint);
             }
             return xyPoint;
 		}
@@ -78,9 +76,9 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 		/// </summary>
 		/// <param name="state"></param>
 		/// <returns></returns>
-		public static string HexFromState(State state, string model)
+		public static string HexFromState(State state, CIE1931Gamut? gamut)
 		{
-			var rgb = RgbFromState(state, model);
+			var rgb = RgbFromState(state, gamut);
 
 			return rgb.ToHex();
 		}
@@ -90,7 +88,7 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 		/// </summary>
 		/// <param name="state"></param>
 		/// <returns></returns>
-		public static RGBColor RgbFromState(State state, string model)
+		public static RGBColor RgbFromState(State state, CIE1931Gamut? gamut)
 		{
 			if (state == null)
 				throw new ArgumentNullException(nameof(state));
@@ -98,22 +96,20 @@ namespace Q42.HueApi.ColorConverters.OriginalWithModel
 				return new RGBColor(0,0,0);
 			if (state.ColorCoordinates != null && state.ColorCoordinates.Length == 2) //Based on XY value
 			{
-				var color = XYToRgb(new CIE1931Point(state.ColorCoordinates[0], state.ColorCoordinates[1]), model);
+				var color = XYToRgb(new CIE1931Point(state.ColorCoordinates[0], state.ColorCoordinates[1]), gamut);
 				return color;
 			}
 
 			return new RGBColor(1, 1, 1); ;
 		}
 
-		public static RGBColor XYToRgb(CIE1931Point point, string model)
+		public static RGBColor XYToRgb(CIE1931Point point, CIE1931Gamut? gamut)
 		{
-            if (model != null)
+            if (gamut.HasValue)
             {
-                CIE1931Gamut gamut = CIE1931Gamut.ForModel(model);
-
                 // If the color is outside the lamp's gamut, adjust to the nearest color
                 // inside the lamp's gamut.
-                point = gamut.NearestContainedPoint(point);
+                point = gamut.Value.NearestContainedPoint(point);
             }
 
             // Also adjust it to be in the Philips "Wide Gamut" if not already.

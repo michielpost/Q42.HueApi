@@ -55,8 +55,8 @@
     <Compile Include="HSBTest\HSBTests.cs" />
     <Compile Include="HSBTest\StateExtensionsTests.cs" />
     <Compile Include="HueColorConverterTests.cs" />
-    <Compile Include="OriginalWithModel\ColorConverterTests-Arrays.cs" />
-    <Compile Include="OriginalWithModel\ColorConverterTests.cs" />
+    <Compile Include="Gamut\ColorConverterTests-Arrays.cs" />
+    <Compile Include="Gamut\ColorConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
