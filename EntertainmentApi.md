@@ -95,7 +95,7 @@ There IteratorEffect supports different `IteratorEffectMode`s:
 - Bouce: will apply the effect to each light in the list and goes backwards at the end of the list 
 - Single: will apply the effect to each light once
 - Random: will apply the effect to a random light
-- All: apply the effect to all lights in sync (recommanded over AllIndividual)
+- All: apply the effect to all lights in sync (recommended over AllIndividual)
 - AllIndividual: apply the effect to all lights and give each light a custom transition. Only needed when lights have different starting colors/brightness.
 
 An IteratorEffect can run on a list of EntertainmentLights, or a two dimensional list of EntertainmentLights for more advanced scenario's.
