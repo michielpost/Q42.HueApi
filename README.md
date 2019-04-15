@@ -4,14 +4,13 @@ Q42.HueApi
 Open source library for communication with the Philips Hue bridge.
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
-This Portable Library is compatible with: .Net45, Windows 8, Windows Phone 8, Windows 10 Universal Apps and the Xamarin Platform!
+This library targets `.netstandard2.0`!
 Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
 
-***
-NEW: Support for Hue Entertainment.  
-Check out the [Q42.HueApi.Streaming documentation](https://github.com/Q42/Q42.HueApi/blob/master/EntertainmentApi.md)   
-Read about the [Philips Entertainment API](https://developers.meethue.com/entertainment-blog)
-***
+- Support for Hue Entertainment API
+- Support for the Hue Remote API
+- Multiple Color Converters
+
 
 ## How to use?
 Some basic usage examples
@@ -21,9 +20,6 @@ Before you can communicate with the Philips Hue Bridge, you need to find the bri
 
 ```cs
 	IBridgeLocator locator = new HttpBridgeLocator();
-
-	//For Windows 8 and .NET45 projects you can use the SSDPBridgeLocator which actually scans your network. 
-	//See the included BridgeDiscoveryTests and the specific .NET and .WinRT projects
 	IEnumerable<string> bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
 ```
 	
@@ -79,28 +75,34 @@ Or send it to all lights
 	client.SendCommandAsync(command);
 ```
 
+## Support for Hue Entertainment.  
+Check out the [Q42.HueApi.Streaming documentation](https://github.com/Q42/Q42.HueApi/blob/master/EntertainmentApi.md)   
+Read about the [Philips Entertainment API](https://developers.meethue.com/entertainment-blog)
+
+	
+## Remote API
+There is also a Philips Hue Remote API. It allows you to send commands to a bridge over the internet. You can request access here: http://www.developers.meethue.com/content/remote-api  
+Q42.HueApi is compatible with the remote API.  There's a sample app and documentation can be found here:
+https://github.com/Q42/Q42.HueApi/blob/master/RemoteApi.md
+
+
 ### Color Conversion
 The Philips Hue lights work with Brightness, Saturation, Hue and X, Y properties. More info can be found in the Philips Hue Developer documentation: http://www.developers.meethue.com/documentation/core-concepts#color_gets_more_complicated
 It's not trivial to convert the light colors to a color system developers like to work with, like RGB or HEX. Q42.HueApi has 3 different color converters out of the box. They are in a seperate package and it's easy to create your own color converter.
  - *Original*:  The original converter based on a large XY array.
- - *OriginalWithModel*: Does not use the large XY array, but should produce the same result and uses the lamp model.
+ - *Gamut*: Uses the provided Gamut (type) provided by each light.
  - *HSB*: Converts based on Hue, Brightness and Saturation.
 
  How to use a color converter?
  Add one of the following usings:  
  `using Q42.HueApi.ColorConverters.Original`  
- `using Q42.HueApi.ColorConverters.OriginalWithModel`  
+ `using Q42.HueApi.ColorConverters.Gamut`  
  `using Q42.HueApi.ColorConverters.HSB`  
 
  This will add extension methods to `Light`, `State` and `LightCommand`. So you can set the color using `new RGBColor()` and convert the `State` back to `RGBColor`
 
  Pull Requests with improvements to the color conversion are always welcome! 
  
-	
-## Remote API
-There is also a Philips Hue Remote API. It allows you to send commands to a bridge over the internet. You can request access here: http://www.developers.meethue.com/content/remote-api  
-Q42.HueApi is compatible with the remote API.  There's a sample app and documentation can be found here:
-https://github.com/Q42/Q42.HueApi/blob/master/RemoteApi.md
 
 ## How To install?
 Download the source from GitHub or get the compiled assembly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
