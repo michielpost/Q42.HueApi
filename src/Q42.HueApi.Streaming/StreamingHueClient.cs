@@ -70,27 +70,7 @@ namespace Q42.HueApi.Streaming
 
       DtlsClientProtocol clientProtocol = new DtlsClientProtocol(new SecureRandom());
 
-      var socketArgs = new SocketAsyncEventArgs { RemoteEndPoint = new IPEndPoint(IPAddress.Parse(_ip), 2100) };
-      var pending = _socket.ConnectAsync(socketArgs);
-
-      if (pending) {
-        var tcs = new TaskCompletionSource<SocketAsyncEventArgs>();
-
-        EventHandler<SocketAsyncEventArgs> handler = null;
-        handler = (sender, args) => {
-            socketArgs.Completed -= handler;
-            tcs.SetResult(args);
-        };
-
-        socketArgs.Completed += handler;
-
-        await tcs.Task;
-      }
-
-      if (socketArgs.SocketError != SocketError.Success) {
-        throw new SocketException((int) socketArgs.SocketError);
-      }
-
+      await _socket.ConnectAsync(IPAddress.Parse(_ip), 2100).ConfigureAwait(false);
       _udp = new UdpTransport(_socket);
 
       if (!simulator)
