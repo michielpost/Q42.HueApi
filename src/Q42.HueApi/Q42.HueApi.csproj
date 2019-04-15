@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Version>3.9.0</Version>
+    <Version>3.10.0</Version>
     <Company>Q42</Company>
     <Authors>Michiel Post, Q42</Authors>
     <Description>Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Supports .Net Standard 1.1</Description>
