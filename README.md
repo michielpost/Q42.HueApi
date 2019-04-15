@@ -7,7 +7,7 @@ This library covers all the Philips hue API calls! You can set the state of your
 This library targets `.netstandard2.0` and `.net45`!
 Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
 
-- Support for Hue Entertainment API
+- Support for Hue Entertainment API (requires .NET 4.7.1+ or netstandard2.0)
 - Support for the Hue Remote API
 - Multiple Color Converters
 
