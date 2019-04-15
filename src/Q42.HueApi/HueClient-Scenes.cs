@@ -231,7 +231,7 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="sceneId"></param>
 		/// <returns></returns>
-		public async Task<HueResults> DeleteSceneAsync(string sceneId)
+		public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSceneAsync(string sceneId)
 	{
 		CheckInitialized();
 
@@ -240,7 +240,7 @@ namespace Q42.HueApi
 
 		string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-		return DeserializeDefaultHueResult(jsonResult);
+		return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 
 	}
 

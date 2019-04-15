@@ -56,7 +56,9 @@ namespace Q42.HueApi.Tests
       Assert.IsNotNull(newScene);
 
       //Delete scene
-      await _client.DeleteSceneAsync(result);
+      var deleteResult = await _client.DeleteSceneAsync(result);
+
+      Assert.IsTrue(deleteResult.Any());
 
       var deletedScene = await _client.GetSceneAsync(result);
       Assert.IsNull(deletedScene);

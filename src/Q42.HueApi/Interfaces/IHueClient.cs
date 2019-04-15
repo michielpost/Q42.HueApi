@@ -14,13 +14,13 @@ namespace Q42.HueApi.Interfaces
   public interface IHueClient
   {
 
-	
 
-		/// <summary>
-		/// Asynchronously gets all lights registered with the bridge.
-		/// </summary>
-		/// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
-		Task<IEnumerable<WhiteList>> GetWhiteListAsync();
+
+    /// <summary>
+    /// Asynchronously gets all lights registered with the bridge.
+    /// </summary>
+    /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
+    Task<IEnumerable<WhiteList>> GetWhiteListAsync();
 
     /// <summary>
     /// Get bridge info
@@ -93,7 +93,7 @@ namespace Q42.HueApi.Interfaces
     Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null, RoomClass? roomClass = null);
 
     Task<HueResults> UpdateGroupLocationsAsync(string id, Dictionary<string, LightLocation> locations);
-#endregion
+    #endregion
 
     #region Lights
 
@@ -212,25 +212,25 @@ namespace Q42.HueApi.Interfaces
     #region Scenes
 
     Task<IReadOnlyCollection<Scene>> GetScenesAsync();
-		/// <summary>
-		/// Creates a new scene
-		/// </summary>
-		/// <param name="scene"></param>
-		/// <returns>ID of the new scene</returns>
+    /// <summary>
+    /// Creates a new scene
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns>ID of the new scene</returns>
     Task<string> CreateSceneAsync(Scene scene);
     Task<HueResults> UpdateSceneAsync(string sceneId, Scene scene);
     Task<HueResults> UpdateSceneAsync(string sceneId, string name, IEnumerable<string> lights, bool? storeLightState = null, TimeSpan? transitionTime = null);
     Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command);
     Task<HueResults> RecallSceneAsync(string sceneId, string groupId = "0");
-	Task<HueResults> DeleteSceneAsync(string sceneId);
+    Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSceneAsync(string sceneId);
 
-	Task<Scene> GetSceneAsync(string id);
+    Task<Scene> GetSceneAsync(string id);
 
-	#endregion
+    #endregion
 
-		#region Rules
+    #region Rules
 
-	Task<IReadOnlyCollection<Rule>> GetRulesAsync();
+    Task<IReadOnlyCollection<Rule>> GetRulesAsync();
     Task<Rule> GetRuleAsync(string id);
     Task<HueResults> DeleteRule(string id);
     Task<string> CreateRule(Rule rule);
@@ -258,22 +258,22 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSensorAsync(string id);
 
-		#endregion
+    #endregion
 
-		#region ResourceLinks
+    #region ResourceLinks
 
-		Task<HueResults> DeleteResourceLinkAsync(string resourceLinkId);
-		Task<IReadOnlyCollection<ResourceLink>> GetResourceLinksAsync();
-		Task<ResourceLink> GetResourceLinkAsync(string id);
-		Task<string> CreateResourceLinkAsync(ResourceLink resourceLink);
-		Task<HueResults> UpdateResourceLinkAsync(string id, ResourceLink resourceLink);
+    Task<HueResults> DeleteResourceLinkAsync(string resourceLinkId);
+    Task<IReadOnlyCollection<ResourceLink>> GetResourceLinksAsync();
+    Task<ResourceLink> GetResourceLinkAsync(string id);
+    Task<string> CreateResourceLinkAsync(ResourceLink resourceLink);
+    Task<HueResults> UpdateResourceLinkAsync(string id, ResourceLink resourceLink);
 
-        #endregion
+    #endregion
 
-        #region Capabilities
+    #region Capabilities
 
-        Task<BridgeCapabilities> GetCapabilitiesAsync();
+    Task<BridgeCapabilities> GetCapabilitiesAsync();
 
-#endregion
-    }
+    #endregion
+  }
 }
