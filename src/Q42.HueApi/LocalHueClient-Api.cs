@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
 using Q42.HueApi.Models.Bridge;
 using System;
@@ -13,7 +14,7 @@ namespace Q42.HueApi
   /// <summary>
   ///  Partial HueClient, contains requests to the /api/ url
   /// </summary>
-  public partial class LocalHueClient
+  public partial class LocalHueClient : ILocalHueClient_Api
   {
     public async Task<string> RegisterAsync(string applicationName, string deviceName)
     {
@@ -36,7 +37,7 @@ namespace Q42.HueApi
     {
       var result = await LocalHueClient.RegisterAsync(_ip, applicationName, deviceName, generateClientKey);
 
-      if(result != null)
+      if (result != null)
       {
         Initialize(result.Username);
 
@@ -144,7 +145,7 @@ namespace Q42.HueApi
           return false;
         }
       }
-      catch(Exception e)
+      catch (Exception e)
       {
         return false;
       }
@@ -154,11 +155,11 @@ namespace Q42.HueApi
         //Check if app is registered
         var test = await this.GetBridgeAsync().ConfigureAwait(false);
       }
-      catch 
+      catch
       {
         return false;
       }
-      
+
       return true;
     }
   }

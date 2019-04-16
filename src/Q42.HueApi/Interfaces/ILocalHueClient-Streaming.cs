@@ -12,17 +12,17 @@ namespace Q42.HueApi.Interfaces
   /// <summary>
   /// Hue Client for interaction with a local bridge
   /// </summary>
-  public interface ILocalHueClient :
-    IHueClient,
-    ILocalHueClient_Api,
-    ILocalHueClient_Streaming
+  public interface ILocalHueClient_Streaming
   {
-
     /// <summary>
-    /// Check if there is a working connection with the bridge
+    /// Enable or disable streaming api on a group
     /// </summary>
+    /// <param name="id"></param>
+    /// <param name="active"></param>
     /// <returns></returns>
-    Task<bool> CheckConnection();
+    Task<HueResults> SetStreamingAsync(string id, bool active = true);
+
+
 
   }
 }
