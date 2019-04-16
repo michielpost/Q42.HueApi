@@ -40,12 +40,11 @@ namespace Q42.HueApi.Interfaces
     /// <returns></returns>
     Task<HueResults> UpdateScheduleAsync(string id, Schedule schedule);
 
-
     /// <summary>
     /// Delete a schedule
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<HueResults> DeleteScheduleAsync(string id);
+    Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteScheduleAsync(string id);
   }
 }

@@ -69,7 +69,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="groupId"></param>
     /// <returns></returns>
-    public async Task<HueResults> DeleteGroupAsync(string groupId)
+    public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteGroupAsync(string groupId)
     {
       CheckInitialized();
 
@@ -79,7 +79,7 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      return DeserializeDefaultHueResult(jsonResult);
+      return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 
     }
 

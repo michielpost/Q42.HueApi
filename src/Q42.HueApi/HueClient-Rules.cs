@@ -190,7 +190,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<HueResults> DeleteRule(string id)
+    public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteRule(string id)
     {
       CheckInitialized();
 
@@ -199,7 +199,7 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      return DeserializeDefaultHueResult(jsonResult);
+      return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 
     }
 

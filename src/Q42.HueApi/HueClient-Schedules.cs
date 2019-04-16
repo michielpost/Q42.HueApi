@@ -151,7 +151,7 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public async Task<HueResults> DeleteScheduleAsync(string id)
+		public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteScheduleAsync(string id)
 		{
 			if (id == null)
 				throw new ArgumentNullException(nameof(id));
@@ -164,7 +164,7 @@ namespace Q42.HueApi
 
 			string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-			return DeserializeDefaultHueResult(jsonResult);
+			return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 		}
 	}
 }

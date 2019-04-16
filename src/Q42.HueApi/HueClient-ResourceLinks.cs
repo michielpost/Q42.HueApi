@@ -24,7 +24,7 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="resourceLinkId"></param>
 		/// <returns></returns>
-		public async Task<HueResults> DeleteResourceLinkAsync(string resourceLinkId)
+		public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteResourceLinkAsync(string resourceLinkId)
 		{
 			CheckInitialized();
 
@@ -34,7 +34,7 @@ namespace Q42.HueApi
 
 			string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-			return DeserializeDefaultHueResult(jsonResult);
+			return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 
 		}
 

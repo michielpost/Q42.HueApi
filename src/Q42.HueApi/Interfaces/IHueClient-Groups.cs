@@ -32,7 +32,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="groupId"></param>
     /// <returns></returns>
-    Task<HueResults> DeleteGroupAsync(string groupId);
+    Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteGroupAsync(string groupId);
 
     /// <summary>
     /// Get all groups

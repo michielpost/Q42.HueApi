@@ -9,7 +9,7 @@ namespace Q42.HueApi.Interfaces
 {
   public interface IHueClient_ResourceLinks
   {
-    Task<HueResults> DeleteResourceLinkAsync(string resourceLinkId);
+    Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteResourceLinkAsync(string resourceLinkId);
     Task<IReadOnlyCollection<ResourceLink>> GetResourceLinksAsync();
     Task<ResourceLink> GetResourceLinkAsync(string id);
     Task<string> CreateResourceLinkAsync(ResourceLink resourceLink);
