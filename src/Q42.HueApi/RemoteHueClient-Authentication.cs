@@ -1,4 +1,4 @@
-﻿using JeffWilcox.Utilities.Silverlight;
+using JeffWilcox.Utilities.Silverlight;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Models;
@@ -12,58 +12,58 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi
 {
-	/// <summary>
-	/// http://www.developers.meethue.com/documentation/remote-api-authentication
-	/// </summary>
-	public partial class RemoteHueClient
-	{
+  /// <summary>
+  /// http://www.developers.meethue.com/documentation/remote-api-authentication
+  /// </summary>
+  public partial class RemoteHueClient
+  {
 
-		public async Task<string> RegisterAsync(string bridgeId, string appId)
-		{
-			if (string.IsNullOrEmpty(bridgeId))
-				throw new ArgumentNullException(nameof(bridgeId));
-			if (string.IsNullOrEmpty(appId))
-					throw new ArgumentNullException(nameof(appId));
+    public async Task<string> RegisterAsync(string bridgeId, string appId)
+    {
+      if (string.IsNullOrEmpty(bridgeId))
+        throw new ArgumentNullException(nameof(bridgeId));
+      if (string.IsNullOrEmpty(appId))
+        throw new ArgumentNullException(nameof(appId));
 
-			JObject obj = new JObject();
-			obj["linkbutton"] = true;
+      JObject obj = new JObject();
+      obj["linkbutton"] = true;
 
-			HttpClient client = await GetHttpClient().ConfigureAwait(false);
-			var configResponse = await client.PutAsync(new Uri($"{_apiBase}{bridgeId}/0/config"), new JsonContent(obj.ToString())).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var configResponse = await client.PutAsync(new Uri($"{_apiBase}{bridgeId}/0/config"), new JsonContent(obj.ToString())).ConfigureAwait(false);
 
-			JObject bridge = new JObject();
-			bridge["devicetype"] = appId;
+      JObject bridge = new JObject();
+      bridge["devicetype"] = appId;
 
-			var response = await client.PostAsync(new Uri($"{_apiBase}{bridgeId}/"), new JsonContent(bridge.ToString())).ConfigureAwait(false);
-			var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri($"{_apiBase}{bridgeId}/"), new JsonContent(bridge.ToString())).ConfigureAwait(false);
+      var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
 
-			JObject result;
-			try
-			{
-				JArray jresponse = JArray.Parse(stringResponse);
-				result = (JObject)jresponse.First;
-			}
-			catch
-			{
-				//Not an expected response. Return response as exception
-				throw new Exception(stringResponse);
-			}
+      JObject result;
+      try
+      {
+        JArray jresponse = JArray.Parse(stringResponse);
+        result = (JObject)jresponse.First;
+      }
+      catch
+      {
+        //Not an expected response. Return response as exception
+        throw new Exception(stringResponse);
+      }
 
-			JToken error;
-			if (result.TryGetValue("error", out error))
-			{
-				if (error["type"].Value<int>() == 101) // link button not pressed
-					throw new Exception("Link button not pressed");
-				else
-					throw new Exception(error["description"].Value<string>());
-			}
+      JToken error;
+      if (result.TryGetValue("error", out error))
+      {
+        if (error["type"].Value<int>() == 101) // link button not pressed
+          throw new Exception("Link button not pressed");
+        else
+          throw new Exception(error["description"].Value<string>());
+      }
 
-			var key = result["success"]["username"].Value<string>();
-			Initialize(key);
+      var key = result["success"]["username"].Value<string>();
+      Initialize(key);
 
-			return key;
-		}
-
+      return key;
     }
+
+  }
 }

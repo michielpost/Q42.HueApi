@@ -10,13 +10,14 @@ using Newtonsoft.Json;
 using Q42.HueApi.Models.Groups;
 using Q42.HueApi.Models;
 using System.Dynamic;
+using Q42.HueApi.Interfaces;
 
 namespace Q42.HueApi
 {
   /// <summary>
   /// Partial HueClient, contains requests to the /scenes/ url
   /// </summary>
-  public partial class HueClient
+  public partial class HueClient : IHueClient_Scenes
   {
 
 

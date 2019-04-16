@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
@@ -16,8 +16,8 @@ namespace Q42.HueApi
 	/// <summary>
 	/// Partial HueClient, contains requests to the /resourcelinks/ url
 	/// </summary>
-	public partial class HueClient
-	{
+	public partial class HueClient : IHueClient_ResourceLinks
+  {
 
 		/// <summary>
 		/// Deletes a single ResourceLink

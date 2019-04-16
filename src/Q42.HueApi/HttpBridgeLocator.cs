@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi
 {
-	/// <summary>
-	/// Uses the special nupnp url from meethue.com to find registered bridges based on your external IP
-	/// </summary>
+  /// <summary>
+  /// Uses the special nupnp url from meethue.com to find registered bridges based on your external IP
+  /// </summary>
   public class HttpBridgeLocator : IBridgeLocator
   {
     private readonly Uri NuPnPUrl = new Uri("https://discovery.meethue.com");
 
 
-		/// <summary>
-		/// Locate bridges
-		/// </summary>
-		/// <param name="timeout"></param>
-		/// <returns></returns>
+    /// <summary>
+    /// Locate bridges
+    /// </summary>
+    /// <param name="timeout"></param>
+    /// <returns></returns>
     public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout)
     {
       // since this specifies timeout (and probably isn't called much), don't use shared client

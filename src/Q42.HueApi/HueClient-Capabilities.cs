@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
 using Q42.HueApi.Models.Groups;
 using System;
@@ -14,8 +15,8 @@ namespace Q42.HueApi
     /// <summary>
     /// Partial HueClient, contains requests to the /config/ url
     /// </summary>
-    public partial class HueClient
-    {
+    public partial class HueClient : IHueClient_Capabilities
+  {
 
         /// <summary>
         /// Get bridge capabilities

@@ -1,18 +1,11 @@
-﻿using System;
+using Newtonsoft.Json;
+using Q42.HueApi.Interfaces;
+using Q42.HueApi.Models.Groups;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Q42.HueApi.Extensions;
-using Q42.HueApi.Interfaces;
-using Newtonsoft.Json;
-using System.Globalization;
 using System.Net.Http;
-using Q42.HueApi.Models.Groups;
-using Q42.HueApi.Models;
-using Newtonsoft.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Q42.HueApi
 {
@@ -108,7 +101,7 @@ namespace Q42.HueApi
     /// Checks if the json contains errors
     /// </summary>
     /// <param name="json"></param>
-    private static HueResults DeserializeDefaultHueResult(string json)
+    protected static HueResults DeserializeDefaultHueResult(string json)
     {
       HueResults result = null;
 

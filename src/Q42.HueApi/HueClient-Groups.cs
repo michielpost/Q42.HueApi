@@ -16,7 +16,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Partial HueClient, contains requests to the /Groups/ url
   /// </summary>
-  public partial class HueClient
+  public partial class HueClient : IHueClient_Groups
   {
     /// <summary>
     /// Create a group for a list of lights
@@ -243,24 +243,6 @@ namespace Q42.HueApi
 
     }
 
-    public async Task<HueResults> SetStreamingAsync(string id, bool active = true)
-    {
-      if (id == null)
-        throw new ArgumentNullException(nameof(id));
-      if (id.Trim() == String.Empty)
-        throw new ArgumentException("id must not be empty", nameof(id));
-
-      JObject jsonObj = new JObject();
-      jsonObj.Add("stream", JToken.FromObject(new { active = true }));
-
-      string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-
-      HttpClient client = await GetHttpClient().ConfigureAwait(false);
-      var response = await client.PutAsync(new Uri(String.Format("{0}groups/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
-      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-      return DeserializeDefaultHueResult(jsonResult);
-
-    }
+  
   }
 }
