@@ -19,7 +19,7 @@ namespace Q42.HueApi.Streaming
   /// <summary>
   /// Hue Client that supports streaming / hue entertainment api
   /// </summary>
-  public class StreamingHueClient
+  public class StreamingHueClient: IDisposable
   {
     //Inspired by https://github.com/jinghongbo/Ssl.Net/tree/master/src/Ssl.Net/Ssl.Net
     private DtlsTransport _dtlsTransport;
@@ -210,6 +210,11 @@ namespace Q42.HueApi.Streaming
         _udp.Send(buffer, offset, count);
 
       return count;
+    }
+
+    public void Dispose()
+    {
+      this.Close();
     }
   }
 }
