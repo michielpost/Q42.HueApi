@@ -47,16 +47,16 @@ namespace Q42.HueApi
       catch
       {
         //Not an expected response. Return response as exception
-        throw new Exception(stringResponse);
+        throw new HueException(stringResponse);
       }
 
       JToken error;
       if (result.TryGetValue("error", out error))
       {
         if (error["type"].Value<int>() == 101) // link button not pressed
-          throw new Exception("Link button not pressed");
+          throw new HueException("Link button not pressed");
         else
-          throw new Exception(error["description"].Value<string>());
+          throw new HueException(error["description"].Value<string>());
       }
 
       var key = result["success"]["username"].Value<string>();

@@ -58,7 +58,7 @@ namespace Q42.HueApi
       }
 
       if (groupResult.HasErrors())
-        throw new Exception(groupResult.Errors.First().Error.Description);
+        throw new HueException(groupResult.Errors.First().Error.Description);
 
       return null;
 

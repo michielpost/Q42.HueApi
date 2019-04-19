@@ -223,7 +223,7 @@ namespace Q42.HueApi
         return newToken.Access_token;
       }
 
-      throw new Exception("Unable to get access token. Access token and Refresh token expired.");
+      throw new HueException("Unable to get access token. Access token and Refresh token expired.");
     }
   }
 }

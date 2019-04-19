@@ -95,7 +95,7 @@ namespace Q42.HueApi
 			}
 
 			if (sceneResult.HasErrors())
-				throw new Exception(sceneResult.Errors.First().Error.Description);
+				throw new HueException(sceneResult.Errors.First().Error.Description);
 
 			return null;
 
