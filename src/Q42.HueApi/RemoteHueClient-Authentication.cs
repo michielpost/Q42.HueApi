@@ -54,7 +54,7 @@ namespace Q42.HueApi
       if (result.TryGetValue("error", out error))
       {
         if (error["type"].Value<int>() == 101) // link button not pressed
-          throw new HueException("Link button not pressed");
+          throw new LinkButtonNotPressedException("Link button not pressed");
         else
           throw new HueException(error["description"].Value<string>());
       }
