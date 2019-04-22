@@ -70,7 +70,7 @@ namespace Q42.HueApi
       if (!Uri.TryCreate(string.Format("http://{0}/description.xml", ip), UriKind.Absolute, out uri))
       {
         //Invalid ip or hostname caused Uri creation to fail
-        throw new Exception(string.Format("The supplied ip to the HueClient is not a valid ip: {0}", ip));
+        throw new HueException(string.Format("The supplied ip to the HueClient is not a valid ip: {0}", ip));
       }
     }
 

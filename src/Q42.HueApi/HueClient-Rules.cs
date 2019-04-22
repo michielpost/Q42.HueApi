@@ -87,7 +87,7 @@ namespace Q42.HueApi
         if (error["type"].Value<int>() == 3) // Rule not found
           return null;
 
-        throw new Exception(error["description"].Value<string>());
+        throw new HueException(error["description"].Value<string>());
       }
 
       var rule = token.ToObject<Rule>();
@@ -142,7 +142,7 @@ namespace Q42.HueApi
       }
 
       if (rulesResult.HasErrors())
-        throw new Exception(rulesResult.Errors.First().Error.Description);
+        throw new HueException(rulesResult.Errors.First().Error.Description);
 
       return null;
     }

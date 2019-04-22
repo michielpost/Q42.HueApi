@@ -73,7 +73,7 @@ namespace Q42.HueApi.Converters
 			}
       else if (!string.IsNullOrEmpty(daysRecurring) && !string.IsNullOrEmpty(dateTimeValue))//recurrenceday with a dateTimeValue
       {
-        throw new Exception("Please set TimerTime when using RecurringDay");
+        throw new HueException("Please set TimerTime when using RecurringDay");
       }
       else if (!string.IsNullOrEmpty(timerTimeValue))// (timertime only when in timers and weekdays)
 			{

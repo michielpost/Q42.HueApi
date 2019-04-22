@@ -35,7 +35,7 @@ namespace Q42.HueApi.Streaming.Sample
       var group = all.FirstOrDefault();
 
       if (group == null)
-        throw new Exception("No Entertainment Group found. Create one using the Q42.HueApi.UniversalWindows.Sample");
+        throw new HueException("No Entertainment Group found. Create one using the Q42.HueApi.UniversalWindows.Sample");
       else
         Console.WriteLine($"Using Entertainment Group {group.Id}");
 

@@ -90,7 +90,7 @@ namespace Q42.HueApi
 
         //We expect an actual object, it was unsuccesful, show error why
         if (defaultResult.HasErrors())
-          throw new Exception(defaultResult.Errors.First().Error.Description);
+          throw new HueException(defaultResult.Errors.First().Error.Description);
       }
 
       return null;

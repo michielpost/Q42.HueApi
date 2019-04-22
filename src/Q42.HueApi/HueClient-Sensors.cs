@@ -176,7 +176,7 @@ namespace Q42.HueApi
 				if (error["type"].Value<int>() == 3) // Rule not found
 					return null;
 
-				throw new Exception(error["description"].Value<string>());
+				throw new HueException(error["description"].Value<string>());
 			}
 
 			var sensor = token.ToObject<Sensor>();
