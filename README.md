@@ -28,7 +28,7 @@ Register your application
 ```cs
 	ILocalHueClient client = new LocalHueClient("ip");
 	//Make sure the user has pressed the button on the bridge before calling RegisterAsync
-	//It will throw an Exception if the user did not press the button
+	//It will throw an LinkButtonNotPressedException if the user did not press the button
 	var appKey = await client.RegisterAsync("mypersonalappname", "mydevicename");
 	//Save the app key for later use
 ```
