@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
     <Authors>Michiel Post, Q42</Authors>
     <Company>Q42</Company>
-    <Description>Open source library for interaction with the Philips Hue Bridge Entertainment API. Allows you to control your lights from C#. Supports .Net Standard 1.1</Description>
+    <Description>Open source library for interaction with the Philips Hue Bridge Entertainment API. Allows you to control your lights from C#. Supports .Net Standard 2.0 and .net471</Description>
     <PackageProjectUrl>https://github.com/Q42/Q42.HueApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Q42/Q42.HueApi</RepositoryUrl>
     <PackageIconUrl>https://nugetgallery.blob.core.windows.net/icons/DotLessMinification.0.42.1.png</PackageIconUrl>
