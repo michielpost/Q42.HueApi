@@ -50,4 +50,10 @@ namespace Q42.HueApi.Models.Sensors
 	{
 		DateTime? Lastupdated { get; set; }
 	}
+
+  public interface GeneralSensorCapabilities
+  {
+    bool? Certified { get; set; }
+    bool? Primary { get; set; }
+  }
 }
