@@ -61,6 +61,22 @@ namespace Q42.HueApi
     }
 
     /// <summary>
+    /// Constructor which allows you to provide your own HttpClient
+    /// </summary>
+    /// <param name="ip"></param>
+    /// <param name="httpClient"></param>
+    public LocalHueClient(string ip, HttpClient httpClient)
+      : base(httpClient)
+    {
+      if (ip == null)
+        throw new ArgumentNullException(nameof(ip));
+
+      CheckValidIp(ip);
+
+      _ip = ip;
+    }
+
+    /// <summary>
     /// Check if the provided IP is valid by using it in an URI to the Hue Bridge
     /// </summary>
     /// <param name="ip"></param>

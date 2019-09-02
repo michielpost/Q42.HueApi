@@ -51,7 +51,7 @@ namespace Q42.HueApi
     }
 
 
-    public new static async Task<HttpClient> GetHttpClient()
+    public new async Task<HttpClient> GetHttpClient()
     {
       // return per-thread HttpClient
       if (_httpClient == null)

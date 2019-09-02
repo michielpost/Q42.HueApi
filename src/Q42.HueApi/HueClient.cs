@@ -30,11 +30,23 @@ namespace Q42.HueApi
 
     protected virtual string ApiBase { get; private set; }
 
-    protected static HttpClient _httpClient;
+    protected HttpClient _httpClient;
 
     protected HueClient()
     {
 
+    }
+
+    /// <summary>
+    /// Constructor which allows you to provide your own HttpClient
+    /// </summary>
+    /// <param name="httpClient"></param>
+    protected HueClient(HttpClient httpClient)
+    {
+      if (httpClient == null)
+        throw new ArgumentNullException(nameof(httpClient));
+
+      _httpClient = httpClient;
     }
 
     /// <summary>
@@ -51,7 +63,7 @@ namespace Q42.HueApi
       IsInitialized = true;
     }
 
-    public static Task<HttpClient> GetHttpClient()
+    public Task<HttpClient> GetHttpClient()
     {
       // return per-thread HttpClient
       if (_httpClient == null)
