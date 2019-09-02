@@ -1,4 +1,4 @@
-﻿using Q42.HueApi.Interfaces;
+using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
 using System;
 using System.Collections.Generic;
@@ -39,9 +39,11 @@ namespace Q42.HueApi.RemoteApi.Sample
     {
       base.OnNavigatedTo(e);
 
-      string appId = "";
-      string clientId = "";
+      //Fill with values provided on https://developers.meethue.com/my-apps/
+      string appId = ""; //q42-hueapi-test
+      string clientId = ""; 
       string clientSecret = "";
+      var callbackUri = new Uri(""); //https://localhost/q42hueapitest
 
       IRemoteAuthenticationClient authClient = new RemoteAuthenticationClient(clientId, clientSecret, appId);
 
@@ -53,7 +55,6 @@ namespace Q42.HueApi.RemoteApi.Sample
       //Else, reinitialize:
 
       var authorizeUri = authClient.BuildAuthorizeUri("sample", "consoleapp");
-      var callbackUri = new Uri("https://localhost/q42hueapi");
 
       var webAuthenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, authorizeUri, callbackUri);
 
