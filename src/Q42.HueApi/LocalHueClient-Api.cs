@@ -35,7 +35,7 @@ namespace Q42.HueApi
 
     public async Task<RegisterEntertainmentResult> RegisterAsync(string applicationName, string deviceName, bool generateClientKey)
     {
-      var result = await LocalHueClient.RegisterAsync(_ip, applicationName, deviceName, generateClientKey);
+      var result = await RegisterAsync(_ip, applicationName, deviceName, generateClientKey);
 
       if (result != null)
       {
@@ -59,7 +59,7 @@ namespace Q42.HueApi
     /// <returns>Secret key for the app to communicate with the bridge.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="applicationName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="applicationName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
-    public static async Task<RegisterEntertainmentResult> RegisterAsync(string ip, string applicationName, string deviceName, bool generateClientKey)
+    private async Task<RegisterEntertainmentResult> RegisterAsync(string ip, string applicationName, string deviceName, bool generateClientKey)
     {
       if (applicationName == null)
         throw new ArgumentNullException(nameof(applicationName));
