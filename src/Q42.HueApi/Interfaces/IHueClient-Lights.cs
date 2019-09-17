@@ -22,7 +22,7 @@ namespace Q42.HueApi.Interfaces
     /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
-    Task<Light> GetLightAsync(string id);
+    Task<Light?> GetLightAsync(string id);
 
     /// <summary>
     /// Delete Light
@@ -53,7 +53,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command">json</param>
     /// <param name="lightList">if null, send to all lights</param>
     /// <returns></returns>
-    Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string> lightList = null);
+    Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string>? lightList = null);
 
     /// <summary>
     /// Send a light command
@@ -61,13 +61,13 @@ namespace Q42.HueApi.Interfaces
     /// <param name="command">Compose a new lightCommand()</param>
     /// <param name="lightList">if null, send to all lights</param>
     /// <returns></returns>
-    Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null);
+    Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string>? lightList = null);
 
     /// <summary>
     /// Start searching for new lights
     /// </summary>
     /// <returns></returns>
-    Task<HueResults> SearchNewLightsAsync(IEnumerable<string> deviceIds = null);
+    Task<HueResults> SearchNewLightsAsync(IEnumerable<string>? deviceIds = null);
 
     /// <summary>
     /// Gets a list of lights that were discovered the last time a search for new lights was performed.

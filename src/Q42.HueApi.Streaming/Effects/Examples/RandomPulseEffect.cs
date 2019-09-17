@@ -20,12 +20,13 @@ namespace Q42.HueApi.Streaming.Effects
     public double StepSize { get; set; } = 0.2;
     public bool AutoRepeat { get; set; } = true;
 
-    public RandomPulseEffect(bool fadeToZero = true, Func<TimeSpan> waitTime = null)
+    public RandomPulseEffect(bool fadeToZero = true, Func<TimeSpan>? waitTime = null)
     {
       _fadeToZero = fadeToZero;
-      _waitTime = waitTime;
 
-      if (_waitTime == null)
+      if(waitTime != null)
+        _waitTime = waitTime;
+      else if (_waitTime == null)
         _waitTime = () => TimeSpan.FromMilliseconds(50);
 
       Radius = 0;

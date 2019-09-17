@@ -9,6 +9,6 @@ namespace Q42.HueApi.Interfaces
 {
   public interface IHueClient_Capabilities
   {
-    Task<BridgeCapabilities> GetCapabilitiesAsync();
+    Task<BridgeCapabilities?> GetCapabilitiesAsync();
   }
 }

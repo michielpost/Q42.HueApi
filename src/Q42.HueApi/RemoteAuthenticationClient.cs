@@ -54,7 +54,7 @@ namespace Q42.HueApi
     /// <param name="deviceName">The device name should be the name of the app or device accessing the remote API. The devicename is used in the user's "My Apps" overview in the Hue Account (visualized as: "<app name> on <devicename>"). If not present, deviceid is also used for devicename. The <app name> is the application name you provided to us the moment you requested access to the remote API.</param>
     /// <param name="responseType">The response_type value must be "code".</param>
     /// <returns></returns>
-    public Uri BuildAuthorizeUri(string state, string deviceId, string deviceName = null, string responseType = "code")
+    public Uri BuildAuthorizeUri(string state, string deviceId, string? deviceName = null, string responseType = "code")
     {
       if (string.IsNullOrEmpty(responseType))
         throw new ArgumentNullException(nameof(responseType));
@@ -91,7 +91,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="code">Code retreived using ProcessAuthorizeResponse</param>
     /// <returns></returns>
-    public async Task<AccessTokenResponse> GetToken(string code)
+    public async Task<AccessTokenResponse?> GetToken(string code)
     {
       var requestUri = new Uri($"https://api.meethue.com/oauth2/token?code={code}&grant_type=authorization_code");
 
@@ -142,7 +142,7 @@ namespace Q42.HueApi
       return nonce;
     }
 
-    public async Task<AccessTokenResponse> RefreshToken(string refreshToken)
+    public async Task<AccessTokenResponse?> RefreshToken(string refreshToken)
     {
       var stringContent = new StringContent("refresh_token=" + refreshToken, Encoding.UTF8, "application/x-www-form-urlencoded");
 
@@ -205,7 +205,7 @@ namespace Q42.HueApi
     /// Refreshes the token if needed
     /// </summary>
     /// <returns></returns>
-    public async Task<string> GetValidToken()
+    public async Task<string?> GetValidToken()
     {
       if (_lastAuthorizationResponse.AccessTokenExpireTime() > DateTimeOffset.UtcNow.AddMinutes(-5))
       {
@@ -216,7 +216,7 @@ namespace Q42.HueApi
       {
         var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token).ConfigureAwait(false);
 
-        return newToken.Access_token;
+        return newToken?.Access_token;
       }
 
       throw new HueException("Unable to get access token. Access token and Refresh token expired.");

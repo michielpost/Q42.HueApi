@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using Q42.HueApi.Interfaces;
@@ -31,9 +31,8 @@ namespace Q42.HueApi.Models
 	{
 		if(Body != null)
 		{
-			if(Body is GenericScheduleCommand)
+			if(Body is GenericScheduleCommand genericCommand)
 			{
-				var genericCommand = Body as GenericScheduleCommand;
 				var invariantAddress = Address.ToLowerInvariant();
 
 				//Check if it is a scene command

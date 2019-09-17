@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +9,7 @@ namespace Q42.HueApi.Converters
 {
   public class StringNullableEnumConverter : StringEnumConverter
   {
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
       try
       {

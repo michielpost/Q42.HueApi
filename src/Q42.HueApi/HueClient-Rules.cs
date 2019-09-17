@@ -63,7 +63,7 @@ namespace Q42.HueApi
     /// Asynchronously gets single rule
     /// </summary>
     /// <returns><see cref="Rule"/></returns>
-    public async Task<Rule> GetRuleAsync(string id)
+    public async Task<Rule?> GetRuleAsync(string id)
     {
       if (id == null)
         throw new ArgumentNullException(nameof(id));
@@ -104,7 +104,7 @@ namespace Q42.HueApi
       return CreateRule(rule.Name, rule.Conditions, rule.Actions);
     }
 
-    public async Task<string> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions)
+    public async Task<string?> CreateRule(string name, IEnumerable<RuleCondition> conditions, IEnumerable<InternalBridgeCommand> actions)
     {
       CheckInitialized();
 

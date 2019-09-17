@@ -57,7 +57,7 @@ namespace Q42.HueApi
 
 		}
 
-		public async Task<string> CreateSensorAsync(Sensor sensor)
+		public async Task<string?> CreateSensorAsync(Sensor sensor)
 		{
 			if (sensor == null)
 				throw new ArgumentNullException(nameof(sensor));
@@ -65,7 +65,7 @@ namespace Q42.HueApi
 			CheckInitialized();
 
 			//Set fields to null
-			sensor.Id = null;
+			sensor.Id = null!; 
 
 			string sensorJson = JsonConvert.SerializeObject(sensor, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -152,7 +152,7 @@ namespace Q42.HueApi
 		/// Asynchronously gets single sensor
 		/// </summary>
 		/// <returns><see cref="Sensor"/></returns>
-		public async Task<Sensor> GetSensorAsync(string id)
+		public async Task<Sensor?> GetSensorAsync(string id)
 		{
 			if (id == null)
 				throw new ArgumentNullException(nameof(id));

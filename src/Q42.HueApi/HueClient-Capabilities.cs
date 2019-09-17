@@ -22,14 +22,14 @@ namespace Q42.HueApi
         /// Get bridge capabilities
         /// </summary>
         /// <returns></returns>
-        public async Task<BridgeCapabilities> GetCapabilitiesAsync()
+        public async Task<BridgeCapabilities?> GetCapabilitiesAsync()
         {
             CheckInitialized();
 
             HttpClient client = await GetHttpClient().ConfigureAwait(false);
             var stringResult = await client.GetStringAsync(new Uri(ApiBase + "capabilities")).ConfigureAwait(false);
 
-            BridgeCapabilities capabilities = DeserializeResult<BridgeCapabilities>(stringResult);
+            BridgeCapabilities? capabilities = DeserializeResult<BridgeCapabilities>(stringResult);
 
             return capabilities;
         }

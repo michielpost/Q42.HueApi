@@ -11,8 +11,8 @@ namespace Q42.HueApi.Interfaces
   {
     Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteResourceLinkAsync(string resourceLinkId);
     Task<IReadOnlyCollection<ResourceLink>> GetResourceLinksAsync();
-    Task<ResourceLink> GetResourceLinkAsync(string id);
-    Task<string> CreateResourceLinkAsync(ResourceLink resourceLink);
+    Task<ResourceLink?> GetResourceLinkAsync(string id);
+    Task<string?> CreateResourceLinkAsync(ResourceLink resourceLink);
     Task<HueResults> UpdateResourceLinkAsync(string id, ResourceLink resourceLink);
 
   }

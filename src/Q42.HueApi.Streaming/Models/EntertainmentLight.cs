@@ -57,7 +57,7 @@ namespace Q42.HueApi.Streaming.Models
           foreach (var light in this)
           {
             double? finalMultiplier = null;
-            BaseEffect finalEffect = null;
+            BaseEffect? finalEffect = null;
 
             //Only activate effect with strongest effect multiplier
             foreach (var effect in this.Effects.Where(x => x.State != null).ToList())
@@ -72,7 +72,7 @@ namespace Q42.HueApi.Streaming.Models
 
             if (finalMultiplier.HasValue)
             {
-              light.SetState(cancellationToken, finalEffect.State?.RGBColor, finalEffect.State?.Brightness * finalMultiplier.Value);
+              light.SetState(cancellationToken, finalEffect?.State?.RGBColor, finalEffect?.State?.Brightness * finalMultiplier.Value);
             }
           }
 
@@ -96,8 +96,8 @@ namespace Q42.HueApi.Streaming.Models
 
     public EntertainmentState State { get; set; } = new EntertainmentState();
 
-    private Transition _transition;
-    public Transition Transition
+    private Transition? _transition;
+    public Transition? Transition
     {
       get
       {
@@ -113,7 +113,7 @@ namespace Q42.HueApi.Streaming.Models
     }
 
 
-    public EntertainmentLight(byte id, LightLocation location = null)
+    public EntertainmentLight(byte id, LightLocation location)
     {
       Id = id;
       LightLocation = location;

@@ -61,7 +61,7 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
       return lightLocation.Angle(this.X, this.Y);
     }
 
-    public Task Rotate(CancellationToken cancellationToken, Func<int> stepSize = null, Func<TimeSpan> waitTime = null)
+    public Task Rotate(CancellationToken cancellationToken, Func<int>? stepSize = null, Func<TimeSpan>? waitTime = null)
     {
       if (stepSize == null)
         stepSize = () => 20;

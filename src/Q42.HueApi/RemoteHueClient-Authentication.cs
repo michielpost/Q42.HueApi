@@ -18,7 +18,7 @@ namespace Q42.HueApi
   public partial class RemoteHueClient
   {
 
-    public async Task<string> RegisterAsync(string bridgeId, string appId)
+    public async Task<string?> RegisterAsync(string bridgeId, string appId)
     {
       if (string.IsNullOrEmpty(bridgeId))
         throw new ArgumentNullException(nameof(bridgeId));

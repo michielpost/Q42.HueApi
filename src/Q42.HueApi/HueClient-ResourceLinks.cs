@@ -76,16 +76,16 @@ namespace Q42.HueApi
 		/// Get the state of a single ResourceLink
 		/// </summary>
 		/// <returns></returns>
-		public async Task<ResourceLink> GetResourceLinkAsync(string id)
+		public async Task<ResourceLink?> GetResourceLinkAsync(string id)
 		{
 			CheckInitialized();
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}resourcelinks/{1}", ApiBase, id))).ConfigureAwait(false);
 
-			ResourceLink resourceLink = DeserializeResult<ResourceLink>(stringResult);
+			ResourceLink? resourceLink = DeserializeResult<ResourceLink>(stringResult);
 
-			if (string.IsNullOrEmpty(resourceLink.Id))
+			if (resourceLink != null && string.IsNullOrEmpty(resourceLink.Id))
 				resourceLink.Id = id;
 
 			return resourceLink;
@@ -98,7 +98,7 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="ResourceLink"></param>
 		/// <returns></returns>
-		public async Task<string> CreateResourceLinkAsync(ResourceLink resourceLink)
+		public async Task<string?> CreateResourceLinkAsync(ResourceLink resourceLink)
 		{
 			CheckInitialized();
 

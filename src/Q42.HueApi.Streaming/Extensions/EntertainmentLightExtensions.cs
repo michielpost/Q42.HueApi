@@ -68,8 +68,8 @@ namespace Q42.HueApi.Streaming.Extensions
       bool hasExistingTransition = currentTransition != null && !currentTransition.IsFinished;
       bool canCombineTransitions = hasExistingTransition &&
                                    (!rgb.HasValue || !brightness.HasValue) &&
-                                   (!rgb.HasValue || !currentTransition.IsBrightnessFinished) &&
-                                   (!brightness.HasValue || !currentTransition.IsRgbFinished);
+                                   (!rgb.HasValue || !currentTransition!.IsBrightnessFinished) &&
+                                   (!brightness.HasValue || !currentTransition!.IsRgbFinished);
 
       Transition transition;
 
@@ -95,12 +95,12 @@ namespace Q42.HueApi.Streaming.Extensions
         if (rgb.HasValue)
         {
           // Combine new colour transition with existing brightness transition.
-          transition = new Transition(rgb.Value, currentTransition.TargetBri.Value, rgbTimeSpan, currentTransition.BrightnessRemainingTime);
+          transition = new Transition(rgb.Value, currentTransition!.TargetBri.Value, rgbTimeSpan, currentTransition.BrightnessRemainingTime);
         }
         else
         {
           // Combine new brightness transition with existing colour transition.
-          transition = new Transition(currentTransition.TargetRgb.Value, brightness.Value, currentTransition.RgbRemainingTime, briTimeSpan);
+          transition = new Transition(currentTransition!.TargetRgb.Value, brightness.Value, currentTransition.RgbRemainingTime, briTimeSpan);
         }
       }
 

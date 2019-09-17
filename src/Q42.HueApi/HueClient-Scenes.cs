@@ -54,7 +54,7 @@ namespace Q42.HueApi
 
     }
 
-		public async Task<string> CreateSceneAsync(Scene scene)
+		public async Task<string?> CreateSceneAsync(Scene scene)
 		{
 			CheckInitialized();
 
@@ -250,16 +250,16 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public async Task<Scene> GetSceneAsync(string id)
+		public async Task<Scene?> GetSceneAsync(string id)
 		{
 			CheckInitialized();
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id))).ConfigureAwait(false);
 
-			Scene scene = DeserializeResult<Scene>(stringResult);
+			Scene? scene = DeserializeResult<Scene>(stringResult);
 
-			if (string.IsNullOrEmpty(scene.Id))
+			if (scene != null && string.IsNullOrEmpty(scene.Id))
 				scene.Id = id;
 
 			return scene;

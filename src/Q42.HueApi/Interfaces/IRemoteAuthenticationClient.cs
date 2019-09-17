@@ -9,7 +9,7 @@ namespace Q42.HueApi.Interfaces
 {
   public interface IRemoteAuthenticationClient
   {
-    Uri BuildAuthorizeUri(string state, string deviceId, string deviceName = null, string responseType = "code");
+    Uri BuildAuthorizeUri(string state, string deviceId, string? deviceName = null, string responseType = "code");
 
     RemoteAuthorizeResponse ProcessAuthorizeResponse(string responseData);
 
@@ -19,14 +19,14 @@ namespace Q42.HueApi.Interfaces
     /// <param name="storedAccessToken"></param>
     void Initialize(AccessTokenResponse storedAccessToken);
 
-    Task<AccessTokenResponse> GetToken(string code);
+    Task<AccessTokenResponse?> GetToken(string code);
 
-    Task<AccessTokenResponse> RefreshToken(string refreshToken);
+    Task<AccessTokenResponse?> RefreshToken(string refreshToken);
 
     /// <summary>
     /// Gets a valid access token
     /// </summary>
     /// <returns></returns>
-    Task<string> GetValidToken();
+    Task<string?> GetValidToken();
   }
 }

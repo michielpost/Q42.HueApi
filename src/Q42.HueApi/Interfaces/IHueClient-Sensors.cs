@@ -10,10 +10,10 @@ namespace Q42.HueApi.Interfaces
   public interface IHueClient_Sensors
   {
     Task<IReadOnlyCollection<Sensor>> GetSensorsAsync();
-    Task<string> CreateSensorAsync(Sensor sensor);
+    Task<string?> CreateSensorAsync(Sensor sensor);
     Task<HueResults> FindNewSensorsAsync();
     Task<IReadOnlyCollection<Sensor>> GetNewSensorsAsync();
-    Task<Sensor> GetSensorAsync(string id);
+    Task<Sensor?> GetSensorAsync(string id);
     Task<HueResults> UpdateSensorAsync(string id, string newName);
     Task<HueResults> ChangeSensorConfigAsync(string id, SensorConfig config);
     Task<HueResults> ChangeSensorStateAsync(string id, SensorState state);

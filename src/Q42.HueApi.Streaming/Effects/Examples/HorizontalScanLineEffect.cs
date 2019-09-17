@@ -11,7 +11,6 @@ namespace Q42.HueApi.Streaming.Effects.Examples
 {
   public class HorizontalScanLineEffect : XAxisLineEffect
   {
-   
     private CancellationTokenSource _cts;
     private Func<TimeSpan> _waitTime;
     private RGBColor _color;
@@ -20,11 +19,11 @@ namespace Q42.HueApi.Streaming.Effects.Examples
     public bool AutoRepeat { get; set; } = true;
     public double TurningPoint { get; set; } = 1.5;
 
-    public HorizontalScanLineEffect(Func<TimeSpan> waitTime = null, RGBColor? color = null)
+    public HorizontalScanLineEffect(Func<TimeSpan>? waitTime = null, RGBColor? color = null)
     {
-      _waitTime = waitTime;
-
-      if (_waitTime == null)
+      if(waitTime != null)
+        _waitTime = waitTime;
+      else if (_waitTime == null)
         _waitTime = () => TimeSpan.FromMilliseconds(50);
 
       _color = color ?? RGBColor.Random();
