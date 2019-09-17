@@ -96,7 +96,7 @@ namespace Q42.HueApi
         return objResult;
 
       }
-      catch (Exception ex)
+      catch (Exception)
       {
         var defaultResult = DeserializeDefaultHueResult(json);
 
@@ -121,7 +121,7 @@ namespace Q42.HueApi
       {
         result = JsonConvert.DeserializeObject<HueResults>(json);
       }
-      catch (JsonSerializationException ex)
+      catch (JsonSerializationException)
       {
         //Ignore JsonSerializationException
       }
@@ -142,7 +142,7 @@ namespace Q42.HueApi
       {
         result = JsonConvert.DeserializeObject<List<T>>(json);
       }
-      catch (JsonSerializationException ex)
+      catch (JsonSerializationException)
       {
         //Ignore JsonSerializationException
       }

@@ -49,7 +49,9 @@ namespace Q42.HueApi.Models.Groups
     public string Id { get; set; }
 
     [JsonExtensionData]
+#pragma warning disable IDE0044 // Add readonly modifier
     private IDictionary<string, JToken> OtherData;
+#pragma warning restore IDE0044 // Add readonly modifier
 
   }
 

@@ -145,7 +145,7 @@ namespace Q42.HueApi
           return false;
         }
       }
-      catch (Exception e)
+      catch (Exception)
       {
         return false;
       }
