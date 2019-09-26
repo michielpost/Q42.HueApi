@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
@@ -14,7 +14,7 @@
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>philips hue lights entertainment</PackageTags>
     <PackageId>Q42.HueApi.Entertainment</PackageId>
-    <Version>3.10.1</Version>
+    <Version>3.12.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
