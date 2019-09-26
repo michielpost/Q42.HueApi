@@ -89,7 +89,7 @@ namespace Q42.HueApi.Streaming.Connection
         
       }
 
-      public virtual TlsCredentials GetClientCredentials(CertificateRequest certificateRequest)
+      public virtual TlsCredentials? GetClientCredentials(CertificateRequest certificateRequest)
       {
         return null;
       }

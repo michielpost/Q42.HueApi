@@ -34,7 +34,6 @@ namespace Q42.HueApi
 
     protected HueClient()
     {
-
     }
 
     /// <summary>
@@ -87,7 +86,7 @@ namespace Q42.HueApi
     /// <typeparam name="T"></typeparam>
     /// <param name="json"></param>
     /// <returns></returns>
-    protected static T DeserializeResult<T>(string json) where T : class
+    protected static T? DeserializeResult<T>(string json) where T : class
     {
       try
       {
@@ -115,7 +114,7 @@ namespace Q42.HueApi
     /// <param name="json"></param>
     protected static HueResults DeserializeDefaultHueResult(string json)
     {
-      HueResults result = null;
+      HueResults result = new HueResults();
 
       try
       {
@@ -136,7 +135,7 @@ namespace Q42.HueApi
     /// <param name="json"></param>
     private static IReadOnlyCollection<T> DeserializeDefaultHueResult<T>(string json)
     {
-      List<T> result = null;
+      List<T> result = new List<T>();
 
       try
       {

@@ -54,7 +54,7 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public async Task<Schedule> GetScheduleAsync(string id)
+		public async Task<Schedule?> GetScheduleAsync(string id)
 		{
 			if (id == null)
 				throw new ArgumentNullException(nameof(id));
@@ -66,9 +66,9 @@ namespace Q42.HueApi
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
 			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}schedules/{1}", ApiBase, id))).ConfigureAwait(false);
 
-			Schedule schedule = DeserializeResult<Schedule>(stringResult);
+			Schedule? schedule = DeserializeResult<Schedule>(stringResult);
 
-			if (string.IsNullOrEmpty(schedule.Id))
+			if (schedule != null && string.IsNullOrEmpty(schedule.Id))
 				schedule.Id = id;
 
 			return schedule;
@@ -80,7 +80,7 @@ namespace Q42.HueApi
 		/// </summary>
 		/// <param name="schedule"></param>
 		/// <returns></returns>
-		public async Task<string> CreateScheduleAsync(Schedule schedule)
+		public async Task<string?> CreateScheduleAsync(Schedule schedule)
 		{
 			if (schedule == null)
 				throw new ArgumentNullException(nameof(schedule));

@@ -12,7 +12,7 @@ namespace Q42.HueApi.Converters
   {
     private const string None = "none";
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
       if (reader.TokenType == JsonToken.String &&
           reader.Value?.ToString().Equals(None, StringComparison.InvariantCultureIgnoreCase) == true)

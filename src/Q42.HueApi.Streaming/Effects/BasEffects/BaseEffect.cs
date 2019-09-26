@@ -13,7 +13,7 @@ namespace Q42.HueApi.Streaming.Effects
   /// </summary>
   public abstract class BaseEffect
   {
-    public EntertainmentState State { get; set; }
+    public EntertainmentState? State { get; set; }
 
     public virtual void Start()
     {

@@ -25,7 +25,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
     /// <param name="groupType">GroupType</param>
     /// <returns></returns>
-    Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room);
+    Task<string?> CreateGroupAsync(IEnumerable<string> lights, string? name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room);
 
     /// <summary>
     /// Deletes a single group
@@ -45,7 +45,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Group> GetGroupAsync(string id);
+    Task<Group?> GetGroupAsync(string id);
 
     /// <summary>
     /// Returns the entertainment group
@@ -61,7 +61,7 @@ namespace Q42.HueApi.Interfaces
     /// <param name="name">Group Name (optional)</param>
     /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
     /// <returns></returns>
-    Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null, RoomClass? roomClass = null);
+    Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string? name = null, RoomClass? roomClass = null);
 
     Task<HueResults> UpdateGroupLocationsAsync(string id, Dictionary<string, LightLocation> locations);
   }

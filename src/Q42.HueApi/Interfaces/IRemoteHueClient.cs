@@ -22,12 +22,12 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="bridgeId"></param>
     /// <returns></returns>
-    Task<string> RegisterAsync(string bridgeId, string appId);
+    Task<string?> RegisterAsync(string bridgeId, string appId);
 
     /// <summary>
     /// Gets the bridge ID registered by the user. When a user has linked a bridge to an account on www.meethue.com the bridge will appear on this interface.  
     /// </summary>
     /// <returns></returns>
-    Task<List<RemoteBridge>> GetBridgesAsync();
+    Task<List<RemoteBridge>?> GetBridgesAsync();
   }
 }

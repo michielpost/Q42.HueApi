@@ -40,7 +40,7 @@ namespace Q42.HueApi
     /// Get bridge info
     /// </summary>
     /// <returns></returns>
-    public async Task<List<RemoteBridge>> GetBridgesAsync()
+    public async Task<List<RemoteBridge>?> GetBridgesAsync()
     {
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       var stringResult = await client.GetStringAsync(new Uri(_apiBase)).ConfigureAwait(false);

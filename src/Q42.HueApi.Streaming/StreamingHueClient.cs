@@ -66,7 +66,7 @@ namespace Q42.HueApi.Streaming
       byte[] psk = FromHex(_clientKey);
       BasicTlsPskIdentity pskIdentity = new BasicTlsPskIdentity(_appKey, psk);
 
-      var dtlsClient = new DtlsClient(null, pskIdentity);
+      var dtlsClient = new DtlsClient(null!, pskIdentity);
 
       DtlsClientProtocol clientProtocol = new DtlsClientProtocol(new SecureRandom());
 

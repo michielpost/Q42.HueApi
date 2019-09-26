@@ -114,7 +114,7 @@ namespace Q42.HueApi.ColorConverters
       return !c1.Equals(c2);
     }
 
-    public static RGBColor Random(Random r = null)
+    public static RGBColor Random(Random? r = null)
     {
       r = r ?? new Random();
       return new RGBColor(r.NextDouble(), r.NextDouble(), r.NextDouble());

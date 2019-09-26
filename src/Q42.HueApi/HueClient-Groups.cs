@@ -25,7 +25,7 @@ namespace Q42.HueApi
     /// <param name="name">Optional name</param>
     /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
     /// <returns></returns>
-    public async Task<string> CreateGroupAsync(IEnumerable<string> lights, string name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room)
+    public async Task<string?> CreateGroupAsync(IEnumerable<string> lights, string? name = null, RoomClass? roomClass = null, GroupType groupType = GroupType.Room)
     {
       CheckInitialized();
 
@@ -164,7 +164,7 @@ namespace Q42.HueApi
     /// Get the state of a single group
     /// </summary>
     /// <returns></returns>
-    public async Task<Group> GetGroupAsync(string id)
+    public async Task<Group?> GetGroupAsync(string id)
     {
       CheckInitialized();
 
@@ -175,9 +175,9 @@ namespace Q42.HueApi
 //      stringResult = "{ \"type\": null,  \"action\": {        \"on\": true,        \"xy\": [0.5, 0.5]    },    \"lights\": [        \"1\",        \"2\"    ],    \"name\": \"bedroom\",}";
 //#endif
 
-      Group group = DeserializeResult<Group>(stringResult);
+      Group? group = DeserializeResult<Group>(stringResult);
 
-      if (string.IsNullOrEmpty(group.Id))
+      if (group != null && string.IsNullOrEmpty(group.Id))
         group.Id = id;
 
       return group;
@@ -193,7 +193,7 @@ namespace Q42.HueApi
     /// <param name="name">Group Name</param>
 	  /// <param name="roomClass">for room creation the room class has to be passed, without class it will get the default: "Other" class.</param>
     /// <returns></returns>
-    public async Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string name = null, RoomClass? roomClass = null)
+    public async Task<HueResults> UpdateGroupAsync(string id, IEnumerable<string> lights, string? name = null, RoomClass? roomClass = null)
     {
       if (id == null)
         throw new ArgumentNullException(nameof(id));

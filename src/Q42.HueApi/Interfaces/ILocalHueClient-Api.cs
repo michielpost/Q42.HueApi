@@ -22,9 +22,9 @@ namespace Q42.HueApi.Interfaces
     /// <returns><c>true</c> if success, <c>false</c> if the link button hasn't been pressed.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="appName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="appName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
-    Task<string> RegisterAsync(string appName, string deviceName);
+    Task<string?> RegisterAsync(string appName, string deviceName);
 
-    Task<RegisterEntertainmentResult> RegisterAsync(string applicationName, string deviceName, bool generateClientKey);
+    Task<RegisterEntertainmentResult?> RegisterAsync(string applicationName, string deviceName, bool generateClientKey);
 
     /// <summary>
     /// Initialize the client with your app key

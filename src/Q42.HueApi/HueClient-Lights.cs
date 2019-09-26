@@ -26,7 +26,7 @@ namespace Q42.HueApi
     /// <returns>The <see cref="Light"/> if found, <c>null</c> if not.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="id"/> is empty or a blank string.</exception>
-    public async Task<Light> GetLightAsync(string id)
+    public async Task<Light?> GetLightAsync(string id)
     {
       if (id == null)
         throw new ArgumentNullException(nameof(id));
@@ -148,7 +148,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="lightList">if null, send command to all lights</param>
     /// <returns></returns>
-    public Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string> lightList = null)
+    public Task<HueResults> SendCommandAsync(LightCommand command, IEnumerable<string>? lightList = null)
     {
       if (command == null)
         throw new ArgumentNullException(nameof(command));
@@ -165,7 +165,7 @@ namespace Q42.HueApi
     /// <param name="command"></param>
     /// <param name="lightList">if null, send command to all lights</param>
     /// <returns></returns>
-    public async Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string> lightList = null)
+    public async Task<HueResults> SendCommandRawAsync(string command, IEnumerable<string>? lightList = null)
     {
       if (command == null)
         throw new ArgumentNullException(nameof(command));
@@ -200,11 +200,11 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="deviceIds">The maxiumum number of serial numbers in any request is 10.</param>
     /// <returns></returns>
-    public async Task<HueResults> SearchNewLightsAsync(IEnumerable<string> deviceIds = null)
+    public async Task<HueResults> SearchNewLightsAsync(IEnumerable<string>? deviceIds = null)
     {
       CheckInitialized();
 
-      StringContent jsonStringContent = null;
+      StringContent? jsonStringContent = null;
 
       if(deviceIds != null)
       {

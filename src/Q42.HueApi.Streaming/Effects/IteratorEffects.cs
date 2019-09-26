@@ -17,14 +17,14 @@ namespace Q42.HueApi.Streaming.Effects
       return group.Select(x => new List<EntertainmentLight> { x });
     }
 
-    public static Task SetColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> transitionTime = null, TimeSpan? duration = null)
+    public static Task SetColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan>? waitTime = null, Func<TimeSpan>? transitionTime = null, TimeSpan? duration = null)
     {
       var list = new List<RGBColor>() { color };
       return SetRandomColorFromList(group, cancellationToken, list, mode, secondaryIteratorMode, waitTime, transitionTime, duration);
     }
 
 
-    public static Task SetRandomColorFromList(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, List<RGBColor> colors, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> transitionTime = null, TimeSpan? duration = null)
+    public static Task SetRandomColorFromList(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, List<RGBColor> colors, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan>? waitTime = null, Func<TimeSpan>? transitionTime = null, TimeSpan? duration = null)
     {
       if (waitTime == null)
         waitTime = () => TimeSpan.FromMilliseconds(50);
@@ -39,7 +39,7 @@ namespace Q42.HueApi.Streaming.Effects
     }
 
 
-    public static Task SetRandomColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> transitionTime = null, TimeSpan? duration = null)
+    public static Task SetRandomColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan>? waitTime = null, Func<TimeSpan>? transitionTime = null, TimeSpan? duration = null)
     {
       if (waitTime == null)
         waitTime = () => TimeSpan.FromMilliseconds(50);
@@ -70,7 +70,7 @@ namespace Q42.HueApi.Streaming.Effects
     /// <param name="duration"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task FlashQuick(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> onTime = null, Func<TimeSpan> transitionTimeOn = null, Func<TimeSpan> transitionTimeOff = null, TimeSpan? duration = null)
+    public static Task FlashQuick(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan>? waitTime = null, Func<TimeSpan>? onTime = null, Func<TimeSpan>? transitionTimeOn = null, Func<TimeSpan>? transitionTimeOff = null, TimeSpan? duration = null)
     {
       if (!color.HasValue)
       {
@@ -106,7 +106,7 @@ namespace Q42.HueApi.Streaming.Effects
     }
 
 
-    public static Task Flash(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan> waitTime = null, Func<TimeSpan> onTime = null, Func<TimeSpan> transitionTimeOn = null, Func<TimeSpan> transitionTimeOff = null, bool waitTillFinished = true, TimeSpan? duration = null)
+    public static Task Flash(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor? color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan>? waitTime = null, Func<TimeSpan>? onTime = null, Func<TimeSpan>? transitionTimeOn = null, Func<TimeSpan>? transitionTimeOff = null, bool waitTillFinished = true, TimeSpan? duration = null)
     {
       if (!color.HasValue)
       {

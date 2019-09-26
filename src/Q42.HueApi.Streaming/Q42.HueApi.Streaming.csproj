@@ -1,7 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8625;CS8613</WarningsAsErrors>
     <Authors>Michiel Post, Q42</Authors>
     <Company>Q42</Company>
     <Description>Open source library for interaction with the Philips Hue Bridge Entertainment API. Allows you to control your lights from C#. Supports .Net Standard 2.0 and .net471</Description>

@@ -35,7 +35,7 @@ namespace Q42.HueApi.Converters
         return;
       }
 
-			HueDateTime hueDateTimeValue = value as HueDateTime;
+			HueDateTime? hueDateTimeValue = value as HueDateTime;
 			if (hueDateTimeValue==null)
 			{
 				return;
@@ -93,7 +93,7 @@ namespace Q42.HueApi.Converters
 			writer.WriteValue(returnValue);
     }
 
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
 			HueDateTime hueValueDate = new HueDateTime();
 			if (reader.TokenType == JsonToken.Date)
@@ -102,7 +102,7 @@ namespace Q42.HueApi.Converters
 				return hueValueDate;
 			}
 
-			string rawValue = reader.Value?.ToString();
+			string? rawValue = reader.Value?.ToString();
 
 			if (string.IsNullOrWhiteSpace(rawValue))
 				return null;

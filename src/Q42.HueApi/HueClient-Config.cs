@@ -52,11 +52,13 @@ namespace Q42.HueApi
     /// Asynchronously gets the whitelist with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
-    public async Task<IEnumerable<WhiteList>> GetWhiteListAsync()
+    public async Task<IEnumerable<WhiteList>?> GetWhiteListAsync()
     {
       //Not needed to check if initialized, can be used without API key
 
-      BridgeConfig config = await GetConfigAsync().ConfigureAwait(false);
+      BridgeConfig? config = await GetConfigAsync().ConfigureAwait(false);
+      if (config == null)
+        return null;
       
       return config.WhiteList.Select(l => l.Value).ToList();
     }
@@ -66,14 +68,16 @@ namespace Q42.HueApi
     /// Get bridge info
     /// </summary>
     /// <returns></returns>
-    public async Task<Bridge> GetBridgeAsync()
+    public async Task<Bridge?> GetBridgeAsync()
     {
       CheckInitialized();
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       var stringResult = await client.GetStringAsync(new Uri(ApiBase)).ConfigureAwait(false);
 
-      BridgeState jsonResult = DeserializeResult<BridgeState>(stringResult);
+      BridgeState? jsonResult = DeserializeResult<BridgeState>(stringResult);
+      if (jsonResult == null)
+        return null;
 
       return new Bridge(jsonResult);
     }
@@ -83,14 +87,14 @@ namespace Q42.HueApi
     /// Get bridge config
     /// </summary>
     /// <returns>BridgeConfig object</returns>
-    public async Task<BridgeConfig> GetConfigAsync()
+    public async Task<BridgeConfig?> GetConfigAsync()
     {
         //Not needed to check if initialized, can be used without API key
 
         HttpClient client = await GetHttpClient().ConfigureAwait(false);
         string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}config", ApiBase))).ConfigureAwait(false);
         JToken token = JToken.Parse(stringResult);
-        BridgeConfig config = null;
+        BridgeConfig? config = null;
         if (token.Type == JTokenType.Object)
         {
             var jsonResult = (JObject)token;

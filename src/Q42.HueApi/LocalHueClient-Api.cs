@@ -16,10 +16,10 @@ namespace Q42.HueApi
   /// </summary>
   public partial class LocalHueClient : ILocalHueClient_Api
   {
-    public async Task<string> RegisterAsync(string applicationName, string deviceName)
+    public async Task<string?> RegisterAsync(string applicationName, string deviceName)
     {
       var result = await RegisterAsync(applicationName, deviceName, false);
-      return result.Username;
+      return result?.Username;
     }
 
 
@@ -33,7 +33,7 @@ namespace Q42.HueApi
     /// <exception cref="ArgumentNullException"><paramref name="applicationName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="applicationName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
 
-    public async Task<RegisterEntertainmentResult> RegisterAsync(string applicationName, string deviceName, bool generateClientKey)
+    public async Task<RegisterEntertainmentResult?> RegisterAsync(string applicationName, string deviceName, bool generateClientKey)
     {
       var result = await RegisterAsync(_ip, applicationName, deviceName, generateClientKey);
 

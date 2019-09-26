@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models;
@@ -17,7 +17,7 @@ namespace Q42.HueApi.Converters
 			return (objectType == typeof(ICommandBody));
 		}
 
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
 			if (reader.TokenType == JsonToken.StartObject)
 			{
@@ -35,7 +35,7 @@ namespace Q42.HueApi.Converters
 			if (value is GenericScheduleCommand)
 			{
 				var genericCommand = value as GenericScheduleCommand;
-				writer.WriteRawValue(genericCommand.JsonString);
+				writer.WriteRawValue(genericCommand!.JsonString);
 			}
 			else
 			{

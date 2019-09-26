@@ -18,13 +18,13 @@ namespace Q42.HueApi.Interfaces
     /// Asynchronously gets all lights registered with the bridge.
     /// </summary>
     /// <returns>An enumerable of <see cref="WhiteList"/>s registered with the bridge.</returns>
-    Task<IEnumerable<WhiteList>> GetWhiteListAsync();
+    Task<IEnumerable<WhiteList>?> GetWhiteListAsync();
 
     /// <summary>
     /// Get bridge info
     /// </summary>
     /// <returns></returns>
-    Task<Bridge> GetBridgeAsync();
+    Task<Bridge?> GetBridgeAsync();
 
     /// <summary>
     /// Update bridge config

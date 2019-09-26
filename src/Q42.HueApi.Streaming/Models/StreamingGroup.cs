@@ -34,7 +34,7 @@ namespace Q42.HueApi.Streaming.Models
     /// <param name="lightIds"></param>
     public StreamingGroup(List<string> lightIds)
     {
-      this.AddRange(lightIds.Select(x => new StreamingLight(x)));
+      this.AddRange(lightIds.Select(x => new StreamingLight(x, new LightLocation())));
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace Q42.HueApi.Streaming.Models
       return layer;
     }
 
-    internal static List<byte[]> GetCurrentStateAsByteArray(IEnumerable<IEnumerable<StreamingLight>> chunks)
+    internal static List<byte[]>? GetCurrentStateAsByteArray(IEnumerable<IEnumerable<StreamingLight>> chunks)
     {
       //Nothing to update
       if (!chunks.Any())

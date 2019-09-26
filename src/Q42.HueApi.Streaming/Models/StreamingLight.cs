@@ -22,7 +22,7 @@ namespace Q42.HueApi.Streaming.Models
    // public List<Transition> Transitions { get; set; } = new List<Transition>();
 
 
-    public StreamingLight(string id, LightLocation location = null)
+    public StreamingLight(string id, LightLocation location)
     {
       Id = byte.Parse(id);
       LightLocation = location;

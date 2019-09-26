@@ -21,7 +21,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Schedule> GetScheduleAsync(string id);
+    Task<Schedule?> GetScheduleAsync(string id);
 
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace Q42.HueApi.Interfaces
     /// </summary>
     /// <param name="schedule"></param>
     /// <returns></returns>
-    Task<string> CreateScheduleAsync(Schedule schedule);
+    Task<string?> CreateScheduleAsync(Schedule schedule);
 
 
     /// <summary>
