@@ -79,6 +79,16 @@ namespace Q42.HueApi.Tests
     }
 
     [TestMethod]
+    public async Task SendGroupCommand()
+    {
+      string groupId = "16";
+      var command = new SceneCommand { Scene = "1" };
+
+      await _client.SendGroupCommandAsync(command, groupId);
+
+    }
+
+    [TestMethod]
     public async Task GetGroups()
     {
       var groups = await _client.GetGroupsAsync();
