@@ -112,7 +112,4 @@ UpgradeLog*.XML
 *.nupkg
 /src/Q42.HueApi.ColorConverters/project.lock.json
 /src/Q42.HueApi.RemoteApi.Sample/project.lock.json
-/src/.vs/config
-/src/.vs/Q42.HueApi/v15/Server/sqlite3
-/src/.vs/Q42.HueApi/v15/sqlite3
-/src/.vs/Q42.HueApi/DesignTimeBuild/*.dtbcache
+/src/.vs*/
