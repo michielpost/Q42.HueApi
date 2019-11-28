@@ -33,7 +33,7 @@ namespace Q42.HueApi
         throw new ArgumentException("id must not be empty", nameof(id));
 
       JObject jsonObj = new JObject();
-      jsonObj.Add("stream", JToken.FromObject(new { active = true }));
+      jsonObj.Add("stream", JToken.FromObject(new { active = active }));
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
