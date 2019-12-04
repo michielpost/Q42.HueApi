@@ -1,8 +1,8 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-using Q42.HueApi.Interfaces;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Q42.HueApi.Interfaces;
 
 namespace Q42.HueApi.Tests
 {
@@ -17,8 +17,18 @@ namespace Q42.HueApi.Tests
       var bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
 
       Assert.IsNotNull(bridgeIPs);
-      Assert.IsTrue(bridgeIPs.Count() > 0);
+      Assert.IsTrue(bridgeIPs.Any());
+    }
 
+    [TestMethod]
+    public async Task TestUPnPBridgeLocator()
+    {
+      IBridgeLocator locator = new SsdpBridgeLocator();
+
+      var bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+
+      Assert.IsNotNull(bridgeIPs);
+      Assert.IsTrue(bridgeIPs.Any());
     }
   }
 }
