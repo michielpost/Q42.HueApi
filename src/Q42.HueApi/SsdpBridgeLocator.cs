@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -12,7 +11,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Q42.HueApi.Extensions;
-using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Bridge;
 
 namespace Q42.HueApi
@@ -21,7 +19,7 @@ namespace Q42.HueApi
   /// Uses SSDP protocol to locate all Hue Bridge accross the network
   /// </summary>
   /// <remarks>https://developers.meethue.com/develop/application-design-guidance/hue-bridge-discovery</remarks>
-  public class SsdpBridgeLocator : IBridgeLocator
+  public class SsdpBridgeLocator : BridgeLocator
   {
     private readonly IPAddress multicastAddress = IPAddress.Parse("239.255.255.250");
     private const int multicastPort = 1900;
@@ -49,29 +47,10 @@ namespace Q42.HueApi
 
     /// <summary>
     /// Locate bridges
-    /// <para>Note that it will take at least the amount of time specified in the timeout parameter</para>
-    /// </summary>
-    /// <param name="timeout">Timeout before stopping the search (best practice is waiting at least 5 seconds)</param>
-    /// <returns>List of bridge IPs found</returns>
-    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout)
-    {
-      if (timeout <= TimeSpan.Zero)
-      {
-        throw new ArgumentException("Timeout value must be greater than zero.", nameof(timeout));
-      }
-
-      using (CancellationTokenSource cancelSource = new CancellationTokenSource(timeout))
-      {
-        return await LocateBridgesAsync(cancelSource.Token);
-      }
-    }
-
-    /// <summary>
-    /// Locate bridges
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the search</param>
     /// <returns>List of bridge IPs found</returns>
-    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken)
+    public override async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken)
     {
       _discoveredBridges = new ConcurrentDictionary<string, LocatedBridge>();
 
