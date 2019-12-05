@@ -59,7 +59,7 @@ namespace Q42.HueApi
     /// <returns>Secret key for the app to communicate with the bridge.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="applicationName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="applicationName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
-    private async Task<RegisterEntertainmentResult> RegisterAsync(string ip, string applicationName, string deviceName, bool generateClientKey)
+    private async Task<RegisterEntertainmentResult?> RegisterAsync(string ip, string applicationName, string deviceName, bool generateClientKey)
     {
       if (applicationName == null)
         throw new ArgumentNullException(nameof(applicationName));
@@ -91,11 +91,11 @@ namespace Q42.HueApi
       var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", ip)), new JsonContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-      JObject result;
+      JObject? result;
       try
       {
         JArray jresponse = JArray.Parse(stringResponse);
-        result = (JObject)jresponse.First;
+        result = (JObject?)jresponse.First;
       }
       catch
       {
@@ -103,24 +103,29 @@ namespace Q42.HueApi
         throw new HueException(stringResponse);
       }
 
-      JToken error;
-      if (result.TryGetValue("error", out error))
+      if (result != null)
       {
-        if (error["type"].Value<int>() == 101) // link button not pressed
-          throw new LinkButtonNotPressedException("Link button not pressed");
-        else
-          throw new HueException(error["description"].Value<string>());
+        JToken? error;
+        if (result.TryGetValue("error", out error))
+        {
+          if (error["type"]?.Value<int>() == 101) // link button not pressed
+            throw new LinkButtonNotPressedException("Link button not pressed");
+          else
+            throw new HueException(error["description"]?.Value<string>());
+        }
+
+        var username = result["success"]?["username"]?.Value<string>();
+        var streamingClientKey = result["success"]?["clientkey"]?.Value<string>();
+
+        return new RegisterEntertainmentResult()
+        {
+          Ip = ip,
+          Username = username,
+          StreamingClientKey = streamingClientKey
+        };
       }
 
-      var username = result["success"]["username"].Value<string>();
-      var streamingClientKey = result["success"]["clientkey"]?.Value<string>();
-
-      return new RegisterEntertainmentResult()
-      {
-        Ip = ip,
-        Username = username,
-        StreamingClientKey = streamingClientKey
-      };
+      return null;
     }
 
     public async Task<bool> CheckConnection()

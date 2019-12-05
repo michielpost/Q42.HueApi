@@ -83,15 +83,21 @@ namespace Q42.HueApi
       if (token.Type == JTokenType.Array)
       {
         // Hue gives back errors in an array for this request
-        JObject error = (JObject)token.First["error"];
-        if (error["type"].Value<int>() == 3) // Rule not found
-          return null;
+        JToken? error = token.First?["error"];
+        if (error != null)
+        {
+          if (error["type"]?.Value<int>() == 3) // Rule not found
+            return null;
 
-        throw new HueException(error["description"].Value<string>());
+          var msg = error["description"]?.Value<string>();
+          if(msg != null)
+            throw new HueException(msg);
+        }
       }
 
       var rule = token.ToObject<Rule>();
-      rule.Id = id;
+      if(rule != null)
+        rule.Id = id;
 
       return rule;
     }

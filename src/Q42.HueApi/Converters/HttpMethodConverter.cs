@@ -33,7 +33,7 @@ namespace Q42.HueApi.Converters
 
       if (reader.TokenType == JsonToken.String)
       {
-        string value = (string)reader.Value;
+        string? value = (string?)reader.Value;
         if (string.IsNullOrEmpty(value))
           return null;
 

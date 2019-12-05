@@ -38,11 +38,11 @@ namespace Q42.HueApi
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
 
-      JObject result;
+      JObject? result;
       try
       {
         JArray jresponse = JArray.Parse(stringResponse);
-        result = (JObject)jresponse.First;
+        result = (JObject?)jresponse.First;
       }
       catch
       {
@@ -50,19 +50,26 @@ namespace Q42.HueApi
         throw new HueException(stringResponse);
       }
 
-      JToken error;
-      if (result.TryGetValue("error", out error))
+      if (result != null)
       {
-        if (error["type"].Value<int>() == 101) // link button not pressed
-          throw new LinkButtonNotPressedException("Link button not pressed");
-        else
-          throw new HueException(error["description"].Value<string>());
+        if (result.TryGetValue("error", out JToken? error))
+        {
+          if (error?["type"]?.Value<int>() == 101) // link button not pressed
+            throw new LinkButtonNotPressedException("Link button not pressed");
+          else
+            throw new HueException(error?["description"]?.Value<string>());
+        }
+
+        var key = result["success"]?["username"]?.Value<string>();
+        if (!string.IsNullOrEmpty(key))
+        {
+          Initialize(key!);
+
+          return key;
+        }
       }
 
-      var key = result["success"]["username"].Value<string>();
-      Initialize(key);
-
-      return key;
+      return null;
     }
 
   }

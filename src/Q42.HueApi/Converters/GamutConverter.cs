@@ -34,7 +34,7 @@ namespace Q42.HueApi.Converters
         JArray array = JArray.Load(reader);
         var gammutValues = array.ToObject<IList<IList<double>>>();
 
-        if (gammutValues.Count == 3)
+        if (gammutValues != null && gammutValues.Count == 3)
         {
           var red = new CIE1931Point(gammutValues[0][0], gammutValues[0][1]);
           var green = new CIE1931Point(gammutValues[1][0], gammutValues[1][1]);

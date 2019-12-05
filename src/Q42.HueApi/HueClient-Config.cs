@@ -31,15 +31,14 @@ namespace Q42.HueApi
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       JArray jresponse = JArray.Parse(stringResponse);
-      JObject result = (JObject)jresponse.First;
+      JObject? result = (JObject?)jresponse.First;
 
-      JToken error;
-      if (result.TryGetValue("error", out error))
+      if (result != null && result.TryGetValue("error", out JToken? error))
       {
-        if (error["type"].Value<int>() == 3) // entry not available
+        if (error?["type"]?.Value<int>() == 3) // entry not available
           return false;
         else
-          throw new HueException(error["description"].Value<string>());
+          throw new HueException(error?["description"]?.Value<string>());
       }
 
       return true;

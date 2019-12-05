@@ -38,29 +38,30 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id))).ConfigureAwait(false);
 
-//#if DEBUG
-//      //Normal result example
-//      stringResult = "{    \"state\": {        \"hue\": 50000,        \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,        \"sat\": 200,        \"ct\": 500,        \"xy\": [0.5, 0.5],        \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
-      
-//      //Lux result
-//      stringResult = "{    \"state\": {       \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,           \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
-//#endif
+      //#if DEBUG
+      //      //Normal result example
+      //      stringResult = "{    \"state\": {        \"hue\": 50000,        \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,        \"sat\": 200,        \"ct\": 500,        \"xy\": [0.5, 0.5],        \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
+
+      //      //Lux result
+      //      stringResult = "{    \"state\": {       \"on\": true,        \"effect\": \"none\",        \"alert\": \"none\",       \"bri\": 200,           \"reachable\": true,       \"colormode\": \"hs\"    },    \"type\": \"Living Colors\",    \"name\": \"LC 1\",    \"modelid\": \"LC0015\",    \"swversion\": \"1.0.3\",    \"pointsymbol\": {        \"1\": \"none\",        \"2\": \"none\",        \"3\": \"none\",        \"4\": \"none\",        \"5\": \"none\",        \"6\": \"none\",        \"7\": \"none\",        \"8\": \"none\"    }}";
+      //#endif
 
       JToken token = JToken.Parse(stringResult);
       if (token.Type == JTokenType.Array)
       {
         // Hue gives back errors in an array for this request
-        JObject error = (JObject)token.First["error"];
-        if (error["type"].Value<int>() == 3) // Light not found
+        var error = token.First?["error"];
+        if (error?["type"]?.Value<int>() == 3) // Light not found
           return null;
 
-        throw new HueException(error["description"].Value<string>());
+        throw new HueException(error?["description"]?.Value<string>());
       }
 
-	  var light = token.ToObject<Light>();
-	  light.Id = id;
+      var light = token.ToObject<Light>();
+      if (light != null)
+        light.Id = id;
 
-	  return light;
+      return light;
     }
 
     /// <summary>
@@ -78,7 +79,7 @@ namespace Q42.HueApi
 
       CheckInitialized();
 
-      string command = JsonConvert.SerializeObject(new { name = name});
+      string command = JsonConvert.SerializeObject(new { name = name });
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       var result = await client.PutAsync(new Uri(String.Format("{0}lights/{1}", ApiBase, id)), new JsonContent(command)).ConfigureAwait(false);
@@ -129,17 +130,17 @@ namespace Q42.HueApi
       JToken token = JToken.Parse(stringResult);
       if (token.Type == JTokenType.Object)
       {
-          //Each property is a light
-          var jsonResult = (JObject)token;
+        //Each property is a light
+        var jsonResult = (JObject)token;
 
-          foreach (var prop in jsonResult.Properties())
-          {
-                  Light newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
-                  newLight.Id = prop.Name;
-                  results.Add(newLight);
-          }
+        foreach (var prop in jsonResult.Properties())
+        {
+          Light newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
+          newLight.Id = prop.Name;
+          results.Add(newLight);
+        }
       }
-     return results;
+      return results;
     }
 
     /// <summary>
@@ -206,7 +207,7 @@ namespace Q42.HueApi
 
       StringContent? jsonStringContent = null;
 
-      if(deviceIds != null)
+      if (deviceIds != null)
       {
         JObject jsonObj = new JObject();
         jsonObj.Add("deviceid", JToken.FromObject(deviceIds.Take(10)));
@@ -237,9 +238,9 @@ namespace Q42.HueApi
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
       string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}lights/new", ApiBase))).ConfigureAwait(false);
 
-//#if DEBUG
-//      //stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
-//#endif
+      //#if DEBUG
+      //      //stringResult = "{\"7\": {\"name\": \"Hue Lamp 7\"},   \"8\": {\"name\": \"Hue Lamp 8\"},    \"lastscan\": \"2012-10-29T12:00:00\"}";
+      //#endif
 
       List<Light> results = new List<Light>();
 
@@ -249,7 +250,7 @@ namespace Q42.HueApi
         //Each property is a light
         var jsonResult = (JObject)token;
 
-        foreach(var prop in jsonResult.Properties())
+        foreach (var prop in jsonResult.Properties())
         {
           if (prop.Name != "lastscan")
           {
@@ -260,7 +261,7 @@ namespace Q42.HueApi
 
           }
         }
-       
+
       }
 
       return results;
@@ -282,9 +283,9 @@ namespace Q42.HueApi
 
       string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-//#if DEBUG
-//      jsonResult = "[{\"success\":\"/lights/" + id + " deleted\"}]";
-//#endif
+      //#if DEBUG
+      //      jsonResult = "[{\"success\":\"/lights/" + id + " deleted\"}]";
+      //#endif
 
       return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 

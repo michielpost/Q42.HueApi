@@ -172,15 +172,19 @@ namespace Q42.HueApi
 			if (token.Type == JTokenType.Array)
 			{
 				// Hue gives back errors in an array for this request
-				JObject error = (JObject)token.First["error"];
-				if (error["type"].Value<int>() == 3) // Rule not found
-					return null;
+				JToken? error = token.First?["error"];
+        if (error != null)
+        {
+          if (error["type"]?.Value<int>() == 3) // Rule not found
+            return null;
 
-				throw new HueException(error["description"].Value<string>());
+          throw new HueException(error["description"]?.Value<string>());
+        }
 			}
 
 			var sensor = token.ToObject<Sensor>();
-			sensor.Id = id;
+      if(sensor != null)
+			  sensor.Id = id;
 
 			return sensor;
 		}
