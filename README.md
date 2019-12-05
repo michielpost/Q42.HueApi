@@ -109,10 +109,12 @@ Download the source from GitHub or get the compiled assembly from NuGet [Q42.Hue
 
 ## Credits
 This library is made possible by contributions from:
-* [Michiel Post](http://www.michielpost.nl) ([@michielpostnl](http://twitter.com/michielpostnl)) - core contributor
-* [Q42](http://www.q42.nl) ([@q42](http://twitter.com/q42))
+* [Michiel Post](http://www.michielpost.nl) ([@michielpostnl](https://twitter.com/michielpostnl)) - core contributor
+* [Q42](https://www.q42.nl) ([@q42](http://twitter.com/q42))
 * [@ermau](https://github.com/ermau)
 * [@koenvanderlinden](https://github.com/koenvanderlinden)
+* [@Indigo744](https://github.com/Indigo744)
+* [and others](https://github.com/Q42/Q42.HueApi/graphs/contributors)
 
 ### Open Source Project Credits
 
