@@ -31,8 +31,8 @@ namespace Q42.HueApi
     private const string messageSt = "ST:SsdpSearch:all";
 
     private readonly Regex ssdpResponseLocationRegex = new Regex(@"LOCATION: *(http.+?/description\.xml)\r", RegexOptions.IgnoreCase);
-    private readonly Regex xmlResponseCheckHueRegex = new Regex(@"Philips hue bridge", RegexOptions.IgnoreCase);
-    private readonly Regex xmlResponseSerialNumberRegex = new Regex(@"<serialnumber>(.+?)</serialnumber>", RegexOptions.IgnoreCase);
+    private static readonly Regex xmlResponseCheckHueRegex = new Regex(@"Philips hue bridge", RegexOptions.IgnoreCase);
+    private static readonly Regex xmlResponseSerialNumberRegex = new Regex(@"<serialnumber>(.+?)</serialnumber>", RegexOptions.IgnoreCase);
 
     private readonly byte[] broadcastMessage = Encoding.UTF8.GetBytes(
         string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{0}",
@@ -58,6 +58,19 @@ namespace Q42.HueApi
         throw new ArgumentException("Timeout value must be greater than zero.", nameof(timeout));
       }
 
+      using (CancellationTokenSource cancelSource = new CancellationTokenSource(timeout))
+      {
+        return await LocateBridgesAsync(cancelSource.Token);
+      }
+    }
+
+    /// <summary>
+    /// Locate bridges
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the search</param>
+    /// <returns>List of bridge IPs found</returns>
+    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken)
+    {
       _discoveredBridges = new ConcurrentDictionary<string, LocatedBridge>();
 
       using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
@@ -70,8 +83,15 @@ namespace Q42.HueApi
         // Spin up a new thread to handle socket responses
         new Thread(() => ListenSocketResponseAsync(socket)).Start();
 
-        // Wait the specified timeout
-        await Task.Delay(timeout);
+        try
+        {
+          // Wait until cancellation requested
+          await Task.Delay(Timeout.Infinite, cancellationToken);
+        }
+        catch (TaskCanceledException)
+        {
+          // Cancellation requested
+        }
 
         // Force close the connection (will end the thread)
         socket.Close();

@@ -1,9 +1,8 @@
-using Q42.HueApi.Models.Bridge;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Q42.HueApi.Models.Bridge;
 
 namespace Q42.HueApi.Interfaces
 {
@@ -13,10 +12,17 @@ namespace Q42.HueApi.Interfaces
   public interface IBridgeLocator
   {
     /// <summary>
-    /// Returns list of bridge IPs
+    /// Locate bridges
     /// </summary>
-    /// <param name="timeout"></param>
-    /// <returns></returns>
+    /// <param name="timeout">Timeout before stopping the search</param>
+    /// <returns>List of bridge IPs found</returns>
     Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout);
+
+    /// <summary>
+    /// Locate bridges
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the search</param>
+    /// <returns>List of bridge IPs found</returns>
+    Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken);
   }
 }
