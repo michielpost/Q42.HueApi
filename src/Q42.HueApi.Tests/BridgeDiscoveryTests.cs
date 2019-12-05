@@ -14,10 +14,7 @@ namespace Q42.HueApi.Tests
     {
       IBridgeLocator locator = new HttpBridgeLocator();
 
-      var bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
-
-      Assert.IsNotNull(bridgeIPs);
-      Assert.IsTrue(bridgeIPs.Any());
+      await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(5));
     }
 
     [TestMethod]
@@ -25,10 +22,23 @@ namespace Q42.HueApi.Tests
     {
       IBridgeLocator locator = new SsdpBridgeLocator();
 
-      var bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+      await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(5));
+    }
 
-      Assert.IsNotNull(bridgeIPs);
-      Assert.IsTrue(bridgeIPs.Any());
+    private async Task TestBridgeLocatorWithTimeout(IBridgeLocator locator, TimeSpan timeout)
+    {
+      var startTime = DateTime.Now;
+      var bridgeIPs = await locator.LocateBridgesAsync(timeout);
+
+      Assert.IsTrue(
+        DateTime.Now.Subtract(startTime).Subtract(timeout) < TimeSpan.FromMilliseconds(250),
+        "Must complete inside the timeout specified (plus 250 ms)");
+
+      Assert.IsNotNull(bridgeIPs,
+        "Must return list");
+
+      Assert.IsTrue(bridgeIPs.Any(),
+        "Must find bridges");
     }
   }
 }
