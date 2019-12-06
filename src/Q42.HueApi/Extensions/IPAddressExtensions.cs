@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
@@ -70,6 +73,67 @@ namespace Q42.HueApi.Extensions
         default:
           return false;
       }
+    }
+
+    /// <summary>
+    /// Get a list of all IPv4 addresses in a specified network
+    /// </summary>
+    /// <exception cref="ArgumentException">If IP or mask not IPv4</exception>
+    /// <param name="ip">Any IP from the network</param>
+    /// <param name="mask">The network mask (subnet)</param>
+    /// <returns>A list of IPAddress</returns>
+    public static List<IPAddress> GetAllIPv4FromNetwork(this IPAddress ip, IPAddress mask)
+    {
+      if (ip.AddressFamily != AddressFamily.InterNetwork)
+      {
+        throw new ArgumentException("Not an IPv4 address", nameof(ip));
+      }
+
+      if (mask.AddressFamily != AddressFamily.InterNetwork)
+      {
+        throw new ArgumentException("Not an IPv4 address", nameof(mask));
+      }
+
+      List<IPAddress> range = new List<IPAddress>();
+
+      byte[] maskBytes = mask.GetAddressBytes();
+      byte[] ipBytes = ip.GetAddressBytes();
+
+      // Start IP (network IP) = IP AND MASK
+      byte[] startIpBytes = Enumerable.Range(0, 4)
+        .Select(i => (byte)(ipBytes[i] & maskBytes[i]))
+        .ToArray();
+
+      // Last IP (broadcast IP) = IP OR NOT MASK
+      byte[] endIpBytes = Enumerable.Range(0, 4)
+        .Select(i => (byte)(ipBytes[i] | ~maskBytes[i]))
+        .ToArray();
+
+      if (!Enumerable.Range(0, 4).Any(i => startIpBytes[i] > endIpBytes[i]))
+      {
+        for (int b0 = startIpBytes[0]; b0 <= endIpBytes[0]; b0++)
+        {
+          for (int b1 = startIpBytes[1]; b1 <= endIpBytes[1]; b1++)
+          {
+            for (int b2 = startIpBytes[2]; b2 <= endIpBytes[2]; b2++)
+            {
+              for (int b3 = startIpBytes[3]; b3 <= endIpBytes[3]; b3++)
+              {
+                range.Add(new IPAddress(new byte[] { (byte)b0, (byte)b1, (byte)b2, (byte)b3 }));
+              }
+            }
+          }
+        }
+      }
+      else
+      {
+        // Something went wrong : a start byte is above an end byte and thus will lead to bad results
+      }
+
+      return range
+        .Take(range.Count - 1) // Ignore last IP = broadcast IP
+        .Skip(1)               // Ignore first IP = network IP
+        .ToList();
     }
   }
 }

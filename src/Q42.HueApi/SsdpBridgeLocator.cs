@@ -3,16 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Q42.HueApi.Extensions;
-using Q42.HueApi.Interfaces;
 using Q42.HueApi.Models.Bridge;
 
 namespace Q42.HueApi
@@ -21,7 +17,7 @@ namespace Q42.HueApi
   /// Uses SSDP protocol to locate all Hue Bridge accross the network
   /// </summary>
   /// <remarks>https://developers.meethue.com/develop/application-design-guidance/hue-bridge-discovery</remarks>
-  public class SsdpBridgeLocator : IBridgeLocator
+  public class SsdpBridgeLocator : BridgeLocator
   {
     private readonly IPAddress multicastAddress = IPAddress.Parse("239.255.255.250");
     private const int multicastPort = 1900;
@@ -31,10 +27,6 @@ namespace Q42.HueApi
     private const string messageMan = "MAN: \"ssdp:discover\"";
     private const string messageMx = "MX: 1";
     private const string messageSt = "ST: SsdpSearch:all";
-
-    private readonly Regex ssdpResponseLocationRegex = new Regex(@"LOCATION: *(http.+?/description\.xml)\r", RegexOptions.IgnoreCase);
-    private static readonly Regex xmlResponseCheckHueRegex = new Regex(@"Philips hue bridge", RegexOptions.IgnoreCase);
-    private static readonly Regex xmlResponseSerialNumberRegex = new Regex(@"<serialnumber>(.+?)</serialnumber>", RegexOptions.IgnoreCase);
 
     private readonly byte[] ssdpDiscoveryMessage = Encoding.UTF8.GetBytes(
         string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{0}",
@@ -49,29 +41,10 @@ namespace Q42.HueApi
 
     /// <summary>
     /// Locate bridges
-    /// <para>Note that it will take at least the amount of time specified in the timeout parameter</para>
-    /// </summary>
-    /// <param name="timeout">Timeout before stopping the search (best practice is waiting at least 5 seconds)</param>
-    /// <returns>List of bridge IPs found</returns>
-    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(TimeSpan timeout)
-    {
-      if (timeout <= TimeSpan.Zero)
-      {
-        throw new ArgumentException("Timeout value must be greater than zero.", nameof(timeout));
-      }
-
-      using (CancellationTokenSource cancelSource = new CancellationTokenSource(timeout))
-      {
-        return await LocateBridgesAsync(cancelSource.Token);
-      }
-    }
-
-    /// <summary>
-    /// Locate bridges
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the search</param>
     /// <returns>List of bridge IPs found</returns>
-    public async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken)
+    public override async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken)
     {
       _discoveredBridges = new ConcurrentDictionary<string, LocatedBridge>();
 
@@ -86,13 +59,7 @@ namespace Q42.HueApi
           // On Windows, using INADDR_ANY could lead to issue due to the Windows SSDP Discovery service throttling multicast packets
           // See https://stackoverflow.com/q/32682969/8861729
           // So we will bind directly to all network interface having a private IPs
-          socketList = NetworkInterface.GetAllNetworkInterfaces()
-            // Keep only connected interfaces
-            .Where(itf => itf.OperationalStatus == OperationalStatus.Up)
-            // Retrieve first unicast address on each interface
-            .Select(itf => itf.GetIPProperties().UnicastAddresses.First())
-            // Keep only private IPv4
-            .Where(info => !info.Address.IsLoopback() && !info.Address.IsIPv4LinkLocal() && info.Address.IsIPv4Private())
+          socketList = NetworkInterfaceExtensions.GetAllUpNetworkInterfacesFirstPrivateIPv4()
             // Create socket for each address remaining (and asking for a random available port)
             .Select(info => CreateSocketForSSDP(new IPEndPoint(info.Address, 0)))
             .ToList();
@@ -175,24 +142,24 @@ namespace Q42.HueApi
           try
           {
             // Get IP address
-            string responseIpAddress = (responseEndPoint as IPEndPoint)?.Address.ToString() ?? "";
+            IPAddress responseIpAddress = ((IPEndPoint)responseEndPoint).Address;
 
-            if (!ipSeen.Contains(responseIpAddress))
+            if (!ipSeen.Contains(responseIpAddress.ToString()))
             {
               // Try decode response as UTF8
               var responseBody = Encoding.UTF8.GetString(responseRawBuffer);
 
-              if (!string.IsNullOrWhiteSpace(responseIpAddress) && !string.IsNullOrWhiteSpace(responseBody))
+              if (!string.IsNullOrWhiteSpace(responseBody))
               {
                 // Spin up a new thread to handle this specific response so we can continue waiting for response
-                new Thread(async () => await HandleSSDPResponseAsync(responseIpAddress, responseBody).ConfigureAwait(false)).Start();
+                new Thread(async () => await HandleSSDPResponseAsync(responseIpAddress).ConfigureAwait(false)).Start();
 
                 // Add this ip to local list, so we won't start other thread for it
-                ipSeen.Add(responseIpAddress);
+                ipSeen.Add(responseIpAddress.ToString());
               }
               else
               {
-                // Not a valid IP or response
+                // Not a valid response
               }
             }
             else
@@ -215,23 +182,22 @@ namespace Q42.HueApi
     /// <summary>
     /// Handle a SSDP response
     /// </summary>
-    /// <param name="ipAddress">The IP that responded</param>
+    /// <param name="ip">The IP that responded</param>
     /// <param name="response">The response received</param>
-    private async Task HandleSSDPResponseAsync(string ipAddress, string response)
+    private async Task HandleSSDPResponseAsync(IPAddress ip)
     {
       try
       {
-        var location = ssdpResponseLocationRegex.Match(response);
-        if (location.Success)
+        using (var ctsTimeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)))
         {
           // Check if it's a Hue Bridge
-          string serialNumber = await IsHue(location.Groups[1].Value).ConfigureAwait(false);
+          string serialNumber = await CheckHueDescriptor(ip, ctsTimeout.Token).ConfigureAwait(false);
 
           if (!string.IsNullOrWhiteSpace(serialNumber))
           {
-            _discoveredBridges.TryAdd(ipAddress, new LocatedBridge()
+            _discoveredBridges.TryAdd(ip.ToString(), new LocatedBridge()
             {
-              IpAddress = ipAddress,
+              IpAddress = ip.ToString(),
               BridgeId = serialNumber,
             });
           }
@@ -240,56 +206,11 @@ namespace Q42.HueApi
             // Not a valid S/N
           }
         }
-        else
-        {
-          // Not a valid location
-        }
       }
       catch
       {
         // Something went wrong, ignore...
       }
-    }
-
-    /// <summary>
-    /// Check if the endpoint is a Hue Bridge
-    /// </summary>
-    /// <param name="discoveryUrl">Endpoint URL</param>
-    /// <returns>The Serial Number, or empty if not a hue bridge</returns>
-    private async Task<string> IsHue(string discoveryUrl)
-    {
-      try
-      {
-        string xmlResponse = "";
-        using (var client = new HttpClient { Timeout = TimeSpan.FromMilliseconds(2000) })
-        {
-          xmlResponse = await client.GetStringAsync(discoveryUrl).ConfigureAwait(false);
-        }
-
-        if (xmlResponseCheckHueRegex.IsMatch(xmlResponse))
-        {
-          var serialNumberMatch = xmlResponseSerialNumberRegex.Match(xmlResponse);
-
-          if (serialNumberMatch.Success)
-          {
-            return serialNumberMatch.Groups[1].Value;
-          }
-          else
-          {
-            // No S/N found
-          }
-        }
-        else
-        {
-          // Not a Hue Bridge
-        }
-      }
-      catch
-      {
-        // Something went wrong, ignore...
-      }
-
-      return "";
     }
   }
 }
