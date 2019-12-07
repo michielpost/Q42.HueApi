@@ -11,12 +11,12 @@ using Q42.HueApi.Models.Bridge;
 namespace Q42.HueApi
 {
   /// <summary>
-  /// Uses the special nupnp url from meethue.com to find registered bridges based on your external IP
+  /// Base class for Bridge Locator sharing common behaviors
   /// </summary>
   public abstract class BridgeLocator : IBridgeLocator
   {
-    private readonly Regex xmlResponseCheckHueRegex = new Regex(@"Philips hue bridge", RegexOptions.IgnoreCase);
-    private readonly Regex xmlResponseSerialNumberRegex = new Regex(@"<serialnumber>(.+?)</serialnumber>", RegexOptions.IgnoreCase);
+    private static readonly Regex xmlResponseCheckHueRegex = new Regex(@"Philips hue bridge", RegexOptions.IgnoreCase);
+    private static readonly Regex xmlResponseSerialNumberRegex = new Regex(@"<serialnumber>(.+?)</serialnumber>", RegexOptions.IgnoreCase);
 
     private const string httpXmlDescriptorFileFormat = "http://{0}/description.xml";
 
@@ -49,17 +49,19 @@ namespace Q42.HueApi
     /// Check if a IP is a Hue Bridge by checking its descriptor file
     /// </summary>
     /// <param name="ip">IP to check</param>
+    /// <param name="httpTimeout">Timeout for this specific check</param>
     /// <param name="cancellationToken">Token to cancel the check</param>
     /// <returns>The Serial Number, or empty if not a hue bridge</returns>
-    public async Task<string> CheckHueDescriptor(IPAddress ip, CancellationToken? cancellationToken = null)
+    protected static async Task<string> CheckHueDescriptor(IPAddress ip, TimeSpan httpTimeout, CancellationToken? cancellationToken = null)
     {
-      try
+      using (var httpTimeoutCts = new CancellationTokenSource(httpTimeout))
+      using (var mergedCts = CancellationTokenSource.CreateLinkedTokenSource(
+                                                    cancellationToken ?? CancellationToken.None, httpTimeoutCts.Token))
+      using (var client = new HttpClient())
       {
-        using (var client = new HttpClient())
+        try
         {
-          var response = await client.GetAsync(
-            string.Format(httpXmlDescriptorFileFormat, ip),
-            cancellationToken ?? CancellationToken.None).ConfigureAwait(false);
+          var response = await client.GetAsync(string.Format(httpXmlDescriptorFileFormat, ip), mergedCts.Token).ConfigureAwait(false);
 
           if (response.IsSuccessStatusCode)
           {
@@ -87,10 +89,10 @@ namespace Q42.HueApi
             // No response, or cancellation requested
           }
         }
-      }
-      catch
-      {
-        // Something went wrong, ignore...
+        catch
+        {
+          // Something went wrong, ignore...
+        }
       }
 
       return "";

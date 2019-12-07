@@ -35,6 +35,14 @@ namespace Q42.HueApi.Tests
       await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(30));
     }
 
+    [TestMethod]
+    public async Task TestMdnsBridgeLocator()
+    {
+      IBridgeLocator locator = new MdnsBridgeLocator();
+
+      await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(5));
+    }
+
     private async Task TestBridgeLocatorWithTimeout(IBridgeLocator locator, TimeSpan timeout)
     {
       var startTime = DateTime.Now;
