@@ -16,8 +16,6 @@ namespace Q42.HueApi
   /// <remarks>https://developers.meethue.com/develop/application-design-guidance/hue-bridge-discovery</remarks>
   public class LocalNetworkScanBridgeLocator : BridgeLocator
   {
-    private ConcurrentDictionary<string, LocatedBridge> _discoveredBridges;
-
     /// <summary>
     /// Locate bridges
     /// </summary>
@@ -25,7 +23,7 @@ namespace Q42.HueApi
     /// <returns>List of bridge IPs found</returns>
     public override async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken)
     {
-      _discoveredBridges = new ConcurrentDictionary<string, LocatedBridge>();
+      var discoveredBridges = new ConcurrentDictionary<string, LocatedBridge>();
 
       // Get all IPv4 private unicast addresses from all network interfaces that are up
       List<IPAddress> networkIps = NetworkInterfaceExtensions.GetAllUpNetworkInterfacesFirstPrivateIPv4()
@@ -49,7 +47,27 @@ namespace Q42.HueApi
               MaxDegreeOfParallelism = Environment.ProcessorCount,
             };
 
-            Parallel.ForEach(networkIps, parallelOptions, (ip) => CheckIP(ip, cancellationToken));
+            Parallel.ForEach(networkIps, parallelOptions, (ip) =>
+            {
+              // Check if an IP is a Hue Bridge by checking its descriptor
+              // Note that the timeout here is important:
+              // - if small, can speedup significantly the searching, but may miss an answer if the Hue Bridge took too much time to answer
+              // - if big, will be sure to check thoroughly each IP, but the search can be slower
+              string serialNumber = CheckHueDescriptor(ip, TimeSpan.FromMilliseconds(1000), cancellationToken).Result;
+
+              if (!string.IsNullOrEmpty(serialNumber))
+              {
+                discoveredBridges.TryAdd(ip.ToString(), new LocatedBridge()
+                {
+                  IpAddress = ip.ToString(),
+                  BridgeId = serialNumber,
+                });
+              }
+              else
+              {
+                // Not a hue bridge
+              }
+            });
           }
           catch (OperationCanceledException)
           {
@@ -62,36 +80,7 @@ namespace Q42.HueApi
         // No IP found
       }
 
-      return _discoveredBridges.Select(x => x.Value).ToList();
-    }
-
-    /// <summary>
-    /// Check if an IP is a Hue Bridge
-    /// </summary>
-    /// <param name="ip">The IP to check</param>
-    /// <param name="cancellationToken">The cancellation token</param>
-    private void CheckIP(IPAddress ip, CancellationToken cancellationToken)
-    {
-      // Add a timeout for the current IP tested so we won't wait too much for a response
-      using (var currentIpTimeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(1000)))
-      using (var cancellationTokenSrcWithTimeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, currentIpTimeout.Token))
-      {
-        // Check if an IP is a Hue Bridge by checking its descriptor
-        string serialNumber = CheckHueDescriptor(ip, cancellationTokenSrcWithTimeout.Token).Result;
-
-        if (!string.IsNullOrEmpty(serialNumber))
-        {
-          _discoveredBridges.TryAdd(ip.ToString(), new LocatedBridge()
-          {
-            IpAddress = ip.ToString(),
-            BridgeId = serialNumber,
-          });
-        }
-        else
-        {
-          // Not a hue bridge
-        }
-      }
+      return discoveredBridges.Select(x => x.Value).ToList();
     }
   }
 }
