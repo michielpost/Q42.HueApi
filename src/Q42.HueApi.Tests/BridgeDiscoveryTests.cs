@@ -43,6 +43,22 @@ namespace Q42.HueApi.Tests
       await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(5));
     }
 
+    [TestMethod]
+    public async Task TestParallelLocators()
+    {
+      IBridgeLocator httpBridgeLocator = new HttpBridgeLocator();
+      IBridgeLocator ssdpBridgeLocator = new SsdpBridgeLocator();
+      IBridgeLocator mdnsBridgeLocator = new MdnsBridgeLocator();
+      IBridgeLocator localNetworkScanBridgeLocator = new LocalNetworkScanBridgeLocator();
+
+      await Task.WhenAll(new Task[] {
+        TestBridgeLocatorWithTimeout(httpBridgeLocator, TimeSpan.FromSeconds(5)),
+        TestBridgeLocatorWithTimeout(ssdpBridgeLocator, TimeSpan.FromSeconds(5)),
+        TestBridgeLocatorWithTimeout(mdnsBridgeLocator, TimeSpan.FromSeconds(5)),
+        TestBridgeLocatorWithTimeout(localNetworkScanBridgeLocator, TimeSpan.FromSeconds(30)),
+      });
+    }
+
     private async Task TestBridgeLocatorWithTimeout(IBridgeLocator locator, TimeSpan timeout)
     {
       var startTime = DateTime.Now;

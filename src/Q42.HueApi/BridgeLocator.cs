@@ -20,6 +20,8 @@ namespace Q42.HueApi
 
     private const string httpXmlDescriptorFileFormat = "http://{0}/description.xml";
 
+    protected readonly static HttpClient _httpClient = new HttpClient();
+
     /// <summary>
     /// Locate bridges
     /// </summary>
@@ -57,36 +59,37 @@ namespace Q42.HueApi
       using (var httpTimeoutCts = new CancellationTokenSource(httpTimeout))
       using (var mergedCts = CancellationTokenSource.CreateLinkedTokenSource(
                                                     cancellationToken ?? CancellationToken.None, httpTimeoutCts.Token))
-      using (var client = new HttpClient())
       {
         try
         {
-          var response = await client.GetAsync(string.Format(httpXmlDescriptorFileFormat, ip), mergedCts.Token).ConfigureAwait(false);
-
-          if (response.IsSuccessStatusCode)
+          using (var response = await _httpClient.GetAsync(string.Format(httpXmlDescriptorFileFormat, ip), mergedCts.Token)
+                                                 .ConfigureAwait(false))
           {
-            string xmlResponse = await response.Content.ReadAsStringAsync();
-            if (xmlResponseCheckHueRegex.IsMatch(xmlResponse))
+            if (response.IsSuccessStatusCode)
             {
-              var serialNumberMatch = xmlResponseSerialNumberRegex.Match(xmlResponse);
-
-              if (serialNumberMatch.Success)
+              string xmlResponse = await response.Content.ReadAsStringAsync();
+              if (xmlResponseCheckHueRegex.IsMatch(xmlResponse))
               {
-                return serialNumberMatch.Groups[1].Value;
+                var serialNumberMatch = xmlResponseSerialNumberRegex.Match(xmlResponse);
+
+                if (serialNumberMatch.Success)
+                {
+                  return serialNumberMatch.Groups[1].Value;
+                }
+                else
+                {
+                  // No S/N found
+                }
               }
               else
               {
-                // No S/N found
+                // Not a Hue Bridge
               }
             }
             else
             {
-              // Not a Hue Bridge
+              // No response, or cancellation requested
             }
-          }
-          else
-          {
-            // No response, or cancellation requested
           }
         }
         catch
