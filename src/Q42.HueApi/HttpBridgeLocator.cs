@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -23,10 +22,8 @@ namespace Q42.HueApi
     /// <returns>List of bridge IPs found</returns>
     public override async Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken)
     {
-      using (HttpClient client = new HttpClient())
+      using (var response = await _httpClient.GetAsync(NuPnPUrl, cancellationToken).ConfigureAwait(false))
       {
-        var response = await client.GetAsync(NuPnPUrl, cancellationToken).ConfigureAwait(false);
-
         if (response.IsSuccessStatusCode && !cancellationToken.IsCancellationRequested)
         {
           string content = await response.Content.ReadAsStringAsync();
