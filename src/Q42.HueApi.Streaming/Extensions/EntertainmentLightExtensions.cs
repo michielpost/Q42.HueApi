@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Q42.HueApi.ColorConverters.Gamut;
+using Q42.HueApi.Models.Gamut;
 
 namespace Q42.HueApi.Streaming.Extensions
 {
@@ -37,6 +39,19 @@ namespace Q42.HueApi.Streaming.Extensions
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="light"></param>
+    /// <param name="xy"></param>
+    /// <param name="gamut">The gamut to use</param>
+    /// <param name="timeSpan"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static void SetColor(this EntertainmentLight light, CancellationToken cancellationToken, CIE1931Point xy, CIE1931Gamut gamut, TimeSpan timeSpan = default) {
+      var rgb = HueColorConverter.XYToRgb(xy, gamut);
+      light.SetState(cancellationToken, rgb, null, timeSpan);
+    }
+    /// <summary>
     /// Set state on a single light
     /// </summary>
     /// <param name="light"></param>
@@ -47,6 +62,29 @@ namespace Q42.HueApi.Streaming.Extensions
     /// <returns></returns>
     public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor? rgb = null, double? brightness = null, TimeSpan timeSpan = default(TimeSpan))
     {
+      //Create a new transition for this light
+      Transition transition = new Transition(rgb, brightness, timeSpan);
+
+      light.Transition = transition;
+
+      //Start the transition
+      transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
+    }
+
+    /// <summary>
+    /// Set state on a single light
+    /// </summary>
+    /// <param name="light"></param>
+    /// <param name="xy"></param>
+    /// <param name="gamut"></param>
+    /// <param name="brightness"></param>
+    /// <param name="timeSpan"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, CIE1931Point xy, CIE1931Gamut gamut, double? brightness = null, TimeSpan timeSpan = default(TimeSpan))
+    {
+      var rgb = HueColorConverter.XYToRgb(xy, gamut);
+
       //Create a new transition for this light
       Transition transition = new Transition(rgb, brightness, timeSpan);
 
