@@ -15,7 +15,7 @@ namespace Q42.HueApi.ColorConverters.Gamut
   /// <remarks>
   /// Based on http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
   /// </remarks>
-  internal static class HueColorConverter
+  public static class HueColorConverter
   {
     public static CIE1931Point RgbToXY(RGBColor color, CIE1931Gamut? gamut)
     {
@@ -33,20 +33,20 @@ namespace Q42.HueApi.ColorConverters.Gamut
       // can produce.
       //
       // This also results in some deviation of color on screen vs color in real-life.
-      // 
-      // The Philips implementation describes the matrix below with the comment 
+      //
+      // The Philips implementation describes the matrix below with the comment
       // "Wide Gamut D65", but the values suggest this is infact not a standard
-      // gamut but some custom gamut. 
-      // 
+      // gamut but some custom gamut.
+      //
       // The coordinates of this gamut have been identified as follows:
       //  red: (0.700607, 0.299301)
       //  green: (0.172416, 0.746797)
       //  blue: (0.135503, 0.039879)
-      // 
+      //
       // (substitute r = 1, g = 1, b = 1 in sequence into array below and convert
       //  from XYZ to xyY coordinates).
       // The plotted chart can be seen here: http://imgur.com/zelKnSk
-      // 
+      //
       // Also of interest, the white point is not D65 (0.31271, 0.32902), but a slightly
       // shifted version at (0.322727, 0.32902). This might be because true D65 is slightly
       // outside Gamut B (the position of D65 in the linked chart is slightly inaccurate).
@@ -81,6 +81,33 @@ namespace Q42.HueApi.ColorConverters.Gamut
       var rgb = RgbFromState(state, gamut);
 
       return rgb.ToHex();
+    }
+
+    /// <summary>
+    /// Returns the proper gamut per lamp model, or wide if not found
+    /// </summary>
+    /// <param name="modelId">The model Id to look up</param>
+    /// <returns></returns>
+    public static CIE1931Gamut GetLightGamut(string modelId) {
+      /*"""Gets the correct color gamut for the provided model id.
+      Docs: http://www.developers.meethue.com/documentation/supported-lights
+      """*/
+      string[] modelsA = { "LST001", "LLC010", "LLC011", "LLC012", "LLC006", "LLC007", "LLC013"};
+      string[] modelsB = {"LCT001", "LCT007", "LCT002", "LCT003", "LLM001"};
+      string[] modelsC = {"LCT010", "LCT014", "LCT011", "LLC020", "LST002"};
+      if (Array.Exists(modelsA, element => element == modelId)) {
+        return CIE1931Gamut.ModelTypeA;
+      }
+
+      if (Array.Exists(modelsB, element => element == modelId)) {
+        return CIE1931Gamut.ModelTypeB;
+      }
+
+      if (Array.Exists(modelsC, element => element == modelId)) {
+        return CIE1931Gamut.ModelTypeC;
+      }
+
+      return CIE1931Gamut.PhilipsWideGamut;
     }
 
     /// <summary>
@@ -196,7 +223,7 @@ namespace Q42.HueApi.ColorConverters.Gamut
     }
 
     /// <summary>
-    /// Bounds the specified value to between 0.0 and 1.0. 
+    /// Bounds the specified value to between 0.0 and 1.0.
     /// </summary>
     private static double Bound(double value)
     {
