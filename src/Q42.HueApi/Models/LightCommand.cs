@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -105,7 +105,7 @@ namespace Q42.HueApi
     /// As of 1.7. Increments or decrements the value of the xy.  xy_inc is ignored if the xy attribute is provided. Any ongoing color transition is stopped.  Will stop at it's gamut boundaries. Setting a value of 0 also stops any ongoing transition.  The bridge will return the xy value after the increment is performed.
     /// </summary>
     [DataMember(Name = "xy_inc")]
-    public decimal? ColorCoordinatesIncrement { get; set; }
+    public double[]? ColorCoordinatesIncrement { get; set; }
 
   }
 
