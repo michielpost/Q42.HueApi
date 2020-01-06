@@ -19,8 +19,14 @@ Some basic usage examples
 Before you can communicate with the Philips Hue Bridge, you need to find the bridge and register your application:
 
 ```cs
-	IBridgeLocator locator = new HttpBridgeLocator();
-	IEnumerable<string> bridgeIPs = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+	IBridgeLocator locator = new HttpBridgeLocator(); //Or: LocalNetworkScanBridgeLocator, MdnsBridgeLocator, MUdpBasedBridgeLocator
+	var bridges  = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+
+	//Advanced Bridge Discovery options:
+	bridges = await HueBridgeDiscovery.CompleteDiscoveryAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(30));
+	bridges	= await HueBridgeDiscovery.FastDiscoveryWithNetworkScanFallbackAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(30));
+	bridges = await HueBridgeDiscovery.CompleteDiscoveryAsync(TimeSpan.FromSeconds(5));
+
 ```
 	
 Register your application
