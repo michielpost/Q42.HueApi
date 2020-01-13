@@ -29,7 +29,7 @@ namespace Q42.HueApi
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		[DataMember(Name = "alert")]
-		public Alert Alert { get; set; }
+		public Alert? Alert { get; set; }
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		[DataMember(Name = "effect")]
