@@ -60,6 +60,8 @@ namespace Q42.HueApi.Streaming.Extensions
     public static IEnumerable<EntertainmentLight> GetFront(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsFront);
 
     public static IEnumerable<EntertainmentLight> GetBack(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsBack);
+    public static IEnumerable<EntertainmentLight> GetTop(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsTop);
+    public static IEnumerable<EntertainmentLight> GetBottom(this IEnumerable<EntertainmentLight> group) => group.Where(x => x.LightLocation.IsBottom);
 
     /// <summary>
     /// X > -0.1 && X < 0.1

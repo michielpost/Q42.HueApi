@@ -163,6 +163,9 @@ namespace Q42.HueApi.Models.Groups
     public bool IsRight => X > 0;
     public bool IsFront => Y >= 0; //Include 0 with front
     public bool IsBack => Y < 0;
+    public bool IsTop => Z > 0;
+    public bool IsBottom => Z < 0;
+
 
     /// <summary>
     /// X > -0.1 && X < 0.1
