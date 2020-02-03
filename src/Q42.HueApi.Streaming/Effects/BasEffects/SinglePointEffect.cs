@@ -20,6 +20,11 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
     public double Y { get; set; }
 
     /// <summary>
+    /// Between -1 and 1
+    /// </summary>
+    public double Z { get; set; }
+
+    /// <summary>
     /// Between 0 and 1
     /// </summary>
     public double Radius { get; set; }
@@ -49,7 +54,7 @@ namespace Q42.HueApi.Streaming.Effects.BasEffects
     /// <returns></returns>
     public double Distance(LightLocation lightLocation)
     {
-      return lightLocation.Distance(this.X, this.Y);
+      return lightLocation.Distance(this.X, this.Y, this.Z);
     }
   }
 }
