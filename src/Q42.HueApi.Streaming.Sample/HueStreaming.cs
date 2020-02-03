@@ -32,7 +32,7 @@ namespace Q42.HueApi.Streaming.Sample
       var orderedRight = baseEntLayer.GetRight().OrderByDescending(x => x.LightLocation.Y).ThenByDescending(x => x.LightLocation.X);
       var allLightsOrdered = baseEntLayer.OrderBy(x => x.LightLocation.X).ThenBy(x => x.LightLocation.Y).ToList().To2DGroup();
       var allLightsOrderedFlat = baseEntLayer.OrderBy(x => x.LightLocation.X).ThenBy(x => x.LightLocation.Y).ToList();
-      var orderedByDistance = baseEntLayer.OrderBy(x => x.LightLocation.Distance(0, 0)).To2DGroup();
+      var orderedByDistance = baseEntLayer.OrderBy(x => x.LightLocation.Distance(0, 0, 0)).To2DGroup();
       var orderedByAngle = baseEntLayer.OrderBy(x => x.LightLocation.Angle(0, 0)).To2DGroup();
       var line1 = baseEntLayer.Where(x => x.LightLocation.X <= -0.6).ToList();
       var line2 = baseEntLayer.Where(x => x.LightLocation.X > -0.6 && x.LightLocation.X <= -0.1).ToList();
