@@ -8,7 +8,6 @@ namespace Q42.HueApi
   [DataContract]
   public class WhiteList
   {
-    [DataMember(Name = "id")]
     public string Id { get; set; }
 
     [DataMember(Name = "last use date")]

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -15,7 +15,6 @@ namespace Q42.HueApi.Models
 			Links = new List<string>();
 		}
 
-		[DataMember]
 		public string Id { get; set; }
 
 		/// <summary>

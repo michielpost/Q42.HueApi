@@ -14,7 +14,6 @@ namespace Q42.HueApi.Models.Groups
 	[DataContract]
 	public class Group
 	{
-		[DataMember]
 		public string Id { get; set; }
 
 		[DataMember(Name = "name")]

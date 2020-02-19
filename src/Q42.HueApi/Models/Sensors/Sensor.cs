@@ -6,9 +6,6 @@ using Q42.HueApi.Models.Sensors.CLIP;
 using Q42.HueApi.Models.Sensors.ZigBee;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models
 {
@@ -38,7 +35,7 @@ namespace Q42.HueApi.Models
     [JsonProperty("capabilities")]
     public SensorCapabilities Capabilities { get; set; }
 
-    [JsonProperty("id")]
+    [JsonIgnore]
     public string Id { get; set; }
 
     [JsonProperty("manufacturername")]
@@ -197,11 +194,11 @@ namespace Q42.HueApi.Models
 
   public class SensorInput
   {
-	  [JsonProperty("repeatintervals")]
-	  public int[] RepeatIntervals { get; set; } = default!;
-	
-	  [JsonProperty("events")]
-	  public SensorEvent[] Events { get; set; } = default!;
+    [JsonProperty("repeatintervals")]
+    public int[] RepeatIntervals { get; set; } = default!;
+
+    [JsonProperty("events")]
+    public SensorEvent[] Events { get; set; } = default!;
   }
 
   public class SensorEvent
