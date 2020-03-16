@@ -190,5 +190,26 @@ namespace Q42.HueApi.Models
 
     [JsonProperty("primary")]
     public bool? Primary { get; set; }
+
+    [JsonProperty("inputs")]
+    public SensorInput[]? Inputs { get; set; }
+  }
+
+  public class SensorInput
+  {
+	  [JsonProperty("repeatintervals")]
+	  public int[] RepeatIntervals { get; set; } = default!;
+	
+	  [JsonProperty("events")]
+	  public SensorEvent[] Events { get; set; } = default!;
+  }
+
+  public class SensorEvent
+  {
+    [JsonProperty("buttonevent")]
+    public int ButtonEvent { get; set; }
+
+    [JsonProperty("eventtype")]
+    public string EventType { get; set; } = default!;
   }
 }
