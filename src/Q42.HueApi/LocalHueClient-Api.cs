@@ -117,12 +117,15 @@ namespace Q42.HueApi
         var username = result["success"]?["username"]?.Value<string>();
         var streamingClientKey = result["success"]?["clientkey"]?.Value<string>();
 
-        return new RegisterEntertainmentResult()
+        if (username != null && streamingClientKey != null)
         {
-          Ip = ip,
-          Username = username,
-          StreamingClientKey = streamingClientKey
-        };
+          return new RegisterEntertainmentResult()
+          {
+            Ip = ip,
+            Username = username,
+            StreamingClientKey = streamingClientKey
+          };
+        }
       }
 
       return null;

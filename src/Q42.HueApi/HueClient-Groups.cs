@@ -36,7 +36,7 @@ namespace Q42.HueApi
       jsonObj.Lights = lights;
 
       if (!string.IsNullOrEmpty(name))
-        jsonObj.Name = name;
+        jsonObj.Name = name!;
 
       if (roomClass.HasValue)
         jsonObj.Class = roomClass.Value;
@@ -206,7 +206,7 @@ namespace Q42.HueApi
       jsonObj.Lights = lights;
 
       if(!string.IsNullOrEmpty(name))
-        jsonObj.Name = name;
+        jsonObj.Name = name!;
 
       if (roomClass.HasValue)
         jsonObj.Class = roomClass.Value;
