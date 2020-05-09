@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Q42.HueApi.Extensions;
 
 namespace Q42.HueApi
 {
@@ -58,8 +59,8 @@ namespace Q42.HueApi
           if (result.Any())
           {
             // Cancel all remaining tasks and return
-            fastLocatorsCancelSrc.Cancel();
-            slowNetwScanCancelSrc.Cancel();
+            fastLocatorsCancelSrc.CancelWithBackgroundContinuations();
+            slowNetwScanCancelSrc.CancelWithBackgroundContinuations();
 
             return result.ToList();
           }
@@ -114,7 +115,7 @@ namespace Q42.HueApi
           if (result.Any())
           {
             // Cancel all remaining tasks and return
-            fastLocatorsCancelSrc.Cancel();
+            fastLocatorsCancelSrc.CancelWithBackgroundContinuations();
 
             return result.ToList();
           }
@@ -166,7 +167,7 @@ namespace Q42.HueApi
           if (result.Any())
           {
             // Cancel all remaining tasks and break
-            fastLocatorsCancelSrc.Cancel();
+            fastLocatorsCancelSrc.CancelWithBackgroundContinuations();
 
             break;
           }
