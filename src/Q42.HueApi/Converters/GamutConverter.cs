@@ -68,7 +68,7 @@ namespace Q42.HueApi.Converters
 
       var result = new List<List<double>>() { red, green, blue };
 
-      writer.WriteValue(result);
+      serializer.Serialize(writer, result);
     }
   }
 }
