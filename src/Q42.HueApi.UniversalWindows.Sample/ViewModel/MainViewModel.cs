@@ -240,7 +240,7 @@ namespace Q42.HueApi.UniversalWindows.Sample.ViewModel
       var result = await RegisterDataLoader.LoadAsync(() => _hueClient.RegisterAsync(p, p, generateClientKey: true));
 
       RegisterEntertainmentResult = result;
-      RegisterSuccess = !string.IsNullOrEmpty(result.Username);
+      RegisterSuccess = !string.IsNullOrEmpty(result?.Username);
     }
 
     internal void Initialize(string p)
