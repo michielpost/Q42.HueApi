@@ -8,6 +8,6 @@ namespace Q42.HueApi.Models.Bridge
   {
     public string Ip { get; set; }
     public string Username { get; set; }
-    public string StreamingClientKey { get; set; }
+    public string? StreamingClientKey { get; set; }
   }
 }
