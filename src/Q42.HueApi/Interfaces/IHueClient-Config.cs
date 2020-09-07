@@ -12,6 +12,7 @@ namespace Q42.HueApi.Interfaces
     /// Deletes a whitelist entry
     /// </summary>
     /// <returns></returns>
+    [Obsolete("Removed from Bridge API. Use https://account.meethue.com/apps")]
     Task<bool> DeleteWhiteListEntryAsync(string entry);
 
     /// <summary>
