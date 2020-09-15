@@ -66,6 +66,34 @@ namespace Q42.HueApi.Tests
     }
 
     [TestMethod]
+    public async Task GroupSceneCRUDTest()
+    {
+      var groups = await _client.GetGroupsAsync();
+
+      Scene test = new Scene();
+      test.Name = "scene1";
+      test.Group = groups.First().Id;
+      test.Type = SceneType.GroupScene;
+
+      var result = await _client.CreateSceneAsync(test);
+
+      Assert.IsNotNull(result);
+
+      //Get scene
+      var newScene = await _client.GetSceneAsync(result);
+      Assert.IsNotNull(newScene);
+
+      //Delete scene
+      var deleteResult = await _client.DeleteSceneAsync(result);
+
+      Assert.IsTrue(deleteResult.Any());
+
+      var deletedScene = await _client.GetSceneAsync(result);
+      Assert.IsNull(deletedScene);
+
+    }
+
+    [TestMethod]
     public async Task ModifyScene()
     {
       var result = await _client.ModifySceneAsync("VA8wtm8-L8JqqwZ", "2", new LightCommand() { Brightness = 60 });

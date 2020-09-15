@@ -60,9 +60,11 @@ namespace Q42.HueApi
 
 			if (scene == null)
 				throw new ArgumentNullException(nameof(scene));
-			if (scene.Lights == null)
+			if ((scene.Type == null || scene.Type == SceneType.LightScene) && (scene.Lights == null || !scene.Lights.Any()))
 				throw new ArgumentNullException(nameof(scene.Lights));
-			if (scene.Name == null)
+      if (scene.Type == SceneType.GroupScene && string.IsNullOrEmpty(scene.Group))
+        throw new ArgumentNullException(nameof(scene.Group));
+      if (scene.Name == null)
 				throw new ArgumentNullException(nameof(scene.Name));
 
 			//It defaults to false, but fails when omitted
