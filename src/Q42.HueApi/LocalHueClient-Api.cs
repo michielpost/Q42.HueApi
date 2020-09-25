@@ -88,7 +88,7 @@ namespace Q42.HueApi
         obj["generateclientkey"] = true;
 
       HttpClient client = await GetHttpClient().ConfigureAwait(false);
-      var response = await client.PostAsync(new Uri(string.Format("http://{0}/api", ip)), new JsonContent(obj.ToString())).ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri($"{Scheme}://{ip}/api"), new JsonContent(obj.ToString())).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       JObject? result;
@@ -138,7 +138,7 @@ namespace Q42.HueApi
       try
       {
         //Check if there is a hue bridge on the specified IP by checking the content of description.xml
-        var result = await client.GetAsync(string.Format("http://{0}/description.xml", _ip)).ConfigureAwait(false);
+        var result = await client.GetAsync($"{Scheme}://{_ip}/description.xml").ConfigureAwait(false);
         if (result.IsSuccessStatusCode)
         {
           string res = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
