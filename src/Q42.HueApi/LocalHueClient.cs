@@ -31,6 +31,8 @@ namespace Q42.HueApi
 
     public bool IsStreamingInitialized { get; protected set; }
 
+    public bool UseHttps { get; set; }
+
 
     /// <summary>
     /// Base URL for the API
@@ -40,9 +42,20 @@ namespace Q42.HueApi
       get
       {
         if (!string.IsNullOrWhiteSpace(_appKey))
-          return string.Format("http://{0}/api/{1}/", _ip, _appKey);
+          return $"{Scheme}://{_ip}/api/{_appKey}/";
         else
-          return string.Format("http://{0}/api/", _ip);
+          return $"{Scheme}://{_ip}/api/";
+      }
+    }
+
+    private string Scheme
+    {
+      get
+      {
+        if (UseHttps)
+          return "https";
+        else
+          return "http";
       }
     }
 
@@ -95,7 +108,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="ip"></param>
     /// <param name="appKey"></param>
-	public LocalHueClient(string ip, string appKey)
+    public LocalHueClient(string ip, string appKey)
     {
       if (ip == null)
         throw new ArgumentNullException(nameof(ip));
