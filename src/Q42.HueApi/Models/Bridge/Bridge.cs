@@ -15,7 +15,7 @@ namespace Q42.HueApi
   {
     public Dictionary<string, Light> Lights { get; set; }
     public Dictionary<string, Group> Groups { get; set; }
-    public BridgeConfig config { get; set; }
+    public BridgeConfig? config { get; set; }
     public Dictionary<string, WhiteList> whitelist { get; set; }
   }
 
@@ -40,9 +40,13 @@ namespace Q42.HueApi
       Groups = bridge.Groups.Select(l => l.Value).ToList();
 
       //Fix whitelist IDs
-      foreach (var whitelist in bridge.config.WhiteList)
-        whitelist.Value.Id = whitelist.Key;
-      WhiteList = bridge.config.WhiteList.Select(l => l.Value).ToList();
+      if (bridge.config != null)
+      {
+        foreach (var whitelist in bridge.config.WhiteList ?? new Dictionary<string, WhiteList>())
+          whitelist.Value.Id = whitelist.Key;
+
+        WhiteList = bridge.config.WhiteList.Select(l => l.Value).ToList();
+      }
     }
 
     /// <summary>
@@ -54,12 +58,12 @@ namespace Q42.HueApi
     /// <summary>
     /// Bridge config info
     /// </summary>
-    public BridgeConfig Config { get; private set; }
+    public BridgeConfig? Config { get; private set; }
 
     /// <summary>
     /// Light info from the bridge
     /// </summary>
-    public IEnumerable<WhiteList> WhiteList { get; private set; }
+    public IEnumerable<WhiteList> WhiteList { get; private set; } = new List<WhiteList>();
 
     /// <summary>
     /// Is Hue Entertainment API used on a group right now?
@@ -78,7 +82,7 @@ namespace Q42.HueApi
     /// <returns>A string like "Bridge 021788FFFE6E28D4"</returns>
     public override string ToString()
     {
-      return String.Format("Bridge {0}", this.Config.BridgeId);
+      return String.Format("Bridge {0}", this.Config?.BridgeId);
     }
   }
 }
