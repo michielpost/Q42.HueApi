@@ -73,6 +73,14 @@ namespace Q42.HueApi.Models.Groups
     [DataMember(Name = "lightlevel")]
     public GroupLightLevel LightLevel { get; set; }
 
+    /// <summary>
+    /// Overrides ToString() to give something more useful than object name.
+    /// </summary>
+    /// <returns>A string like "Group 1: Living"</returns>
+    public override string ToString()
+    {
+      return String.Format("Group {0}: {1}", Id, Name);
+    }
   }
 
   public class GroupPresence

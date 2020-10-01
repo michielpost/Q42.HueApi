@@ -58,6 +58,14 @@ namespace Q42.HueApi
     [DataMember(Name = "swupdate")]
     public SwUpdate SwUpdate { get; set; }
 
+    /// <summary>
+    /// Overrides ToString() to give something more useful than object name.
+    /// </summary>
+    /// <returns>A string like "Light 1: Pendant"</returns>
+    public override string ToString()
+    {
+      return String.Format("Light {0}: {1}", Id, Name);
+    }
   }
 
   [DataContract]

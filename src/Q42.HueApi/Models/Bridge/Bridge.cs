@@ -72,5 +72,13 @@ namespace Q42.HueApi
       }
     }
 
+    /// <summary>
+    /// Overrides ToString() to give something more useful than object name.
+    /// </summary>
+    /// <returns>A string like "Bridge 021788FFFE6E28D4"</returns>
+    public override string ToString()
+    {
+      return String.Format("Bridge {0}", this.Config.BridgeId);
+    }
   }
 }
