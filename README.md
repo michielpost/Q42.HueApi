@@ -160,6 +160,9 @@ Windows Phone
 * [Huetro for Hue](http://www.windowsphone.com/s?appid=f14faa22-179d-42e4-99ca-88b44d10449b)
 * [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
 
+WinForms
+* [Andriks.HueApiDemo](https://github.com/andriks2/Andriks.HueApiDemo)
+
 Xbox One
 * [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
 
