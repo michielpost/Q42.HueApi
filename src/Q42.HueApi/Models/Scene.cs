@@ -83,10 +83,18 @@ namespace Q42.HueApi.Models
     [DataMember(Name = "group")]
     public string Group { get; set; }
 
+    /// <summary>
+    /// Overrides ToString() to give something more useful than object name.
+    /// </summary>
+    /// <returns>A string like "Scene 1: Brightest"</returns>
+    public override string ToString()
+    {
+      return String.Format("Scene {0}: {1}", Id, Name);
+    }
 
   }
 
-	[DataContract]
+  [DataContract]
 	public class SceneAppData
 	{
 		[DataMember(Name = "version")]
