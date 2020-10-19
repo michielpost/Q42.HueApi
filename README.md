@@ -95,6 +95,8 @@ https://github.com/Q42/Q42.HueApi/blob/master/RemoteApi.md
 ### Color Conversion
 The Philips Hue lights work with Brightness, Saturation, Hue and X, Y properties. More info can be found in the Philips Hue Developer documentation: http://www.developers.meethue.com/documentation/core-concepts#color_gets_more_complicated
 It's not trivial to convert the light colors to a color system developers like to work with, like RGB or HEX. Q42.HueApi has 3 different color converters out of the box. They are in a seperate package and it's easy to create your own color converter.
+
+The `Q42.HueApi.ColorConverters` NuGet package contains:
  - *Original*:  The original converter based on a large XY array.
  - *Gamut*: Uses the provided Gamut (type) provided by each light.
  - *HSB*: Converts based on Hue, Brightness and Saturation.
