@@ -181,14 +181,28 @@ namespace Q42.HueApi
       else
       {
         HueResults results = new HueResults();
+        HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
         await lightList.ForEachAsync(_parallelRequests, async (lightId) =>
         {
-          HttpClient client = await GetHttpClient().ConfigureAwait(false);
-          var result = await client.PutAsync(new Uri(ApiBase + string.Format("lights/{0}/state", lightId)), new JsonContent(command)).ConfigureAwait(false);
+          try
+          {
+            var result = await client.PutAsync(new Uri(ApiBase + $"lights/{lightId}/state"), new JsonContent(command)).ConfigureAwait(false);
 
-          string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-          results.AddRange(DeserializeDefaultHueResult(jsonResult));
+            string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            results.AddRange(DeserializeDefaultHueResult(jsonResult));
+          }
+          catch(Exception ex)
+          {
+            results.Add(new DefaultHueResult()
+            {
+              Error = new ErrorResult()
+              {
+                Address = $"lights/{lightId}/state",
+                Description = ex.ToString()
+              }
+            }); ;
+          }
 
         }).ConfigureAwait(false);
 
