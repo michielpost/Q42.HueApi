@@ -5,7 +5,7 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8625;CS8613</WarningsAsErrors>
-    <Version>3.15.7</Version>
+    <Version>3.15.8</Version>
     <Company>Q42</Company>
     <Authors>Michiel Post, Q42</Authors>
     <Description>Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Supports .Net Standard 2.0 and .net45</Description>
