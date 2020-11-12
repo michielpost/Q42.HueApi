@@ -95,7 +95,7 @@ namespace Q42.HueApi
     /// <param name="ip"></param>
     private void CheckValidIp(string ip)
     {
-      Uri uri;
+      Uri? uri;
       if (!Uri.TryCreate($"{Scheme}://{ip}/description.xml", UriKind.Absolute, out uri))
       {
         //Invalid ip or hostname caused Uri creation to fail

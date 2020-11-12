@@ -17,7 +17,10 @@ namespace Q42.HueApi.Streaming.Models
     public override string ToString()
     {
       T value = Value;
-      return value == null ? "" : value.ToString();
+      if (value == null)
+        return string.Empty;
+      else
+        return value.ToString()!;
     }
     public static implicit operator T(Ref<T> r) { return r.Value; }
     public static implicit operator Ref<T>(T value) { return new Ref<T>(value); }
