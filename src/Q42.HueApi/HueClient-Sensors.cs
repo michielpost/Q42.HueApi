@@ -97,7 +97,7 @@ namespace Q42.HueApi
 			CheckInitialized();
 
 			HttpClient client = await GetHttpClient().ConfigureAwait(false);
-			var response = await client.PostAsync(new Uri(String.Format("{0}sensors", ApiBase)), null).ConfigureAwait(false);
+			var response = await client.PostAsync(new Uri(String.Format("{0}sensors", ApiBase)), new StringContent(string.Empty)).ConfigureAwait(false);
 
 			var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 

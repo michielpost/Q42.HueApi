@@ -113,7 +113,7 @@ namespace Q42.HueApi
       try
       {
         var ipSeen = new List<string>();
-        var socketAddress = ((IPEndPoint)socket.LocalEndPoint).Address;
+        var socketAddress = ((IPEndPoint?)socket.LocalEndPoint)?.Address;
 
         while (true)
         {
@@ -129,7 +129,7 @@ namespace Q42.HueApi
             // Get IP address
             IPAddress responseIpAddress = ((IPEndPoint)responseEndPoint).Address;
 
-            if (!socketAddress.Equals(responseIpAddress) && !ipSeen.Contains(responseIpAddress.ToString()))
+            if (!(socketAddress?.Equals(responseIpAddress) ?? false) && !ipSeen.Contains(responseIpAddress.ToString()))
             {
               // Try decode response as UTF8
               var responseBody = Encoding.UTF8.GetString(responseRawBuffer);

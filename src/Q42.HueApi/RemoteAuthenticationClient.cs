@@ -96,7 +96,7 @@ namespace Q42.HueApi
       var requestUri = new Uri($"https://api.meethue.com/oauth2/token?code={code}&grant_type=authorization_code");
 
       //Do a token request
-      var responseTask = await _httpClient.PostAsync(requestUri, null).ConfigureAwait(false);
+      var responseTask = await _httpClient.PostAsync(requestUri, new StringContent(string.Empty)).ConfigureAwait(false);
       var responseString = responseTask.Headers.WwwAuthenticate.ToString();
       responseString = responseString.Replace("Digest ", string.Empty);
       string nonce = GetNonce(responseString);

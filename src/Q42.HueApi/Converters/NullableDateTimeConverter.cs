@@ -15,7 +15,7 @@ namespace Q42.HueApi.Converters
     public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
       if (reader.TokenType == JsonToken.String &&
-          reader.Value?.ToString().Equals(None, StringComparison.InvariantCultureIgnoreCase) == true)
+          reader.Value?.ToString()?.Equals(None, StringComparison.InvariantCultureIgnoreCase) == true)
       {
         return null;
       }
