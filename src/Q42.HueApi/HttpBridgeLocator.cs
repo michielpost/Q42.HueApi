@@ -30,7 +30,9 @@ namespace Q42.HueApi
 
           NuPnPResponse[] responseModel = JsonConvert.DeserializeObject<NuPnPResponse[]>(content);
 
-          return responseModel.Select(x => new LocatedBridge() { BridgeId = x.Id, IpAddress = x.InternalIpAddress }).ToList();
+          var locatedBridges = responseModel.Select(x => new LocatedBridge() { BridgeId = x.Id, IpAddress = x.InternalIpAddress }).ToList();
+          locatedBridges.ForEach(OnBridgeFound);
+          return locatedBridges;
         }
         else
         {

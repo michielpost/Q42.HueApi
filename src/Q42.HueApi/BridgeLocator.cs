@@ -20,7 +20,28 @@ namespace Q42.HueApi
 
     private const string httpXmlDescriptorFileFormat = "http://{0}/description.xml";
 
-    protected readonly static HttpClient _httpClient = new HttpClient();
+    protected static readonly HttpClient _httpClient = new HttpClient();
+    
+    /// <summary>
+    /// Event handler in case a bridge was found
+    /// </summary>
+    /// <param name="sender">The source of the event</param>
+    /// <param name="locatedBridge">The bridge that was found</param>
+    public delegate void BridgeFoundHandler(IBridgeLocator sender, LocatedBridge locatedBridge);
+
+    /// <summary>
+    /// Event that is called when a bridge is found
+    /// </summary>
+    public event BridgeFoundHandler BridgeFound = (sender, bridge) => { };
+
+    /// <summary>
+    /// Calls the event that a bridge is found
+    /// </summary>
+    /// <param name="locatedBridge">The bridge that was found</param>
+    protected void OnBridgeFound(LocatedBridge locatedBridge)
+    {
+      BridgeFound(this, locatedBridge);
+    }
 
     /// <summary>
     /// Locate bridges

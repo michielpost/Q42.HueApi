@@ -108,7 +108,7 @@ namespace Q42.HueApi
     /// </summary>
     /// <param name="socket">The socket to listen to</param>
     /// <param name="discoveredBridges">The dictionary to fill with located bridges</param>
-    private static void ListenSocketAndCheckEveryEndpoint(Socket socket, ConcurrentDictionary<string, LocatedBridge> discoveredBridges)
+    private void ListenSocketAndCheckEveryEndpoint(Socket socket, ConcurrentDictionary<string, LocatedBridge> discoveredBridges)
     {
       try
       {
@@ -146,11 +146,15 @@ namespace Q42.HueApi
 
                     if (!string.IsNullOrWhiteSpace(serialNumber))
                     {
-                      discoveredBridges.TryAdd(responseIpAddress.ToString(), new LocatedBridge()
+                      var locatedBridge = new LocatedBridge()
                       {
                         IpAddress = responseIpAddress.ToString(),
                         BridgeId = serialNumber,
-                      });
+                      };
+                      if (discoveredBridges.TryAdd(responseIpAddress.ToString(), locatedBridge))
+                      {
+                        OnBridgeFound(locatedBridge);
+                      }
                     }
                     else
                     {

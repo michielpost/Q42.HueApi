@@ -57,11 +57,15 @@ namespace Q42.HueApi
 
               if (!string.IsNullOrEmpty(serialNumber))
               {
-                discoveredBridges.TryAdd(ip.ToString(), new LocatedBridge()
+                var locatedBridge = new LocatedBridge()
                 {
                   IpAddress = ip.ToString(),
                   BridgeId = serialNumber,
-                });
+                };
+                if (discoveredBridges.TryAdd(ip.ToString(), locatedBridge))
+                {
+                  OnBridgeFound(locatedBridge);
+                }
               }
               else
               {
