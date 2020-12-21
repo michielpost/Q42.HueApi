@@ -63,7 +63,7 @@ namespace Q42.HueApi
         var key = result["success"]?["username"]?.Value<string>();
         if (!string.IsNullOrEmpty(key))
         {
-          Initialize(key!);
+          Initialize(bridgeId!, key!);
 
           return key;
         }
