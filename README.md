@@ -154,6 +154,7 @@ Windows
 * [Huetro for Hue](http://apps.microsoft.com/windows/app/33553060-d57c-467d-8348-5e88071360c5)
 * [hueDynamic](https://www.microsoft.com/store/apps/9nblggh42jgb)
 * [CastleOS](http://www.CastleOS.com/)
+* [PresenceLight](https://github.com/isaacrlevin/PresenceLight)
 
 Windows Phone
 * [My Hue Light Switch](http://www.windowsphone.com/s?appid=669c9e16-b417-43c6-b0cc-724e8dfd5866)
