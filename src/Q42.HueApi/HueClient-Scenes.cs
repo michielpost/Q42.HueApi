@@ -80,7 +80,6 @@ namespace Q42.HueApi
 			sceneJson.Remove("lastupdated");
 			sceneJson.Remove("locked");
 			sceneJson.Remove("owner");
-			sceneJson.Remove("lightstates");
 
 			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
@@ -177,7 +176,6 @@ namespace Q42.HueApi
 			sceneJson.Remove("lastupdated");
 			sceneJson.Remove("locked");
 			sceneJson.Remove("owner");
-			sceneJson.Remove("lightstates");
 
 			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
