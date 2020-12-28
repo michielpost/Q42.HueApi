@@ -84,6 +84,12 @@ namespace Q42.HueApi.Models
     public string Group { get; set; }
 
     /// <summary>
+    /// 1.36 Unique ID for an image representing the scene. Only available for scenes create from Signify images by Hue application.
+    /// </summary>
+    [DataMember(Name = "image")]
+    public string? Image { get; set; }
+
+    /// <summary>
     /// Overrides ToString() to give something more useful than object name.
     /// </summary>
     /// <returns>A string like "Scene 1: Brightest"</returns>
