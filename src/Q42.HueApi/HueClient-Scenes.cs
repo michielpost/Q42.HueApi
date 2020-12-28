@@ -44,7 +44,7 @@ namespace Q42.HueApi
         {
           Scene scene = JsonConvert.DeserializeObject<Scene>(prop.Value.ToString());
           scene.Id = prop.Name;
-          
+
           results.Add(scene);
         }
 
@@ -54,142 +54,147 @@ namespace Q42.HueApi
 
     }
 
-		public async Task<string?> CreateSceneAsync(Scene scene)
-		{
-			CheckInitialized();
+    public async Task<string?> CreateSceneAsync(Scene scene)
+    {
+      CheckInitialized();
 
-			if (scene == null)
-				throw new ArgumentNullException(nameof(scene));
-			if ((scene.Type == null || scene.Type == SceneType.LightScene) && (scene.Lights == null || !scene.Lights.Any()))
-				throw new ArgumentNullException(nameof(scene.Lights));
+      if (scene == null)
+        throw new ArgumentNullException(nameof(scene));
+      if ((scene.Type == null || scene.Type == SceneType.LightScene) && (scene.Lights == null || !scene.Lights.Any()))
+        throw new ArgumentNullException(nameof(scene.Lights));
       if (scene.Type == SceneType.GroupScene && string.IsNullOrEmpty(scene.Group))
         throw new ArgumentNullException(nameof(scene.Group));
       if (scene.Name == null)
-				throw new ArgumentNullException(nameof(scene.Name));
+        throw new ArgumentNullException(nameof(scene.Name));
 
-			//It defaults to false, but fails when omitted
-			//https://github.com/Q42/Q42.HueApi/issues/56
-			if (!scene.Recycle.HasValue)
-				scene.Recycle = false;
+      //It defaults to false, but fails when omitted
+      //https://github.com/Q42/Q42.HueApi/issues/56
+      if (!scene.Recycle.HasValue)
+        scene.Recycle = false;
 
-			//Filter non updatable properties
-			//Set these fields to null
-			var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
-			sceneJson.Remove("Id");
-			sceneJson.Remove("version");
-			sceneJson.Remove("lastupdated");
-			sceneJson.Remove("locked");
-			sceneJson.Remove("owner");
+      //Filter non updatable properties
+      //Set these fields to null
+      var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+      sceneJson.Remove("Id");
+      sceneJson.Remove("version");
+      sceneJson.Remove("lastupdated");
+      sceneJson.Remove("locked");
+      sceneJson.Remove("owner");
 
-			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+      string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-			HttpClient client = await GetHttpClient().ConfigureAwait(false);
-			var response = await client.PostAsync(new Uri(String.Format("{0}scenes", ApiBase)), new JsonContent(jsonString)).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var response = await client.PostAsync(new Uri(String.Format("{0}scenes", ApiBase)), new JsonContent(jsonString)).ConfigureAwait(false);
 
-			var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-			HueResults sceneResult = DeserializeDefaultHueResult(jsonResult);
+      HueResults sceneResult = DeserializeDefaultHueResult(jsonResult);
 
-			if (sceneResult.Count > 0 && sceneResult[0].Success != null && !string.IsNullOrEmpty(sceneResult[0].Success.Id))
-			{
-				return sceneResult[0].Success.Id;
-			}
+      if (sceneResult.Count > 0 && sceneResult[0].Success != null && !string.IsNullOrEmpty(sceneResult[0].Success.Id))
+      {
+        return sceneResult[0].Success.Id;
+      }
 
-			if (sceneResult.HasErrors())
-				throw new HueException(sceneResult.Errors.First().Error.Description);
+      if (sceneResult.HasErrors())
+        throw new HueException(sceneResult.Errors.First().Error.Description);
 
-			return null;
+      return null;
 
-		}
+    }
 
-		/// <summary>
-		/// UpdateSceneAsync
-		/// </summary>
-		/// <param name="id"></param>
-		/// <param name="name"></param>
-		/// <param name="lights"></param>
-		/// <param name="storeLightState">If set, the lightstates of the lights in the scene will be overwritten by the current state of the lights. Can also be used in combination with transitiontime to update the transition time of a scene.</param>
-		/// <param name="transitionTime">Can be used in combination with storeLightState</param>
-		/// <returns></returns>
-		public async Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState = null, TimeSpan? transitionTime = null)
-	{
-		CheckInitialized();
+    /// <summary>
+    /// UpdateSceneAsync
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <param name="lights"></param>
+    /// <param name="storeLightState">If set, the lightstates of the lights in the scene will be overwritten by the current state of the lights. Can also be used in combination with transitiontime to update the transition time of a scene.</param>
+    /// <param name="transitionTime">Can be used in combination with storeLightState</param>
+    /// <returns></returns>
+    public async Task<HueResults> UpdateSceneAsync(string id, string name, IEnumerable<string> lights, bool? storeLightState = null, TimeSpan? transitionTime = null)
+    {
+      CheckInitialized();
 
-		if (id == null)
-			throw new ArgumentNullException(nameof(id));
-		if (id.Trim() == String.Empty)
-			throw new ArgumentException("id must not be empty", nameof(id));
-		if (lights == null)
-			throw new ArgumentNullException(nameof(lights));
+      if (id == null)
+        throw new ArgumentNullException(nameof(id));
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id must not be empty", nameof(id));
+      if (lights == null)
+        throw new ArgumentNullException(nameof(lights));
 
       JObject jsonObj = new JObject();
       jsonObj.Add("lights", JToken.FromObject(lights));
 
       if (storeLightState.HasValue)
-		{
+      {
         jsonObj.Add("storelightstate", storeLightState.Value);
 
-			//Transitiontime can only be used in combination with storeLightState
-			if (transitionTime.HasValue)
-			{
+        //Transitiontime can only be used in combination with storeLightState
+        if (transitionTime.HasValue)
+        {
           jsonObj.Add("transitiontime", (uint)transitionTime.Value.TotalSeconds * 10);
-			}
-		}
+        }
+      }
 
-		if (!string.IsNullOrEmpty(name))
+      if (!string.IsNullOrEmpty(name))
         jsonObj.Add("name", name);
 
 
       string jsonString = JsonConvert.SerializeObject(jsonObj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-		HttpClient client = await GetHttpClient().ConfigureAwait(false);
-		var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
-		var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-		return DeserializeDefaultHueResult(jsonResult);
+      return DeserializeDefaultHueResult(jsonResult);
 
-	}
+    }
 
-		/// <summary>
-		/// UpdateSceneAsync
-		/// </summary>
-		/// <param name="id"></param>
-		/// <param name="scene"></param>
-		/// <returns></returns>
-		public async Task<HueResults> UpdateSceneAsync(string id, Scene scene)
-		{
-			CheckInitialized();
+    /// <summary>
+    /// UpdateSceneAsync
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="scene"></param>
+    /// <returns></returns>
+    public async Task<HueResults> UpdateSceneAsync(string id, Scene scene)
+    {
+      CheckInitialized();
 
-			if (id == null)
-				throw new ArgumentNullException(nameof(id));
-			if (id.Trim() == String.Empty)
-				throw new ArgumentException("id must not be empty", nameof(id));
-			if (scene == null)
-				throw new ArgumentNullException(nameof(scene));
+      if (id == null)
+        throw new ArgumentNullException(nameof(id));
+      if (id.Trim() == String.Empty)
+        throw new ArgumentException("id must not be empty", nameof(id));
+      if (scene == null)
+        throw new ArgumentNullException(nameof(scene));
 
-			//Set these fields to null
-			var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
-			sceneJson.Remove("Id");
-			sceneJson.Remove("recycle");
-			sceneJson.Remove("version");
-			sceneJson.Remove("lastupdated");
-			sceneJson.Remove("locked");
-			sceneJson.Remove("owner");
+      //Set these fields to null
+      var sceneJson = JObject.FromObject(scene, new JsonSerializer() { NullValueHandling = NullValueHandling.Ignore });
+      sceneJson.Remove("Id");
+      sceneJson.Remove("recycle");
+      sceneJson.Remove("version");
+      sceneJson.Remove("lastupdated");
+      sceneJson.Remove("locked");
+      sceneJson.Remove("owner");
+      sceneJson.Remove("type");
+      sceneJson.Remove("group");
 
-			string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+      if (scene.AppData?.Data == null && scene.AppData?.Version == null)
+        sceneJson.Remove("appdata");
 
-			HttpClient client = await GetHttpClient().ConfigureAwait(false);
-			var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
+      string jsonString = JsonConvert.SerializeObject(sceneJson, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
 
-			var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var response = await client.PutAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id)), new JsonContent(jsonString)).ConfigureAwait(false);
 
-			return DeserializeDefaultHueResult(jsonResult);
+      var jsonResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-		}
+      return DeserializeDefaultHueResult(jsonResult);
+
+    }
 
 
-		public async Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command)
+    public async Task<HueResults> ModifySceneAsync(string sceneId, string lightId, LightCommand command)
     {
       CheckInitialized();
 
@@ -227,43 +232,43 @@ namespace Q42.HueApi
 
     }
 
-		/// <summary>
-		/// Deletes a scene
-		/// </summary>
-		/// <param name="sceneId"></param>
-		/// <returns></returns>
-		public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSceneAsync(string sceneId)
-	{
-		CheckInitialized();
+    /// <summary>
+    /// Deletes a scene
+    /// </summary>
+    /// <param name="sceneId"></param>
+    /// <returns></returns>
+    public async Task<IReadOnlyCollection<DeleteDefaultHueResult>> DeleteSceneAsync(string sceneId)
+    {
+      CheckInitialized();
 
-		HttpClient client = await GetHttpClient().ConfigureAwait(false);
-		var result = await client.DeleteAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, sceneId))).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      var result = await client.DeleteAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, sceneId))).ConfigureAwait(false);
 
-		string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+      string jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-		return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
+      return DeserializeDefaultHueResult<DeleteDefaultHueResult>(jsonResult);
 
-	}
+    }
 
-		/// <summary>
-		/// Get a single scene
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public async Task<Scene?> GetSceneAsync(string id)
-		{
-			CheckInitialized();
+    /// <summary>
+    /// Get a single scene
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<Scene?> GetSceneAsync(string id)
+    {
+      CheckInitialized();
 
-			HttpClient client = await GetHttpClient().ConfigureAwait(false);
-			string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id))).ConfigureAwait(false);
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}scenes/{1}", ApiBase, id))).ConfigureAwait(false);
 
-			Scene? scene = DeserializeResult<Scene>(stringResult);
+      Scene? scene = DeserializeResult<Scene>(stringResult);
 
-			if (scene != null && string.IsNullOrEmpty(scene.Id))
-				scene.Id = id;
+      if (scene != null && string.IsNullOrEmpty(scene.Id))
+        scene.Id = id;
 
-			return scene;
+      return scene;
 
-		}
-	}
+    }
+  }
 }

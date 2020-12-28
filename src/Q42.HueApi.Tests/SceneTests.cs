@@ -21,7 +21,7 @@ namespace Q42.HueApi.Tests
       string ip = ConfigurationManager.AppSettings["ip"].ToString();
       string key = ConfigurationManager.AppSettings["key"].ToString();
 
-	  _client = new LocalHueClient(ip, key);
+      _client = new LocalHueClient(ip, key);
     }
 
     [TestMethod]
@@ -32,28 +32,33 @@ namespace Q42.HueApi.Tests
       Assert.AreNotEqual(0, result.Count());
     }
 
-	[TestMethod]
-	public async Task GetSingle()
-	{
-		var result = await _client.GetSceneAsync("VA8wtm8-L8JqqwZ");
+    [TestMethod]
+    public async Task GetSingle()
+    {
+      var result = await _client.GetSceneAsync("VA8wtm8-L8JqqwZ");
 
-		Assert.AreNotEqual(0, result.LightStates.Count);
-	}
+      Assert.AreNotEqual(0, result.LightStates.Count);
+    }
 
-		[TestMethod]
+    [TestMethod]
     public async Task SceneCRUDTest()
     {
-	  Scene test = new Scene();
-	  test.Name = "scene1";
-	  test.Lights = new List<string> { "2" };
+      Scene test = new Scene();
+      test.Name = "scene1";
+      test.Lights = new List<string> { "2" };
 
-	  var result = await _client.CreateSceneAsync(test);
+      var result = await _client.CreateSceneAsync(test);
 
       Assert.IsNotNull(result);
 
       //Get scene
       var newScene = await _client.GetSceneAsync(result);
       Assert.IsNotNull(newScene);
+
+      var firstState = newScene.LightStates.First();
+      firstState.Value.On = false;
+
+      var modifyResult = await _client.UpdateSceneAsync(result, newScene);
 
       //Delete scene
       var deleteResult = await _client.DeleteSceneAsync(result);
@@ -83,6 +88,11 @@ namespace Q42.HueApi.Tests
       var newScene = await _client.GetSceneAsync(result);
       Assert.IsNotNull(newScene);
 
+      var firstState = newScene.LightStates.First();
+      firstState.Value.On = false;
+
+      var modifyResult = await _client.UpdateSceneAsync(result, newScene);
+
       //Delete scene
       var deleteResult = await _client.DeleteSceneAsync(result);
 
@@ -101,20 +111,20 @@ namespace Q42.HueApi.Tests
       Assert.AreNotEqual(0, result.Count);
     }
 
-		[TestMethod]
-		public async Task UpdateScene()
-		{
-			Scene scene = new Scene()
-			{
-				 Id = "scene1",
-				 Recycle = true,
-				  Name = "test"
-			};
+    [TestMethod]
+    public async Task UpdateScene()
+    {
+      Scene scene = new Scene()
+      {
+        Id = "scene1",
+        Recycle = true,
+        Name = "test"
+      };
 
-			var result = await _client.UpdateSceneAsync("scene1", scene);
+      var result = await _client.UpdateSceneAsync("scene1", scene);
 
-			Assert.AreNotEqual(0, result.Count);
-		}
+      Assert.AreNotEqual(0, result.Count);
+    }
 
-	}
+  }
 }
