@@ -54,6 +54,7 @@ namespace Q42.HueApi.Models
   /// <summary>
   /// Possible light alerts
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum RuleOperator
   {
     /// <summary>

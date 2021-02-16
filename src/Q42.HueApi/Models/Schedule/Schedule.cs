@@ -51,6 +51,7 @@ namespace Q42.HueApi.Models
 
   }
 
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum ScheduleStatus
   {
     [EnumMember(Value = "enabled")]

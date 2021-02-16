@@ -110,6 +110,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Possible light alerts
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum Alert
   {
     /// <summary>
@@ -134,6 +135,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Possible light effects
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum Effect
   {
     /// <summary>

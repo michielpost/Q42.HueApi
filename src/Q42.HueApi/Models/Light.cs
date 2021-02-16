@@ -157,6 +157,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Defined on https://developers.meethue.com/develop/hue-api/supported-devices/
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum StartupMode
   {
     [EnumMember(Value = "safety")]

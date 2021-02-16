@@ -74,6 +74,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Possible SoftwareUpdate States
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum SoftwareUpdateState
   {
     [EnumMember(Value = "unknown")]

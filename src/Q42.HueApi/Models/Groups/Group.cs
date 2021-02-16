@@ -205,9 +205,9 @@ namespace Q42.HueApi.Models.Groups
 	/// <summary>
 	/// Possible group types
 	/// </summary>
-	public enum GroupType
+  [JsonConverter(typeof(StringEnumConverter))]
+  public enum GroupType
 	{
-		
 		[EnumMember(Value = "LightGroup")]
 		LightGroup,
 		[EnumMember(Value = "Room")]
@@ -225,7 +225,8 @@ namespace Q42.HueApi.Models.Groups
 	/// <summary>
 	/// Possible room types
 	/// </summary>
-	public enum RoomClass
+  [JsonConverter(typeof(StringEnumConverter))]
+  public enum RoomClass
 	{
 		[EnumMember(Value = "Other")]
 		Other,

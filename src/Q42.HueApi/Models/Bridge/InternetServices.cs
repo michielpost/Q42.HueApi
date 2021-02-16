@@ -44,6 +44,7 @@ namespace Q42.HueApi.Models.Bridge
   /// <summary>
   /// Possible InternetServices States
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum InternetServicesState
   {
     [EnumMember(Value = "connected")]

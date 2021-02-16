@@ -103,6 +103,7 @@ namespace Q42.HueApi.Models
     public string Data { get; set; }
   }
 
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum SceneType
   {
     [EnumMember(Value = "LightScene")]
