@@ -1,8 +1,4 @@
-using System;
-using System.Globalization;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Q42.HueApi.Interfaces;
 
 namespace Q42.HueApi
@@ -11,7 +7,6 @@ namespace Q42.HueApi
   /// <summary>
   /// Send a SceneID as command
   /// </summary>
-  [DataContract]
   public class SceneCommand : ICommandBody
   {
     public SceneCommand()
@@ -27,10 +22,10 @@ namespace Q42.HueApi
     /// <summary>
     /// Scene ID to activate
     /// </summary>
-    [DataMember(Name = "scene")]
+    [JsonProperty("scene")]
     public string Scene { get; set; }
 
-    [DataMember(Name = "storelightstate")]
+    [JsonProperty("storelightstate")]
     public bool? StoreLightState { get; set; }
 
   }

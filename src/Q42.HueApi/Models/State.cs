@@ -2,50 +2,48 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
-using System.Runtime.Serialization;
 
 namespace Q42.HueApi
 {
-	[DataContract]
 	public class State
 	{
-		[DataMember(Name = "on")]
+		[JsonProperty("on")]
 		public bool On { get; set; }
 
-		[DataMember(Name = "bri")]
+		[JsonProperty("bri")]
 		public byte Brightness { get; set; }
 
-		[DataMember(Name = "hue")]
+		[JsonProperty("hue")]
 		public int? Hue { get; set; }
 
-		[DataMember(Name = "sat")]
+		[JsonProperty("sat")]
 		public int? Saturation { get; set; }
 
-		[DataMember(Name = "xy")]
+		[JsonProperty("xy")]
 		public double[] ColorCoordinates { get; set; }
 
-		[DataMember(Name = "ct")]
+		[JsonProperty("ct")]
 		public int? ColorTemperature { get; set; }
 
 		[JsonConverter(typeof(StringEnumConverter))]
-		[DataMember(Name = "alert")]
+		[JsonProperty("alert")]
 		public Alert? Alert { get; set; }
 
 		[JsonConverter(typeof(StringEnumConverter))]
-		[DataMember(Name = "effect")]
+		[JsonProperty("effect")]
 		public Effect? Effect { get; set; }
 
-		[DataMember(Name = "colormode")]
+		[JsonProperty("colormode")]
 		public string ColorMode { get; set; }
 
-		[DataMember(Name = "reachable")]
+		[JsonProperty("reachable")]
 		public bool? IsReachable { get; set; }
 
-		[DataMember(Name = "transitiontime")]
+		[JsonProperty("transitiontime")]
 		[JsonConverter(typeof(TransitionTimeConverter))]
 		public TimeSpan? TransitionTime { get; set; }
 
-    [DataMember(Name = "mode")]
+    [JsonProperty("mode")]
     public string Mode { get; set; }
 
 

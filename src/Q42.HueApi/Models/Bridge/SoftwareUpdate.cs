@@ -1,11 +1,10 @@
-﻿using System;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace Q42.HueApi
 {
   [Obsolete]
-  [DataContract]
   public class SoftwareUpdate
   {
 	  /// <summary>
@@ -15,40 +14,39 @@ namespace Q42.HueApi
 	  /// 3 means apply/applying the update. 
 	  /// http://www.everyhue.com/vanilla/discussion/484/firmware-update-triggering
 	  /// </summary>
-    [DataMember (Name = "updatestate")]
+    [JsonProperty("updatestate")]
     public int? UpdateState { get; set; }
 
-    [DataMember (Name = "url")]
+    [JsonProperty("url")]
     public string Url { get; set; }
 
-    [DataMember (Name = "text")]
+    [JsonProperty("text")]
     public string Text { get; set; }
 
-    [DataMember (Name = "notify")]
+    [JsonProperty("notify")]
     public bool? Notify { get; set; }
 
 	/// <summary>
 	/// Setting this flag to true lets the bridge search for software updates in the portal. After the search attempt, this flag is set back to false. Requires portal connection to update server
 	/// http://www.developers.meethue.com/documentation/software-update
 	/// </summary>
-	[DataMember(Name = "checkforupdate")]
+	[JsonProperty("checkforupdate")]
     public bool CheckForUpdate { get; set; }
 
-    [DataMember(Name = "devicetypes")]
+    [JsonProperty("devicetypes")]
     public SoftwareUpdateDevices DeviceTypes { get; set; }
   }
 
   [Obsolete]
-  [DataContract]
   public class SoftwareUpdateDevices
   {
-    [DataMember(Name = "bridge")]
+    [JsonProperty("bridge")]
     public bool Bridge { get; set; }
 
-    [DataMember(Name = "lights")]
+    [JsonProperty("lights")]
     public IReadOnlyCollection<string> Lights { get; set; }
 
-    [DataMember(Name = "sensors")]
+    [JsonProperty("sensors")]
     public IReadOnlyCollection<string> Sensors { get; set; }
 
   }

@@ -1,20 +1,19 @@
-﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Q42.HueApi
 {
-  [DataContract]
   public class PortalState
   {
-    [DataMember(Name = "signedon")]
+    [JsonProperty("signedon")]
     public bool SignedOn { get; set; }
 
-    [DataMember(Name = "incoming")]
+    [JsonProperty("incoming")]
     public bool Incoming { get; set; }
 
-    [DataMember(Name = "outgoing")]
+    [JsonProperty("outgoing")]
     public bool Outgoing { get; set; }
 
-    [DataMember(Name = "communication")]
+    [JsonProperty("communication")]
     public string Communication { get; set; }
   }
 }
