@@ -47,10 +47,13 @@ namespace Q42.HueApi
 
         foreach (var prop in jsonResult.Properties())
         {
-          Rule rule = JsonConvert.DeserializeObject<Rule>(prop.Value.ToString());
-          rule.Id = prop.Name;
+          Rule? rule = JsonConvert.DeserializeObject<Rule>(prop.Value.ToString());
+          if (rule != null)
+          {
+            rule.Id = prop.Name;
 
-          results.Add(rule);
+            results.Add(rule);
+          }
         }
 
       }

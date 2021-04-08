@@ -45,10 +45,13 @@ namespace Q42.HueApi
 
 				foreach (var prop in jsonResult.Properties())
 				{
-					Sensor scene = JsonConvert.DeserializeObject<Sensor>(prop.Value.ToString());
-					scene.Id = prop.Name;
+					Sensor? scene = JsonConvert.DeserializeObject<Sensor>(prop.Value.ToString());
+          if (scene != null)
+          {
+            scene.Id = prop.Name;
 
-					results.Add(scene);
+            results.Add(scene);
+          }
 				}
 
 			}
@@ -76,9 +79,9 @@ namespace Q42.HueApi
 
 			var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-			DefaultHueResult[] sensorResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
+			DefaultHueResult[]? sensorResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
 
-			if (sensorResult.Length > 0 && sensorResult[0].Success != null && !string.IsNullOrEmpty(sensorResult[0].Success.Id))
+			if (sensorResult != null && sensorResult.Length > 0 && sensorResult[0].Success != null && !string.IsNullOrEmpty(sensorResult[0].Success.Id))
 			{
 				var id = sensorResult[0].Success.Id;
 				sensor.Id = id;
@@ -133,10 +136,13 @@ namespace Q42.HueApi
 				{
 					if (prop.Name != "lastscan")
 					{
-						Sensor newSensor = JsonConvert.DeserializeObject<Sensor>(prop.Value.ToString());
-						newSensor.Id = prop.Name;
+						Sensor? newSensor = JsonConvert.DeserializeObject<Sensor>(prop.Value.ToString());
+            if (newSensor != null)
+            {
+              newSensor.Id = prop.Name;
 
-						results.Add(newSensor);
+              results.Add(newSensor);
+            }
 
 					}
 				}

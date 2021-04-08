@@ -28,11 +28,15 @@ namespace Q42.HueApi
         {
           string content = await response.Content.ReadAsStringAsync();
 
-          NuPnPResponse[] responseModel = JsonConvert.DeserializeObject<NuPnPResponse[]>(content);
-
-          var locatedBridges = responseModel.Select(x => new LocatedBridge() { BridgeId = x.Id, IpAddress = x.InternalIpAddress }).ToList();
-          locatedBridges.ForEach(OnBridgeFound);
-          return locatedBridges;
+          NuPnPResponse[]? responseModel = JsonConvert.DeserializeObject<NuPnPResponse[]>(content);
+          if (responseModel != null)
+          {
+            var locatedBridges = responseModel.Select(x => new LocatedBridge() { BridgeId = x.Id, IpAddress = x.InternalIpAddress }).ToList();
+            locatedBridges.ForEach(OnBridgeFound);
+            return locatedBridges;
+          }
+          else
+            return Enumerable.Empty<LocatedBridge>();
         }
         else
         {

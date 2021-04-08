@@ -36,13 +36,15 @@ namespace Q42.HueApi
 				//Each property is a light
 				var jsonResult = (JObject)token;
 
-				foreach (var prop in jsonResult.Properties())
-				{
-					Schedule newSchedule = JsonConvert.DeserializeObject<Schedule>(prop.Value.ToString());
-					newSchedule.Id = prop.Name;
-
-					results.Add(newSchedule);
-				}
+        foreach (var prop in jsonResult.Properties())
+        {
+          Schedule? newSchedule = JsonConvert.DeserializeObject<Schedule>(prop.Value.ToString());
+          if (newSchedule != null)
+          {
+            newSchedule.Id = prop.Name;
+            results.Add(newSchedule);
+          }
+        }
 
 			}
 
@@ -101,9 +103,9 @@ namespace Q42.HueApi
 
 			var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-			DefaultHueResult[] scheduleResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
+			DefaultHueResult[]? scheduleResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
 
-			if (scheduleResult.Length > 0 && scheduleResult[0].Success != null && !string.IsNullOrEmpty(scheduleResult[0].Success.Id))
+			if (scheduleResult != null && scheduleResult.Length > 0 && scheduleResult[0].Success != null && !string.IsNullOrEmpty(scheduleResult[0].Success.Id))
 			{
 				return scheduleResult[0].Success.Id;
 			}

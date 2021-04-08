@@ -60,10 +60,13 @@ namespace Q42.HueApi
 
 				foreach (var prop in jsonResult.Properties())
 				{
-					ResourceLink newResourceLink = JsonConvert.DeserializeObject<ResourceLink>(prop.Value.ToString());
-					newResourceLink.Id = prop.Name;
+					ResourceLink? newResourceLink = JsonConvert.DeserializeObject<ResourceLink>(prop.Value.ToString());
+          if (newResourceLink != null)
+          {
+            newResourceLink.Id = prop.Name;
 
-					results.Add(newResourceLink);
+            results.Add(newResourceLink);
+          }
 				}
 
 			}
@@ -111,9 +114,9 @@ namespace Q42.HueApi
 
 			var jsonResult = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-			DefaultHueResult[] resourceLinkResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
+			DefaultHueResult[]? resourceLinkResult = JsonConvert.DeserializeObject<DefaultHueResult[]>(jsonResult);
 
-			if (resourceLinkResult.Length > 0 && resourceLinkResult[0].Success != null && !string.IsNullOrEmpty(resourceLinkResult[0].Success.Id))
+			if (resourceLinkResult != null && resourceLinkResult.Length > 0 && resourceLinkResult[0].Success != null && !string.IsNullOrEmpty(resourceLinkResult[0].Success.Id))
 			{
 				return resourceLinkResult[0].Success.Id;
 			}

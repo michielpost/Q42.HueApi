@@ -58,7 +58,7 @@ namespace Q42.HueApi
       BridgeConfig? config = await GetConfigAsync().ConfigureAwait(false);
       if (config == null)
         return null;
-      
+
       return config.WhiteList.Select(l => l.Value).ToList();
     }
 
@@ -80,30 +80,33 @@ namespace Q42.HueApi
 
       return new Bridge(jsonResult);
     }
-    
-    
+
+
     /// <summary>
     /// Get bridge config
     /// </summary>
     /// <returns>BridgeConfig object</returns>
     public async Task<BridgeConfig?> GetConfigAsync()
     {
-        //Not needed to check if initialized, can be used without API key
+      //Not needed to check if initialized, can be used without API key
 
-        HttpClient client = await GetHttpClient().ConfigureAwait(false);
-        string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}config", ApiBase))).ConfigureAwait(false);
-        JToken token = JToken.Parse(stringResult);
-        BridgeConfig? config = null;
-        if (token.Type == JTokenType.Object)
+      HttpClient client = await GetHttpClient().ConfigureAwait(false);
+      string stringResult = await client.GetStringAsync(new Uri(String.Format("{0}config", ApiBase))).ConfigureAwait(false);
+      JToken token = JToken.Parse(stringResult);
+      BridgeConfig? config = null;
+      if (token.Type == JTokenType.Object)
+      {
+        var jsonResult = (JObject)token;
+        config = JsonConvert.DeserializeObject<BridgeConfig>(jsonResult.ToString());
+
+        if (config != null)
         {
-            var jsonResult = (JObject)token;
-            config = JsonConvert.DeserializeObject<BridgeConfig>(jsonResult.ToString());
-
-            //Fix whitelist IDs
-            foreach (var whitelist in config.WhiteList)
-              whitelist.Value.Id = whitelist.Key;
+          //Fix whitelist IDs
+          foreach (var whitelist in config.WhiteList)
+            whitelist.Value.Id = whitelist.Key;
         }
-        return config;
+      }
+      return config;
     }
 
     /// <summary>

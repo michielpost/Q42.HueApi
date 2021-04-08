@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Q42.HueApi.Interfaces;
 using System;
@@ -37,17 +37,17 @@ namespace Q42.HueApi.Models
 
 		public SceneCommand AsSceneCommand()
 		{
-			return JsonConvert.DeserializeObject<SceneCommand>(this.JsonString);
+			return JsonConvert.DeserializeObject<SceneCommand>(this.JsonString)!;
 		}
 
 		public LightCommand AsLightCommand()
 		{
-			return JsonConvert.DeserializeObject<LightCommand>(this.JsonString);
+			return JsonConvert.DeserializeObject<LightCommand>(this.JsonString)!;
 		}
 
 		public SensorState AsSensorCommand()
 		{
-			return JsonConvert.DeserializeObject<SensorState>(this.JsonString);
+			return JsonConvert.DeserializeObject<SensorState>(this.JsonString)!;
 		}
 	}
 }

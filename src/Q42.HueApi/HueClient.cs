@@ -90,7 +90,7 @@ namespace Q42.HueApi
     {
       try
       {
-        T objResult = JsonConvert.DeserializeObject<T>(json);
+        T? objResult = JsonConvert.DeserializeObject<T>(json);
 
         return objResult;
 
@@ -118,7 +118,9 @@ namespace Q42.HueApi
 
       try
       {
-        result = JsonConvert.DeserializeObject<HueResults>(json);
+        var jsonResult = JsonConvert.DeserializeObject<HueResults>(json);
+        if (jsonResult != null)
+          return jsonResult;
       }
       catch (JsonSerializationException)
       {
@@ -139,7 +141,9 @@ namespace Q42.HueApi
 
       try
       {
-        result = JsonConvert.DeserializeObject<List<T>>(json);
+        var jsonResult = JsonConvert.DeserializeObject<List<T>>(json);
+        if (jsonResult != null)
+          return jsonResult;
       }
       catch (JsonSerializationException)
       {

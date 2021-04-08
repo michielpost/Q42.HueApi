@@ -142,10 +142,13 @@ namespace Q42.HueApi
 
         foreach (var prop in jsonResult.Properties())
         {
-          Group newGroup = JsonConvert.DeserializeObject<Group>(prop.Value.ToString());
-          newGroup.Id = prop.Name;
+          Group? newGroup = JsonConvert.DeserializeObject<Group>(prop.Value.ToString());
+          if (newGroup != null)
+          {
+            newGroup.Id = prop.Name;
 
-          results.Add(newGroup);
+            results.Add(newGroup);
+          }
         }
 
       }

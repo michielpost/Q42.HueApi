@@ -42,10 +42,13 @@ namespace Q42.HueApi
 
         foreach (var prop in jsonResult.Properties())
         {
-          Scene scene = JsonConvert.DeserializeObject<Scene>(prop.Value.ToString());
-          scene.Id = prop.Name;
+          Scene? scene = JsonConvert.DeserializeObject<Scene>(prop.Value.ToString());
+          if (scene != null)
+          {
+            scene.Id = prop.Name;
 
-          results.Add(scene);
+            results.Add(scene);
+          }
         }
 
       }

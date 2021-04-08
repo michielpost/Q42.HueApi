@@ -17,7 +17,7 @@ namespace Q42.HueApi
     private readonly string _clientSecret;
     private readonly string _appId;
 
-    private AccessTokenResponse _lastAuthorizationResponse;
+    private AccessTokenResponse? _lastAuthorizationResponse;
     private HttpClient _httpClient;
 
     /// <summary>
@@ -207,16 +207,19 @@ namespace Q42.HueApi
     /// <returns></returns>
     public async Task<string?> GetValidToken()
     {
-      if (_lastAuthorizationResponse.AccessTokenExpireTime() > DateTimeOffset.UtcNow.AddMinutes(-5))
+      if (_lastAuthorizationResponse != null)
       {
-        return _lastAuthorizationResponse.Access_token;
-      }
+        if (_lastAuthorizationResponse.AccessTokenExpireTime() > DateTimeOffset.UtcNow.AddMinutes(-5))
+        {
+          return _lastAuthorizationResponse.Access_token;
+        }
 
-      if (_lastAuthorizationResponse.RefreshTokenExpireTime() < DateTimeOffset.UtcNow)
-      {
-        var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token).ConfigureAwait(false);
+        if (_lastAuthorizationResponse.RefreshTokenExpireTime() < DateTimeOffset.UtcNow)
+        {
+          var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token).ConfigureAwait(false);
 
-        return newToken?.Access_token;
+          return newToken?.Access_token;
+        }
       }
 
       throw new HueException("Unable to get access token. Access token and Refresh token expired.");

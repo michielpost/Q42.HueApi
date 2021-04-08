@@ -135,9 +135,12 @@ namespace Q42.HueApi
 
         foreach (var prop in jsonResult.Properties())
         {
-          Light newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
-          newLight.Id = prop.Name;
-          results.Add(newLight);
+          Light? newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
+          if (newLight != null)
+          {
+            newLight.Id = prop.Name;
+            results.Add(newLight);
+          }
         }
       }
       return results;
@@ -268,10 +271,13 @@ namespace Q42.HueApi
         {
           if (prop.Name != "lastscan")
           {
-            Light newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
-            newLight.Id = prop.Name;
+            Light? newLight = JsonConvert.DeserializeObject<Light>(prop.Value.ToString());
+            if (newLight != null)
+            {
+              newLight.Id = prop.Name;
 
-            results.Add(newLight);
+              results.Add(newLight);
+            }
 
           }
         }
