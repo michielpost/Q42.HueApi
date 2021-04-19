@@ -52,9 +52,9 @@ namespace Q42.HueApi
 
       HueResults groupResult = DeserializeDefaultHueResult(jsonResult);
 
-      if (groupResult.Count > 0 && groupResult[0].Success != null && !string.IsNullOrEmpty(groupResult[0].Success.Id))
+      if (groupResult.Count > 0 && groupResult.First().Success != null && !string.IsNullOrEmpty(groupResult.First().Success.Id))
       {
-        return groupResult[0].Success.Id.Replace("/groups/", string.Empty);
+        return groupResult.First().Success.Id.Replace("/groups/", string.Empty);
       }
 
       if (groupResult.HasErrors())
