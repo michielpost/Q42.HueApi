@@ -93,9 +93,9 @@ namespace Q42.HueApi
 
       HueResults sceneResult = DeserializeDefaultHueResult(jsonResult);
 
-      if (sceneResult.Count > 0 && sceneResult[0].Success != null && !string.IsNullOrEmpty(sceneResult[0].Success.Id))
+      if (sceneResult.Count > 0 && sceneResult.First().Success != null && !string.IsNullOrEmpty(sceneResult.First().Success.Id))
       {
-        return sceneResult[0].Success.Id;
+        return sceneResult.First().Success.Id;
       }
 
       if (sceneResult.HasErrors())

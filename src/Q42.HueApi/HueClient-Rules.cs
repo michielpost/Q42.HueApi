@@ -145,9 +145,9 @@ namespace Q42.HueApi
 
       HueResults rulesResult = DeserializeDefaultHueResult(jsonResult);
 
-      if (rulesResult.Count > 0 && rulesResult[0].Success != null && !string.IsNullOrEmpty(rulesResult[0].Success.Id))
+      if (rulesResult.Count > 0 && rulesResult.First().Success != null && !string.IsNullOrEmpty(rulesResult.First().Success.Id))
       {
-        return rulesResult[0].Success.Id;
+        return rulesResult.First().Success.Id;
       }
 
       if (rulesResult.HasErrors())

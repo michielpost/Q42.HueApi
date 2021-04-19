@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Q42.HueApi.Models.Groups
   /// <summary>
   /// A PUT or POST returns a list which can contain multiple success and errors
   /// </summary>
-  public class HueResults : List<DefaultHueResult>
+  public class HueResults : BlockingCollection<DefaultHueResult>
   {
 
     public bool HasErrors()
