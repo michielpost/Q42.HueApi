@@ -11,6 +11,7 @@ using Q42.HueApi.Models.Groups;
 using System.Dynamic;
 using Q42.HueApi.Models;
 using Q42.HueApi.Interfaces;
+using System.Collections.Concurrent;
 
 namespace Q42.HueApi
 {
@@ -183,7 +184,7 @@ namespace Q42.HueApi
       }
       else
       {
-        HueResults results = new HueResults();
+        BlockingCollection<DefaultHueResult> results = new BlockingCollection<DefaultHueResult>();
         HttpClient client = await GetHttpClient().ConfigureAwait(false);
 
         await lightList.ForEachAsync(_parallelRequests, async (lightId) =>
@@ -213,7 +214,9 @@ namespace Q42.HueApi
 
         }).ConfigureAwait(false);
 
-        return results;
+        HueResults hueResults = new HueResults();
+        hueResults.AddRange(results);
+        return hueResults;
       }
     }
 

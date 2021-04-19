@@ -13,7 +13,7 @@ namespace Q42.HueApi.Models.Groups
   /// <summary>
   /// A PUT or POST returns a list which can contain multiple success and errors
   /// </summary>
-  public class HueResults : BlockingCollection<DefaultHueResult>
+  public class HueResults : List<DefaultHueResult>
   {
 
     public bool HasErrors()
