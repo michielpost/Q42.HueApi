@@ -1,0 +1,15 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🚀 Features'
+    label: 'feature'
+  - title: '🐛 Bug Fixes'
+    label: 'bugfix'
+  - title: '🧰 Maintenance'
+    label: 'maintenance'
+references:
+  - develop
+template: |
+  ## Changes
+
+  $CHANGES
