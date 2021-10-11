@@ -18,12 +18,13 @@ namespace Q42.HueApi.Tests
   public class ScheduleTests
   {
     private IHueClient _client;
+    private string key;
 
     [TestInitialize]
     public void Initialize()
     {
       string ip = ConfigurationManager.AppSettings["ip"].ToString();
-      string key = ConfigurationManager.AppSettings["key"].ToString();
+      key = ConfigurationManager.AppSettings["key"].ToString();
 
 	  _client = new LocalHueClient(ip, key);
     }
@@ -49,15 +50,25 @@ namespace Q42.HueApi.Tests
       Assert.IsNotNull(single);
     }
 
-	[TestMethod]
-	public async Task GetSingleDebugTest()
-	{
-		var single = await _client.GetScheduleAsync("5");
+    [TestMethod]
+    public async Task GetSingleDebugTest()
+    {
+      var single = await _client.GetScheduleAsync("1");
 
-		Assert.IsNotNull(single);
-	}
+      Assert.IsNotNull(single);
+    }
 
-		[TestMethod]
+    [TestMethod]
+    public async Task DeleteSingleDebugTest()
+    {
+      //Delete
+      var deleteResult = await _client.DeleteScheduleAsync("1");
+
+      Assert.IsNotNull(deleteResult);
+    }
+
+
+    [TestMethod]
     public async Task CreateScheduleSingle()
     {
       Schedule schedule = new Schedule();
@@ -99,7 +110,7 @@ namespace Q42.HueApi.Tests
 		var jsonString = JsonConvert.SerializeObject(dynamicCOmmand);
 		var commandBody = new GenericScheduleCommand(jsonString);
 		schedule.Command.Body = commandBody;
-		schedule.Command.Address = "/api/huelandspoor/lights/5/state";
+		schedule.Command.Address = $"/api/{key}/lights/5/state";
 		schedule.Command.Method = HttpMethod.Put;
 
 		var result = await _client.CreateScheduleAsync(schedule);
@@ -135,7 +146,7 @@ namespace Q42.HueApi.Tests
       var commandBody = new LightCommand();
       commandBody.Alert = Alert.Once;
       schedule.Command.Body = commandBody;
-      schedule.Command.Address = "/api/huelandspoor/lights/5/state";
+      schedule.Command.Address = $"/api/{key}/lights/5/state";
       schedule.Command.Method = HttpMethod.Put;
 
       var scheduleId = await _client.CreateScheduleAsync(schedule);
@@ -166,7 +177,7 @@ namespace Q42.HueApi.Tests
       var commandBody = new LightCommand();
       commandBody.Alert = Alert.Once;
       schedule.Command.Body = commandBody;
-      schedule.Command.Address = "/api/huelandspoor/lights/5/state";
+      schedule.Command.Address = $"/api/{key}/lights/5/state";
       schedule.Command.Method = HttpMethod.Put;
 
       var scheduleId = await _client.CreateScheduleAsync(schedule);
