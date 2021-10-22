@@ -62,7 +62,7 @@ namespace Q42.HueApi
       if (string.IsNullOrEmpty(responseType))
         throw new ArgumentNullException(nameof(responseType));
 
-      string url = string.Format("https://api.meethue.com/v2/oauth2/authorize?clientid={0}&response_type={5}&state={1}&appid={3}&deviceid={2}&devicename={4}", _clientId, state, deviceId, _appId, deviceName, responseType);
+      string url = string.Format("https://api.meethue.com/v2/oauth2/authorize?client_id={0}&response_type={5}&state={1}&appid={3}&deviceid={2}&devicename={4}", _clientId, state, deviceId, _appId, deviceName, responseType);
 
       return new Uri(url);
     }
