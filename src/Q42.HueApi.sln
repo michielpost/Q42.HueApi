@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Q42.HueApi.Tests", "Q42.HueApi.Tests\Q42.HueApi.Tests.csproj", "{0B96BC44-0006-46C2-BA96-CD63C123FD49}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Q42.HueApi.Streaming", "Q42.HueApi.Streaming\Q42.HueApi.Streaming.csproj", "{CAE9E389-2139-4BEB-94B5-A24E1788F68C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Q42.HueApi.Streaming.Sample", "Q42.HueApi.Streaming.Sample\Q42.HueApi.Streaming.Sample.csproj", "{5F16A7B0-06D8-4E78-BECC-313AC438155E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HueApi", "HueApi\HueApi.csproj", "{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HueApi.Tests", "HueApi.Tests\HueApi.Tests.csproj", "{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,6 +173,38 @@ Global
 		{5F16A7B0-06D8-4E78-BECC-313AC438155E}.Release|x64.Build.0 = Release|Any CPU
 		{5F16A7B0-06D8-4E78-BECC-313AC438155E}.Release|x86.ActiveCfg = Release|Any CPU
 		{5F16A7B0-06D8-4E78-BECC-313AC438155E}.Release|x86.Build.0 = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|ARM.Build.0 = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|x64.Build.0 = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Debug|x86.Build.0 = Debug|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|ARM.ActiveCfg = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|ARM.Build.0 = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|x64.ActiveCfg = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|x64.Build.0 = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|x86.ActiveCfg = Release|Any CPU
+		{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}.Release|x86.Build.0 = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|ARM.Build.0 = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|x64.Build.0 = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|ARM.Build.0 = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|x64.ActiveCfg = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|x64.Build.0 = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,9 +215,10 @@ Global
 		{3B8D82D5-46D1-48B7-9D1D-F2288D9979C7} = {DFB9BA31-9C63-4F2E-A1A9-22F5772A38FC}
 		{61EF8922-31CF-4C00-ABA9-ABEE8E8DF06B} = {DFB9BA31-9C63-4F2E-A1A9-22F5772A38FC}
 		{5F16A7B0-06D8-4E78-BECC-313AC438155E} = {DFB9BA31-9C63-4F2E-A1A9-22F5772A38FC}
+		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978} = {4D056BD7-E0A1-4B24-A0CD-DEFB571F1089}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 		SolutionGuid = {74861D31-CA14-40A4-837D-B32580C33790}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal
