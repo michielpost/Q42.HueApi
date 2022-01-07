@@ -1,0 +1,69 @@
+using HueApi.BridgeLocator;
+using HueApi.Models.Requests;
+using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace HueApi.Tests
+{
+  [TestClass]
+  public class DeviceTests
+  {
+    private readonly LocalHueClient localHueClient;
+
+    public DeviceTests()
+    {
+      var builder = new ConfigurationBuilder().AddUserSecrets<RegisterAppTests>();
+      var config = builder.Build();
+
+      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+    }
+
+    [TestMethod]
+    public async Task Get()
+    {
+      var result = await localHueClient.GetDevice();
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+    }
+
+    [TestMethod]
+    public async Task GetById()
+    {
+      var all = await localHueClient.GetDevice();
+      var id = all.Data.First().Id;
+
+      var result = await localHueClient.GetDevice(id);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+
+    }
+
+
+    [TestMethod]
+    public async Task PutById()
+    {
+      var all = await localHueClient.GetDevice();
+      var id = all.Data.First().Id;
+
+      UpdateDevice req = new UpdateDevice()
+      {
+        Identify = new Identify()
+      };
+      var result = await localHueClient.UpdateDevice(id, req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.Equals(id, result.Data.First().Rid);
+
+    }
+  }
+}

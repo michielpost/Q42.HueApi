@@ -1,5 +1,9 @@
 using HueApi.Models;
+using HueApi.Models.Requests;
+using HueApi.Models.Responses;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HueApi
 {
@@ -7,7 +11,8 @@ namespace HueApi
   {
     protected const string KeyHeaderName = "hue-application-key";
 
-    protected const string ResourceUrl = "/resource";
+    protected const string RegisterUrl = "/api";
+    protected const string ResourceUrl = "/clip/v2/resource";
     protected const string LightUrl = $"{ResourceUrl}/light";
     protected const string SceneUrl = $"{ResourceUrl}/scene";
     protected const string RoomUrl = $"{ResourceUrl}/room";
@@ -33,70 +38,89 @@ namespace HueApi
 
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
 
-    public Task<HueResponse<Bridge>> GetDevice() => HueGetRequest<Bridge>(DeviceUrl);
-    public Task<HueResponse<Bridge>> GetDevice(Guid id) => HueGetRequest<Bridge>(ResourceIdUrl(DeviceUrl, id));
-    public Task<HueResponse<Bridge>> UpdateDevice(Guid id, BridgeUpdateRequest data) => HuePutRequest<Bridge, BridgeUpdateRequest>(ResourceIdUrl(DeviceUrl, id), data);
+    public Task<HueResponse<List<RegisterResponse>>> Register(RegisterRequest registerRequest) => HuePostRequest<List<RegisterResponse>, RegisterRequest>(RegisterUrl, registerRequest);
+
+    public Task<HueResponse<Device>> GetDevice() => HueGetRequest<Device>(DeviceUrl);
+    public Task<HueResponse<Device>> GetDevice(Guid id) => HueGetRequest<Device>(ResourceIdUrl(DeviceUrl, id));
+    public Task<HuePutResponse> UpdateDevice(Guid id, UpdateDevice data) => HuePutRequest(ResourceIdUrl(DeviceUrl, id), data);
 
 
 
 
     private readonly HttpClient client;
 
-    public LocalHueClient(string ip, string key, HttpClient? client = null)
+    public LocalHueClient(string ip, string? key, HttpClient? client = null)
     {
       if(client == null)
         client = new HttpClient();
 
       client.BaseAddress = new Uri($"https://{ip}/clip/v2");
-      client.DefaultRequestHeaders.Add(KeyHeaderName, key);
+
+      if(!string.IsNullOrEmpty(key))
+        client.DefaultRequestHeaders.Add(KeyHeaderName, key);
 
       this.client = client;
     }
 
-    public async Task<HueResponse<T>> HueGetRequest<T>(string url)
+    protected async Task<HueResponse<T>> HueGetRequest<T>(string url)
     {
       var response = await client.GetAsync(url);
 
-      return await ProcessResponse<T>(response);
+      return await ProcessResponse<HueResponse<T>>(response);
     }
 
-    public async Task<HueResponse<T>> HueDeleteRequest<T>(string url)
+    protected async Task<HueResponse<T>> HueDeleteRequest<T>(string url)
     {
       var response = await client.DeleteAsync(url);
 
-      return await ProcessResponse<T>(response);
+      return await ProcessResponse<HueResponse<T>>(response);
     }
 
-    public async Task<HueResponse<T>> HuePutRequest<T, D>(string url, D data)
+    protected async Task<HuePutResponse> HuePutRequest<D>(string url, D data)
     {
-      var response = await client.PutAsJsonAsync(url, data);
+      JsonSerializerOptions options = new()
+      {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+      };
 
-      return await ProcessResponse<T>(response);
+      var response = await client.PutAsJsonAsync(url, data, options);
+
+      return await ProcessResponse<HuePutResponse>(response);
     }
 
-    public async Task<HueResponse<T>> HuePostRequest<T, D>(string url, D data)
+    //protected async Task<HueResponse<T>> HuePutRequest<T, D>(string url, D data)
+    //{
+    //  var response = await client.PutAsJsonAsync(url, data);
+
+    //  return await ProcessResponse<T>(response);
+    //}
+
+    protected async Task<HueResponse<T>> HuePostRequest<T, D>(string url, D data)
     {
       var response = await client.PostAsJsonAsync(url, data);
 
-      return await ProcessResponse<T>(response);
+      return await ProcessResponse<HueResponse<T>>(response);
     }
 
 
-    public async Task<HueResponse<T>> ProcessResponse<T>(HttpResponseMessage? response)
+    protected async Task<T> ProcessResponse<T>(HttpResponseMessage? response) where T : HueErrorResponse, new()
     {
       if (response == null)
-        return new HueResponse<T>(null);
+        return new T();
 
       if (response.IsSuccessStatusCode)
       {
-        var result = await response.Content.ReadFromJsonAsync<T>();
-        var errors = await response.Content.ReadFromJsonAsync<HueErrors>();
-        return new HueResponse<T>(result, errors);
+        return (await response.Content.ReadFromJsonAsync<T>()) ?? new();
       }
       else
       {
-        var errors = await response.Content.ReadFromJsonAsync<HueErrors>();
-        return new HueResponse<T>(errors);
+        var errorResponse = await response.Content.ReadFromJsonAsync<HueErrorResponse>();
+
+        var result = new T();
+        if(errorResponse != null)
+          result.Errors = errorResponse.Errors;
+
+        return result;
       }
     }
   }
