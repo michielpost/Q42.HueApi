@@ -38,7 +38,7 @@ namespace HueApi
 
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
 
-    public Task<HueResponse<List<RegisterResponse>>> Register(RegisterRequest registerRequest) => HuePostRequest<List<RegisterResponse>, RegisterRequest>(RegisterUrl, registerRequest);
+    public Task<HueResponse<List<RegisterResponse>>> Register(RegisterRequest registerRequest) => HueRegisterPostRequest<List<RegisterResponse>, RegisterRequest>(RegisterUrl, registerRequest);
 
     #region Device
     public Task<HueResponse<Device>> GetDevices() => HueGetRequest<Device>(DeviceUrl);
@@ -52,6 +52,34 @@ namespace HueApi
     public Task<HuePutResponse> UpdateLight(Guid id, UpdateLight data) => HuePutRequest(ResourceIdUrl(LightUrl, id), data);
     #endregion
 
+    #region Scene
+    public Task<HueResponse<Scene>> GetScenes() => HueGetRequest<Scene>(SceneUrl);
+    public Task<HuePostResponse> CreateScene(CreateScene data) => HuePostRequest(SceneUrl, data);
+    public Task<HueResponse<Scene>> GetScene(Guid id) => HueGetRequest<Scene>(ResourceIdUrl(SceneUrl, id));
+    public Task<HuePutResponse> UpdateScene(Guid id, UpdateScene data) => HuePutRequest(ResourceIdUrl(SceneUrl, id), data);
+    public Task<HueDeleteResponse> DeleteScene(Guid id) => HueDeleteRequest(ResourceIdUrl(SceneUrl, id));
+    #endregion
+
+    #region Room
+    public Task<HueResponse<Room>> GetRooms() => HueGetRequest<Room>(RoomUrl);
+    public Task<HuePostResponse> CreateRoom(BaseResourceRequest data) => HuePostRequest(RoomUrl, data);
+    public Task<HueResponse<Room>> GetRoom(Guid id) => HueGetRequest<Room>(ResourceIdUrl(RoomUrl, id));
+    public Task<HuePutResponse> UpdateRoom(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(RoomUrl, id), data);
+    public Task<HueDeleteResponse> DeleteRoom(Guid id) => HueDeleteRequest(ResourceIdUrl(RoomUrl, id));
+    #endregion
+
+    #region Zone
+    public Task<HueResponse<Zone>> GetZones() => HueGetRequest<Zone>(ZoneUrl);
+    public Task<HuePostResponse> CreateZone(BaseResourceRequest data) => HuePostRequest(ZoneUrl, data);
+    public Task<HueResponse<Zone>> GetZone(Guid id) => HueGetRequest<Zone>(ResourceIdUrl(ZoneUrl, id));
+    public Task<HuePutResponse> UpdateZone(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(ZoneUrl, id), data);
+    public Task<HueDeleteResponse> DeleteZone(Guid id) => HueDeleteRequest(ResourceIdUrl(ZoneUrl, id));
+    #endregion
+
+
+    #region Resource
+    public Task<HueResponse<HueResource>> GetResources() => HueGetRequest<HueResource>(ResourceUrl);
+    #endregion
 
 
     private readonly HttpClient client;
@@ -76,11 +104,11 @@ namespace HueApi
       return await ProcessResponse<HueResponse<T>>(response);
     }
 
-    protected async Task<HueResponse<T>> HueDeleteRequest<T>(string url)
+    protected async Task<HueDeleteResponse> HueDeleteRequest(string url)
     {
       var response = await client.DeleteAsync(url);
 
-      return await ProcessResponse<HueResponse<T>>(response);
+      return await ProcessResponse<HueDeleteResponse>(response);
     }
 
     protected async Task<HuePutResponse> HuePutRequest<D>(string url, D data)
@@ -102,11 +130,18 @@ namespace HueApi
     //  return await ProcessResponse<T>(response);
     //}
 
-    protected async Task<HueResponse<T>> HuePostRequest<T, D>(string url, D data)
+    protected async Task<HueResponse<T>> HueRegisterPostRequest<T, D>(string url, D data)
     {
       var response = await client.PostAsJsonAsync(url, data);
 
       return await ProcessResponse<HueResponse<T>>(response);
+    }
+
+    protected async Task<HuePostResponse> HuePostRequest<D>(string url, D data)
+    {
+      var response = await client.PostAsJsonAsync(url, data);
+
+      return await ProcessResponse<HuePostResponse>(response);
     }
 
 

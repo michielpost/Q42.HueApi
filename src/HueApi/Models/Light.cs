@@ -15,9 +15,6 @@ namespace HueApi.Models
     [JsonPropertyName("dynamics")]
     public Dynamics? Dynamics { get; set; }
 
-    [JsonPropertyName("metadata")]
-    public Metadata Metadata { get; set; } = default!;
-
     [JsonPropertyName("mode")]
     public string Mode { get; set; } = default!;
 
@@ -128,7 +125,7 @@ namespace HueApi.Models
     public double Brightness { get; set; }
 
     [JsonPropertyName("min_dim_level")]
-    public double MinDimLevel { get; set; }
+    public double? MinDimLevel { get; set; }
   }
 
   public class Effects

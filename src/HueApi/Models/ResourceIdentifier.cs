@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace HueApi.Models
 {
+  [DebuggerDisplay("{Rtype} | {Rid}")]
   public class ResourceIdentifier
   {
     [JsonPropertyName("rid")]

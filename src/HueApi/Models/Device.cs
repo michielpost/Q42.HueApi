@@ -31,9 +31,6 @@ namespace HueApi.Models
 
   public class Device : HueResource
   {
-    [JsonPropertyName("metadata")]
-    public Metadata Metadata { get; set; } = new();
-
     [JsonPropertyName("product_data")]
     public ProductData ProductData { get; set; } = new();
 

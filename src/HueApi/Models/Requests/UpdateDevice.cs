@@ -7,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace HueApi.Models.Requests
 {
-  public class UpdateDevice
+  public class UpdateDevice : BaseResourceRequest
   {
-    [JsonPropertyName("type")]
-    public string? Type { get; set; }
-
-    [JsonPropertyName("metadata")]
-    public Metadata? Metadata { get; set; }
-
     [JsonPropertyName("identify")]
     public Identify? Identify { get; set; }
   }

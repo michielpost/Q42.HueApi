@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace HueApi.Models
 {
+  [DebuggerDisplay("{Type} | {IdV1} | {Id}")]
   public class HueResource
   {
     [JsonPropertyName("id")]
@@ -17,6 +19,9 @@ namespace HueApi.Models
 
     [JsonPropertyName("type")]
     public string? Type { get; set; }
+
+    [JsonPropertyName("metadata")]
+    public Metadata Metadata { get; set; } = default!;
 
     [JsonPropertyName("creation_time")]
     public DateTimeOffset? CreationTime { get; set; }

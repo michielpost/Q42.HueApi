@@ -13,7 +13,17 @@ namespace HueApi.Models
     public List<T> Data { get; set; } = new();
   }
 
+  public class HuePostResponse : HueResponse<ResourceIdentifier>
+  {
+
+  }
+
   public class HuePutResponse : HueResponse<ResourceIdentifier>
+  {
+
+  }
+
+  public class HueDeleteResponse : HueResponse<ResourceIdentifier>
   {
 
   }
