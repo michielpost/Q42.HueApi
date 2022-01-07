@@ -29,14 +29,8 @@ namespace HueApi.Models
     public string SoftwareVersion { get; set; } = default!;
   }
 
-  public class Device
+  public class Device : HueResource
   {
-    [JsonPropertyName("id")]
-    public Guid Id { get; set; } = default!;
-
-    [JsonPropertyName("id_v1")]
-    public string? IdV1 { get; set; }
-
     [JsonPropertyName("metadata")]
     public Metadata Metadata { get; set; } = new();
 
@@ -46,10 +40,5 @@ namespace HueApi.Models
     [JsonPropertyName("services")]
     public List<ResourceIdentifier> Services { get; set; } = new();
 
-    [JsonPropertyName("type")]
-    public string? Type { get; set; }
-
-    [JsonPropertyName("creation_time")]
-    public DateTimeOffset? CreationTime { get; set; }
   }
 }

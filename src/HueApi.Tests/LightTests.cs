@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace HueApi.Tests
 {
   [TestClass]
-  public class DeviceTests
+  public class LightTests
   {
     private readonly LocalHueClient localHueClient;
 
-    public DeviceTests()
+    public LightTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<RegisterAppTests>();
       var config = builder.Build();
@@ -24,7 +24,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetDevices();
+      var result = await localHueClient.GetLights();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -33,10 +33,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetDevices();
+      var all = await localHueClient.GetLights();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetDevice(id);
+      var result = await localHueClient.GetLight(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -49,14 +49,14 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetDevices();
+      var all = await localHueClient.GetLights();
       var id = all.Data.Last().Id;
 
-      UpdateDevice req = new UpdateDevice()
+      UpdateLight req = new UpdateLight()
       {
-        Identify = new Identify()
+        Alert = new UpdateAlert()
       };
-      var result = await localHueClient.UpdateDevice(id, req);
+      var result = await localHueClient.UpdateLight(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

@@ -40,10 +40,17 @@ namespace HueApi
 
     public Task<HueResponse<List<RegisterResponse>>> Register(RegisterRequest registerRequest) => HuePostRequest<List<RegisterResponse>, RegisterRequest>(RegisterUrl, registerRequest);
 
-    public Task<HueResponse<Device>> GetDevice() => HueGetRequest<Device>(DeviceUrl);
+    #region Device
+    public Task<HueResponse<Device>> GetDevices() => HueGetRequest<Device>(DeviceUrl);
     public Task<HueResponse<Device>> GetDevice(Guid id) => HueGetRequest<Device>(ResourceIdUrl(DeviceUrl, id));
     public Task<HuePutResponse> UpdateDevice(Guid id, UpdateDevice data) => HuePutRequest(ResourceIdUrl(DeviceUrl, id), data);
+    #endregion
 
+    #region Light
+    public Task<HueResponse<Light>> GetLights() => HueGetRequest<Light>(LightUrl);
+    public Task<HueResponse<Light>> GetLight(Guid id) => HueGetRequest<Light>(ResourceIdUrl(LightUrl, id));
+    public Task<HuePutResponse> UpdateLight(Guid id, UpdateLight data) => HuePutRequest(ResourceIdUrl(LightUrl, id), data);
+    #endregion
 
 
 
