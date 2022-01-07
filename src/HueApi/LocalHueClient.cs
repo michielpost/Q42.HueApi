@@ -7,11 +7,16 @@ using System.Text.Json.Serialization;
 
 namespace HueApi
 {
+  public delegate void EventStreamMessage(List<EventStreamResponse> events);
+
   public class LocalHueClient
   {
+    public event EventStreamMessage? OnEventStreamMessage;
+
     protected const string KeyHeaderName = "hue-application-key";
 
     protected const string RegisterUrl = "/api";
+    protected const string EventStreamUrl = "/eventstream/clip/v2";
     protected const string ResourceUrl = "/clip/v2/resource";
     protected const string LightUrl = $"{ResourceUrl}/light";
     protected const string SceneUrl = $"{ResourceUrl}/scene";
@@ -270,6 +275,28 @@ namespace HueApi
           result.Errors = errorResponse.Errors;
 
         return result;
+      }
+    }
+
+    public async void StartEventStream()
+    {
+      using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
+      {
+        while (!streamReader.EndOfStream)
+        {
+          var jsonMsg = await streamReader.ReadLineAsync();
+          //Console.WriteLine($"Received message: {message}");
+
+          if (jsonMsg != null)
+          {
+            var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+
+            if(data != null && data.Any())
+            {
+              OnEventStreamMessage?.Invoke(data);
+            }
+          }
+        }
       }
     }
   }

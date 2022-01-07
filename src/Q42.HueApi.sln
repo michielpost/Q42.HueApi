@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Q42.HueApi.Streaming", "Q42
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Q42.HueApi.Streaming.Sample", "Q42.HueApi.Streaming.Sample\Q42.HueApi.Streaming.Sample.csproj", "{5F16A7B0-06D8-4E78-BECC-313AC438155E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HueApi", "HueApi\HueApi.csproj", "{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HueApi", "HueApi\HueApi.csproj", "{0FAC90DF-157F-4093-9B7A-1A6454EC4E77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HueApi.Tests", "HueApi.Tests\HueApi.Tests.csproj", "{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HueApi.Tests", "HueApi.Tests\HueApi.Tests.csproj", "{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HueApi.ConsoleSample", "HueApi.ConsoleSample\HueApi.ConsoleSample.csproj", "{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -205,6 +207,22 @@ Global
 		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|x64.Build.0 = Release|Any CPU
 		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|x86.ActiveCfg = Release|Any CPU
 		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978}.Release|x86.Build.0 = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|x64.Build.0 = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Debug|x86.Build.0 = Debug|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|ARM.Build.0 = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|x64.ActiveCfg = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|x64.Build.0 = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|x86.ActiveCfg = Release|Any CPU
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,9 +234,10 @@ Global
 		{61EF8922-31CF-4C00-ABA9-ABEE8E8DF06B} = {DFB9BA31-9C63-4F2E-A1A9-22F5772A38FC}
 		{5F16A7B0-06D8-4E78-BECC-313AC438155E} = {DFB9BA31-9C63-4F2E-A1A9-22F5772A38FC}
 		{1F539D60-A1D7-4B46-9290-9A8D0B2D3978} = {4D056BD7-E0A1-4B24-A0CD-DEFB571F1089}
+		{D2F2AA7D-D327-4D2A-9F9D-8E01FEBE4AFB} = {DFB9BA31-9C63-4F2E-A1A9-22F5772A38FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {74861D31-CA14-40A4-837D-B32580C33790}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+		SolutionGuid = {74861D31-CA14-40A4-837D-B32580C33790}
 	EndGlobalSection
 EndGlobal
