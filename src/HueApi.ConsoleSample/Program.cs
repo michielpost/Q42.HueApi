@@ -14,7 +14,7 @@ string key = config["key"];
 Console.WriteLine($"Connecting to {ip} with key: {key}");
 
 
-var localHueClient = new LocalHueClient(ip, key);
+var localHueClient = new LocalHueApi(ip, key);
 
 localHueClient.OnEventStreamMessage += EventStreamMessage;
 localHueClient.StartEventStream();

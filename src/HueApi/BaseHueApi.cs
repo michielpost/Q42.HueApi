@@ -1,23 +1,26 @@
 using HueApi.Models;
 using HueApi.Models.Requests;
 using HueApi.Models.Responses;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace HueApi
 {
-  public delegate void EventStreamMessage(List<EventStreamResponse> events);
-
-  public class LocalHueClient
+  public abstract class BaseHueApi
   {
+    protected HttpClient client = default!;
+
     public event EventStreamMessage? OnEventStreamMessage;
     private bool listenToEventStream;
 
-    protected const string KeyHeaderName = "hue-application-key";
-
-    protected const string EventStreamUrl = "/eventstream/clip/v2";
-    protected const string ResourceUrl = "/clip/v2/resource";
+    protected const string EventStreamUrl = "eventstream/clip/v2";
+    protected const string ResourceUrl = "clip/v2/resource";
     protected const string LightUrl = $"{ResourceUrl}/light";
     protected const string SceneUrl = $"{ResourceUrl}/scene";
     protected const string RoomUrl = $"{ResourceUrl}/room";
@@ -42,6 +45,7 @@ namespace HueApi
     protected const string HomekitUrl = $"{ResourceUrl}/homekit";
 
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
+
 
     #region Light
     public Task<HueResponse<Light>> GetLights() => HueGetRequest<Light>(LightUrl);
@@ -192,27 +196,7 @@ namespace HueApi
     #endregion
 
 
-    private readonly HttpClient client;
 
-    public LocalHueClient(string ip, string? key, HttpClient? client = null)
-    {
-      if (client == null)
-      {
-        var handler = new HttpClientHandler()
-        {
-          ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-        };
-
-        client = new HttpClient(handler);
-      }
-
-      client.BaseAddress = new Uri($"https://{ip}/clip/v2");
-
-      if(!string.IsNullOrEmpty(key))
-        client.DefaultRequestHeaders.Add(KeyHeaderName, key);
-
-      this.client = client;
-    }
 
     protected async Task<HueResponse<T>> HueGetRequest<T>(string url)
     {
@@ -276,7 +260,7 @@ namespace HueApi
         var errorResponse = await response.Content.ReadFromJsonAsync<HueErrorResponse>();
 
         var result = new T();
-        if(errorResponse != null)
+        if (errorResponse != null)
           result.Errors = errorResponse.Errors;
 
         return result;
@@ -314,5 +298,6 @@ namespace HueApi
     {
       listenToEventStream = false;
     }
+
   }
 }

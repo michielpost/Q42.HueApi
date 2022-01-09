@@ -11,14 +11,14 @@ namespace HueApi.Tests
   [TestClass]
   public class BridgeHomeTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public BridgeHomeTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<BridgeHomeTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

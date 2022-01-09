@@ -10,14 +10,14 @@ namespace HueApi.Tests
   [TestClass]
   public class ButtonTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public ButtonTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<ButtonTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

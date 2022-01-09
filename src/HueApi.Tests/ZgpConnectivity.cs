@@ -10,14 +10,14 @@ namespace HueApi.Tests
   [TestClass]
   public class ZgpConnectivityTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public ZgpConnectivityTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<ZgpConnectivityTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

@@ -88,30 +88,30 @@ Make sure to install the new [HueApi from NuGet](https://nuget.org/packages/HueA
 
 ### Clip V2 Example
 
-Use the LocalHueClient:
+Use the LocalHueClLocalHueApiient:
 ```cs
-var localHueClient = new LocalHueClient("BRIDGE_IP", "KEY");
+var localHueApi = new LocalHueApi("BRIDGE_IP", "KEY");
 ```
 
 Registration of your App and retreiving a key can be done using the original Q42.HueApi. There's no support yet in the new Clip V2 API.
 
 Change the lights:
 ```cs
-var lights = await localHueClient.GetLights();
+var lights = await localHueApi.GetLights();
 
  UpdateLight req = new UpdateLight()
 {
 	Alert = new UpdateAlert()
 };
-var result = await localHueClient.UpdateLight(id, req);
+var result = await localHueApi.UpdateLight(id, req);
 ```
 
 ## EventStream
 Listen to the new EventStream to get notified by the Hue Bridge when new events occur.
 
 ```cs
-localHueClient.OnEventStreamMessage += EventStreamMessage;
-localHueClient.StartEventStream();
+localHueApi.OnEventStreamMessage += EventStreamMessage;
+localHueApi.StartEventStream();
 
 void EventStreamMessage(List<EventStreamResponse> events)
 {
@@ -126,7 +126,7 @@ void EventStreamMessage(List<EventStreamResponse> events)
   }
 }
 
-//localHueClient.StopEventStream();
+//localHueApi.StopEventStream();
 ```
 
 Sample usage can be found in the included Console Sample App: `HueApi.ConsoleSample`

@@ -10,14 +10,14 @@ namespace HueApi.Tests
   [TestClass]
   public class LightLevelTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public LightLevelTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<LightLevelTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

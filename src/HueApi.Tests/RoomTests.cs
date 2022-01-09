@@ -12,14 +12,14 @@ namespace HueApi.Tests
   [TestClass]
   public class RoomTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public RoomTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<RoomTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

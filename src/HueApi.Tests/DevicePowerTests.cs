@@ -10,14 +10,14 @@ namespace HueApi.Tests
   [TestClass]
   public class DevicePowerTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public DevicePowerTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<DevicePowerTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

@@ -10,14 +10,14 @@ namespace HueApi.Tests
   [TestClass]
   public class GeofenceClientTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public GeofenceClientTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<GeofenceClientTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

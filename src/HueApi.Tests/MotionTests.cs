@@ -10,14 +10,14 @@ namespace HueApi.Tests
   [TestClass]
   public class MotionTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public MotionTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<MotionTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]

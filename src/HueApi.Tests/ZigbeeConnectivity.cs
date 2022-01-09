@@ -10,14 +10,14 @@ namespace HueApi.Tests
   [TestClass]
   public class ZigbeeConnectivityTests
   {
-    private readonly LocalHueClient localHueClient;
+    private readonly LocalHueApi localHueClient;
 
     public ZigbeeConnectivityTests()
     {
       var builder = new ConfigurationBuilder().AddUserSecrets<ZigbeeConnectivityTests>();
       var config = builder.Build();
 
-      localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
+      localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
     }
 
     [TestMethod]
