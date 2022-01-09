@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -21,9 +22,12 @@ namespace HueApi.Models
     public string? Type { get; set; }
 
     [JsonPropertyName("metadata")]
-    public Metadata Metadata { get; set; } = default!;
+    public Metadata? Metadata { get; set; } = default!;
 
     [JsonPropertyName("creation_time")]
     public DateTimeOffset? CreationTime { get; set; }
+
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
   }
 }

@@ -12,6 +12,7 @@ namespace HueApi
   public class LocalHueClient
   {
     public event EventStreamMessage? OnEventStreamMessage;
+    private bool listenToEventStream;
 
     protected const string KeyHeaderName = "hue-application-key";
 
@@ -198,8 +199,15 @@ namespace HueApi
 
     public LocalHueClient(string ip, string? key, HttpClient? client = null)
     {
-      if(client == null)
-        client = new HttpClient();
+      if (client == null)
+      {
+        var handler = new HttpClientHandler()
+        {
+          ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+
+        client = new HttpClient(handler);
+      }
 
       client.BaseAddress = new Uri($"https://{ip}/clip/v2");
 
@@ -280,24 +288,34 @@ namespace HueApi
 
     public async void StartEventStream()
     {
-      using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
+      listenToEventStream = true;
+
+      while (listenToEventStream) //Auto retry on stop
       {
-        while (!streamReader.EndOfStream)
+        using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
         {
-          var jsonMsg = await streamReader.ReadLineAsync();
-          //Console.WriteLine($"Received message: {message}");
-
-          if (jsonMsg != null)
+          while (!streamReader.EndOfStream)
           {
-            var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+            var jsonMsg = await streamReader.ReadLineAsync();
+            //Console.WriteLine($"Received message: {message}");
 
-            if(data != null && data.Any())
+            if (jsonMsg != null)
             {
-              OnEventStreamMessage?.Invoke(data);
+              var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+
+              if (data != null && data.Any())
+              {
+                OnEventStreamMessage?.Invoke(data);
+              }
             }
           }
         }
       }
+    }
+
+    public void StopEventStream()
+    {
+      listenToEventStream = false;
     }
   }
 }

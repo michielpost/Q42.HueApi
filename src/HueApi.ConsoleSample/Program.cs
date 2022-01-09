@@ -1,11 +1,15 @@
 // See https://aka.ms/new-console-template for more information
 using HueApi;
 using HueApi.Models.Responses;
+using Microsoft.Extensions.Configuration;
 
 Console.WriteLine("HueApi Console Sample");
 
-string ip = "192.168.0.4";
-string key = "PUT_YOUR_KEY_HERE";
+var builder = new ConfigurationBuilder().AddUserSecrets<Program>();
+var config = builder.Build();
+
+string ip = config["ip"];
+string key = config["key"];
 
 Console.WriteLine($"Connecting to {ip} with key: {key}");
 
@@ -26,5 +30,13 @@ Console.ReadLine();
 void EventStreamMessage(List<EventStreamResponse> events)
 {
   Console.WriteLine($"{events.Count} new events");
+
+  foreach(var hueEvent in events)
+  {
+    foreach(var data in hueEvent.Data)
+    {
+      Console.WriteLine($"Data: {data.Metadata?.Name} / {data.IdV1}");
+    }
+  }
 }
 

@@ -10,12 +10,8 @@ namespace HueApi.Models.Responses
 {
   public class EventStreamData : HueResource
   {
-  
     [JsonPropertyName("owner")]
     public ResourceIdentifier? Owner { get; set; }
-
-    [JsonExtensionData]
-    public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
 
   }
 
@@ -28,6 +24,5 @@ namespace HueApi.Models.Responses
     public List<EventStreamData> Data { get; set; } = new();
 
   }
-
 
 }
