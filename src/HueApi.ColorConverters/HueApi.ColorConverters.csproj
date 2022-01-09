@@ -17,4 +17,8 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HueApi\HueApi.csproj" />
+  </ItemGroup>
+
 </Project>

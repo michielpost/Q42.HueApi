@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace HueApi
 {
+  public delegate void EventStreamMessage(List<EventStreamResponse> events);
+
   public abstract class BaseHueApi
   {
     protected HttpClient client = default!;

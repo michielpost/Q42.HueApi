@@ -92,6 +92,7 @@ Use the LocalHueClLocalHueApiient:
 ```cs
 var localHueApi = new LocalHueApi("BRIDGE_IP", "KEY");
 ```
+For remote usage, use the `new RemoteHueApi("KEY", "token")`
 
 Registration of your App and retreiving a key can be done using the original Q42.HueApi. There's no support yet in the new Clip V2 API.
 

@@ -7,8 +7,6 @@ using System.Text.Json.Serialization;
 
 namespace HueApi
 {
-  public delegate void EventStreamMessage(List<EventStreamResponse> events);
-
   public class LocalHueApi : BaseHueApi
   {
     protected const string KeyHeaderName = "hue-application-key";
