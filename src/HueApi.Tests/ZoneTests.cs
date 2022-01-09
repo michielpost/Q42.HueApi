@@ -53,7 +53,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetZones();
       var last = all.Data.Last();
 
-      BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = last.Metadata.Name } };
+      BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = last.Metadata!.Name } };
       var result = await localHueClient.UpdateZone(last.Id, req);
 
       Assert.IsNotNull(result);
@@ -68,7 +68,7 @@ namespace HueApi.Tests
     public async Task CreateAndDelete()
     {
       var all = await localHueClient.GetZones();
-      var existing = all.Data.Where(x => x.Metadata.Name == "unittest").FirstOrDefault();
+      var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
       Guid? deleteId = null;
       if(existing == null)

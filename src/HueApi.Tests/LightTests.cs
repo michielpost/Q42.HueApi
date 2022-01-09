@@ -15,7 +15,7 @@ namespace HueApi.Tests
 
     public LightTests()
     {
-      var builder = new ConfigurationBuilder().AddUserSecrets<RegisterAppTests>();
+      var builder = new ConfigurationBuilder().AddUserSecrets<LightTests>();
       var config = builder.Build();
 
       localHueClient = new LocalHueClient(config["ip"], key: config["key"]);

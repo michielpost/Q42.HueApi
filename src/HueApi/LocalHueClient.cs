@@ -16,7 +16,6 @@ namespace HueApi
 
     protected const string KeyHeaderName = "hue-application-key";
 
-    protected const string RegisterUrl = "/api";
     protected const string EventStreamUrl = "/eventstream/clip/v2";
     protected const string ResourceUrl = "/clip/v2/resource";
     protected const string LightUrl = $"{ResourceUrl}/light";
@@ -43,8 +42,6 @@ namespace HueApi
     protected const string HomekitUrl = $"{ResourceUrl}/homekit";
 
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
-
-    public Task<HueResponse<List<RegisterResponse>>> Register(RegisterRequest registerRequest) => HueRegisterPostRequest<List<RegisterResponse>, RegisterRequest>(RegisterUrl, registerRequest);
 
     #region Light
     public Task<HueResponse<Light>> GetLights() => HueGetRequest<Light>(LightUrl);

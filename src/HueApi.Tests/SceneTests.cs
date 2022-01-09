@@ -16,7 +16,7 @@ namespace HueApi.Tests
 
     public SceneTests()
     {
-      var builder = new ConfigurationBuilder().AddUserSecrets<RegisterAppTests>();
+      var builder = new ConfigurationBuilder().AddUserSecrets<SceneTests>();
       var config = builder.Build();
 
       localHueClient = new LocalHueClient(config["ip"], key: config["key"]);
@@ -70,7 +70,7 @@ namespace HueApi.Tests
     public async Task CreateAndDelete()
     {
       var all = await localHueClient.GetScenes();
-      var existing = all.Data.Where(x => x.Metadata.Name == "unittest").FirstOrDefault();
+      var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
       Guid? deleteId = null;
       if(existing == null)
