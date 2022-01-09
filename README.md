@@ -4,13 +4,13 @@ Q42.HueApi
 Open source library for communication with the Philips Hue bridge.
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
-This library targets `.netstandard2.0` and `.net45`!
+This library targets `.netstandard2.0`, `.net45`, `.net 5` and `.net 6`!
 Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
 
-- Support for Hue Entertainment API (requires .NET 4.7.1+ or netstandard2.0)
+- Support for Hue Entertainment API
 - Support for the Hue Remote API
 - Multiple Color Converters
-
+- **NEW: Support for Clip V2 API**
 
 ## How to use?
 Some basic usage examples
@@ -80,6 +80,56 @@ Or send it to all lights
 ```cs
 	client.SendCommandAsync(command);
 ```
+
+## Clip V2 API
+Recently Hue releases a new Clip V2 API. This library has support for the new Clip V2 APIs. Not everything is implemented yet. Please create an issue or PR if you need something that is not supported yet.
+
+Make sure to install the new [HueApi from NuGet](https://nuget.org/packages/HueApi).
+
+### Clip V2 Example
+
+Use the LocalHueClient:
+```cs
+var localHueClient = new LocalHueClient("BRIDGE_IP", "KEY");
+```
+
+Registration of your App and retreiving a key can be done using the original Q42.HueApi. There's no support yet in the new Clip V2 API.
+
+Change the lights:
+```cs
+var lights = await localHueClient.GetLights();
+
+ UpdateLight req = new UpdateLight()
+{
+	Alert = new UpdateAlert()
+};
+var result = await localHueClient.UpdateLight(id, req);
+```
+
+## EventStream
+Listen to the new EventStream to get notified by the Hue Bridge when new events occur.
+
+```cs
+localHueClient.OnEventStreamMessage += EventStreamMessage;
+localHueClient.StartEventStream();
+
+void EventStreamMessage(List<EventStreamResponse> events)
+{
+  Console.WriteLine($"{events.Count} new events");
+
+  foreach(var hueEvent in events)
+  {
+    foreach(var data in hueEvent.Data)
+    {
+      Console.WriteLine($"Data: {data.Metadata?.Name} / {data.IdV1}");
+    }
+  }
+}
+
+//localHueClient.StopEventStream();
+```
+
+Sample usage can be found in the included Console Sample App: `HueApi.ConsoleSample`
 
 ## Support for Hue Entertainment.  
 Check out the [Q42.HueApi.Streaming documentation](https://github.com/Q42/Q42.HueApi/blob/master/EntertainmentApi.md)   

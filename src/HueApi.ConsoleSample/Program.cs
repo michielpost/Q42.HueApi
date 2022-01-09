@@ -17,9 +17,6 @@ Console.WriteLine($"Connecting to {ip} with key: {key}");
 var localHueClient = new LocalHueClient(ip, key);
 
 localHueClient.OnEventStreamMessage += EventStreamMessage;
-
-
-
 localHueClient.StartEventStream();
 
 Console.WriteLine("Waiting for Hue Bridge events...");
