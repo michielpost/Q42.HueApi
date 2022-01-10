@@ -19,7 +19,7 @@ namespace HueApi
     protected HttpClient client = default!;
 
     public event EventStreamMessage? OnEventStreamMessage;
-    private bool listenToEventStream;
+    private CancellationTokenSource? eventStreamCancellationTokenSource;
 
     protected const string EventStreamUrl = "eventstream/clip/v2";
     protected const string ResourceUrl = "clip/v2/resource";
@@ -269,36 +269,50 @@ namespace HueApi
       }
     }
 
-    public async void StartEventStream()
+    public async void StartEventStream(CancellationToken? cancellationToken = null)
     {
-      listenToEventStream = true;
+      this.eventStreamCancellationTokenSource?.Cancel();
 
-      while (listenToEventStream) //Auto retry on stop
+      if (cancellationToken.HasValue)
+        this.eventStreamCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken.Value);
+      else
+        this.eventStreamCancellationTokenSource = new CancellationTokenSource();
+
+      var cancelToken = this.eventStreamCancellationTokenSource.Token;
+
+      try
       {
-        using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
+        while (!cancelToken.IsCancellationRequested) //Auto retry on stop
         {
-          while (!streamReader.EndOfStream)
+          using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl, cancelToken)))
           {
-            var jsonMsg = await streamReader.ReadLineAsync();
-            //Console.WriteLine($"Received message: {message}");
-
-            if (jsonMsg != null)
+            while (!streamReader.EndOfStream)
             {
-              var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+              var jsonMsg = await streamReader.ReadLineAsync();
+              //Console.WriteLine($"Received message: {message}");
 
-              if (data != null && data.Any())
+              if (jsonMsg != null)
               {
-                OnEventStreamMessage?.Invoke(data);
+                var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+
+                if (data != null && data.Any())
+                {
+                  OnEventStreamMessage?.Invoke(data);
+                }
               }
             }
           }
         }
       }
+      catch(TaskCanceledException)
+      {
+        //Ignore task canceled
+      }
     }
 
     public void StopEventStream()
     {
-      listenToEventStream = false;
+      this.eventStreamCancellationTokenSource?.Cancel();
     }
 
   }
