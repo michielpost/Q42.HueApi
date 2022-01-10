@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Q42.HueApi
 {
+  /// <summary>
+  /// https://developers.meethue.com/develop/hue-api/remote-authentication-oauth/
+  /// </summary>
   public class RemoteAuthenticationClient : IRemoteAuthenticationClient
   {
     private readonly string _clientId;
@@ -59,7 +62,7 @@ namespace Q42.HueApi
       if (string.IsNullOrEmpty(responseType))
         throw new ArgumentNullException(nameof(responseType));
 
-      string url = string.Format("https://api.meethue.com/oauth2/auth?clientid={0}&response_type={5}&state={1}&appid={3}&deviceid={2}&devicename={4}", _clientId, state, deviceId, _appId, deviceName, responseType);
+      string url = string.Format("https://api.meethue.com/v2/oauth2/authorize?client_id={0}&response_type={5}&state={1}&appid={3}&deviceid={2}&devicename={4}", _clientId, state, deviceId, _appId, deviceName, responseType);
 
       return new Uri(url);
     }
@@ -93,7 +96,7 @@ namespace Q42.HueApi
     /// <returns></returns>
     public async Task<AccessTokenResponse?> GetToken(string code)
     {
-      var requestUri = new Uri($"https://api.meethue.com/oauth2/token?code={code}&grant_type=authorization_code");
+      var requestUri = new Uri($"https://api.meethue.com/v2/oauth2/token?code={code}&grant_type=authorization_code");
 
       //Do a token request
       var responseTask = await _httpClient.PostAsync(requestUri, new StringContent(string.Empty)).ConfigureAwait(false);
@@ -112,8 +115,8 @@ namespace Q42.HueApi
         };
 
         //Build request
-        string response = CalculateHash(_clientId, _clientSecret, nonce, "/oauth2/token");
-        string param = $"username=\"{_clientId}\", {responseString}, uri=\"/oauth2/token\", response=\"{response}\"";
+        string response = CalculateHash(_clientId, _clientSecret, nonce, "/v2/oauth2/token");
+        string param = $"username=\"{_clientId}\", {responseString}, uri=\"/v2/oauth2/token\", response=\"{response}\"";
 
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Digest", param);
 
@@ -146,7 +149,7 @@ namespace Q42.HueApi
     {
       var stringContent = new StringContent("refresh_token=" + refreshToken, Encoding.UTF8, "application/x-www-form-urlencoded");
 
-      var requestUri = new Uri($"https://api.meethue.com/oauth2/refresh?grant_type=refresh_token");
+      var requestUri = new Uri($"https://api.meethue.com/v2/oauth2/token?grant_type=refresh_token");
 
       //Do a token request
       var responseTask = await _httpClient.PostAsync(requestUri, stringContent).ConfigureAwait(false);
@@ -165,8 +168,8 @@ namespace Q42.HueApi
         };
 
         //Build request
-        string response = CalculateHash(_clientId, _clientSecret, nonce, "/oauth2/refresh");
-        string param = $"username=\"{_clientId}\", {responseString}, uri=\"/oauth2/refresh\", response=\"{response}\"";
+        string response = CalculateHash(_clientId, _clientSecret, nonce, "/v2/oauth2/token");
+        string param = $"username=\"{_clientId}\", {responseString}, uri=\"/v2/oauth2/token\", response=\"{response}\"";
 
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Digest", param);
 
@@ -214,7 +217,7 @@ namespace Q42.HueApi
           return _lastAuthorizationResponse.Access_token;
         }
 
-        if (_lastAuthorizationResponse.RefreshTokenExpireTime() < DateTimeOffset.UtcNow)
+        if (_lastAuthorizationResponse.RefreshTokenExpireTime() > DateTimeOffset.UtcNow)
         {
           var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token).ConfigureAwait(false);
 
