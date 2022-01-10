@@ -30,7 +30,7 @@ jobs:
       - name: publish Q42.HueApi on version change
         uses: brandedoutcast/publish-nuget@v2
         with:
-          PROJECT_FILE_PATH:  src/Q42.HueApi/HuQ42.HueApieApi.csproj
+          PROJECT_FILE_PATH:  src/Q42.HueApi/Q42.HueApi.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
       - name: publish Q42.HueApi.ColorConverters on version change
