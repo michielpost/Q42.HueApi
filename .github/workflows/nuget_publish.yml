@@ -1,0 +1,46 @@
+name: publish to nuget
+on:
+  push:
+    branches:
+      - master # Default release branch
+jobs:
+  publish:
+    name: build, pack & publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: publish HueApi on version change
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/HueApi/HueApi.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
+      - name: publish HueApi.ColorConverters on version change
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH:  src/HueApi.ColorConverters/HueApi.ColorConverters.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
+      - name: publish Q42.HueApi on version change
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH:  src/Q42.HueApi/HuQ42.HueApieApi.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
+      - name: publish Q42.HueApi.ColorConverters on version change
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH:  src/Q42.HueApi.ColorConverters/Q42.HueApi.ColorConverters.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
+      - name: publish Q42.HueApi.Streaming on version change
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH:  src/Q42.HueApi.Streaming/Q42.HueApi.Streaming.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
