@@ -1,17 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45;net5.0;net6.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8625;CS8613</WarningsAsErrors>
     <Version>3.19.0</Version>
-    <Company>Q42</Company>
-    <Authors>Michiel Post, Q42</Authors>
+    <Authors>Michiel Post</Authors>
     <Description>Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Supports .Net Standard 2.0 and .net45</Description>
-    <PackageProjectUrl>https://github.com/Q42/Q42.HueApi</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/michielpost/Q42.HueApi</PackageProjectUrl>
     <PackageIconUrl>https://nugetgallery.blob.core.windows.net/icons/DotLessMinification.0.42.1.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/Q42/Q42.HueApi</RepositoryUrl>
+    <RepositoryUrl>https://github.com/michielpost/Q42.HueApi</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>philips hue lights</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

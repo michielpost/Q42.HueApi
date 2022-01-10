@@ -1,5 +1,5 @@
 version: 1.0.{build}
-image: Visual Studio 2019
+image: Visual Studio 2022
 configuration: Release
 shallow_clone: true
 before_build:
@@ -14,3 +14,7 @@ artifacts:
 - path: src\Q42.HueApi.ColorConverters\bin\Release\*.snupkg
 - path: src\Q42.HueApi.Streaming\bin\Release\*.nupkg
 - path: src\Q42.HueApi.Streaming\bin\Release\*.snupkg
+- path: src\HueApi\bin\Release\*.nupkg
+- path: src\HueApi\bin\Release\*.snupkg
+- path: src\HueApi.ColorConverters\bin\Release\*.nupkg
+- path: src\HueApi.ColorConverters\bin\Release\*.snupkg
