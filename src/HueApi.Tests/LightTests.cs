@@ -74,7 +74,7 @@ namespace HueApi.Tests
       var id = all.Data.Last().Id;
 
       //Turn red
-      UpdateLight req = new UpdateLight()
+      var req = new UpdateLight()
         .TurnOn()
         .SetColor(new ColorConverters.RGBColor("FF0000"));
 
