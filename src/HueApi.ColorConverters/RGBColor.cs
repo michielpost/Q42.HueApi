@@ -61,7 +61,8 @@ namespace HueApi.ColorConverters
     }
 
     /// <summary>
-    /// RGB Color from hex
+    /// RGB Color from hex, with or without #
+    /// Example: #FF0000 (red)
     /// </summary>
     /// <param name="hexColor"></param>
     public RGBColor(string hexColor)

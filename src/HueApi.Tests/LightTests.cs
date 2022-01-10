@@ -1,4 +1,5 @@
 using HueApi.BridgeLocator;
+using HueApi.ColorConverters.Original.Extensions;
 using HueApi.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -57,6 +58,34 @@ namespace HueApi.Tests
         Alert = new UpdateAlert()
       };
       var result = await localHueClient.UpdateLight(id, req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.AreEqual(id, result.Data.First().Rid);
+
+    }
+
+    [TestMethod]
+    public async Task ChangeLightColor()
+    {
+      var all = await localHueClient.GetLights();
+      var id = all.Data.Last().Id;
+
+      //Turn red
+      UpdateLight req = new UpdateLight()
+        .TurnOn()
+        .SetColor(new ColorConverters.RGBColor("FF0000"));
+
+      var result = await localHueClient.UpdateLight(id, req);
+
+      await Task.Delay(TimeSpan.FromSeconds(5));
+
+      //Turn blue
+      req = new UpdateLight()
+        .SetColor(new ColorConverters.RGBColor("0000FF"));
+      result = await localHueClient.UpdateLight(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

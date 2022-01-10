@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HueApi.ColorConverters\HueApi.ColorConverters.csproj" />
     <ProjectReference Include="..\HueApi\HueApi.csproj" />
   </ItemGroup>
 

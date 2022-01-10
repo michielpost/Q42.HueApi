@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HueApi.Models.Requests
 {
-  public class UpdateLight : BaseResourceRequest, IUpdateColor, IUpdateColorTemperature, IUpdateOn
+  public class UpdateGroupedLight : BaseResourceRequest, IUpdateColor, IUpdateColorTemperature, IUpdateOn
   {
     [JsonPropertyName("on")]
     public On? On { get; set; }
@@ -27,15 +27,6 @@ namespace HueApi.Models.Requests
 
     [JsonPropertyName("dynamics")]
     public Dynamics? Dynamics { get; set; }
-
-    //TODO: Gradient https://developers.meethue.com/develop/hue-api-v2/api-reference/#resource_light__id__put
-
-  }
-
-  public class UpdateAlert
-  {
-    [JsonPropertyName("action")]
-    public string Action { get; set; } = "breathe";
 
   }
 }

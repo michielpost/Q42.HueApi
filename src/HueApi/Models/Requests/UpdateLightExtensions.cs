@@ -1,11 +1,11 @@
-using HueApi.Models.Requests;
+using HueApi.Models.Requests.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HueApi.Extensions
+namespace HueApi.Models.Requests
 {
   /// <summary>
   /// Extension methods to compose a light command
@@ -19,18 +19,18 @@ namespace HueApi.Extensions
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public static UpdateLight SetColor(this UpdateLight lightCommand, double x, double y)
+    public static T SetColor<T>(this T lightCommand, double x, double y) where T : IUpdateColor
     {
       if (lightCommand == null)
         throw new ArgumentNullException(nameof(lightCommand));
 
-      lightCommand.Color = new Models.Color()
+      if (lightCommand.Color == null)
+        lightCommand.Color = new Color();
+
+      lightCommand.Color.Xy = new XyPosition()
       {
-        Xy = new Models.XyPosition()
-        {
-          X = x,
-          Y = y
-        }
+        X = x,
+        Y = y
       };
 
       return lightCommand;
@@ -42,12 +42,12 @@ namespace HueApi.Extensions
     /// <param name="lightCommand"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public static UpdateLight SetColor(this UpdateLight lightCommand, int ct)
+    public static T SetColor<T>(this T lightCommand, int ct) where T : IUpdateColorTemperature
     {
       if (lightCommand == null)
         throw new ArgumentNullException(nameof(lightCommand));
 
-      lightCommand.ColorTemperature = new Models.ColorTemperature() {  Mirek = ct};
+      lightCommand.ColorTemperature = new ColorTemperature() { Mirek = ct };
       return lightCommand;
     }
 
@@ -56,12 +56,12 @@ namespace HueApi.Extensions
     /// </summary>
     /// <param name="lightCommand"></param>
     /// <returns></returns>
-    public static UpdateLight TurnOn(this UpdateLight lightCommand)
+    public static T TurnOn<T>(this T lightCommand) where T : IUpdateOn
     {
       if (lightCommand == null)
         throw new ArgumentNullException(nameof(lightCommand));
 
-      lightCommand.On = new Models.On() { IsOn = true };
+      lightCommand.On = new On() { IsOn = true };
       return lightCommand;
     }
 
@@ -70,12 +70,12 @@ namespace HueApi.Extensions
     /// </summary>
     /// <param name="lightCommand"></param>
     /// <returns></returns>
-    public static UpdateLight TurnOff(this UpdateLight lightCommand)
+    public static T TurnOff<T>(this T lightCommand) where T : IUpdateOn
     {
       if (lightCommand == null)
         throw new ArgumentNullException(nameof(lightCommand));
 
-      lightCommand.On = new Models.On() { IsOn = false };
+      lightCommand.On = new On() { IsOn = false };
       return lightCommand;
     }
 
