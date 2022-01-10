@@ -5,14 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <Version>0.0.1-beta01</Version>
+    <Version>0.0.42</Version>
     <Authors>Michiel Post</Authors>
     <Description>For Clip v2 API. Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Supports .Net Standard 2.0 and .net45</Description>
     <PackageProjectUrl>https://github.com/michielpost/Q42.HueApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/michielpost/Q42.HueApi</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>philips hue lights</PackageTags>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
