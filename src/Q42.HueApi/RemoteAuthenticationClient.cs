@@ -96,10 +96,17 @@ namespace Q42.HueApi
     /// <returns></returns>
     public async Task<AccessTokenResponse?> GetToken(string code)
     {
-      var requestUri = new Uri($"https://api.meethue.com/v2/oauth2/token?code={code}&grant_type=authorization_code");
+      var requestUri = new Uri($"https://api.meethue.com/v2/oauth2/token");
+
+      var formParameters = new Dictionary<string, string> {
+        {"code", code},
+        {"grant_type", "authorization_code"}
+      };
+
+      var formContent = new FormUrlEncodedContent(formParameters);
 
       //Do a token request
-      var responseTask = await _httpClient.PostAsync(requestUri, new StringContent(string.Empty)).ConfigureAwait(false);
+      var responseTask = await _httpClient.PostAsync(requestUri, formContent).ConfigureAwait(false);
       var responseString = responseTask.Headers.WwwAuthenticate.ToString();
       responseString = responseString.Replace("Digest ", string.Empty);
       string nonce = GetNonce(responseString);
@@ -111,7 +118,7 @@ namespace Q42.HueApi
         {
           RequestUri = requestUri,
           Method = HttpMethod.Post,
-
+          Content = formContent
         };
 
         //Build request
