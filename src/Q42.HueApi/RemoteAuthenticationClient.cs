@@ -223,8 +223,7 @@ namespace Q42.HueApi
         {
           return _lastAuthorizationResponse.Access_token;
         }
-
-        if (_lastAuthorizationResponse.RefreshTokenExpireTime() > DateTimeOffset.UtcNow)
+        else
         {
           var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token).ConfigureAwait(false);
 
