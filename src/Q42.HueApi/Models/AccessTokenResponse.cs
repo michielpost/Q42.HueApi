@@ -11,9 +11,8 @@ namespace Q42.HueApi.Models
     public DateTimeOffset CreatedDate { get; set; }
 
     public string Access_token { get; set; }
-    public int Access_token_expires_in { get; set; }
+    public int Expires_in { get; set; }
     public string Refresh_token { get; set; }
-    public int Refresh_token_expires_in { get; set; }
     public string Token_type { get; set; }
 
     public AccessTokenResponse()
@@ -22,13 +21,7 @@ namespace Q42.HueApi.Models
     }
     public DateTimeOffset AccessTokenExpireTime()
     {
-      return CreatedDate.AddSeconds(Access_token_expires_in);
+      return CreatedDate.AddSeconds(Expires_in);
     }
-
-    public DateTimeOffset RefreshTokenExpireTime()
-    {
-      return CreatedDate.AddSeconds(Refresh_token_expires_in);
-    }
-
   }
 }

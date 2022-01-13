@@ -154,12 +154,17 @@ namespace Q42.HueApi
 
     public async Task<AccessTokenResponse?> RefreshToken(string refreshToken)
     {
-      var stringContent = new StringContent("refresh_token=" + refreshToken, Encoding.UTF8, "application/x-www-form-urlencoded");
+      var requestUri = new Uri("https://api.meethue.com/v2/oauth2/token");
 
-      var requestUri = new Uri($"https://api.meethue.com/v2/oauth2/token?grant_type=refresh_token");
+      var formParameters = new Dictionary<string, string> {
+        {"refresh_token", refreshToken},
+        {"grant_type", "refresh_token"}
+      };
+
+      var formContent = new FormUrlEncodedContent(formParameters);
 
       //Do a token request
-      var responseTask = await _httpClient.PostAsync(requestUri, stringContent).ConfigureAwait(false);
+      var responseTask = await _httpClient.PostAsync(requestUri, formContent).ConfigureAwait(false);
       var responseString = responseTask.Headers.WwwAuthenticate.ToString();
       responseString = responseString.Replace("Digest ", string.Empty);
       string nonce = GetNonce(responseString);
@@ -171,7 +176,7 @@ namespace Q42.HueApi
         {
           RequestUri = requestUri,
           Method = HttpMethod.Post,
-          Content = new StringContent("refresh_token=" + refreshToken, Encoding.UTF8, "application/x-www-form-urlencoded")
+          Content = formContent
         };
 
         //Build request
@@ -188,9 +193,7 @@ namespace Q42.HueApi
         _lastAuthorizationResponse = accessToken;
 
         return accessToken;
-
       }
-
 
       return null;
     }
@@ -223,8 +226,7 @@ namespace Q42.HueApi
         {
           return _lastAuthorizationResponse.Access_token;
         }
-
-        if (_lastAuthorizationResponse.RefreshTokenExpireTime() > DateTimeOffset.UtcNow)
+        else
         {
           var newToken = await this.RefreshToken(_lastAuthorizationResponse.Refresh_token).ConfigureAwait(false);
 
