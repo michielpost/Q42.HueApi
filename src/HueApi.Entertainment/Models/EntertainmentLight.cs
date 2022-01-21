@@ -1,5 +1,6 @@
 using HueApi.Entertainment.Effects.BasEffects;
 using HueApi.Entertainment.Extensions;
+using HueApi.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -89,7 +90,7 @@ namespace HueApi.Entertainment.Models
   {
     private readonly object transitionLock = new object();
 
-    public LightLocation LightLocation { get; private set; }
+    public HuePosition LightLocation { get; private set; }
 
     public byte Id { get; set; }
 
@@ -112,7 +113,7 @@ namespace HueApi.Entertainment.Models
     }
 
 
-    public EntertainmentLight(byte id, LightLocation location)
+    public EntertainmentLight(byte id, HuePosition location)
     {
       Id = id;
       LightLocation = location;

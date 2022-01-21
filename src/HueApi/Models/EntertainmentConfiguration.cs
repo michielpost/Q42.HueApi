@@ -63,7 +63,7 @@ namespace HueApi.Models
     public int ChannelId { get; set; }
 
     [JsonPropertyName("position")]
-    public Position Position { get; set; } = new();
+    public HuePosition Position { get; set; } = new();
 
     [JsonPropertyName("members")]
     public List<Member> Members { get; set; } = new();
@@ -87,33 +87,21 @@ namespace HueApi.Models
     public ResourceIdentifier? Node { get; set; }
   }
 
-  public class ServiceLocation
+  public class HueServiceLocation
   {
     [JsonPropertyName("positions")]
-    public List<Position> Positions { get; set; } = new();
+    public List<HuePosition> Positions { get; set; } = new();
 
     [JsonPropertyName("service")]
     public ResourceIdentifier? Service { get; set; }
 
     [JsonPropertyName("position")]
-    public Position? Position { get; set; }
+    public HuePosition? Position { get; set; }
   }
 
   public class Locations
   {
     [JsonPropertyName("service_locations")]
-    public List<ServiceLocation> ServiceLocations { get; set; } = new();
-  }
-
-  public class Position
-  {
-    [JsonPropertyName("x")]
-    public double X { get; set; }
-
-    [JsonPropertyName("y")]
-    public double Y { get; set; }
-
-    [JsonPropertyName("z")]
-    public double Z { get; set; }
+    public List<HueServiceLocation> ServiceLocations { get; set; } = new();
   }
 }

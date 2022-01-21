@@ -1,3 +1,4 @@
+using HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +12,7 @@ namespace HueApi.Entertainment.Models
   /// </summary>
   public class StreamingLight
   {
-    public LightLocation LightLocation { get; private set; }
+    public HuePosition LightLocation { get; private set; }
 
     public byte Id { get; set; }
 
@@ -20,7 +21,7 @@ namespace HueApi.Entertainment.Models
     // public List<Transition> Transitions { get; set; } = new List<Transition>();
 
 
-    public StreamingLight(string id, LightLocation location)
+    public StreamingLight(string id, HuePosition location)
     {
       Id = byte.Parse(id);
       LightLocation = location;

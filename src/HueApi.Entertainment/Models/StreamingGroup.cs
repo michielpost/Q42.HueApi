@@ -1,4 +1,5 @@
 using HueApi.Entertainment.Extensions;
+using HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,14 +33,14 @@ namespace HueApi.Entertainment.Models
     /// <param name="lightIds"></param>
     public StreamingGroup(List<string> lightIds)
     {
-      this.AddRange(lightIds.Select(x => new StreamingLight(x, new LightLocation())));
+      this.AddRange(lightIds.Select(x => new StreamingLight(x, new HuePosition())));
     }
 
     /// <summary>
     /// Default constructor
     /// </summary>
     /// <param name="locations"></param>
-    public StreamingGroup(Dictionary<string, LightLocation> locations)
+    public StreamingGroup(Dictionary<string, HuePosition> locations)
     {
       AddRange(locations.Select(x => new StreamingLight(x.Key, x.Value)));
     }

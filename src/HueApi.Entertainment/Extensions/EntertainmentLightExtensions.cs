@@ -37,20 +37,21 @@ namespace HueApi.Entertainment.Extensions
       light.SetState(cancellationToken, rgb, null, timeSpan);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="light"></param>
-    /// <param name="xy"></param>
-    /// <param name="gamut">The gamut to use</param>
-    /// <param name="timeSpan"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public static void SetColor(this EntertainmentLight light, CancellationToken cancellationToken, CIE1931Point xy, CIE1931Gamut gamut, TimeSpan timeSpan = default)
-    {
-      var rgb = HueColorConverter.XYToRgb(xy, gamut);
-      light.SetState(cancellationToken, rgb, null, timeSpan);
-    }
+    ///// <summary>
+    /////
+    ///// </summary>
+    ///// <param name="light"></param>
+    ///// <param name="xy"></param>
+    ///// <param name="gamut">The gamut to use</param>
+    ///// <param name="timeSpan"></param>
+    ///// <param name="cancellationToken"></param>
+    ///// <returns></returns>
+    //public static void SetColor(this EntertainmentLight light, CancellationToken cancellationToken, CIE1931Point xy, CIE1931Gamut gamut, TimeSpan timeSpan = default)
+    //{
+    //  var rgb = HueColorConverter.XYToRgb(xy, gamut);
+    //  light.SetState(cancellationToken, rgb, null, timeSpan);
+    //}
+
     /// <summary>
     /// Set state on a single light
     /// </summary>
@@ -71,28 +72,28 @@ namespace HueApi.Entertainment.Extensions
       transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
     }
 
-    /// <summary>
-    /// Set state on a single light
-    /// </summary>
-    /// <param name="light"></param>
-    /// <param name="xy"></param>
-    /// <param name="gamut"></param>
-    /// <param name="brightness"></param>
-    /// <param name="timeSpan"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, CIE1931Point xy, CIE1931Gamut gamut, double? brightness = null, TimeSpan timeSpan = default)
-    {
-      var rgb = HueColorConverter.XYToRgb(xy, gamut);
+    ///// <summary>
+    ///// Set state on a single light
+    ///// </summary>
+    ///// <param name="light"></param>
+    ///// <param name="xy"></param>
+    ///// <param name="gamut"></param>
+    ///// <param name="brightness"></param>
+    ///// <param name="timeSpan"></param>
+    ///// <param name="cancellationToken"></param>
+    ///// <returns></returns>
+    //public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, CIE1931Point xy, CIE1931Gamut gamut, double? brightness = null, TimeSpan timeSpan = default)
+    //{
+    //  var rgb = HueColorConverter.XYToRgb(xy, gamut);
 
-      //Create a new transition for this light
-      Transition transition = new Transition(rgb, brightness, timeSpan);
+    //  //Create a new transition for this light
+    //  Transition transition = new Transition(rgb, brightness, timeSpan);
 
-      light.Transition = transition;
+    //  light.Transition = transition;
 
-      //Start the transition
-      transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
-    }
+    //  //Start the transition
+    //  transition.Start(light.State.RGBColor, light.State.Brightness, cancellationToken);
+    //}
 
     //Source: https://github.com/Q42/Q42.HueApi/pull/174
     public static void SetState(this EntertainmentLight light, CancellationToken cancellationToken, RGBColor? rgb = null, TimeSpan rgbTimeSpan = default, double? brightness = null, TimeSpan briTimeSpan = default, bool overwriteExistingTransition = true)

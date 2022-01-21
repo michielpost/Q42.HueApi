@@ -1,3 +1,4 @@
+using HueApi.Entertainment.Models;
 using Org.BouncyCastle.Crypto.Tls;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace HueApi.Entertainment.Connection
 
       }
 
-      throw new HueException("Receiving data but socket not connected");
+      throw new HueEntertainmentException("Receiving data but socket not connected");
     }
 
     public void Send(byte[] buf, int off, int len)
@@ -74,7 +75,7 @@ namespace HueApi.Entertainment.Connection
       }
       else
       {
-        throw new HueException("Sending data but socket is not connected");
+        throw new HueEntertainmentException("Sending data but socket is not connected");
       }
     }
   }

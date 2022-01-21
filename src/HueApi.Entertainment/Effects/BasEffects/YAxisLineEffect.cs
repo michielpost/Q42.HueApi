@@ -1,4 +1,5 @@
 using HueApi.Entertainment.Models;
+using HueApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,7 +42,7 @@ namespace HueApi.Entertainment.Effects.BasEffects
     /// <param name="effect"></param>
     /// <param name="lightLocation"></param>
     /// <returns></returns>
-    public double Distance(LightLocation lightLocation)
+    public double Distance(HuePosition lightLocation)
     {
       return Math.Abs(Y - lightLocation.Y);
     }

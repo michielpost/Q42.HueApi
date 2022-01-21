@@ -1,5 +1,6 @@
 using HueApi.Entertainment.Connection;
 using HueApi.Entertainment.Models;
+using HueApi.Extensions;
 using Org.BouncyCastle.Crypto.Tls;
 using Org.BouncyCastle.Security;
 using System;
@@ -55,10 +56,10 @@ namespace HueApi.Entertainment
     /// <param name="groupId"></param>
     /// <param name="simulator"></param>
     /// <returns></returns>
-    public async Task Connect(string groupId, bool simulator = false)
+    public async Task Connect(Guid entertainmentAreaId, bool simulator = false)
     {
       _simulator = simulator;
-      var enableResult = await _localHueClient.SetStreamingAsync(groupId).ConfigureAwait(false);
+      var enableResult = await _localHueClient.SetStreamingAsync(entertainmentAreaId).ConfigureAwait(false);
 
       byte[] psk = FromHex(_clientKey);
       BasicTlsPskIdentity pskIdentity = new BasicTlsPskIdentity(_appKey, psk);
