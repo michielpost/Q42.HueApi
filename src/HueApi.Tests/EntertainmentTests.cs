@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetEntertainmentServices();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateEntertainment req = new UpdateEntertainment();
       var result = await localHueClient.UpdateEntertainmentService(id, req);
 
       Assert.IsNotNull(result);

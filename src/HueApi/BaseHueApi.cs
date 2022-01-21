@@ -175,16 +175,16 @@ namespace HueApi
 
     #region EntertainmentConfiguration
     public Task<HueResponse<EntertainmentConfiguration>> GetEntertainmentConfigurations() => HueGetRequest<EntertainmentConfiguration>(EntertainmentConfigurationUrl);
-    public Task<HuePostResponse> CreateEntertainmentConfiguration(BaseResourceRequest data) => HuePostRequest(EntertainmentConfigurationUrl, data);
+    public Task<HuePostResponse> CreateEntertainmentConfiguration(UpdateEntertainmentConfiguration data) => HuePostRequest(EntertainmentConfigurationUrl, data);
     public Task<HueResponse<EntertainmentConfiguration>> GetEntertainmentConfiguration(Guid id) => HueGetRequest<EntertainmentConfiguration>(ResourceIdUrl(EntertainmentConfigurationUrl, id));
-    public Task<HuePutResponse> UpdateEntertainmentConfiguration(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(EntertainmentConfigurationUrl, id), data);
+    public Task<HuePutResponse> UpdateEntertainmentConfiguration(Guid id, UpdateEntertainmentConfiguration data) => HuePutRequest(ResourceIdUrl(EntertainmentConfigurationUrl, id), data);
     public Task<HueDeleteResponse> DeleteEntertainmentConfiguration(Guid id) => HueDeleteRequest(ResourceIdUrl(EntertainmentConfigurationUrl, id));
     #endregion
 
     #region Entertainment
     public Task<HueResponse<Entertainment>> GetEntertainmentServices() => HueGetRequest<Entertainment>(EntertainmentUrl);
     public Task<HueResponse<Entertainment>> GetEntertainmentService(Guid id) => HueGetRequest<Entertainment>(ResourceIdUrl(EntertainmentUrl, id));
-    public Task<HuePutResponse> UpdateEntertainmentService(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(EntertainmentUrl, id), data);
+    public Task<HuePutResponse> UpdateEntertainmentService(Guid id, UpdateEntertainment data) => HuePutRequest(ResourceIdUrl(EntertainmentUrl, id), data);
     #endregion
 
     #region Homekit
