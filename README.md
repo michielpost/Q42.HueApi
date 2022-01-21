@@ -10,7 +10,7 @@ Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q4
 - Support for Hue Entertainment API
 - Support for the Hue Remote API
 - Multiple Color Converters
-- **NEW: Support for Clip V2 API**
+- **NEW: Support for Clip V2 API** with the new [HueApi package on NuGet](https://www.nuget.org/packages/HueApi/)
 
 ## How to use?
 Some basic usage examples
