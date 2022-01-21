@@ -5,7 +5,8 @@ Hue Entertainment API client to stream messages to the Hue Bridge.
 
 ## How to use?
 Some basic usage examples.  
-Please check the included sample app for a working demo (`Q42.HueApi.Streaming.Sample`).
+Please check the included sample app for a working demo (`Q42.HueApi.Streaming.Sample`).  
+**Run `HueApi.Entertainment.ConsoleSample` for a demo using the V2 API.**
 
 ### Register your app with the bridge
 Make sure to request access to the entertainment API by giving generateClientKey = true to the register method

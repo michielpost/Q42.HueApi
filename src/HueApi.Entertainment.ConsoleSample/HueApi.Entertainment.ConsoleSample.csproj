@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <UserSecretsId>fcd8dc33-3d52-4d10-8e84-c110b00825f8</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HueApi.ColorConverters\HueApi.ColorConverters.csproj" />
+    <ProjectReference Include="..\HueApi.Entertainment\HueApi.Entertainment.csproj" />
+  </ItemGroup>
+
+</Project>
