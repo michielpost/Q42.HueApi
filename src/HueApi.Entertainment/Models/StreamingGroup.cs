@@ -8,9 +8,9 @@ using System.Text;
 namespace HueApi.Entertainment.Models
 {
   /// <summary>
-  /// Group of lights that we're streaming to
+  /// Group of channels/lights that we're streaming to
   /// </summary>
-  public class StreamingGroup : List<StreamingLight>
+  public class StreamingGroup : List<StreamingChannel>
   {
     /// <summary>
     /// Set to true if you're using the Hue simulator. Behaviour is slightly different then the real Hue Bridge
@@ -24,25 +24,24 @@ namespace HueApi.Entertainment.Models
 
     public List<EntertainmentLayer> Layers { get; set; } = new List<EntertainmentLayer>();
 
-
     private static readonly List<byte> protocolName = Encoding.ASCII.GetBytes(new char[] { 'H', 'u', 'e', 'S', 't', 'r', 'e', 'a', 'm' }).ToList();
 
     /// <summary>
     /// Constructor without light locations
     /// </summary>
     /// <param name="lightIds"></param>
-    public StreamingGroup(List<string> lightIds)
+    public StreamingGroup(List<int> channelIds)
     {
-      this.AddRange(lightIds.Select(x => new StreamingLight(x, new HuePosition())));
+      this.AddRange(channelIds.Select(x => new StreamingChannel(x, new HuePosition())));
     }
 
     /// <summary>
     /// Default constructor
     /// </summary>
     /// <param name="locations"></param>
-    public StreamingGroup(Dictionary<string, HuePosition> locations)
+    public StreamingGroup(Dictionary<int, HuePosition> locations)
     {
-      AddRange(locations.Select(x => new StreamingLight(x.Key, x.Value)));
+      AddRange(locations.Select(x => new StreamingChannel(x.Key, x.Value)));
     }
 
     /// <summary>
@@ -53,7 +52,7 @@ namespace HueApi.Entertainment.Models
     public EntertainmentLayer GetNewLayer(bool isBaseLayer = false)
     {
       var layer = new EntertainmentLayer(isBaseLayer);
-      var all = this.Select(x => new EntertainmentLight(x.Id, x.LightLocation));
+      var all = this.Select(x => new EntertainmentLight(x.Id, x.ChannelLocation));
       layer.AddRange(all);
 
       Layers.Add(layer);
@@ -61,7 +60,7 @@ namespace HueApi.Entertainment.Models
       return layer;
     }
 
-    internal static List<byte[]>? GetCurrentStateAsByteArray(IEnumerable<IEnumerable<StreamingLight>> chunks)
+    internal static List<byte[]>? GetCurrentStateAsByteArray(byte[] entConfigId, IEnumerable<IEnumerable<StreamingChannel>> chunks)
     {
       //Nothing to update
       if (!chunks.Any())
@@ -74,11 +73,12 @@ namespace HueApi.Entertainment.Models
         List<byte> resultLightState = new List<byte>();
 
         List<byte> baseStateMsg = new List<byte> { //protocol
-        0x01, 0x00, //version 1.0
+        0x02, 0x00, //version 2.0
         0x01, //sequence number 1
         0x00, 0x00, //reserved
         0x00, //color mode RGB
         0x00, //OR 0x01, //linear filter
+        //entertainment configuration id
         //0x00, 0x00, 0x01, //light 1
         //0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         //0x00, 0x00, 0x02, //light 2
@@ -88,7 +88,7 @@ namespace HueApi.Entertainment.Models
     };
 
         //Add protocol in front of message
-        resultLightState = protocolName.Concat(baseStateMsg).ToList();
+        resultLightState = protocolName.Concat(baseStateMsg).Concat(entConfigId).ToList();
 
         //Add state of lights to message
         foreach (var light in chunk)
@@ -102,7 +102,7 @@ namespace HueApi.Entertainment.Models
       return result;
     }
 
-    public IEnumerable<IEnumerable<StreamingLight>> GetChunksForUpdate(bool forceUpdate)
+    public IEnumerable<IEnumerable<StreamingChannel>> GetChunksForUpdate(bool forceUpdate)
     {
       //All transitions should update their state
       //Use extra ToList to prevent exceptions about modified collections

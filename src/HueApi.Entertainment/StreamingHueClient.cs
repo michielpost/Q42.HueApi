@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +28,7 @@ namespace HueApi.Entertainment
     private Socket _socket;
     private LocalHueApi _localHueClient;
     protected string _ip, _appKey, _clientKey;
+    private byte[]? entConfigIdBytes;
 
     public LocalHueApi LocalHueApi => _localHueClient;
 
@@ -47,6 +49,7 @@ namespace HueApi.Entertainment
       _dtlsTransport?.Close();
       _socket.Shutdown(SocketShutdown.Both);
       _socket.Close();
+      entConfigIdBytes = null;
     }
 
 
@@ -60,6 +63,7 @@ namespace HueApi.Entertainment
     {
       _simulator = simulator;
       var enableResult = await _localHueClient.SetStreamingAsync(entertainmentAreaId).ConfigureAwait(false);
+      entConfigIdBytes = Encoding.ASCII.GetBytes(entertainmentAreaId.ToString().ToLowerInvariant());
 
       byte[] psk = FromHex(_clientKey);
       BasicTlsPskIdentity pskIdentity = new BasicTlsPskIdentity(_appKey, psk);
@@ -106,7 +110,7 @@ namespace HueApi.Entertainment
         {
           var sw = Stopwatch.StartNew();
 
-          IEnumerable<IEnumerable<StreamingLight>> chunks = streamingGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
+          IEnumerable<IEnumerable<StreamingChannel>> chunks = streamingGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
           if (chunks != null)
           {
             Send(chunks);
@@ -149,16 +153,19 @@ namespace HueApi.Entertainment
     /// <param name="onlySendDirtyStates"></param>
     public void ManualUpdate(StreamingGroup streamingGroup, bool onlySendDirtyStates = false)
     {
-      IEnumerable<IEnumerable<StreamingLight>> chunks = streamingGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
+      IEnumerable<IEnumerable<StreamingChannel>> chunks = streamingGroup.GetChunksForUpdate(forceUpdate: !onlySendDirtyStates);
       if (chunks != null)
       {
         Send(chunks);
       }
     }
 
-    protected virtual void Send(IEnumerable<IEnumerable<StreamingLight>> chunks)
+    protected virtual void Send(IEnumerable<IEnumerable<StreamingChannel>> chunks)
     {
-      var msg = StreamingGroup.GetCurrentStateAsByteArray(chunks);
+      if (entConfigIdBytes == null)
+        throw new HueEntertainmentException("This client is not connected to a group");
+
+      var msg = StreamingGroup.GetCurrentStateAsByteArray(this.entConfigIdBytes, chunks);
       Send(msg);
     }
 

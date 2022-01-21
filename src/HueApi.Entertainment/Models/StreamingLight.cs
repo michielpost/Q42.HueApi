@@ -8,11 +8,11 @@ using System.Text;
 namespace HueApi.Entertainment.Models
 {
   /// <summary>
-  /// Light that is included in a streaming group
+  /// Channel that is included in a streaming group
   /// </summary>
-  public class StreamingLight
+  public class StreamingChannel
   {
-    public HuePosition LightLocation { get; private set; }
+    public HuePosition ChannelLocation { get; private set; }
 
     public byte Id { get; set; }
 
@@ -21,28 +21,28 @@ namespace HueApi.Entertainment.Models
     // public List<Transition> Transitions { get; set; } = new List<Transition>();
 
 
-    public StreamingLight(string id, HuePosition location)
+    public StreamingChannel(int id, HuePosition location)
     {
-      Id = byte.Parse(id);
-      LightLocation = location;
+      Id = Convert.ToByte(id);
+      ChannelLocation = location;
     }
 
     internal IEnumerable<byte> GetState()
     {
       List<byte> result = new List<byte>();
 
-      byte deviceType = 0x00; //Type of device 0x00 = Light; 0x01 = Area
-      var lightIdBytes = BitConverter.GetBytes(Id);
+      //byte deviceType = 0x00; //Type of device 0x00 = Light; 0x01 = Area
+      //var lightIdBytes = BitConverter.GetBytes(Id);
 
-      result.Add(deviceType);
-      result.Add(0x00);
+      //result.Add(deviceType);
+      //result.Add(0x00);
       result.Add(Id);
       result.AddRange(State.ToByteArray());
 
       return result;
     }
 
-    internal void SetStateFor(StreamingLight light, List<EntertainmentLayer> layers, double? brightnessFilter)
+    internal void SetStateFor(StreamingChannel light, List<EntertainmentLayer> layers, double? brightnessFilter)
     {
       //Base state does not check IsDirty flag
       var baseState = layers.Where(x => x.IsBaseLayer).SelectMany(x => x).Where(l => l.Id == light.Id).Select(x => x.State).LastOrDefault();
