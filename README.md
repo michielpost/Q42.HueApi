@@ -84,7 +84,10 @@ Or send it to all lights
 ## Clip V2 API
 Recently Hue releases a new Clip V2 API. This library has support for the new Clip V2 APIs. Not everything is implemented yet. Please create an issue or PR if you need something that is not supported yet.
 
-Make sure to install the new [HueApi from NuGet](https://nuget.org/packages/HueApi).
+Make sure to install the new packages:
+- [HueApi from NuGet](https://nuget.org/packages/HueApi)
+- [HueApi.ColorConverters from NuGet](https://nuget.org/packages/HueApi.ColorConverters)
+- [HueApi.Entertainment from NuGet](https://nuget.org/packages/HueApi.Entertainment)
 
 ### Clip V2 Example
 
