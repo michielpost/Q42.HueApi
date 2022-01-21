@@ -257,6 +257,10 @@ namespace HueApi
       {
         return (await response.Content.ReadFromJsonAsync<T>()) ?? new();
       }
+      else if(response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+      {
+        throw new UnauthorizedAccessException();
+      }
       else
       {
         var errorResponse = await response.Content.ReadFromJsonAsync<HueErrorResponse>();

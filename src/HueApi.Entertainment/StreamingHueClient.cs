@@ -91,7 +91,7 @@ namespace HueApi.Entertainment
     {
       if (!_simulator)
       {
-        int groupCount = streamingGroup.Count / 10 + 1;
+        int groupCount = streamingGroup.Count / 20 + 1;
         frequency = frequency / groupCount;
       }
       else

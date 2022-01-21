@@ -35,6 +35,11 @@ namespace HueApi.Entertainment.Models
       this.AddRange(channelIds.Select(x => new StreamingChannel(x, new HuePosition())));
     }
 
+    public StreamingGroup(List<EntertainmentChannel> channels)
+    {
+      AddRange(channels.Select(x => new StreamingChannel(x.ChannelId, x.Position)));
+    }
+
     /// <summary>
     /// Default constructor
     /// </summary>
@@ -118,8 +123,8 @@ namespace HueApi.Entertainment.Models
       //Calculate state based on all layers
       ForEach(x => x.SetStateFor(x, Layers, BrightnessFilter));
 
-      //A streaming message contains max 10 light updates
-      var chunks = this.Where(x => x.State.IsDirty || forceUpdate).ChunkBy(IsForSimulator ? 100 : 10);
+      //A streaming message contains max 20 light updates
+      var chunks = this.Where(x => x.State.IsDirty || forceUpdate).ChunkBy(IsForSimulator ? 100 : 20);
       return chunks;
     }
 
