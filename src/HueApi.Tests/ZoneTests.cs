@@ -53,7 +53,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetZones();
       var last = all.Data.Last();
 
-      BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = last.Metadata!.Name } };
+      var req = new UpdateZone() { Metadata = new Models.Metadata() { Name = last.Metadata!.Name } };
       var result = await localHueClient.UpdateZone(last.Id, req);
 
       Assert.IsNotNull(result);
@@ -68,12 +68,24 @@ namespace HueApi.Tests
     public async Task CreateAndDelete()
     {
       var all = await localHueClient.GetZones();
+      var allLights = await localHueClient.GetLights();
+      var firstLight = allLights.Data.First();
+
       var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
       Guid? deleteId = null;
       if(existing == null)
       {
-        BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = "unittest" } };
+        var req = new CreateZone() {
+          Type = "zone",
+          Metadata = new Models.Metadata() { Name = "unittest", Archetype = "other" }
+        };
+        //req.Children.Add(new ResourceIdentifier
+        //{
+        //  Rid = firstLight.Id,
+        //  Rtype = firstLight.Type!
+        //});
+
         var result = await localHueClient.CreateZone(req);
 
         Assert.IsNotNull(result);
@@ -90,7 +102,7 @@ namespace HueApi.Tests
         Assert.IsFalse(deleteResult.HasErrors);
 
         Assert.IsTrue(deleteResult.Data.Count == 1);
-        Assert.AreEqual(deleteResult, deleteResult.Data.First().Rid);
+        Assert.AreEqual(deleteId.Value, deleteResult.Data.First().Rid);
       }
 
     }

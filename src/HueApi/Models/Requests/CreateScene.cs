@@ -9,9 +9,8 @@ namespace HueApi.Models.Requests
 {
   public class CreateScene : BaseResourceRequest
   {
-    public CreateScene(string? type, Metadata metadata, ResourceIdentifier group)
+    public CreateScene(Metadata metadata, ResourceIdentifier group)
     {
-      Type = type;
       Metadata = metadata;
       Group = group;
     }

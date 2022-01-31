@@ -1,3 +1,4 @@
+using HueApi.Models.Requests.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace HueApi.Models
     public double Speed { get; set; }
   }
 
-  public class LightAction
+  public class LightAction : IUpdateColor, IUpdateColorTemperature, IUpdateOn
   {
     [JsonPropertyName("color")]
     public Color? Color { get; set; }

@@ -1,4 +1,5 @@
 using HueApi.BridgeLocator;
+using HueApi.Extensions.cs;
 using HueApi.Models;
 using HueApi.Models.Requests;
 using Microsoft.Extensions.Configuration;
@@ -70,15 +71,24 @@ namespace HueApi.Tests
     public async Task CreateAndDelete()
     {
       var all = await localHueClient.GetScenes();
+      var groups = await localHueClient.GetRooms();
+      var group = groups.Data.Skip(1).First();
+      var groupLights = await localHueClient.GetRoom(group.Id);
       var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
       Guid? deleteId = null;
       if(existing == null)
       {
-        //TODO: Get Group
-        ResourceIdentifier group = new ResourceIdentifier();
+        CreateScene req = new CreateScene(new Models.Metadata() { Name = "unittest" }, group.ToResourceIdentifier());
+        foreach(var light in groupLights.Data.SelectMany(x => x.Services.Where(x => x.Rtype == "light")))
+        {
+          req.Actions.Add(new SceneAction
+          {
+             Target = light,
+              Action = new LightAction().TurnOn()
+          });
+        }
 
-        CreateScene req = new CreateScene(null, new Models.Metadata() { Name = "unittest" }, group);
         var result = await localHueClient.CreateScene(req);
 
         Assert.IsNotNull(result);
@@ -95,7 +105,7 @@ namespace HueApi.Tests
         Assert.IsFalse(deleteResult.HasErrors);
 
         Assert.IsTrue(deleteResult.Data.Count == 1);
-        Assert.AreEqual(deleteResult, deleteResult.Data.First().Rid);
+        Assert.AreEqual(deleteId.Value, deleteResult.Data.First().Rid);
       }
 
     }

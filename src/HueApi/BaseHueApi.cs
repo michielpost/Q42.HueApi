@@ -73,9 +73,9 @@ namespace HueApi
 
     #region Zone
     public Task<HueResponse<Zone>> GetZones() => HueGetRequest<Zone>(ZoneUrl);
-    public Task<HuePostResponse> CreateZone(BaseResourceRequest data) => HuePostRequest(ZoneUrl, data);
+    public Task<HuePostResponse> CreateZone(CreateZone data) => HuePostRequest(ZoneUrl, data);
     public Task<HueResponse<Zone>> GetZone(Guid id) => HueGetRequest<Zone>(ResourceIdUrl(ZoneUrl, id));
-    public Task<HuePutResponse> UpdateZone(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(ZoneUrl, id), data);
+    public Task<HuePutResponse> UpdateZone(Guid id, UpdateZone data) => HuePutRequest(ResourceIdUrl(ZoneUrl, id), data);
     public Task<HueDeleteResponse> DeleteZone(Guid id) => HueDeleteRequest(ResourceIdUrl(ZoneUrl, id));
     #endregion
 
@@ -226,23 +226,14 @@ namespace HueApi
       return await ProcessResponse<HuePutResponse>(response);
     }
 
-    //protected async Task<HueResponse<T>> HuePutRequest<T, D>(string url, D data)
-    //{
-    //  var response = await client.PutAsJsonAsync(url, data);
-
-    //  return await ProcessResponse<T>(response);
-    //}
-
-    protected async Task<HueResponse<T>> HueRegisterPostRequest<T, D>(string url, D data)
-    {
-      var response = await client.PostAsJsonAsync(url, data);
-
-      return await ProcessResponse<HueResponse<T>>(response);
-    }
-
     protected async Task<HuePostResponse> HuePostRequest<D>(string url, D data)
     {
-      var response = await client.PostAsJsonAsync(url, data);
+      JsonSerializerOptions options = new()
+      {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+      };
+
+      var response = await client.PostAsJsonAsync(url, data, options);
 
       return await ProcessResponse<HuePostResponse>(response);
     }

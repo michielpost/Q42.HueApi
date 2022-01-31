@@ -73,7 +73,7 @@ namespace HueApi.Tests
       Guid? deleteId = null;
       if(existing == null)
       {
-        BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = "unittest" } };
+        BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = "unittest", Archetype = "other" } };
         var result = await localHueClient.CreateRoom(req);
 
         Assert.IsNotNull(result);
@@ -90,7 +90,7 @@ namespace HueApi.Tests
         Assert.IsFalse(deleteResult.HasErrors);
 
         Assert.IsTrue(deleteResult.Data.Count == 1);
-        Assert.AreEqual(deleteResult, deleteResult.Data.First().Rid);
+        Assert.AreEqual(deleteId.Value, deleteResult.Data.First().Rid);
       }
 
     }

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace HueApi.Models
 {
   [DebuggerDisplay("{Rtype} | {Rid}")]
-  public class ResourceIdentifier
+  public record ResourceIdentifier
   {
     [JsonPropertyName("rid")]
     public Guid Rid { get; set; }

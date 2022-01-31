@@ -19,7 +19,7 @@ namespace HueApi.Models
     public string? IdV1 { get; set; }
 
     [JsonPropertyName("type")]
-    public string? Type { get; set; }
+    public string Type { get; set; } = default!;
 
     [JsonPropertyName("metadata")]
     public Metadata? Metadata { get; set; } = default!;

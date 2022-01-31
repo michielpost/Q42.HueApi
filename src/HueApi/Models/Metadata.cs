@@ -10,7 +10,7 @@ namespace HueApi.Models
     public string Name { get; set; } = default!;
 
     [JsonPropertyName("archetype")]
-    public string? Archetype { get; set; } = default!;
+    public string? Archetype { get; set; }
 
     [JsonPropertyName("image")]
     public ResourceIdentifier? Image { get; set; }
