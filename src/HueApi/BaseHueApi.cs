@@ -88,7 +88,7 @@ namespace HueApi
     #region GroupedLight
     public Task<HueResponse<GroupedLight>> GetGroupedLights() => HueGetRequest<GroupedLight>(GroupedLightUrl);
     public Task<HueResponse<GroupedLight>> GetGroupedLight(Guid id) => HueGetRequest<GroupedLight>(ResourceIdUrl(GroupedLightUrl, id));
-    public Task<HuePutResponse> UpdateGroupedLight(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(GroupedLightUrl, id), data);
+    public Task<HuePutResponse> UpdateGroupedLight(Guid id, UpdateGroupedLight data) => HuePutRequest(ResourceIdUrl(GroupedLightUrl, id), data);
     #endregion
 
     #region Device

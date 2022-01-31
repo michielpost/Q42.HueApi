@@ -53,7 +53,8 @@ namespace HueApi.Tests
       var all = await localHueClient.GetGroupedLights();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateGroupedLight req = new UpdateGroupedLight();
+      req.On = new Models.On() { IsOn = true };
       var result = await localHueClient.UpdateGroupedLight(id, req);
 
       Assert.IsNotNull(result);
