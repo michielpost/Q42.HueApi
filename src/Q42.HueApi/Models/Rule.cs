@@ -3,62 +3,58 @@ using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models
 {
-  [DataContract]
   public class Rule
   {
     public string Id { get; set; }
 
-    [DataMember(Name = "Name")]
+    [JsonProperty("Name")]
     public string Name { get; set; }
 
-    [DataMember(Name = "Lasttriggered")]
+    [JsonProperty("Lasttriggered")]
     [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? LastTriggered { get; set; } //Can be "none", so don't convert to DateTime
 
-    [DataMember(Name = "creationtime")]
+    [JsonProperty("creationtime")]
     [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? CreationTime { get; set; }
 
-    [DataMember(Name = "timestriggered")]
+    [JsonProperty("timestriggered")]
     public int TimesTriggered { get; set; }
 
-    [DataMember(Name = "owner")]
+    [JsonProperty("owner")]
     public string Owner { get; set; }
 
-    [DataMember(Name = "status")]
+    [JsonProperty("status")]
     public string Status { get; set; }
 
-    [DataMember(Name = "conditions")]
+    [JsonProperty("conditions")]
     public List<RuleCondition> Conditions { get; set; }
 
-    [DataMember(Name = "actions")]
+    [JsonProperty("actions")]
     public List<InternalBridgeCommand> Actions { get; set; }
   }
 
-  [DataContract]
   public class RuleCondition
   {
-    [DataMember(Name = "address")]
+    [JsonProperty("address")]
     public string Address { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    [DataMember(Name = "operator")]
+    [JsonProperty("operator")]
     public RuleOperator Operator { get; set; }
 
-    [DataMember(Name = "value")]
+    [JsonProperty("value")]
     public string Value { get; set; }
   }
 
   /// <summary>
   /// Possible light alerts
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum RuleOperator
   {
     /// <summary>

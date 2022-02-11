@@ -1,15 +1,11 @@
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
-using Q42.HueApi.Models;
 using System;
 using Q42.HueApi.Models.Bridge;
 using Q42.HueApi.Converters;
 
 namespace Q42.HueApi
 {
-  [DataContract]
   public class BridgeConfig
   {
 
@@ -18,103 +14,103 @@ namespace Q42.HueApi
       WhiteList = new Dictionary<string, WhiteList>();
     }
 
-    [DataMember(Name = "name")]
+    [JsonProperty("name")]
     public string Name { get; set; }
 
-    [DataMember(Name = "mac")]
+    [JsonProperty("mac")]
     public string MacAddress { get; set; }
 
-    [DataMember(Name = "dhcp")]
+    [JsonProperty("dhcp")]
     public bool Dhcp { get; set; }
 
-    [DataMember(Name = "ipaddress")]
+    [JsonProperty("ipaddress")]
     public string IpAddress { get; set; }
 
-    [DataMember(Name = "netmask")]
+    [JsonProperty("netmask")]
     public string NetMask { get; set; }
 
-    [DataMember(Name = "gateway")]
+    [JsonProperty("gateway")]
     public string Gateway { get; set; }
 
-    [DataMember(Name = "UTC")]
+    [JsonProperty("UTC")]
     [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? Utc { get; set; }
 
-    [DataMember(Name = "swversion")]
+    [JsonProperty("swversion")]
     public string SoftwareVersion { get; set; }
 
     [Obsolete]
-    [DataMember(Name = "swupdate")]
+    [JsonProperty("swupdate")]
     public SoftwareUpdate SoftwareUpdate { get; set; }
 
-    [DataMember(Name = "swupdate2")]
+    [JsonProperty("swupdate2")]
     public SoftwareUpdate2 SoftwareUpdate2 { get; set; }
 
-    [DataMember(Name = "whitelist")]
+    [JsonProperty("whitelist")]
     public IDictionary<string, WhiteList> WhiteList { get; set; }
 
-    [DataMember(Name = "linkbutton")]
+    [JsonProperty("linkbutton")]
     public bool LinkButton { get; set; }
 
-    [DataMember(Name = "portalservices")]
+    [JsonProperty("portalservices")]
     public bool PortalServices { get; set; }
 
-    [DataMember(Name = "portalconnection")]
+    [JsonProperty("portalconnection")]
     public string PortalConnection { get; set; }
 
-    [DataMember(Name = "apiversion")]
+    [JsonProperty("apiversion")]
     public string ApiVersion { get; set; }
 
-    [DataMember(Name = "localtime")]
+    [JsonProperty("localtime")]
     [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? LocalTime { get; set; }
 
-    [DataMember(Name = "timezone")]
+    [JsonProperty("timezone")]
     public string TimeZone { get; set; }
 
-    [DataMember(Name = "portalstate")]
+    [JsonProperty("portalstate")]
     public PortalState PortalState { get; set; }
 
-    [DataMember(Name = "zigbeechannel")]
+    [JsonProperty("zigbeechannel")]
     public int ZigbeeChannel { get; set; }
 
     /// <summary>
     /// Perform a touchlink action if set to true, setting to false is ignored. When set to true a touchlink procedure starts which adds the closet lamp (within range) to the ZigBee network.  You can then search for new lights and lamp will show up in the bridge.
     /// </summary>
-    [DataMember(Name = "touchlink")]
+    [JsonProperty("touchlink")]
     public bool TouchLink { get; set; }
 
     /// <summary>
     /// Indicates if bridge settings are factory new.
     /// </summary>
-    [DataMember(Name = "factorynew")]
+    [JsonProperty("factorynew")]
     public bool FactoryNew { get; set; }
 
     /// <summary>
     ///  If a bridge backup file has been restored on this bridge from a bridge with a different bridgeid, it will indicate that bridge id, otherwise it will be null.
     /// </summary>
-    [DataMember(Name = "replacesbridgeid")]
+    [JsonProperty("replacesbridgeid")]
     public string ReplacesBridgeId { get; set; }
 
     /// <summary>
     /// This parameter uniquely identifies the hardware model of the bridge (BSB001, BSB002).
     /// </summary>
-    [DataMember(Name = "modelid")]
+    [JsonProperty("modelid")]
     public string ModelId { get; set; }
 
     /// <summary>
     /// The unique bridge id. This is currently generated from the bridge Ethernet mac address.
     /// </summary>
-    [DataMember(Name = "bridgeid")]
+    [JsonProperty("bridgeid")]
     public string BridgeId { get; set; }
 
-    [DataMember(Name = "datastoreversion")]
+    [JsonProperty("datastoreversion")]
     public string DataStoreVersion { get; set; }
 
-    [DataMember(Name = "starterkitid")]
+    [JsonProperty("starterkitid")]
     public string StarterKitId { get; set; }
 
-    [DataMember(Name = "internetservices")]
+    [JsonProperty("internetservices")]
     public InternetServices InternetServices { get; set; }
 
   }

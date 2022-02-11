@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -12,63 +11,62 @@ namespace Q42.HueApi
   /// <summary>
   /// Compose a light command to send to a light
   /// </summary>
-  [DataContract]
   public class LightCommand : ICommandBody
   {
     /// <summary>
     /// Gets or sets the colors based on CIE 1931 Color coordinates.
     /// </summary>
-    [DataMember (Name = "xy")]
+    [JsonProperty("xy")]
     public double[] ColorCoordinates { get; set; }
 
     /// <summary>
     /// Gets or sets the brightness 0-255.
     /// </summary>
-    [DataMember (Name = "bri")]
+    [JsonProperty("bri")]
     public byte? Brightness { get; set; }
 
     /// <summary>
     /// Gets or sets the hue for Hue and <see cref="Saturation"/> mode.
     /// </summary>
-    [DataMember (Name = "hue")]
+    [JsonProperty("hue")]
     public int? Hue { get; set; }
 
     /// <summary>
     /// Gets or sets the saturation for <see cref="Hue"/> and Saturation mode.
     /// </summary>
-    [DataMember (Name = "sat")]
+    [JsonProperty("sat")]
     public int? Saturation { get; set; }
 
     /// <summary>
     /// Gets or sets the Color Temperature
     /// </summary>
-    [DataMember (Name = "ct")]
+    [JsonProperty("ct")]
     public int? ColorTemperature { get; set; }
 
     /// <summary>
     /// Gets or sets whether the light is on.
     /// </summary>
-    [DataMember (Name = "on")]
+    [JsonProperty("on")]
     public bool? On { get; set; }
 
     /// <summary>
     /// Gets or sets the current effect for the light.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    [DataMember (Name = "effect")]
+    [JsonProperty("effect")]
     public Effect? Effect { get; set; }
 
     /// <summary>
     /// Gets or sets the current alert for the light.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    [DataMember (Name = "alert")]
+    [JsonProperty("alert")]
     public Alert? Alert { get; set; }
 
     /// <summary>
     /// Gets or sets the transition time for the light.
     /// </summary>
-    [DataMember (Name = "transitiontime")]
+    [JsonProperty("transitiontime")]
     [JsonConverter (typeof(TransitionTimeConverter))]
     public TimeSpan? TransitionTime { get; set; }
 
@@ -76,35 +74,35 @@ namespace Q42.HueApi
     /// -254 to 254
     /// As of 1.7. Increments or decrements the value of the brightness.  bri_inc is ignored if the bri attribute is provided. Any ongoing bri transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the bri value after the increment is performed.
     /// </summary>
-    [DataMember(Name = "bri_inc")]
+    [JsonProperty("bri_inc")]
     public int? BrightnessIncrement { get; set; }
 
     /// <summary>
     /// -254 to 254
     /// As of 1.7. Increments or decrements the value of the sat.  sat_inc is ignored if the sat attribute is provided. Any ongoing sat transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the sat value after the increment is performed.
     /// </summary>
-    [DataMember(Name = "sat_inc")]
+    [JsonProperty("sat_inc")]
     public int? SaturationIncrement { get; set; }
 
     /// <summary>
     /// -65534 to 65534
     /// As of 1.7. Increments or decrements the value of the hue.   hue_inc is ignored if the hue attribute is provided. Any ongoing color transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the hue value after the increment is performed.
     /// </summary>
-    [DataMember(Name = "hue_inc")]
+    [JsonProperty("hue_inc")]
     public int? HueIncrement { get; set; }
 
     /// <summary>
     /// -65534 to 65534
     /// As of 1.7. Increments or decrements the value of the ct. ct_inc is ignored if the ct attribute is provided. Any ongoing color transition is stopped. Setting a value of 0 also stops any ongoing transition. The bridge will return the ct value after the increment is performed.
     /// </summary>
-    [DataMember(Name = "ct_inc")]
+    [JsonProperty("ct_inc")]
     public int? ColorTemperatureIncrement { get; set; }
 
     /// <summary>
     /// -0.5 to 0.5
     /// As of 1.7. Increments or decrements the value of the xy.  xy_inc is ignored if the xy attribute is provided. Any ongoing color transition is stopped.  Will stop at it's gamut boundaries. Setting a value of 0 also stops any ongoing transition.  The bridge will return the xy value after the increment is performed.
     /// </summary>
-    [DataMember(Name = "xy_inc")]
+    [JsonProperty("xy_inc")]
     public double[]? ColorCoordinatesIncrement { get; set; }
 
   }
@@ -112,6 +110,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Possible light alerts
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum Alert
   {
     /// <summary>
@@ -136,6 +135,7 @@ namespace Q42.HueApi
   /// <summary>
   /// Possible light effects
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum Effect
   {
     /// <summary>

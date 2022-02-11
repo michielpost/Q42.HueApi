@@ -6,32 +6,31 @@ using System.Runtime.Serialization;
 
 namespace Q42.HueApi.Models
 {
-  [DataContract]
   public class Schedule
   {
     public string Id { get; set; }
 
-    [DataMember(Name = "name")]
+    [JsonProperty("name")]
     public string Name { get; set; }
 
-    [DataMember(Name = "description")]
+    [JsonProperty("description")]
     public string Description { get; set; }
 
-    [DataMember(Name = "command")]
+    [JsonProperty("command")]
     public InternalBridgeCommand Command { get; set; }
 
-    [DataMember(Name = "localtime")]
+    [JsonProperty("localtime")]
     [JsonConverter(typeof(HueDateTimeConverter))]
     public HueDateTime LocalTime { get; set; }
     
-    [DataMember(Name = "created")]
+    [JsonProperty("created")]
     [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? Created { get; set; }
 
     /// <summary>
     /// UTC time that the timer was started. Only provided for timers.
     /// </summary>
-    [DataMember(Name = "starttime")]
+    [JsonProperty("starttime")]
     [JsonConverter(typeof(NullableDateTimeConverter))]
     public DateTime? StartTime { get; set; }
 
@@ -40,18 +39,19 @@ namespace Q42.HueApi.Models
     /// "disabled"  Schedule is disabled by user.
     /// Application is only allowed to set “enabled” or “disabled”. Disabled causes a timer to reset when activated (i.e. stop & reset). “enabled” when not provided on creation.
     /// </summary>
-    [DataMember(Name = "status")]
+    [JsonProperty("status")]
     [JsonConverter(typeof(StringEnumConverter))]
     public ScheduleStatus? Status { get; set; }
 
     /// <summary>
     /// If set to true, the schedule will be removed automatically if expired, if set to false it will be disabled. Default is true
     /// </summary>
-    [DataMember(Name = "autodelete")]
+    [JsonProperty("autodelete")]
     public bool? AutoDelete { get; set; }
 
   }
 
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum ScheduleStatus
   {
     [EnumMember(Value = "enabled")]

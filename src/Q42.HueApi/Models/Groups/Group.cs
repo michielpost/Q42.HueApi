@@ -3,73 +3,68 @@ using Newtonsoft.Json.Converters;
 using Q42.HueApi.Converters;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Q42.HueApi.Models.Groups
 {
-	[DataContract]
 	public class Group
 	{
 		public string Id { get; set; }
 
-		[DataMember(Name = "name")]
+		[JsonProperty("name")]
 		public string Name { get; set; }
 
 		/// <summary>
 		/// Luminaire / Lightsource / LightGroup
 		/// </summary>
 		[JsonConverter(typeof(StringNullableEnumConverter))]
-		[DataMember(Name = "type")]
+		[JsonProperty("type")]
 		public GroupType? Type { get; set; }
 
 		/// <summary>
 		/// Category of the Room type. Default is "Other".
 		/// </summary>
 		[JsonConverter(typeof(StringNullableEnumConverter))]
-		[DataMember(Name = "class")]
+		[JsonProperty("class")]
 		public RoomClass? Class { get; set; }
 
 		/// <summary>
 		/// As of 1.4. Uniquely identifies the hardware model of the luminaire. Only present for automatically created Luminaires.
 		/// </summary>
-		[DataMember(Name = "modelid")]
+		[JsonProperty("modelid")]
 		public string ModelId { get; set; }
 
 		/// <summary>
 		/// The IDs of the lights that are in the group.
 		/// </summary>
-		[DataMember(Name = "lights")]
+		[JsonProperty("lights")]
 		public List<string> Lights { get; set; }
 
 		/// <summary>
 		/// The light state of one of the lamps in the group.
 		/// </summary>
-		[DataMember(Name = "action")]
+		[JsonProperty("action")]
 		public State Action { get; set; }
 
-		[DataMember(Name = "state")]
+		[JsonProperty("state")]
 		public GroupState State { get; set; }
 
-    [DataMember(Name = "locations")]
+    [JsonProperty("locations")]
     public Dictionary<string, LightLocation> Locations { get; set; }
 
-    [DataMember(Name = "recycle")]
+    [JsonProperty("recycle")]
     public bool? Recycle { get; set; }
 
-    [DataMember(Name = "stream")]
+    [JsonProperty("stream")]
     public Stream Stream { get; set; }
 
-    [DataMember(Name = "sensors")]
+    [JsonProperty("sensors")]
     public List<string> Sensors { get; set; }
 
-    [DataMember(Name = "presence")]
+    [JsonProperty("presence")]
     public GroupPresence Presence { get; set; }
 
-    [DataMember(Name = "lightlevel")]
+    [JsonProperty("lightlevel")]
     public GroupLightLevel LightLevel { get; set; }
 
     /// <summary>
@@ -84,7 +79,7 @@ namespace Q42.HueApi.Models.Groups
 
   public class GroupPresence
   {
-    [DataMember(Name = "State")]
+    [JsonProperty("State")]
     public State State { get; set; }
 
     [JsonProperty("lastupdated")]
@@ -100,7 +95,7 @@ namespace Q42.HueApi.Models.Groups
 
   public class GroupLightLevel
   {
-    [DataMember(Name = "State")]
+    [JsonProperty("State")]
     public SensorState State { get; set; }
 
     [JsonProperty("lastupdated")]
@@ -198,22 +193,21 @@ namespace Q42.HueApi.Models.Groups
 
   }
 
-  [DataContract]
 	public class GroupState
 	{
-		[DataMember(Name = "any_on")]
+		[JsonProperty("any_on")]
 		public bool? AnyOn { get; set; }
 
-		[DataMember(Name = "all_on")]
+		[JsonProperty("all_on")]
 		public bool? AllOn { get; set; }
 	}
 
 	/// <summary>
 	/// Possible group types
 	/// </summary>
-	public enum GroupType
+  [JsonConverter(typeof(StringEnumConverter))]
+  public enum GroupType
 	{
-		
 		[EnumMember(Value = "LightGroup")]
 		LightGroup,
 		[EnumMember(Value = "Room")]
@@ -231,7 +225,8 @@ namespace Q42.HueApi.Models.Groups
 	/// <summary>
 	/// Possible room types
 	/// </summary>
-	public enum RoomClass
+  [JsonConverter(typeof(StringEnumConverter))]
+  public enum RoomClass
 	{
 		[EnumMember(Value = "Other")]
 		Other,
@@ -315,16 +310,15 @@ namespace Q42.HueApi.Models.Groups
     Pool
   }
 
-  [DataContract]
   public class Stream
   {
-		[DataMember(Name = "proxymode")]
+		[JsonProperty("proxymode")]
     public string ProxyMode { get; set; }
-		[DataMember(Name = "proxynode")]
+		[JsonProperty("proxynode")]
     public string ProxyNode { get; set; }
-		[DataMember(Name = "active")]
+		[JsonProperty("active")]
     public bool Active { get; set; }
-		[DataMember(Name = "owner")]
+		[JsonProperty("owner")]
     public string Owner { get; set; }
   }
 

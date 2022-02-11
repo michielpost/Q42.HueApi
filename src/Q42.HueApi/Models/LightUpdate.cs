@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace Q42.HueApi.Models
 {
-  [DataContract]
   public class LightConfigUpdate
   {
-    [DataMember(Name = "startup")]
+    [JsonProperty("startup")]
     public LightStartup Startup { get; set; }
 
   }

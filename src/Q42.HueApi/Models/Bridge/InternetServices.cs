@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
 namespace Q42.HueApi.Models.Bridge
 {
-  [DataContract]
   public class InternetServices
   {
     /// <summary>
@@ -15,7 +13,7 @@ namespace Q42.HueApi.Models.Bridge
     /// Disconnected:  If remoteaccess is unavailable, reasons can be portalservices are false or no remote connection is available.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    [DataMember(Name = "remoteaccess")]
+    [JsonProperty("remoteaccess")]
     public InternetServicesState RemoteAccess { get; set; }
 
     /// <summary>
@@ -23,7 +21,7 @@ namespace Q42.HueApi.Models.Bridge
     /// Disconnected:   Bridge cannot reach the Internet.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    [DataMember(Name = "internet")]
+    [JsonProperty("internet")]
     public InternetServicesState Internet { get; set; }
 
     /// <summary>
@@ -31,7 +29,7 @@ namespace Q42.HueApi.Models.Bridge
     /// Disconnected:  Internet time service was not reachable for 48hrs.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    [DataMember(Name = "time")]
+    [JsonProperty("time")]
     public InternetServicesState Time { get; set; }
 
     /// <summary>
@@ -39,13 +37,14 @@ namespace Q42.HueApi.Models.Bridge
     /// Disconnected:  swupdate server was not reachable in the last 24 hrs.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    [DataMember(Name = "swupdate")]
+    [JsonProperty("swupdate")]
     public InternetServicesState SWUpdate { get; set; }
   }
 
   /// <summary>
   /// Possible InternetServices States
   /// </summary>
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum InternetServicesState
   {
     [EnumMember(Value = "connected")]
