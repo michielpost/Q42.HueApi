@@ -130,7 +130,7 @@ namespace Q42.HueApi.Models.Gamut
 
     private static bool IsBelow(CIE1931Point a, CIE1931Point b, CIE1931Point point)
     {
-      double slope = (a.y - b.y) / (a.x - b.x);
+      double slope = a.x - b.x == 0 ? 0 : (a.y - b.y) / (a.x - b.x);
       double intercept = a.y - slope * a.x;
 
       double maxY = point.x * slope + intercept;
@@ -139,7 +139,7 @@ namespace Q42.HueApi.Models.Gamut
 
     private static bool IsAbove(CIE1931Point blue, CIE1931Point red, CIE1931Point point)
     {
-      double slope = (blue.y - red.y) / (blue.x - red.x);
+      double slope = blue.x - red.x == 0 ? 0 : (blue.y - red.y) / (blue.x - red.x);
       double intercept = blue.y - slope * blue.x;
 
       double minY = point.x * slope + intercept;
