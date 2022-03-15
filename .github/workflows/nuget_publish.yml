@@ -15,38 +15,27 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: publish HueApi on version change
-        uses: alirezanet/publish-nuget@v3.0.0
-        with:
-          PROJECT_FILE_PATH: src/HueApi/HueApi.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-
-      - name: publish HueApi.ColorConverters on version change
-        uses: alirezanet/publish-nuget@v3.0.0
-        with:
-          PROJECT_FILE_PATH:  src/HueApi.ColorConverters/HueApi.ColorConverters.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-
-      - name: publish HueApi.Entertainment on version change
-        uses: alirezanet/publish-nuget@v3.0.0
-        with:
-          PROJECT_FILE_PATH:  src/HueApi.Entertainment/HueApi.Entertainment.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-
-      - name: publish Q42.HueApi on version change
-        uses: alirezanet/publish-nuget@v3.0.0
-        with:
-          PROJECT_FILE_PATH:  src/Q42.HueApi/Q42.HueApi.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-
-      - name: publish Q42.HueApi.ColorConverters on version change
-        uses: alirezanet/publish-nuget@v3.0.0
-        with:
-          PROJECT_FILE_PATH:  src/Q42.HueApi.ColorConverters/Q42.HueApi.ColorConverters.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-
-      - name: publish Q42.HueApi.Streaming on version change
-        uses: alirezanet/publish-nuget@v3.0.0
-        with:
-          PROJECT_FILE_PATH:  src/Q42.HueApi.Streaming/Q42.HueApi.Streaming.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      - name: Package HueApi
+        run: dotnet build -c Release -o . src/HueApi/HueApi.csproj
+      - name: Package HueApi.ColorConverters
+        run: dotnet build -c Release -o . src/HueApi.ColorConverters/HueApi.ColorConverters.csproj
+      - name: Package HueApi.Entertainment
+        run: dotnet build -c Release -o . src/HueApi.Entertainment/HueApi.Entertainment.csproj
+      - name: Package Q42.HueApi
+        run: dotnet build -c Release -o . src/Q42.HueApi/Q42.HueApi.csproj
+      - name: Package Q42.HueApi.ColorConverters
+        run: dotnet build -c Release -o . src/Q42.HueApi.ColorConverters/Q42.HueApi.ColorConverters.csproj
+      - name: Package Q42.HueApi.Streaming
+        run: dotnet build -c Release -o . src/Q42.HueApi.Streaming/Q42.HueApi.Streaming.csproj
+      - name: Publish HueApi
+        run: dotnet nuget push HueApi.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publish HueApi.ColorConverters
+        run: dotnet nuget push HueApi.ColorConverters.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publish HueApi.Entertainment
+        run: dotnet nuget push HueApi.Entertainment.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publish Q42.HueApi
+        run: dotnet nuget push Q42.HueApi.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publish Q42.HueApi.ColorConverters
+        run: dotnet nuget push Q42.HueApi.ColorConverters.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publish Q42.HueApi.Entertainment
+        run: dotnet nuget push Q42.HueApi.Entertainment.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
