@@ -279,7 +279,11 @@ namespace HueApi
       {
         while (!cancelToken.IsCancellationRequested) //Auto retry on stop
         {
+#if NET461
+          using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
+#else
           using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl, cancelToken)))
+#endif
           {
             while (!streamReader.EndOfStream)
             {

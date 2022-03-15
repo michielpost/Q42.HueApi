@@ -17,7 +17,11 @@ namespace HueApi
       {
         var handler = new HttpClientHandler()
         {
+#if NET461
+          ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+#else
           ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+#endif
         };
 
         client = new HttpClient(handler);

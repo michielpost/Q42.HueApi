@@ -71,8 +71,11 @@ namespace HueApi.Entertainment
       var dtlsClient = new DtlsClient(null!, pskIdentity);
 
       DtlsClientProtocol clientProtocol = new DtlsClientProtocol(new SecureRandom());
-
+#if NET461
+      _socket.Connect(IPAddress.Parse(_ip), 2100);
+#else
       await _socket.ConnectAsync(IPAddress.Parse(_ip), 2100).ConfigureAwait(false);
+#endif
       _udp = new UdpTransport(_socket);
 
       if (!simulator)
