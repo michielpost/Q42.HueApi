@@ -15,17 +15,17 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Package
-        run: dotnet pack -c Release -o . src/HueApi/HueApi.csproj
-      - name: Package
-        run: dotnet pack -c Release -o . src/HueApi.ColorConverters/HueApi.ColorConverters.csproj
-      - name: Package
-        run: dotnet pack -c Release -o . src/HueApi.Entertainment/HueApi.Entertainment.csproj
-      - name: Package
-        run: dotnet pack -c Release -o . src/Q42.HueApi/Q42.HueApi.csproj
-      - name: Package
-        run: dotnet pack -c Release -o . src/Q42.HueApi.ColorConverters/Q42.HueApi.ColorConverters.csproj
-      - name: Package
-        run: dotnet pack -c Release -o . src/Q42.HueApi.Streaming/Q42.HueApi.Streaming.csproj
+      - name: Package HueApi
+        run: dotnet build -c Release -o . src/HueApi/HueApi.csproj
+      - name: Package HueApi.ColorConverters
+        run: dotnet build -c Release -o . src/HueApi.ColorConverters/HueApi.ColorConverters.csproj
+      - name: Package HueApi.Entertainment
+        run: dotnet build -c Release -o . src/HueApi.Entertainment/HueApi.Entertainment.csproj
+      - name: Package Q42.HueApi
+        run: dotnet build -c Release -o . src/Q42.HueApi/Q42.HueApi.csproj
+      - name: Package Q42.HueApi.ColorConverters
+        run: dotnet build -c Release -o . src/Q42.HueApi.ColorConverters/Q42.HueApi.ColorConverters.csproj
+      - name: Package Q42.HueApi.Streaming
+        run: dotnet build -c Release -o . src/Q42.HueApi.Streaming/Q42.HueApi.Streaming.csproj
       - name: Publish
         run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
