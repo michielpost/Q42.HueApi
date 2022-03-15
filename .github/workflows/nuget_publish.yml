@@ -28,14 +28,14 @@ jobs:
       - name: Package Q42.HueApi.Streaming
         run: dotnet build -c Release -o . src/Q42.HueApi.Streaming/Q42.HueApi.Streaming.csproj
       - name: Publish HueApi
-        run: dotnet nuget push HueApi.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push HueApi.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       - name: Publish HueApi.ColorConverters
-        run: dotnet nuget push HueApi.ColorConverters.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push HueApi.ColorConverters.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       - name: Publish HueApi.Entertainment
-        run: dotnet nuget push HueApi.Entertainment.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push HueApi.Entertainment.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       - name: Publish Q42.HueApi
-        run: dotnet nuget push Q42.HueApi.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push Q42.HueApi.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       - name: Publish Q42.HueApi.ColorConverters
-        run: dotnet nuget push Q42.HueApi.ColorConverters.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push Q42.HueApi.ColorConverters.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       - name: Publish Q42.HueApi.Entertainment
-        run: dotnet nuget push Q42.HueApi.Entertainment.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push Q42.HueApi.Entertainment.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
