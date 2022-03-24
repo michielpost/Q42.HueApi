@@ -2,7 +2,7 @@ name: Build and publish
 on:
   push:
     branches:
-      - master # Default release branch
+      - feature/msbuild # Default release branch
 jobs:
   publish:
     name: build, pack & publish
