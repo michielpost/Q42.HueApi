@@ -11,20 +11,17 @@ namespace Q42.HueApi.Streaming.Sample
   {
     public static async Task<StreamingGroup> SetupAndReturnGroup()
     {
-      //string ip = "192.168.0.4";
-      //string key = "8JwWAj5J1tSsKLxyUOdAkWmcCQFcNc51AKRhxdH9";
-      //string entertainmentKey = "AFFD322C34C993C19503D369481869FD";
-      //var useSimulator = false;
+      string ip = "192.168.0.4";
+      string key = "8JwWAj5J1tSsKLxyUOdAkWmcCQFcNc51AKRhxdH9";
+      string entertainmentKey = "AFFD322C34C993C19503D369481869FD";
+      var useSimulator = false;
 
       //string ip = "10.70.16.38";
       //string key = "dpzXfw8NvafvCCvtLkQLUET-6Kc4jT4RovPg59Rx";
       //string entertainmentKey = "260FE0B7251DF783CFB9FBAB1D1E8B0C";
       //var useSimulator = false;
 
-      string ip = "127.0.0.1";
-      string key = "aSimulatedUser";
-      string entertainmentKey = "01234567890123456789012345678901";
-      var useSimulator = true;
+
 
 
       //Initialize streaming client
