@@ -24,5 +24,11 @@ jobs:
       - name: Restore NuGet Packages
         run: nuget restore src\Q42.HueApi.sln
 
-      - name: Build and Publish Web App
+      - name: Build
         run: msbuild src\Q42.HueApi.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+
+      - name: Publish HueApi
+        run: dotnet nuget push src\HueApi\bin\Release\HueApi.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish All
+        run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
