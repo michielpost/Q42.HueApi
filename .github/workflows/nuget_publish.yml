@@ -28,7 +28,19 @@ jobs:
         run: msbuild src\Q42.HueApi.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
       - name: Publish HueApi
-        run: dotnet nuget push src\HueApi\bin\Release\HueApi.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src\HueApi\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
-      - name: Publish All
-        run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publish HueApi ColorConverters
+        run: dotnet nuget push src\HueApi.ColorConverters\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish HueApi Entertainment
+        run: dotnet nuget push src\HueApi.Entertainment\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish Q42 HueApi
+        run: dotnet nuget push src\Q42.HueApi\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish Q42 HueApi ColorConverters
+        run: dotnet nuget push src\Q42.HueApi.ColorConverters\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish Q42 HueApi Streaming
+        run: dotnet nuget push src\Q42.HueApi.Streaming\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
