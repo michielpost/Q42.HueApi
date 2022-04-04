@@ -100,7 +100,7 @@ namespace HueApi.Tests
     {
       var request = new UpdateLight().SetColor(new HueApi.ColorConverters.RGBColor("FF0000"));
 
-      Assert.IsNotNull(update);
+      Assert.IsNotNull(request);
 
     }
   }
