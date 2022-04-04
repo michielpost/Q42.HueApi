@@ -94,5 +94,14 @@ namespace HueApi.Tests
       Assert.AreEqual(id, result.Data.First().Rid);
 
     }
+
+    [TestMethod]
+    public void ColorTest()
+    {
+      var request = new UpdateLight().SetColor(new HueApi.ColorConverters.RGBColor("FF0000"));
+
+      Assert.IsNotNull(update);
+
+    }
   }
 }
