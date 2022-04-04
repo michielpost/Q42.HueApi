@@ -1,7 +1,7 @@
 using HueApi.ColorConverters.Original.Extensions;
 using HueApi.Models.Requests;
 using HueApi.Models.Requests.Interface;
-using Q42.HueApi.ColorConverters.Original;
+using HueApi.ColorConverters.Original;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

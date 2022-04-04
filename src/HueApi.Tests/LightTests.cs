@@ -1,5 +1,6 @@
 using HueApi.BridgeLocator;
 using HueApi.ColorConverters.Original.Extensions;
+using HueApi.Models;
 using HueApi.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

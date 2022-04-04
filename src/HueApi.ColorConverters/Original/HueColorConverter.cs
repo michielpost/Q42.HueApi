@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Q42.HueApi.ColorConverters.Original
+namespace HueApi.ColorConverters.Original
 {
   /// <summary>
   /// Used to convert colors between XY and RGB

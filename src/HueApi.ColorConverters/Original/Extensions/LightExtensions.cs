@@ -1,5 +1,5 @@
 using HueApi.Models;
-using Q42.HueApi.ColorConverters.Original;
+using HueApi.ColorConverters.Original;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,7 +3,6 @@ using HueApi.Entertainment.Effects;
 using HueApi.Entertainment.Effects.Examples;
 using HueApi.Entertainment.Extensions;
 using HueApi.Entertainment.Models;
-using Q42.HueApi.ColorConverters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
