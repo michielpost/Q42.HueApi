@@ -21,7 +21,7 @@ localHueClient.StartEventStream();
 
 Console.WriteLine("Waiting for Hue Bridge events...");
 
-await Task.Delay(TimeSpan.FromSeconds(5));
+await Task.Delay(TimeSpan.FromHours(1));
 
 localHueClient.StopEventStream();
 
