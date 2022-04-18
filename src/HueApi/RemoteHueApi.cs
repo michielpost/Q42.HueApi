@@ -20,7 +20,7 @@ namespace HueApi
 
       client.BaseAddress = new Uri("https://api.meethue.com/route/");
 
-      client.DefaultRequestHeaders.Add(KeyHeaderName, remoteAccessToken);
+      client.DefaultRequestHeaders.Add(KeyHeaderName, appKey);
       client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", remoteAccessToken);
 
       this.client = client;
