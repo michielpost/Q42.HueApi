@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetHomekits();
+      var result = await localHueClient.GetHomekitsAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetHomekits();
+      var all = await localHueClient.GetHomekitsAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetHomekit(id);
+      var result = await localHueClient.GetHomekitAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetHomekits();
+      var all = await localHueClient.GetHomekitsAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateHomekit(id, req);
+      var result = await localHueClient.UpdateHomekitAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

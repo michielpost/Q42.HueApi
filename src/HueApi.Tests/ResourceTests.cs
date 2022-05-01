@@ -24,7 +24,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetResources();
+      var result = await localHueClient.GetResourcesAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

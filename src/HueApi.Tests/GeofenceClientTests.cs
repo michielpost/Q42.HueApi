@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetGeofenceClients();
+      var result = await localHueClient.GetGeofenceClientsAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetGeofenceClients();
+      var all = await localHueClient.GetGeofenceClientsAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetGeofenceClient(id);
+      var result = await localHueClient.GetGeofenceClientAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetGeofenceClients();
+      var all = await localHueClient.GetGeofenceClientsAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateGeofenceClient(id, req);
+      var result = await localHueClient.UpdateGeofenceClientAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

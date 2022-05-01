@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetTemperatures();
+      var result = await localHueClient.GetTemperaturesAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetTemperatures();
+      var all = await localHueClient.GetTemperaturesAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetTemperature(id);
+      var result = await localHueClient.GetTemperatureAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetTemperatures();
+      var all = await localHueClient.GetTemperaturesAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateTemperature(id, req);
+      var result = await localHueClient.UpdateTemperatureAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

@@ -26,7 +26,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetLights();
+      var result = await localHueClient.GetLightsAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -35,10 +35,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetLights();
+      var all = await localHueClient.GetLightsAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetLight(id);
+      var result = await localHueClient.GetLightAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -51,14 +51,14 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetLights();
+      var all = await localHueClient.GetLightsAsync();
       var id = all.Data.Last().Id;
 
       UpdateLight req = new UpdateLight()
       {
         Alert = new UpdateAlert()
       };
-      var result = await localHueClient.UpdateLight(id, req);
+      var result = await localHueClient.UpdateLightAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -71,7 +71,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task ChangeLightColor()
     {
-      var all = await localHueClient.GetLights();
+      var all = await localHueClient.GetLightsAsync();
       var id = all.Data.Last().Id;
 
       //Turn red
@@ -79,14 +79,14 @@ namespace HueApi.Tests
         .TurnOn()
         .SetColor(new ColorConverters.RGBColor("FF0000"));
 
-      var result = await localHueClient.UpdateLight(id, req);
+      var result = await localHueClient.UpdateLightAsync(id, req);
 
       await Task.Delay(TimeSpan.FromSeconds(5));
 
       //Turn blue
       req = new UpdateLight()
         .SetColor(new ColorConverters.RGBColor("0000FF"));
-      result = await localHueClient.UpdateLight(id, req);
+      result = await localHueClient.UpdateLightAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

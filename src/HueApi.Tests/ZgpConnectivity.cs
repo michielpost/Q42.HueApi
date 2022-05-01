@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetZgpConnectivity();
+      var result = await localHueClient.GetZgpConnectivityAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetZgpConnectivity();
+      var all = await localHueClient.GetZgpConnectivityAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetZgpConnectivity(id);
+      var result = await localHueClient.GetZgpConnectivityAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetZgpConnectivity();
+      var all = await localHueClient.GetZgpConnectivityAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateZgpConnectivity(id, req);
+      var result = await localHueClient.UpdateZgpConnectivityAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

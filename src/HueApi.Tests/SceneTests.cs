@@ -26,7 +26,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetScenes();
+      var result = await localHueClient.GetScenesAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -35,10 +35,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetScenes();
+      var all = await localHueClient.GetScenesAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetScene(id);
+      var result = await localHueClient.GetSceneAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -51,13 +51,13 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetScenes();
+      var all = await localHueClient.GetScenesAsync();
       var id = all.Data.Last().Id;
 
       UpdateScene req = new UpdateScene()
       {
       };
-      var result = await localHueClient.UpdateScene(id, req);
+      var result = await localHueClient.UpdateSceneAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -70,10 +70,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task CreateAndDelete()
     {
-      var all = await localHueClient.GetScenes();
-      var groups = await localHueClient.GetRooms();
+      var all = await localHueClient.GetScenesAsync();
+      var groups = await localHueClient.GetRoomsAsync();
       var group = groups.Data.Skip(1).First();
-      var groupLights = await localHueClient.GetRoom(group.Id);
+      var groupLights = await localHueClient.GetRoomAsync(group.Id);
       var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
       Guid? deleteId = null;
@@ -89,7 +89,7 @@ namespace HueApi.Tests
           });
         }
 
-        var result = await localHueClient.CreateScene(req);
+        var result = await localHueClient.CreateSceneAsync(req);
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.HasErrors);
@@ -99,7 +99,7 @@ namespace HueApi.Tests
 
       if (deleteId.HasValue)
       {
-        var deleteResult = await localHueClient.DeleteScene(deleteId.Value);
+        var deleteResult = await localHueClient.DeleteSceneAsync(deleteId.Value);
 
         Assert.IsNotNull(deleteResult);
         Assert.IsFalse(deleteResult.HasErrors);

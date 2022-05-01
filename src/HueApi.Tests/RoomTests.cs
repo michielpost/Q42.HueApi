@@ -25,7 +25,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetRooms();
+      var result = await localHueClient.GetRoomsAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -34,10 +34,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetRooms();
+      var all = await localHueClient.GetRoomsAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetRoom(id);
+      var result = await localHueClient.GetRoomAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -50,11 +50,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetRooms();
+      var all = await localHueClient.GetRoomsAsync();
       var last = all.Data.Last();
 
       BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = last.Metadata!.Name } };
-      var result = await localHueClient.UpdateRoom(last.Id, req);
+      var result = await localHueClient.UpdateRoomAsync(last.Id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -67,14 +67,14 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task CreateAndDelete()
     {
-      var all = await localHueClient.GetRooms();
+      var all = await localHueClient.GetRoomsAsync();
       var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
       Guid? deleteId = null;
       if(existing == null)
       {
         BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = "unittest", Archetype = "other" } };
-        var result = await localHueClient.CreateRoom(req);
+        var result = await localHueClient.CreateRoomAsync(req);
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.HasErrors);
@@ -84,7 +84,7 @@ namespace HueApi.Tests
 
       if (deleteId.HasValue)
       {
-        var deleteResult = await localHueClient.DeleteRoom(deleteId.Value);
+        var deleteResult = await localHueClient.DeleteRoomAsync(deleteId.Value);
 
         Assert.IsNotNull(deleteResult);
         Assert.IsFalse(deleteResult.HasErrors);

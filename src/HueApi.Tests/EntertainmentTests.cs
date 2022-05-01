@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetEntertainmentServices();
+      var result = await localHueClient.GetEntertainmentServicesAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetEntertainmentServices();
+      var all = await localHueClient.GetEntertainmentServicesAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetEntertainmentService(id);
+      var result = await localHueClient.GetEntertainmentServiceAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetEntertainmentServices();
+      var all = await localHueClient.GetEntertainmentServicesAsync();
       var id = all.Data.Last().Id;
 
       UpdateEntertainment req = new UpdateEntertainment();
-      var result = await localHueClient.UpdateEntertainmentService(id, req);
+      var result = await localHueClient.UpdateEntertainmentServiceAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

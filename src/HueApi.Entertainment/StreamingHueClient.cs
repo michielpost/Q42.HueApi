@@ -59,7 +59,7 @@ namespace HueApi.Entertainment
     /// <param name="groupId"></param>
     /// <param name="simulator"></param>
     /// <returns></returns>
-    public async Task Connect(Guid entertainmentAreaId, bool simulator = false)
+    public async Task ConnectAsync(Guid entertainmentAreaId, bool simulator = false)
     {
       _simulator = simulator;
       var enableResult = await _localHueClient.SetStreamingAsync(entertainmentAreaId).ConfigureAwait(false);
@@ -90,7 +90,7 @@ namespace HueApi.Entertainment
     /// <param name="cancellationToken"></param>
     /// <param name="frequency"></param>
     /// <param name="onlySendDirtyStates">Only send light states that have been changed since last update</param>
-    public Task AutoUpdate(StreamingGroup streamingGroup, CancellationToken cancellationToken, int frequency = 50, bool onlySendDirtyStates = false)
+    public Task AutoUpdateAsync(StreamingGroup streamingGroup, CancellationToken cancellationToken, int frequency = 50, bool onlySendDirtyStates = false)
     {
       if (!_simulator)
       {

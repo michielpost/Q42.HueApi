@@ -50,171 +50,171 @@ namespace HueApi
 
 
     #region Light
-    public Task<HueResponse<Light>> GetLights() => HueGetRequest<Light>(LightUrl);
-    public Task<HueResponse<Light>> GetLight(Guid id) => HueGetRequest<Light>(ResourceIdUrl(LightUrl, id));
-    public Task<HuePutResponse> UpdateLight(Guid id, UpdateLight data) => HuePutRequest(ResourceIdUrl(LightUrl, id), data);
+    public Task<HueResponse<Light>> GetLightsAsync() => HueGetRequestAsync<Light>(LightUrl);
+    public Task<HueResponse<Light>> GetLightAsync(Guid id) => HueGetRequestAsync<Light>(ResourceIdUrl(LightUrl, id));
+    public Task<HuePutResponse> UpdateLightAsync(Guid id, UpdateLight data) => HuePutRequestAsync(ResourceIdUrl(LightUrl, id), data);
     #endregion
 
     #region Scene
-    public Task<HueResponse<Scene>> GetScenes() => HueGetRequest<Scene>(SceneUrl);
-    public Task<HuePostResponse> CreateScene(CreateScene data) => HuePostRequest(SceneUrl, data);
-    public Task<HueResponse<Scene>> GetScene(Guid id) => HueGetRequest<Scene>(ResourceIdUrl(SceneUrl, id));
-    public Task<HuePutResponse> UpdateScene(Guid id, UpdateScene data) => HuePutRequest(ResourceIdUrl(SceneUrl, id), data);
-    public Task<HueDeleteResponse> DeleteScene(Guid id) => HueDeleteRequest(ResourceIdUrl(SceneUrl, id));
+    public Task<HueResponse<Scene>> GetScenesAsync() => HueGetRequestAsync<Scene>(SceneUrl);
+    public Task<HuePostResponse> CreateSceneAsync(CreateScene data) => HuePostRequestAsync(SceneUrl, data);
+    public Task<HueResponse<Scene>> GetSceneAsync(Guid id) => HueGetRequestAsync<Scene>(ResourceIdUrl(SceneUrl, id));
+    public Task<HuePutResponse> UpdateSceneAsync(Guid id, UpdateScene data) => HuePutRequestAsync(ResourceIdUrl(SceneUrl, id), data);
+    public Task<HueDeleteResponse> DeleteSceneAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(SceneUrl, id));
     #endregion
 
     #region Room
-    public Task<HueResponse<Room>> GetRooms() => HueGetRequest<Room>(RoomUrl);
-    public Task<HuePostResponse> CreateRoom(BaseResourceRequest data) => HuePostRequest(RoomUrl, data);
-    public Task<HueResponse<Room>> GetRoom(Guid id) => HueGetRequest<Room>(ResourceIdUrl(RoomUrl, id));
-    public Task<HuePutResponse> UpdateRoom(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(RoomUrl, id), data);
-    public Task<HueDeleteResponse> DeleteRoom(Guid id) => HueDeleteRequest(ResourceIdUrl(RoomUrl, id));
+    public Task<HueResponse<Room>> GetRoomsAsync() => HueGetRequestAsync<Room>(RoomUrl);
+    public Task<HuePostResponse> CreateRoomAsync(BaseResourceRequest data) => HuePostRequestAsync(RoomUrl, data);
+    public Task<HueResponse<Room>> GetRoomAsync(Guid id) => HueGetRequestAsync<Room>(ResourceIdUrl(RoomUrl, id));
+    public Task<HuePutResponse> UpdateRoomAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(RoomUrl, id), data);
+    public Task<HueDeleteResponse> DeleteRoomAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(RoomUrl, id));
     #endregion
 
     #region Zone
-    public Task<HueResponse<Zone>> GetZones() => HueGetRequest<Zone>(ZoneUrl);
-    public Task<HuePostResponse> CreateZone(CreateZone data) => HuePostRequest(ZoneUrl, data);
-    public Task<HueResponse<Zone>> GetZone(Guid id) => HueGetRequest<Zone>(ResourceIdUrl(ZoneUrl, id));
-    public Task<HuePutResponse> UpdateZone(Guid id, UpdateZone data) => HuePutRequest(ResourceIdUrl(ZoneUrl, id), data);
-    public Task<HueDeleteResponse> DeleteZone(Guid id) => HueDeleteRequest(ResourceIdUrl(ZoneUrl, id));
+    public Task<HueResponse<Zone>> GetZonesAsync() => HueGetRequestAsync<Zone>(ZoneUrl);
+    public Task<HuePostResponse> CreateZoneAsync(CreateZone data) => HuePostRequestAsync(ZoneUrl, data);
+    public Task<HueResponse<Zone>> GetZoneAsync(Guid id) => HueGetRequestAsync<Zone>(ResourceIdUrl(ZoneUrl, id));
+    public Task<HuePutResponse> UpdateZoneAsync(Guid id, UpdateZone data) => HuePutRequestAsync(ResourceIdUrl(ZoneUrl, id), data);
+    public Task<HueDeleteResponse> DeleteZoneAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(ZoneUrl, id));
     #endregion
 
     #region BridgeHome
-    public Task<HueResponse<BridgeHome>> GetBridgeHomes() => HueGetRequest<BridgeHome>(BridgeHomeUrl);
-    public Task<HueResponse<BridgeHome>> GetBridgeHome(Guid id) => HueGetRequest<BridgeHome>(ResourceIdUrl(BridgeHomeUrl, id));
-    public Task<HuePutResponse> UpdateBridgeHome(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(BridgeHomeUrl, id), data);
+    public Task<HueResponse<BridgeHome>> GetBridgeHomesAsync() => HueGetRequestAsync<BridgeHome>(BridgeHomeUrl);
+    public Task<HueResponse<BridgeHome>> GetBridgeHomeAsync(Guid id) => HueGetRequestAsync<BridgeHome>(ResourceIdUrl(BridgeHomeUrl, id));
+    public Task<HuePutResponse> UpdateBridgeHomeAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(BridgeHomeUrl, id), data);
     #endregion
 
     #region GroupedLight
-    public Task<HueResponse<GroupedLight>> GetGroupedLights() => HueGetRequest<GroupedLight>(GroupedLightUrl);
-    public Task<HueResponse<GroupedLight>> GetGroupedLight(Guid id) => HueGetRequest<GroupedLight>(ResourceIdUrl(GroupedLightUrl, id));
-    public Task<HuePutResponse> UpdateGroupedLight(Guid id, UpdateGroupedLight data) => HuePutRequest(ResourceIdUrl(GroupedLightUrl, id), data);
+    public Task<HueResponse<GroupedLight>> GetGroupedLightsAsync() => HueGetRequestAsync<GroupedLight>(GroupedLightUrl);
+    public Task<HueResponse<GroupedLight>> GetGroupedLightAsync(Guid id) => HueGetRequestAsync<GroupedLight>(ResourceIdUrl(GroupedLightUrl, id));
+    public Task<HuePutResponse> UpdateGroupedLightAsync(Guid id, UpdateGroupedLight data) => HuePutRequestAsync(ResourceIdUrl(GroupedLightUrl, id), data);
     #endregion
 
     #region Device
-    public Task<HueResponse<Device>> GetDevices() => HueGetRequest<Device>(DeviceUrl);
-    public Task<HueResponse<Device>> GetDevice(Guid id) => HueGetRequest<Device>(ResourceIdUrl(DeviceUrl, id));
-    public Task<HuePutResponse> UpdateDevice(Guid id, UpdateDevice data) => HuePutRequest(ResourceIdUrl(DeviceUrl, id), data);
+    public Task<HueResponse<Device>> GetDevicesAsync() => HueGetRequestAsync<Device>(DeviceUrl);
+    public Task<HueResponse<Device>> GetDeviceAsync(Guid id) => HueGetRequestAsync<Device>(ResourceIdUrl(DeviceUrl, id));
+    public Task<HuePutResponse> UpdateDeviceAsync(Guid id, UpdateDevice data) => HuePutRequestAsync(ResourceIdUrl(DeviceUrl, id), data);
     #endregion
 
     #region Bridge
-    public Task<HueResponse<Bridge>> GetBridges() => HueGetRequest<Bridge>(BridgeUrl);
-    public Task<HueResponse<Bridge>> GetBridge(Guid id) => HueGetRequest<Bridge>(ResourceIdUrl(BridgeUrl, id));
-    public Task<HuePutResponse> UpdateBridge(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(BridgeUrl, id), data);
+    public Task<HueResponse<Bridge>> GetBridgesAsync() => HueGetRequestAsync<Bridge>(BridgeUrl);
+    public Task<HueResponse<Bridge>> GetBridgeAsync(Guid id) => HueGetRequestAsync<Bridge>(ResourceIdUrl(BridgeUrl, id));
+    public Task<HuePutResponse> UpdateBridgeAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(BridgeUrl, id), data);
     #endregion
 
     #region DevicePower
-    public Task<HueResponse<DevicePower>> GetDevicePowers() => HueGetRequest<DevicePower>(DevicePowerUrl);
-    public Task<HueResponse<DevicePower>> GetDevicePower(Guid id) => HueGetRequest<DevicePower>(ResourceIdUrl(DevicePowerUrl, id));
-    public Task<HuePutResponse> UpdateDevicePower(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(DevicePowerUrl, id), data);
+    public Task<HueResponse<DevicePower>> GetDevicePowersAsync() => HueGetRequestAsync<DevicePower>(DevicePowerUrl);
+    public Task<HueResponse<DevicePower>> GetDevicePowerAsync(Guid id) => HueGetRequestAsync<DevicePower>(ResourceIdUrl(DevicePowerUrl, id));
+    public Task<HuePutResponse> UpdateDevicePowerAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(DevicePowerUrl, id), data);
     #endregion
 
     #region ZigbeeConnectivity
-    public Task<HueResponse<ZigbeeConnectivity>> GetZigbeeConnectivity() => HueGetRequest<ZigbeeConnectivity>(ZigbeeConnectivityUrl);
-    public Task<HueResponse<ZigbeeConnectivity>> GetZigbeeConnectivity(Guid id) => HueGetRequest<ZigbeeConnectivity>(ResourceIdUrl(ZigbeeConnectivityUrl, id));
-    public Task<HuePutResponse> UpdateZigbeeConnectivity(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(ZigbeeConnectivityUrl, id), data);
+    public Task<HueResponse<ZigbeeConnectivity>> GetZigbeeConnectivityAsync() => HueGetRequestAsync<ZigbeeConnectivity>(ZigbeeConnectivityUrl);
+    public Task<HueResponse<ZigbeeConnectivity>> GetZigbeeConnectivityAsync(Guid id) => HueGetRequestAsync<ZigbeeConnectivity>(ResourceIdUrl(ZigbeeConnectivityUrl, id));
+    public Task<HuePutResponse> UpdateZigbeeConnectivityAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ZigbeeConnectivityUrl, id), data);
     #endregion
 
     #region ZgpConnectivity
-    public Task<HueResponse<ZgpConnectivity>> GetZgpConnectivity() => HueGetRequest<ZgpConnectivity>(ZgpConnectivityUrl);
-    public Task<HueResponse<ZgpConnectivity>> GetZgpConnectivity(Guid id) => HueGetRequest<ZgpConnectivity>(ResourceIdUrl(ZgpConnectivityUrl, id));
-    public Task<HuePutResponse> UpdateZgpConnectivity(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(ZgpConnectivityUrl, id), data);
+    public Task<HueResponse<ZgpConnectivity>> GetZgpConnectivityAsync() => HueGetRequestAsync<ZgpConnectivity>(ZgpConnectivityUrl);
+    public Task<HueResponse<ZgpConnectivity>> GetZgpConnectivityAsync(Guid id) => HueGetRequestAsync<ZgpConnectivity>(ResourceIdUrl(ZgpConnectivityUrl, id));
+    public Task<HuePutResponse> UpdateZgpConnectivityAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ZgpConnectivityUrl, id), data);
     #endregion
 
     #region Motion
-    public Task<HueResponse<Motion>> GetMotions() => HueGetRequest<Motion>(MotionUrl);
-    public Task<HueResponse<Motion>> GetMotion(Guid id) => HueGetRequest<Motion>(ResourceIdUrl(MotionUrl, id));
-    public Task<HuePutResponse> UpdateMotion(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(MotionUrl, id), data);
+    public Task<HueResponse<Motion>> GetMotionsAsync() => HueGetRequestAsync<Motion>(MotionUrl);
+    public Task<HueResponse<Motion>> GetMotionAsync(Guid id) => HueGetRequestAsync<Motion>(ResourceIdUrl(MotionUrl, id));
+    public Task<HuePutResponse> UpdateMotionAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(MotionUrl, id), data);
     #endregion
 
     #region Temperature
-    public Task<HueResponse<Temperature>> GetTemperatures() => HueGetRequest<Temperature>(TemperatureUrl);
-    public Task<HueResponse<Temperature>> GetTemperature(Guid id) => HueGetRequest<Temperature>(ResourceIdUrl(TemperatureUrl, id));
-    public Task<HuePutResponse> UpdateTemperature(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(TemperatureUrl, id), data);
+    public Task<HueResponse<Temperature>> GetTemperaturesAsync() => HueGetRequestAsync<Temperature>(TemperatureUrl);
+    public Task<HueResponse<Temperature>> GetTemperatureAsync(Guid id) => HueGetRequestAsync<Temperature>(ResourceIdUrl(TemperatureUrl, id));
+    public Task<HuePutResponse> UpdateTemperatureAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(TemperatureUrl, id), data);
     #endregion
 
     #region LightLevel
-    public Task<HueResponse<LightLevel>> GetLightLevels() => HueGetRequest<LightLevel>(LightLevelUrl);
-    public Task<HueResponse<LightLevel>> GetLightLevel(Guid id) => HueGetRequest<LightLevel>(ResourceIdUrl(LightLevelUrl, id));
-    public Task<HuePutResponse> UpdateLightLevel(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(LightLevelUrl, id), data);
+    public Task<HueResponse<LightLevel>> GetLightLevelsAsync() => HueGetRequestAsync<LightLevel>(LightLevelUrl);
+    public Task<HueResponse<LightLevel>> GetLightLevelAsync(Guid id) => HueGetRequestAsync<LightLevel>(ResourceIdUrl(LightLevelUrl, id));
+    public Task<HuePutResponse> UpdateLightLevelAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(LightLevelUrl, id), data);
     #endregion
 
     #region Button
-    public Task<HueResponse<Button>> GetButtons() => HueGetRequest<Button>(ButtonUrl);
-    public Task<HueResponse<Button>> GetButton(Guid id) => HueGetRequest<Button>(ResourceIdUrl(ButtonUrl, id));
-    public Task<HuePutResponse> UpdateButton(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(ButtonUrl, id), data);
+    public Task<HueResponse<Button>> GetButtonsAsync() => HueGetRequestAsync<Button>(ButtonUrl);
+    public Task<HueResponse<Button>> GetButtonAsync(Guid id) => HueGetRequestAsync<Button>(ResourceIdUrl(ButtonUrl, id));
+    public Task<HuePutResponse> UpdateButtonAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ButtonUrl, id), data);
     #endregion
 
     #region BehaviorScript
-    public Task<HueResponse<BehaviorScript>> GetBehaviorScripts() => HueGetRequest<BehaviorScript>(BehaviorScriptUrl);
-    public Task<HueResponse<BehaviorScript>> GetBehaviorScript(Guid id) => HueGetRequest<BehaviorScript>(ResourceIdUrl(BehaviorScriptUrl, id));
-    public Task<HuePutResponse> UpdateBehaviorScript(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(BehaviorScriptUrl, id), data);
+    public Task<HueResponse<BehaviorScript>> GetBehaviorScriptsAsync() => HueGetRequestAsync<BehaviorScript>(BehaviorScriptUrl);
+    public Task<HueResponse<BehaviorScript>> GetBehaviorScriptAsync(Guid id) => HueGetRequestAsync<BehaviorScript>(ResourceIdUrl(BehaviorScriptUrl, id));
+    public Task<HuePutResponse> UpdateBehaviorScriptAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(BehaviorScriptUrl, id), data);
     #endregion
 
     #region BehaviorInstance
-    public Task<HueResponse<BehaviorInstance>> GetBehaviorInstances() => HueGetRequest<BehaviorInstance>(BehaviorInstanceUrl);
-    public Task<HuePostResponse> CreateBehaviorInstance(BaseResourceRequest data) => HuePostRequest(BehaviorInstanceUrl, data);
-    public Task<HueResponse<BehaviorInstance>> GetBehaviorInstance(Guid id) => HueGetRequest<BehaviorInstance>(ResourceIdUrl(BehaviorInstanceUrl, id));
-    public Task<HuePutResponse> UpdateBehaviorInstance(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(BehaviorInstanceUrl, id), data);
-    public Task<HueDeleteResponse> DeleteBehaviorInstance(Guid id) => HueDeleteRequest(ResourceIdUrl(BehaviorInstanceUrl, id));
+    public Task<HueResponse<BehaviorInstance>> GetBehaviorInstancesAsync() => HueGetRequestAsync<BehaviorInstance>(BehaviorInstanceUrl);
+    public Task<HuePostResponse> CreateBehaviorInstanceAsync(BaseResourceRequest data) => HuePostRequestAsync(BehaviorInstanceUrl, data);
+    public Task<HueResponse<BehaviorInstance>> GetBehaviorInstanceAsync(Guid id) => HueGetRequestAsync<BehaviorInstance>(ResourceIdUrl(BehaviorInstanceUrl, id));
+    public Task<HuePutResponse> UpdateBehaviorInstanceAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(BehaviorInstanceUrl, id), data);
+    public Task<HueDeleteResponse> DeleteBehaviorInstanceAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(BehaviorInstanceUrl, id));
     #endregion
 
     #region GeofenceClient
-    public Task<HueResponse<GeofenceClient>> GetGeofenceClients() => HueGetRequest<GeofenceClient>(GeofenceClientUrl);
-    public Task<HuePostResponse> CreateGeofenceClient(BaseResourceRequest data) => HuePostRequest(GeofenceClientUrl, data);
-    public Task<HueResponse<GeofenceClient>> GetGeofenceClient(Guid id) => HueGetRequest<GeofenceClient>(ResourceIdUrl(GeofenceClientUrl, id));
-    public Task<HuePutResponse> UpdateGeofenceClient(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(GeofenceClientUrl, id), data);
-    public Task<HueDeleteResponse> DeleteGeofenceClient(Guid id) => HueDeleteRequest(ResourceIdUrl(GeofenceClientUrl, id));
+    public Task<HueResponse<GeofenceClient>> GetGeofenceClientsAsync() => HueGetRequestAsync<GeofenceClient>(GeofenceClientUrl);
+    public Task<HuePostResponse> CreateGeofenceClientAsync(BaseResourceRequest data) => HuePostRequestAsync(GeofenceClientUrl, data);
+    public Task<HueResponse<GeofenceClient>> GetGeofenceClientAsync(Guid id) => HueGetRequestAsync<GeofenceClient>(ResourceIdUrl(GeofenceClientUrl, id));
+    public Task<HuePutResponse> UpdateGeofenceClientAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(GeofenceClientUrl, id), data);
+    public Task<HueDeleteResponse> DeleteGeofenceClientAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(GeofenceClientUrl, id));
     #endregion
 
     #region Geolocation
-    public Task<HueResponse<Geolocation>> GetGeolocations() => HueGetRequest<Geolocation>(GeolocationUrl);
-    public Task<HueResponse<Geolocation>> GetGeolocation(Guid id) => HueGetRequest<Geolocation>(ResourceIdUrl(GeolocationUrl, id));
-    public Task<HuePutResponse> UpdateGeolocation(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(GeolocationUrl, id), data);
+    public Task<HueResponse<Geolocation>> GetGeolocationsAsync() => HueGetRequestAsync<Geolocation>(GeolocationUrl);
+    public Task<HueResponse<Geolocation>> GetGeolocationAsync(Guid id) => HueGetRequestAsync<Geolocation>(ResourceIdUrl(GeolocationUrl, id));
+    public Task<HuePutResponse> UpdateGeolocationAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(GeolocationUrl, id), data);
     #endregion
 
     #region EntertainmentConfiguration
-    public Task<HueResponse<EntertainmentConfiguration>> GetEntertainmentConfigurations() => HueGetRequest<EntertainmentConfiguration>(EntertainmentConfigurationUrl);
-    public Task<HuePostResponse> CreateEntertainmentConfiguration(UpdateEntertainmentConfiguration data) => HuePostRequest(EntertainmentConfigurationUrl, data);
-    public Task<HueResponse<EntertainmentConfiguration>> GetEntertainmentConfiguration(Guid id) => HueGetRequest<EntertainmentConfiguration>(ResourceIdUrl(EntertainmentConfigurationUrl, id));
-    public Task<HuePutResponse> UpdateEntertainmentConfiguration(Guid id, UpdateEntertainmentConfiguration data) => HuePutRequest(ResourceIdUrl(EntertainmentConfigurationUrl, id), data);
-    public Task<HueDeleteResponse> DeleteEntertainmentConfiguration(Guid id) => HueDeleteRequest(ResourceIdUrl(EntertainmentConfigurationUrl, id));
+    public Task<HueResponse<EntertainmentConfiguration>> GetEntertainmentConfigurationsAsync() => HueGetRequestAsync<EntertainmentConfiguration>(EntertainmentConfigurationUrl);
+    public Task<HuePostResponse> CreateEntertainmentConfigurationAsync(UpdateEntertainmentConfiguration data) => HuePostRequestAsync(EntertainmentConfigurationUrl, data);
+    public Task<HueResponse<EntertainmentConfiguration>> GetEntertainmentConfigurationAsync(Guid id) => HueGetRequestAsync<EntertainmentConfiguration>(ResourceIdUrl(EntertainmentConfigurationUrl, id));
+    public Task<HuePutResponse> UpdateEntertainmentConfigurationAsync(Guid id, UpdateEntertainmentConfiguration data) => HuePutRequestAsync(ResourceIdUrl(EntertainmentConfigurationUrl, id), data);
+    public Task<HueDeleteResponse> DeleteEntertainmentConfigurationAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(EntertainmentConfigurationUrl, id));
     #endregion
 
     #region Entertainment
-    public Task<HueResponse<Entertainment>> GetEntertainmentServices() => HueGetRequest<Entertainment>(EntertainmentUrl);
-    public Task<HueResponse<Entertainment>> GetEntertainmentService(Guid id) => HueGetRequest<Entertainment>(ResourceIdUrl(EntertainmentUrl, id));
-    public Task<HuePutResponse> UpdateEntertainmentService(Guid id, UpdateEntertainment data) => HuePutRequest(ResourceIdUrl(EntertainmentUrl, id), data);
+    public Task<HueResponse<Entertainment>> GetEntertainmentServicesAsync() => HueGetRequestAsync<Entertainment>(EntertainmentUrl);
+    public Task<HueResponse<Entertainment>> GetEntertainmentServiceAsync(Guid id) => HueGetRequestAsync<Entertainment>(ResourceIdUrl(EntertainmentUrl, id));
+    public Task<HuePutResponse> UpdateEntertainmentServiceAsync(Guid id, UpdateEntertainment data) => HuePutRequestAsync(ResourceIdUrl(EntertainmentUrl, id), data);
     #endregion
 
     #region Homekit
-    public Task<HueResponse<Homekit>> GetHomekits() => HueGetRequest<Homekit>(HomekitUrl);
-    public Task<HueResponse<Homekit>> GetHomekit(Guid id) => HueGetRequest<Homekit>(ResourceIdUrl(HomekitUrl, id));
-    public Task<HuePutResponse> UpdateHomekit(Guid id, BaseResourceRequest data) => HuePutRequest(ResourceIdUrl(HomekitUrl, id), data);
+    public Task<HueResponse<Homekit>> GetHomekitsAsync() => HueGetRequestAsync<Homekit>(HomekitUrl);
+    public Task<HueResponse<Homekit>> GetHomekitAsync(Guid id) => HueGetRequestAsync<Homekit>(ResourceIdUrl(HomekitUrl, id));
+    public Task<HuePutResponse> UpdateHomekitAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(HomekitUrl, id), data);
     #endregion
 
     #region Resource
-    public Task<HueResponse<HueResource>> GetResources() => HueGetRequest<HueResource>(ResourceUrl);
+    public Task<HueResponse<HueResource>> GetResourcesAsync() => HueGetRequestAsync<HueResource>(ResourceUrl);
     #endregion
 
 
 
 
-    protected async Task<HueResponse<T>> HueGetRequest<T>(string url)
+    protected async Task<HueResponse<T>> HueGetRequestAsync<T>(string url)
     {
       var response = await client.GetAsync(url);
 
-      return await ProcessResponse<HueResponse<T>>(response);
+      return await ProcessResponseAsync<HueResponse<T>>(response);
     }
 
-    protected async Task<HueDeleteResponse> HueDeleteRequest(string url)
+    protected async Task<HueDeleteResponse> HueDeleteRequestAsync(string url)
     {
       var response = await client.DeleteAsync(url);
 
-      return await ProcessResponse<HueDeleteResponse>(response);
+      return await ProcessResponseAsync<HueDeleteResponse>(response);
     }
 
-    protected async Task<HuePutResponse> HuePutRequest<D>(string url, D data)
+    protected async Task<HuePutResponse> HuePutRequestAsync<D>(string url, D data)
     {
       JsonSerializerOptions options = new()
       {
@@ -223,10 +223,10 @@ namespace HueApi
 
       var response = await client.PutAsJsonAsync(url, data, options);
 
-      return await ProcessResponse<HuePutResponse>(response);
+      return await ProcessResponseAsync<HuePutResponse>(response);
     }
 
-    protected async Task<HuePostResponse> HuePostRequest<D>(string url, D data)
+    protected async Task<HuePostResponse> HuePostRequestAsync<D>(string url, D data)
     {
       JsonSerializerOptions options = new()
       {
@@ -235,11 +235,11 @@ namespace HueApi
 
       var response = await client.PostAsJsonAsync(url, data, options);
 
-      return await ProcessResponse<HuePostResponse>(response);
+      return await ProcessResponseAsync<HuePostResponse>(response);
     }
 
 
-    protected async Task<T> ProcessResponse<T>(HttpResponseMessage? response) where T : HueErrorResponse, new()
+    protected async Task<T> ProcessResponseAsync<T>(HttpResponseMessage? response) where T : HueErrorResponse, new()
     {
       if (response == null)
         return new T();

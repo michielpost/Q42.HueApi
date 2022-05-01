@@ -25,7 +25,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetZones();
+      var result = await localHueClient.GetZonesAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -34,10 +34,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetZones();
+      var all = await localHueClient.GetZonesAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetZone(id);
+      var result = await localHueClient.GetZoneAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -50,11 +50,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetZones();
+      var all = await localHueClient.GetZonesAsync();
       var last = all.Data.Last();
 
       var req = new UpdateZone() { Metadata = new Models.Metadata() { Name = last.Metadata!.Name } };
-      var result = await localHueClient.UpdateZone(last.Id, req);
+      var result = await localHueClient.UpdateZoneAsync(last.Id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -67,8 +67,8 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task CreateAndDelete()
     {
-      var all = await localHueClient.GetZones();
-      var allLights = await localHueClient.GetLights();
+      var all = await localHueClient.GetZonesAsync();
+      var allLights = await localHueClient.GetLightsAsync();
       var firstLight = allLights.Data.First();
 
       var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
@@ -86,7 +86,7 @@ namespace HueApi.Tests
         //  Rtype = firstLight.Type!
         //});
 
-        var result = await localHueClient.CreateZone(req);
+        var result = await localHueClient.CreateZoneAsync(req);
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.HasErrors);
@@ -96,7 +96,7 @@ namespace HueApi.Tests
 
       if (deleteId.HasValue)
       {
-        var deleteResult = await localHueClient.DeleteZone(deleteId.Value);
+        var deleteResult = await localHueClient.DeleteZoneAsync(deleteId.Value);
 
         Assert.IsNotNull(deleteResult);
         Assert.IsFalse(deleteResult.HasErrors);

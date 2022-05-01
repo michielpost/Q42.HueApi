@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetBehaviorScripts();
+      var result = await localHueClient.GetBehaviorScriptsAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetBehaviorScripts();
+      var all = await localHueClient.GetBehaviorScriptsAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetBehaviorScript(id);
+      var result = await localHueClient.GetBehaviorScriptAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetBehaviorScripts();
+      var all = await localHueClient.GetBehaviorScriptsAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateBehaviorScript(id, req);
+      var result = await localHueClient.UpdateBehaviorScriptAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

@@ -101,13 +101,13 @@ Registration of your App and retreiving a key can be done using the original Q42
 
 Change the lights:
 ```cs
-var lights = await localHueApi.GetLights();
+var lights = await localHueApi.GetLightsAsync();
 var id = all.Data.Last().Id; //Pick a light
 
 var req = new UpdateLight()
 	.TurnOn()
 	.SetColor(new ColorConverters.RGBColor("FF0000"));
-var result = await localHueApi.UpdateLight(id, req);
+var result = await localHueApi.UpdateLightAsync(id, req);
 ```
 
 ## EventStream
