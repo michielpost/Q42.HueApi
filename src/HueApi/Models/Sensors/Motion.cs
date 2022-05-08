@@ -5,9 +5,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HueApi.Models
+namespace HueApi.Models.Sensors
 {
-  public class LightLevel : HueResource
+  public class Motion : HueResource
   {
 
   }

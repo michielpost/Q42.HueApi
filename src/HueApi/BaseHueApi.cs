@@ -1,14 +1,10 @@
 using HueApi.Models;
 using HueApi.Models.Requests;
 using HueApi.Models.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using HueApi.Models.Sensors;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HueApi
 {
@@ -50,8 +46,8 @@ namespace HueApi
 
 
     #region Light
-    public Task<HueResponse<Light>> GetLightsAsync() => HueGetRequestAsync<Light>(LightUrl);
-    public Task<HueResponse<Light>> GetLightAsync(Guid id) => HueGetRequestAsync<Light>(ResourceIdUrl(LightUrl, id));
+    public Task<HueResponse<Models.Light>> GetLightsAsync() => HueGetRequestAsync<Models.Light>(LightUrl);
+    public Task<HueResponse<Models.Light>> GetLightAsync(Guid id) => HueGetRequestAsync<Models.Light>(ResourceIdUrl(LightUrl, id));
     public Task<HuePutResponse> UpdateLightAsync(Guid id, UpdateLight data) => HuePutRequestAsync(ResourceIdUrl(LightUrl, id), data);
     #endregion
 
