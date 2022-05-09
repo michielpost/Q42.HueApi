@@ -21,5 +21,15 @@ namespace HueApi.Models.Sensors
 
     [JsonPropertyName("light_level_valid")]
     public bool LightLevelValid { get; set; }
+
+    public double LuxLevel
+    {
+      get
+      {
+        double lightLevel = LightLevel > 0 ? LightLevel - 1 : 0;
+        lightLevel = lightLevel / 10000;
+        return Math.Pow(10, lightLevel);
+      }
+    }
   }
 }
