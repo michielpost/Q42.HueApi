@@ -69,13 +69,36 @@ namespace Q42.HueApi
     public abstract Task<IEnumerable<LocatedBridge>> LocateBridgesAsync(CancellationToken cancellationToken);
 
     /// <summary>
+    ///  Check if a IP is a Hue Bridge by checking the hue Bridge config
+    /// </summary>
+    /// <param name="ip"></param>
+    /// <returns></returns>
+    protected static Task<BridgeConfig?> GetBridgeConfigAsync(IPAddress ip, TimeSpan httpTimeout, CancellationToken? cancellationToken = null)
+    {
+      using (var httpTimeoutCts = new CancellationTokenSource(httpTimeout))
+      using (var mergedCts = CancellationTokenSource.CreateLinkedTokenSource(
+                                                    cancellationToken ?? CancellationToken.None, httpTimeoutCts.Token))
+      {
+        try
+        {
+          LocalHueClient client = new LocalHueClient(ip.ToString());
+          return client.GetConfigAsync();
+        }
+        catch
+        {
+          return Task.FromResult<BridgeConfig?>(default);
+        }
+      }
+    }
+
+    /// <summary>
     /// Check if a IP is a Hue Bridge by checking its descriptor file
     /// </summary>
     /// <param name="ip">IP to check</param>
     /// <param name="httpTimeout">Timeout for this specific check</param>
     /// <param name="cancellationToken">Token to cancel the check</param>
     /// <returns>The Serial Number, or empty if not a hue bridge</returns>
-    protected static async Task<string> CheckHueDescriptor(IPAddress ip, TimeSpan httpTimeout, CancellationToken? cancellationToken = null)
+    public static async Task<string> CheckHueDescriptor(IPAddress ip, TimeSpan httpTimeout, CancellationToken? cancellationToken = null)
     {
       using (var httpTimeoutCts = new CancellationTokenSource(httpTimeout))
       using (var mergedCts = CancellationTokenSource.CreateLinkedTokenSource(
@@ -95,7 +118,11 @@ namespace Q42.HueApi
 
                 if (serialNumberMatch.Success)
                 {
-                  return serialNumberMatch.Groups[1].Value;
+                  string bridgeId = serialNumberMatch.Groups[1].Value;
+                  if (bridgeId.Length >= 6)
+                    bridgeId = bridgeId.Insert(6, "fffe");
+
+                  return bridgeId;
                 }
                 else
                 {

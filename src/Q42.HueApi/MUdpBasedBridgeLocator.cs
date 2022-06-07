@@ -142,6 +142,9 @@ namespace Q42.HueApi
                   try
                   {
                     // Check if it's a Hue Bridge
+                    //var config = GetBridgeConfigAsync(responseIpAddress, TimeSpan.FromMilliseconds(1000)).Result;
+                    //string? serialNumber = config?.BridgeId;
+
                     string serialNumber = CheckHueDescriptor(responseIpAddress, TimeSpan.FromMilliseconds(1000)).Result;
 
                     if (!string.IsNullOrWhiteSpace(serialNumber))
@@ -149,7 +152,7 @@ namespace Q42.HueApi
                       var locatedBridge = new LocatedBridge()
                       {
                         IpAddress = responseIpAddress.ToString(),
-                        BridgeId = serialNumber,
+                        BridgeId = serialNumber!,
                       };
                       if (discoveredBridges.TryAdd(responseIpAddress.ToString(), locatedBridge))
                       {

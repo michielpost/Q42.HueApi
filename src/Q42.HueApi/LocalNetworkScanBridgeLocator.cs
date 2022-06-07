@@ -47,12 +47,15 @@ namespace Q42.HueApi
               MaxDegreeOfParallelism = Environment.ProcessorCount,
             };
 
-            Parallel.ForEach(networkIps, parallelOptions, (ip) =>
+            Parallel.ForEach(networkIps, parallelOptions, async (ip) =>
             {
               // Check if an IP is a Hue Bridge by checking its descriptor
               // Note that the timeout here is important:
               // - if small, can speedup significantly the searching, but may miss an answer if the Hue Bridge took too much time to answer
               // - if big, will be sure to check thoroughly each IP, but the search can be slower
+              //var config = GetBridgeConfigAsync(ip, TimeSpan.FromMilliseconds(1000), cancellationToken).Result;
+              //string? serialNumber = config?.BridgeId;
+
               string serialNumber = CheckHueDescriptor(ip, TimeSpan.FromMilliseconds(1000), cancellationToken).Result;
 
               if (!string.IsNullOrEmpty(serialNumber))
@@ -60,7 +63,7 @@ namespace Q42.HueApi
                 var locatedBridge = new LocatedBridge()
                 {
                   IpAddress = ip.ToString(),
-                  BridgeId = serialNumber,
+                  BridgeId = serialNumber!,
                 };
                 if (discoveredBridges.TryAdd(ip.ToString(), locatedBridge))
                 {

@@ -73,7 +73,7 @@ namespace HueApi.BridgeLocator
     /// <param name="httpTimeout">Timeout for this specific check</param>
     /// <param name="cancellationToken">Token to cancel the check</param>
     /// <returns>The Serial Number, or empty if not a hue bridge</returns>
-    protected static async Task<string> CheckHueDescriptor(IPAddress ip, TimeSpan httpTimeout, CancellationToken? cancellationToken = null)
+    public static async Task<string> CheckHueDescriptor(IPAddress ip, TimeSpan httpTimeout, CancellationToken? cancellationToken = null)
     {
       using (var httpTimeoutCts = new CancellationTokenSource(httpTimeout))
       using (var mergedCts = CancellationTokenSource.CreateLinkedTokenSource(
@@ -93,7 +93,11 @@ namespace HueApi.BridgeLocator
 
                 if (serialNumberMatch.Success)
                 {
-                  return serialNumberMatch.Groups[1].Value;
+                  string bridgeId = serialNumberMatch.Groups[1].Value;
+                  if(bridgeId.Length >= 6)
+                      bridgeId = bridgeId.Insert(6, "fffe");
+
+                  return bridgeId;
                 }
                 else
                 {

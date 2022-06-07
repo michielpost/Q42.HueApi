@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Q42.HueApi.Interfaces;
@@ -59,6 +60,21 @@ namespace Q42.HueApi.Tests
       });
     }
 
+    [TestMethod]
+    public async Task TestBridgeId_Are_Equal()
+    {
+      IBridgeLocator httpBridgeLocator = new HttpBridgeLocator();
+      IBridgeLocator ssdpBridgeLocator = new SsdpBridgeLocator();
+
+      var bridges = await httpBridgeLocator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
+      foreach(var bridge in bridges)
+      {
+        var descriptionBridgeId = await BridgeLocator.CheckHueDescriptor(IPAddress.Parse(bridge.IpAddress), TimeSpan.FromSeconds(5));
+
+        Assert.AreEqual(bridge.BridgeId, descriptionBridgeId);
+      }
+    }
+
     private async Task TestBridgeLocatorWithTimeout(IBridgeLocator locator, TimeSpan timeout)
     {
       var startTime = DateTime.Now;
@@ -76,5 +92,6 @@ namespace Q42.HueApi.Tests
       Assert.IsTrue(bridgeIPs.Any(),
         "Must find bridges");
     }
+
   }
 }
