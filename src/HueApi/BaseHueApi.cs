@@ -13,11 +13,7 @@ namespace HueApi
   public abstract class BaseHueApi
   {
     protected HttpClient client = default!;
-
-    public event EventStreamMessage? OnEventStreamMessage;
-    private CancellationTokenSource? eventStreamCancellationTokenSource;
-
-    protected const string EventStreamUrl = "eventstream/clip/v2";
+   
     protected const string ResourceUrl = "clip/v2/resource";
     protected const string LightUrl = $"{ResourceUrl}/light";
     protected const string SceneUrl = $"{ResourceUrl}/scene";
@@ -260,55 +256,7 @@ namespace HueApi
       }
     }
 
-    public async void StartEventStream(CancellationToken? cancellationToken = null)
-    {
-      this.eventStreamCancellationTokenSource?.Cancel();
-
-      if (cancellationToken.HasValue)
-        this.eventStreamCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken.Value);
-      else
-        this.eventStreamCancellationTokenSource = new CancellationTokenSource();
-
-      var cancelToken = this.eventStreamCancellationTokenSource.Token;
-
-      try
-      {
-        while (!cancelToken.IsCancellationRequested) //Auto retry on stop
-        {
-#if NET461
-          using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
-#else
-          using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl, cancelToken)))
-#endif
-          {
-            while (!streamReader.EndOfStream)
-            {
-              var jsonMsg = await streamReader.ReadLineAsync();
-              //Console.WriteLine($"Received message: {message}");
-
-              if (jsonMsg != null)
-              {
-                var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
-
-                if (data != null && data.Any())
-                {
-                  OnEventStreamMessage?.Invoke(data);
-                }
-              }
-            }
-          }
-        }
-      }
-      catch(TaskCanceledException)
-      {
-        //Ignore task canceled
-      }
-    }
-
-    public void StopEventStream()
-    {
-      this.eventStreamCancellationTokenSource?.Cancel();
-    }
+   
 
   }
 }
