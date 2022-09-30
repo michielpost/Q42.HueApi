@@ -97,7 +97,15 @@ var localHueApi = new LocalHueApi("BRIDGE_IP", "KEY");
 ```
 For remote usage, use the `new RemoteHueApi("KEY", "token")`
 
-Registration of your App and retreiving a key can be done using the original Q42.HueApi. There's no support yet in the new Clip V2 API.
+Register your application
+	
+```cs
+	//Make sure the user has pressed the button on the bridge before calling RegisterAsync
+	//It will throw an LinkButtonNotPressedException if the user did not press the button
+	var regResult = await LocalHueClient.RegisterAsync("BRIDGE_IP", "mypersonalappname", "mydevicename");
+	//Save the app key for later use and use it to initialize LocalHueApi
+	var appKey = regResult.Username;
+```
 
 Change the lights:
 ```cs
