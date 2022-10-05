@@ -107,8 +107,11 @@ namespace HueApi
     /// <returns>Secret key for the app to communicate with the bridge.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="applicationName"/> or <paramref name="deviceName"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="applicationName"/> or <paramref name="deviceName"/> aren't long enough, are empty or contains spaces.</exception>
-    public static async Task<RegisterEntertainmentResult?> RegisterAsync(string ip, string applicationName, string deviceName, bool generateClientKey = false)
+    public static async Task<RegisterEntertainmentResult?> RegisterAsync(string ip, string applicationName, string deviceName, bool generateClientKey = false, CancellationToken? cancellationToken = null)
     {
+      if (!cancellationToken.HasValue)
+        cancellationToken = new CancellationTokenSource().Token;
+
       if (applicationName == null)
         throw new ArgumentNullException(nameof(applicationName));
       if (applicationName.Trim() == String.Empty)
@@ -136,7 +139,7 @@ namespace HueApi
         obj["generateclientkey"] = true;
 
       HttpClient client = new HttpClient();
-      var response = await client.PostAsJsonAsync(new Uri($"http://{ip}/api"), obj).ConfigureAwait(false);
+      var response = await client.PostAsJsonAsync(new Uri($"http://{ip}/api"), obj, cancellationToken.Value).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       JsonObject? result;
