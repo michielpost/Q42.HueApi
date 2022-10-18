@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -11,8 +12,10 @@ namespace HueApi.Models
   public enum EntertainmentConfigurationType
   {
     screen,
+    monitor,
     music,
-    //TODO: 3dspace
+    [EnumMember(Value = "3dspace")] //TODO: Make this work using https://stackoverflow.com/questions/59059989/system-text-json-how-do-i-specify-a-custom-name-for-an-enum-value
+    _3dspace,
     other
   }
 
