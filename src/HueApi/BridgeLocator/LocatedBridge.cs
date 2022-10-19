@@ -8,7 +8,7 @@ namespace HueApi.BridgeLocator
 {
   public class LocatedBridge
   {
-    public LocatedBridge(string bridgeId, string ipAddress, int port)
+    public LocatedBridge(string bridgeId, string ipAddress, int? port)
     {
       BridgeId = bridgeId;
       IpAddress = ipAddress;
@@ -17,9 +17,9 @@ namespace HueApi.BridgeLocator
 
     public string BridgeId { get; }
     public string IpAddress { get; }
-    public int Port { get; }
+    public int? Port { get; }
 
-    public string Url => $"https://{IpAddress}:{Port}";
+    public string Url => Port.HasValue ? $"https://{IpAddress}:{Port}" : $"https://{IpAddress}";
 
     /// <summary>
     /// Overrides ToString() to give something more useful than object name.

@@ -32,5 +32,73 @@ namespace HueApi.Tests
         Assert.AreEqual(bridge.BridgeId, descriptionBridgeId);
       }
     }
+
+    [TestMethod]
+    public async Task TestHttpBridgeLocator()
+    {
+      IBridgeLocator locator = new HttpBridgeLocator();
+
+      await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(5));
+    }
+
+    [TestMethod]
+    public async Task TestSsdpBridgeLocator()
+    {
+      IBridgeLocator locator = new SsdpBridgeLocator();
+
+      await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(5));
+    }
+
+    [TestMethod]
+    public async Task TestLocalNetworkScanBridgeLocator()
+    {
+      IBridgeLocator locator = new LocalNetworkScanBridgeLocator();
+
+      // The timeout here really depends on the network size, latency and the number of CPU
+      // It takes roughly 20 seconds for a network of 254 IPs (/24) with an 8-core CPU
+      await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(30));
+    }
+
+    [TestMethod]
+    public async Task TestMdnsBridgeLocator()
+    {
+      IBridgeLocator locator = new MdnsBridgeLocator();
+
+      await TestBridgeLocatorWithTimeout(locator, TimeSpan.FromSeconds(5));
+    }
+
+    [TestMethod]
+    public async Task TestParallelLocators()
+    {
+      IBridgeLocator httpBridgeLocator = new HttpBridgeLocator();
+      IBridgeLocator ssdpBridgeLocator = new SsdpBridgeLocator();
+      IBridgeLocator mdnsBridgeLocator = new MdnsBridgeLocator();
+      IBridgeLocator localNetworkScanBridgeLocator = new LocalNetworkScanBridgeLocator();
+
+      await Task.WhenAll(new Task[] {
+        TestBridgeLocatorWithTimeout(httpBridgeLocator, TimeSpan.FromSeconds(5)),
+        TestBridgeLocatorWithTimeout(ssdpBridgeLocator, TimeSpan.FromSeconds(5)),
+        TestBridgeLocatorWithTimeout(mdnsBridgeLocator, TimeSpan.FromSeconds(5)),
+        TestBridgeLocatorWithTimeout(localNetworkScanBridgeLocator, TimeSpan.FromSeconds(30)),
+      });
+    }
+
+    private async Task TestBridgeLocatorWithTimeout(IBridgeLocator locator, TimeSpan timeout)
+    {
+      var startTime = DateTime.Now;
+      var bridgeIPs = await locator.LocateBridgesAsync(timeout);
+
+      var elapsed = DateTime.Now.Subtract(startTime);
+
+      Assert.IsTrue(
+        elapsed.Subtract(timeout) < TimeSpan.FromMilliseconds(1000),
+        $"Must complete inside the timeout specified ±1s (took {elapsed.TotalMilliseconds}ms)");
+
+      Assert.IsNotNull(bridgeIPs,
+        "Must return list");
+
+      Assert.IsTrue(bridgeIPs.Any(),
+        "Must find bridges");
+    }
   }
 }
