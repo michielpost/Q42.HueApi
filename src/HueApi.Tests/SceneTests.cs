@@ -68,6 +68,26 @@ namespace HueApi.Tests
     }
 
     [TestMethod]
+    public async Task ActivateScene()
+    {
+      var all = await localHueClient.GetScenesAsync();
+      var id = all.Data.Last().Id;
+
+      UpdateScene req = new UpdateScene()
+      {
+        Recall = new Recall() {  Action =  SceneRecallAction.active}
+      };
+      var result = await localHueClient.UpdateSceneAsync(id, req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.AreEqual(id, result.Data.First().Rid);
+
+    }
+
+    [TestMethod]
     public async Task CreateAndDelete()
     {
       var all = await localHueClient.GetScenesAsync();

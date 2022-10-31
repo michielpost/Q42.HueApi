@@ -23,13 +23,25 @@ namespace HueApi.Models.Requests
 
   }
 
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum SceneRecallAction
+  {
+    active, dynamic_palette
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum SceneRecallStatus
+  {
+    active, dynamic_palette
+  }
+
   public class Recall
   {
     [JsonPropertyName("action")]
-    public string? Action { get; set; }
+    public SceneRecallAction? Action { get; set; }
 
     [JsonPropertyName("status")]
-    public string? Status { get; set; }
+    public SceneRecallStatus? Status { get; set; }
 
     [JsonPropertyName("duration")]
     public int? Duration { get; set; }
