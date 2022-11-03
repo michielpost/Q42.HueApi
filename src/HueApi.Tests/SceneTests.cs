@@ -75,7 +75,7 @@ namespace HueApi.Tests
 
       UpdateScene req = new UpdateScene()
       {
-        Recall = new Recall() {  Action =  SceneRecallAction.active}
+        Recall = new Recall() {  Action =  SceneRecallAction.active }
       };
       var result = await localHueClient.UpdateSceneAsync(id, req);
 
