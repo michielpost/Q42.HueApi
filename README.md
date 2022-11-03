@@ -91,7 +91,7 @@ Make sure to install the new packages:
 
 ### Clip V2 Example
 
-Use the LocalHueClLocalHueApiient:
+Use the LocalHueApi:
 ```cs
 var localHueApi = new LocalHueApi("BRIDGE_IP", "KEY");
 ```
