@@ -35,6 +35,9 @@ namespace HueApi.Models
 
     [JsonPropertyName("effects")]
     public Effects? Effects { get; set; }
+
+    [JsonPropertyName("timed_effects")]
+    public TimedEffects? TimedEffects { get; set; }
   }
 
   public class Alert
@@ -45,6 +48,12 @@ namespace HueApi.Models
 
   public class Dynamics
   {
+    /// <summary>
+    /// Duration of a light transition or timed effects in ms.
+    /// </summary>
+    [JsonPropertyName("duration")]
+    public int Duration { get; set; }
+
     [JsonPropertyName("speed")]
     public double Speed { get; set; }
 
@@ -122,7 +131,7 @@ namespace HueApi.Models
   public class Dimming
   {
     [JsonPropertyName("brightness")]
-    public double Brightness { get; set; }
+    public double Brightness { get; set; } = 100;
 
     [JsonPropertyName("min_dim_level")]
     public double? MinDimLevel { get; set; }
@@ -130,6 +139,9 @@ namespace HueApi.Models
 
   public class Effects
   {
+    [JsonPropertyName("effect")]
+    public Effect Effect { get; set; } = new();
+
     [JsonPropertyName("effect_values")]
     public List<string> EffectValues { get; set; } = new();
 
@@ -138,5 +150,39 @@ namespace HueApi.Models
 
     [JsonPropertyName("status_values")]
     public List<string> StatusValues { get; set; } = new();
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum Effect
+  {
+    no_effect, fire, candle
+  }
+
+  public class TimedEffects
+  {
+    [JsonPropertyName("effect")]
+    public TimedEffect Effect { get; set; } = new();
+
+    /// <summary>
+    /// Duration is mandatory when timed effect is set except for no_effect. Resolution decreases for a larger duration. e.g Effects with duration smaller than a minute will be rounded to a resolution of 1s, while effects with duration larger than an hour will be arounded up to a resolution of 300s. Duration has a max of 21600000 ms.
+    /// </summary>
+    [JsonPropertyName("duration")]
+    public int Duration { get; set; } = new();
+
+    [JsonPropertyName("effect_values")]
+    public List<string> EffectValues { get; set; } = new();
+
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("status_values")]
+    public List<string> StatusValues { get; set; } = new();
+
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum TimedEffect
+  {
+    no_effect, sunrise
   }
 }

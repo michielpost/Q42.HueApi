@@ -39,6 +39,12 @@ namespace HueApi.Models
 
     [JsonPropertyName("gradient")]
     public Gradient? Gradient { get; set; }
+
+    [JsonPropertyName("effects")]
+    public Effects? Effects { get; set; }
+
+    [JsonPropertyName("dynamics")]
+    public Dynamics? Dynamics { get; set; }
   }
 
 
@@ -54,13 +60,23 @@ namespace HueApi.Models
   public class Palette
   {
     [JsonPropertyName("color")]
-    public List<Color> Color { get; set; } = new();
+    public List<ColorPalette> Color { get; set; } = new();
 
     [JsonPropertyName("color_temperature")]
     public List<ColorTemperature> ColorTemperature { get; set; } = new();
 
+    //[MaxLength(1)]
     [JsonPropertyName("dimming")]
     public List<Dimming> Dimming { get; set; } = new();
+  }
+
+  public class ColorPalette
+  {
+    [JsonPropertyName("color")]
+    public Color Color { get; set; } = new();
+
+    [JsonPropertyName("dimming")]
+    public Dimming Dimming { get; set; } = new();
   }
 
   public class Gradient

@@ -1,10 +1,13 @@
 using HueApi.BridgeLocator;
+using HueApi.ColorConverters;
+using HueApi.ColorConverters.Original.Extensions;
 using HueApi.Extensions.cs;
 using HueApi.Models;
 using HueApi.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -127,6 +130,87 @@ namespace HueApi.Tests
         Assert.IsTrue(deleteResult.Data.Count == 1);
         Assert.AreEqual(deleteId.Value, deleteResult.Data.First().Rid);
       }
+
+    }
+
+
+    [TestMethod]
+    public async Task CreateDynamicAndActivate()
+    {
+      var all = await localHueClient.GetScenesAsync();
+      var groups = await localHueClient.GetRoomsAsync();
+      var group = groups.Data.First();
+      var room = await localHueClient.GetRoomAsync(group.Id);
+      List<ResourceIdentifier> lights = new List<ResourceIdentifier>();
+      foreach(var device in room.Data.First().Children)
+      {
+        var light = await localHueClient.GetDeviceAsync(device.Rid);
+        lights.AddRange(light.Data.First().Services.Where(x => x.Rtype == "light").ToList());
+      }
+
+      var groupLights2 = await localHueClient.GetGroupedLightAsync(group.Services.First().Rid);
+      var existing = all.Data.Where(x => x.Metadata?.Name == "testdynamic").FirstOrDefault();
+
+      Guid? sceneId = existing?.Id;
+      if (existing == null)
+      {
+        CreateScene req = new CreateScene(new Models.Metadata() { Name = "testdynamic" }, group.ToResourceIdentifier());
+        foreach (var light in lights)
+        {
+          req.Actions.Add(new SceneAction
+          {
+            Target = light,
+            Action = new LightAction().TurnOn()
+          });
+        }
+
+        var result = await localHueClient.CreateSceneAsync(req);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.HasErrors);
+
+        sceneId = result.Data.First().Rid;
+      }
+
+      if(sceneId.HasValue)
+      {
+        //Create a dynamic scene
+        UpdateScene reqDynamic = new UpdateScene()
+        {
+          Palette = new Palette()
+          {
+            Color = new List<ColorPalette>()
+             {
+               new ColorPalette { Color = new RGBColor("#00FF00").ToColor(), Dimming = new Dimming() { Brightness = 100 } }, //Green
+               new ColorPalette { Color = new RGBColor("#FF0000").ToColor() }, //Red
+               new ColorPalette { Color = new RGBColor("#0000FF").ToColor() } //Blue
+             },
+            Dimming = new System.Collections.Generic.List<Dimming>()
+            {
+              new Dimming() { Brightness = 90}
+            }
+          },
+          Speed = 0.9
+        };
+        var resultDynamic = await localHueClient.UpdateSceneAsync(sceneId.Value, reqDynamic);
+
+        Assert.IsNotNull(resultDynamic);
+        Assert.IsFalse(resultDynamic.HasErrors);
+
+
+
+        //Activate scene
+        UpdateScene req = new UpdateScene()
+        {
+          Recall = new Recall() { Action = SceneRecallAction.active }
+        };
+        var result = await localHueClient.UpdateSceneAsync(sceneId.Value, req);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.HasErrors);
+      }
+
+     
 
     }
   }
