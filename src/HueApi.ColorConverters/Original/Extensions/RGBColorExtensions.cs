@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HueApi.ColorConverters.Original.Extensions
 {
-  public static class ColorExtensions
+  public static class RGBColorExtensions
   {
     public static Color ToColor(this RGBColor rgbColor)
     {

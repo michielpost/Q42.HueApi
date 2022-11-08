@@ -8,8 +8,8 @@ Console.WriteLine("HueApi Console Sample");
 var builder = new ConfigurationBuilder().AddUserSecrets<Program>();
 var config = builder.Build();
 
-string ip = config["ip"];
-string key = config["key"];
+string ip = config["ip"] ?? string.Empty;
+string key = config["key"] ?? string.Empty;
 
 Console.WriteLine($"Connecting to {ip} with key: {key}");
 
