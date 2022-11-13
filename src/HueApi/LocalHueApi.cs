@@ -56,9 +56,9 @@ namespace HueApi
 
       var cancelToken = this.eventStreamCancellationTokenSource.Token;
 
-      try
+      while (!cancelToken.IsCancellationRequested) //Auto retry on stop
       {
-        while (!cancelToken.IsCancellationRequested) //Auto retry on stop
+        try
         {
 #if NET461
           using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
@@ -83,10 +83,10 @@ namespace HueApi
             }
           }
         }
-      }
-      catch (TaskCanceledException)
-      {
-        //Ignore task canceled
+        catch (TaskCanceledException ex)
+        {
+          //Ignore task canceled
+        }
       }
     }
 
