@@ -33,7 +33,7 @@ Console.ReadLine();
 
 void EventStreamMessage(List<EventStreamResponse> events)
 {
-  Console.WriteLine($"{events.Count} new events");
+  Console.WriteLine($"{DateTimeOffset.UtcNow} | {events.Count} new events");
 
   foreach(var hueEvent in events)
   {

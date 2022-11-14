@@ -38,7 +38,7 @@ namespace HueApi
 
       client.BaseAddress = new Uri($"https://{ip}/");
 
-      if(!string.IsNullOrEmpty(key))
+      if (!string.IsNullOrEmpty(key))
         client.DefaultRequestHeaders.Add(KeyHeaderName, key);
 
       this.client = client;
@@ -56,38 +56,33 @@ namespace HueApi
 
       var cancelToken = this.eventStreamCancellationTokenSource.Token;
 
-      try
+
+      while (!cancelToken.IsCancellationRequested) //Auto retry on stop
       {
-        while (!cancelToken.IsCancellationRequested) //Auto retry on stop
-        {
 #if NET461
           using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
 #else
-          using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl, cancelToken)))
+        using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl, cancelToken)))
 #endif
+        {
+          while (!streamReader.EndOfStream)
           {
-            while (!streamReader.EndOfStream)
+            var jsonMsg = await streamReader.ReadLineAsync();
+            //Console.WriteLine($"Received message: {message}");
+
+            if (jsonMsg != null)
             {
-              var jsonMsg = await streamReader.ReadLineAsync();
-              //Console.WriteLine($"Received message: {message}");
+              var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
 
-              if (jsonMsg != null)
+              if (data != null && data.Any())
               {
-                var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
-
-                if (data != null && data.Any())
-                {
-                  OnEventStreamMessage?.Invoke(data);
-                }
+                OnEventStreamMessage?.Invoke(data);
               }
             }
           }
         }
       }
-      catch (TaskCanceledException)
-      {
-        //Ignore task canceled
-      }
+
     }
 
     public void StopEventStream()
