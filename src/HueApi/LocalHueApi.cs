@@ -5,6 +5,7 @@ using HueApi.Models.Requests;
 using HueApi.Models.Responses;
 using System;
 using System.Net.Http.Json;
+using System.Security;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -20,32 +21,20 @@ namespace HueApi
 
     protected const string EventStreamUrl = "eventstream/clip/v2";
 
+    private string ip;
+    private string? key;
+
     public LocalHueApi(string ip, string? key, HttpClient? client = null)
     {
-      if (client == null)
-      {
-        var handler = new HttpClientHandler()
-        {
-#if NET461
-          ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-#else
-          ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-#endif
-        };
+      this.ip = ip;
+      this.key = key;
 
-        client = new HttpClient(handler);
-      }
-
-      client.BaseAddress = new Uri($"https://{ip}/");
-
-      if (!string.IsNullOrEmpty(key))
-        client.DefaultRequestHeaders.Add(KeyHeaderName, key);
-
-      this.client = client;
+      client = GetConfiguredHttpClient(client);
     }
 
+  
 
-    public async void StartEventStream(CancellationToken? cancellationToken = null)
+    public async void StartEventStream(HttpClient? client = null, CancellationToken? cancellationToken = null)
     {
       this.eventStreamCancellationTokenSource?.Cancel();
 
@@ -56,27 +45,30 @@ namespace HueApi
 
       var cancelToken = this.eventStreamCancellationTokenSource.Token;
 
-
-      while (!cancelToken.IsCancellationRequested) //Auto retry on stop
+      using (HttpClient infiniteHttpClient = GetConfiguredHttpClient(client, Timeout.InfiniteTimeSpan))
       {
-#if NET461
-          using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl)))
-#else
-        using (var streamReader = new StreamReader(await client.GetStreamAsync(EventStreamUrl, cancelToken)))
-#endif
+
+        while (!cancelToken.IsCancellationRequested) //Auto retry on stop
         {
-          while (!streamReader.EndOfStream)
+#if NET461
+          using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl)))
+#else
+          using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl, cancelToken)))
+#endif
           {
-            var jsonMsg = await streamReader.ReadLineAsync();
-            //Console.WriteLine($"Received message: {message}");
-
-            if (jsonMsg != null)
+            while (!streamReader.EndOfStream)
             {
-              var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+              var jsonMsg = await streamReader.ReadLineAsync();
+              //Console.WriteLine($"Received message: {message}");
 
-              if (data != null && data.Any())
+              if (jsonMsg != null)
               {
-                OnEventStreamMessage?.Invoke(data);
+                var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+
+                if (data != null && data.Any())
+                {
+                  OnEventStreamMessage?.Invoke(data);
+                }
               }
             }
           }
@@ -175,6 +167,34 @@ namespace HueApi
       }
 
       return null;
+    }
+
+    private HttpClient GetConfiguredHttpClient(HttpClient? client = null, TimeSpan? timeout = null)
+    {
+      if (client == null)
+      {
+        var handler = new HttpClientHandler()
+        {
+#if NET461
+          ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+#else
+          ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+#endif
+        };
+
+        client = new HttpClient(handler);
+      }
+
+      if(timeout.HasValue)
+        client.Timeout= timeout.Value;
+
+      client.BaseAddress = new Uri($"https://{ip}/");
+
+      if (!string.IsNullOrEmpty(key))
+        client.DefaultRequestHeaders.Add(KeyHeaderName, key);
+
+      this.client = client;
+      return client;
     }
 
 
