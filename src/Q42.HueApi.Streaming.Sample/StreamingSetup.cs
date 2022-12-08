@@ -12,8 +12,8 @@ namespace Q42.HueApi.Streaming.Sample
     public static async Task<StreamingGroup> SetupAndReturnGroup()
     {
       string ip = "192.168.0.4";
-      string key = "8JwWAj5J1tSsKLxyUOdAkWmcCQFcNc51AKRhxdH9";
-      string entertainmentKey = "AFFD322C34C993C19503D369481869FD";
+      string key = "im5PBqU--4CJq2N2t8xMVNvZ2qxOtgzLcfVTkwzP";
+      string entertainmentKey = "32C1FEB5439F313891C44369FF71388C";
       var useSimulator = false;
 
       //string ip = "10.70.16.38";
@@ -28,6 +28,7 @@ namespace Q42.HueApi.Streaming.Sample
       StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
       //Get the entertainment group
+      var test = await client.LocalHueClient.GetGroupsAsync();
       var all = await client.LocalHueClient.GetEntertainmentGroups();
       var group = all.FirstOrDefault();
 

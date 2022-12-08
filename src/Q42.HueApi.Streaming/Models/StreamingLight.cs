@@ -33,7 +33,7 @@ namespace Q42.HueApi.Streaming.Models
       List<byte> result = new List<byte>();
 
       byte deviceType = 0x00; //Type of device 0x00 = Light; 0x01 = Area
-      var lightIdBytes = BitConverter.GetBytes(this.Id);
+      var lightIdBytes = BitConverter.GetBytes((short)this.Id);
 
       result.Add(deviceType);
       result.Add(0x00);
