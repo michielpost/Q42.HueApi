@@ -33,5 +33,11 @@ namespace Q42.HueApi.Interfaces
     /// <param name="update"></param>
     /// <returns></returns>
     Task<HueResults> UpdateBridgeConfigAsync(BridgeConfigUpdate update);
+
+    /// <summary>
+    /// Get bridge config
+    /// </summary>
+    /// <returns>BridgeConfig</returns>
+    Task<BridgeConfig?> GetConfigAsync();
   }
 }
