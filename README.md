@@ -4,7 +4,7 @@ Q42.HueApi
 Open source library for communication with the Philips Hue bridge.
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
-This library targets `.netstandard2.0`, `.net45`, `.net 5` and `.net 6`!
+This library targets `.netstandard2.1`, `.net45`, `.net 6` and `.net 7`!
 Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
 
 - Support for Hue Entertainment API
