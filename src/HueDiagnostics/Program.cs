@@ -167,6 +167,14 @@ namespace HueDiagnostics
           }
 
           diagDataList.Add(diagData);
+
+          var command = new LightCommand();
+          command.Alert = Alert.Multiple;
+
+          await client.SendGroupCommandAsync(command);
+          Console.WriteLine("Sending Alert");
+          //Console.ReadLine();
+
         }
 
         Console.WriteLine();

@@ -1,3 +1,5 @@
+using HueApi.Extensions.cs;
+using HueApi.Models;
 using HueApi.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -61,5 +63,63 @@ namespace HueApi.Tests
       Assert.AreEqual(id, result.Data.First().Rid);
 
     }
+
+    [TestMethod]
+    public async Task CreateGetDeleteEntertainmentConfiguration()
+    {
+      //Get light to use in the entertainment area
+      var lights = await localHueClient.GetEntertainmentServicesAsync();
+
+      UpdateEntertainmentConfiguration req = new UpdateEntertainmentConfiguration
+      {
+        Type = "entertainment_configuration",
+        Metadata = new Models.Metadata
+        {
+          Name = "Test Config",
+        },
+        ConfigurationType = Models.EntertainmentConfigurationType.other,
+        //StreamProxy = new Models.StreamProxy
+        //{
+        //   Mode = Models.EntertainmentConfigurationStreamProxyMode.auto
+        //}
+        Locations = new Models.Locations()
+      };
+
+      foreach (var light in lights.Data.Where(x => x.Renderer))
+      {
+        var lightPosition = new HueServiceLocation
+        {
+          Service = light.ToResourceIdentifier(),
+          Positions = new System.Collections.Generic.List<HuePosition>
+           {
+             new HuePosition
+             {
+                X = 0.42, Y = 0.5, Z = 0
+             }
+           }
+        };
+
+        req.Locations.ServiceLocations.Add(lightPosition);
+      }
+
+
+      var result = await localHueClient.CreateEntertainmentConfigurationAsync(req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+      Assert.IsTrue(result.Data.Count == 1);
+
+      var newId = result.Data.First().Rid;
+
+      //Get it
+      var getResult = await localHueClient.GetEntertainmentConfigurationAsync(newId);
+
+      //Delete it
+      var deleteResult = await localHueClient.DeleteEntertainmentConfigurationAsync(newId);
+
+
+    }
+
   }
+
 }
