@@ -72,16 +72,11 @@ namespace HueApi.Tests
 
       UpdateEntertainmentConfiguration req = new UpdateEntertainmentConfiguration
       {
-        Type = "entertainment_configuration",
         Metadata = new Models.Metadata
         {
           Name = "Test Config",
         },
         ConfigurationType = Models.EntertainmentConfigurationType.other,
-        //StreamProxy = new Models.StreamProxy
-        //{
-        //   Mode = Models.EntertainmentConfigurationStreamProxyMode.auto
-        //}
         Locations = new Models.Locations()
       };
 
