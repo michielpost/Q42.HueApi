@@ -62,7 +62,7 @@ namespace Q42.HueApi
       IsInitialized = true;
     }
 
-    public Task<HttpClient> GetHttpClient()
+    public virtual Task<HttpClient> GetHttpClient()
     {
       // return per-thread HttpClient
       if (_httpClient == null)
