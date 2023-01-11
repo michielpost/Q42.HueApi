@@ -16,6 +16,8 @@ namespace Q42.HueApi
   /// </summary>
   public class RemoteAuthenticationClient : IRemoteAuthenticationClient
   {
+    public bool IsInitialized { get; protected set; }
+    
     private readonly string _clientId;
     private readonly string _clientSecret;
     private readonly string _appId;
@@ -46,6 +48,7 @@ namespace Q42.HueApi
 
     public void Initialize(AccessTokenResponse accessTokenResponse)
     {
+      IsInitialized = true;
       _lastAuthorizationResponse = accessTokenResponse;
     }
 
@@ -154,6 +157,8 @@ namespace Q42.HueApi
 
     public async Task<AccessTokenResponse?> RefreshToken(string refreshToken)
     {
+      CheckInitialized();
+      
       var requestUri = new Uri("https://api.meethue.com/v2/oauth2/token");
 
       var formParameters = new Dictionary<string, string> {
@@ -220,6 +225,7 @@ namespace Q42.HueApi
     /// <returns></returns>
     public async Task<string?> GetValidToken()
     {
+      CheckInitialized();
       if (_lastAuthorizationResponse != null)
       {
         if (_lastAuthorizationResponse.AccessTokenExpireTime() > DateTimeOffset.UtcNow.AddMinutes(-5))
@@ -235,6 +241,15 @@ namespace Q42.HueApi
       }
 
       throw new HueException("Unable to get access token. Access token and Refresh token expired.");
+    }
+
+    /// <summary>
+    /// Check if the RemoteAuthenticationClient is initialized
+    /// </summary>
+    private void CheckInitialized()
+    {
+      if (!IsInitialized)
+        throw new InvalidOperationException("RemoteAuthenticationClient is not initialized. First call Initialize.");
     }
   }
 }
