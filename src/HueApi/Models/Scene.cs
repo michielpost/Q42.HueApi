@@ -25,14 +25,14 @@ namespace HueApi.Models
 
   public class LightAction : IUpdateColor, IUpdateColorTemperature, IUpdateOn
   {
-    [JsonPropertyName("color")]
-    public Color? Color { get; set; }
+    [JsonPropertyName("on")]
+    public On? On { get; set; }
 
     [JsonPropertyName("dimming")]
     public Dimming? Dimming { get; set; }
 
-    [JsonPropertyName("on")]
-    public On? On { get; set; }
+    [JsonPropertyName("color")]
+    public Color? Color { get; set; }
 
     [JsonPropertyName("color_temperature")]
     public ColorTemperature? ColorTemperature { get; set; }

@@ -13,22 +13,38 @@ namespace HueApi.Models.Requests
     [JsonPropertyName("on")]
     public On? On { get; set; }
 
-    [JsonPropertyName("color")]
-    public Color? Color { get; set; }
+    [JsonPropertyName("dimming")]
+    public Dimming? Dimming { get; set; }
+
+    [JsonPropertyName("dimming_delta")]
+    public DimmingDelta? DimmingDelta { get; set; }
 
     [JsonPropertyName("color_temperature")]
     public ColorTemperature? ColorTemperature { get; set; }
 
-    [JsonPropertyName("dimming")]
-    public Dimming? Dimming { get; set; }
+    [JsonPropertyName("color_temperature_delta")]
+    public ColorTemperatureDelta? ColorTemperatureDelta { get; set; }
 
-    [JsonPropertyName("alert")]
-    public UpdateAlert? Alert { get; set; }
+    [JsonPropertyName("color")]
+    public Color? Color { get; set; }
 
     [JsonPropertyName("dynamics")]
     public Dynamics? Dynamics { get; set; }
 
-    //TODO: Gradient https://developers.meethue.com/develop/hue-api-v2/api-reference/#resource_light__id__put
+    [JsonPropertyName("alert")]
+    public UpdateAlert? Alert { get; set; }
+
+    [JsonPropertyName("gradient")]
+    public Gradient? Gradient { get; set; }
+
+    [JsonPropertyName("effects")]
+    public Effects? Effects { get; set; }
+
+    [JsonPropertyName("timed_effects")]
+    public TimedEffects? TimedEffects { get; set; }
+
+    [JsonPropertyName("powerup")]
+    public PowerUp? PowerUp { get; set; }
 
   }
 

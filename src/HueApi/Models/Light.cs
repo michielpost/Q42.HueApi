@@ -9,41 +9,72 @@ namespace HueApi.Models
 {
   public class Light : HueResource
   {
-    [JsonPropertyName("alert")]
-    public Alert? Alert { get; set; }
-
-    [JsonPropertyName("dynamics")]
-    public Dynamics? Dynamics { get; set; }
-
-    [JsonPropertyName("mode")]
-    public string Mode { get; set; } = default!;
+    [JsonPropertyName("owner")]
+    public ResourceIdentifier Owner { get; set; } = default!;
 
     [JsonPropertyName("on")]
     public On On { get; set; } = default!;
 
-    [JsonPropertyName("owner")]
-    public ResourceIdentifier Owner { get; set; } = default!;
-
-    [JsonPropertyName("color")]
-    public Color? Color { get; set; }
+    [JsonPropertyName("dimming")]
+    public Dimming? Dimming { get; set; }
 
     [JsonPropertyName("color_temperature")]
     public ColorTemperature? ColorTemperature { get; set; }
 
-    [JsonPropertyName("dimming")]
-    public Dimming? Dimming { get; set; }
+    [JsonPropertyName("color")]
+    public Color? Color { get; set; }
+
+    [JsonPropertyName("dynamics")]
+    public Dynamics? Dynamics { get; set; }
+
+    [JsonPropertyName("alert")]
+    public Alert? Alert { get; set; }
+
+    [JsonPropertyName("signaling")]
+    public Signaling? Signaling { get; set; }
+
+    [JsonPropertyName("mode")]
+    public string Mode { get; set; } = default!;
+
+    [JsonPropertyName("gradient")]
+    public Gradient? Gradient { get; set; }
 
     [JsonPropertyName("effects")]
     public Effects? Effects { get; set; }
 
     [JsonPropertyName("timed_effects")]
     public TimedEffects? TimedEffects { get; set; }
+
+    [JsonPropertyName("powerup")]
+    public PowerUp? PowerUp { get; set; }
+   
   }
 
   public class Alert
   {
     [JsonPropertyName("action_values")]
     public List<string> ActionValues { get; set; } = new List<string>();
+  }
+
+  public class Signaling
+  {
+    [JsonPropertyName("status")]
+    public SignalingStatus? Status { get; set; }
+  }
+
+  public class SignalingStatus
+  {
+    /// <summary>
+    /// Indicates which signal is currently active.
+    /// </summary>
+    [JsonPropertyName("signal")]
+    public Signal Signal { get; set; }
+
+    /// <summary>
+    /// Timestamp indicating when the active signal is expected to end. Value is not set if there is no_signal
+    /// </summary>
+    [JsonPropertyName("estimated_end")]
+    public DateTimeOffset? EstimatedEnd { get; set; }
   }
 
   public class Dynamics
@@ -118,6 +149,9 @@ namespace HueApi.Models
 
   public class ColorTemperature
   {
+    /// <summary>
+    /// minimum: 153 – maximum: 500
+    /// </summary>
     [JsonPropertyName("mirek")]
     public int? Mirek { get; set; }
 
@@ -128,6 +162,19 @@ namespace HueApi.Models
     public bool MirekValid { get; set; }
   }
 
+  public class ColorTemperatureDelta
+  {
+    [JsonPropertyName("action")]
+    public DeltaAction Action { get; set; }
+
+    /// <summary>
+    ///  maximum: 347
+    ///  Mirek delta to current mirek. Clip at mirek_minimum and mirek_maximum of mirek_schema.
+    /// </summary>
+    [JsonPropertyName("mirek_delta")]
+    public int MirekDelta { get; set; }
+  }
+
   public class Dimming
   {
     [JsonPropertyName("brightness")]
@@ -135,6 +182,15 @@ namespace HueApi.Models
 
     [JsonPropertyName("min_dim_level")]
     public double? MinDimLevel { get; set; }
+  }
+
+  public class DimmingDelta
+  {
+    [JsonPropertyName("action")]
+    public DeltaAction Action { get; set; }
+
+    [JsonPropertyName("brightness_delta")]
+    public int BrightnessDelta { get; set; }
   }
 
   public class Effects
@@ -170,13 +226,29 @@ namespace HueApi.Models
     public int Duration { get; set; } = new();
 
     [JsonPropertyName("effect_values")]
-    public List<string> EffectValues { get; set; } = new();
+    public List<string>? EffectValues { get; set; }
 
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 
     [JsonPropertyName("status_values")]
-    public List<string> StatusValues { get; set; } = new();
+    public List<string>? StatusValues { get; set; }
+
+  }
+
+  public class PowerUp
+  {
+    [JsonPropertyName("preset")]
+    public PowerUpPreset Preset { get; set; } = new();
+
+    [JsonPropertyName("on")]
+    public On? On { get; set; }
+
+    [JsonPropertyName("dimming")]
+    public Dimming? Dimming { get; set; }
+
+    [JsonPropertyName("color")]
+    public Color? Color { get; set; }
 
   }
 
@@ -184,5 +256,23 @@ namespace HueApi.Models
   public enum TimedEffect
   {
     no_effect, sunrise
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum DeltaAction
+  {
+    up, down, stop
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum PowerUpPreset
+  {
+    safety, powerfail, last_on_state, custom
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum Signal
+  {
+    no_signal, on_off
   }
 }
