@@ -47,7 +47,7 @@ namespace HueApi.Models
 
     [JsonPropertyName("powerup")]
     public PowerUp? PowerUp { get; set; }
-   
+
   }
 
   public class Alert
@@ -211,7 +211,7 @@ namespace HueApi.Models
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum Effect
   {
-    no_effect, fire, candle
+    no_effect, fire, candle, sparkle
   }
 
   public class TimedEffects
