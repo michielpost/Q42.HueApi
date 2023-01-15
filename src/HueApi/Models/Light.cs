@@ -104,6 +104,18 @@ namespace HueApi.Models
     public bool IsOn { get; set; }
   }
 
+  public class PowerUpOn
+  {
+    /// <summary>
+    /// State to activate after powerup. On will use the value specified in the “on” property. When setting mode “on”, the on property must be included. Toggle will alternate between on and off on each subsequent power toggle. Previous will return to the state it was in before powering off.
+    /// </summary>
+    [JsonPropertyName("mode")]
+    public PowerUpOnMode? Mode { get; set; }
+
+    [JsonPropertyName("on")]
+    public On? On { get; set; }
+  }
+
   public class XyPosition
   {
     [JsonPropertyName("x")]
@@ -242,13 +254,16 @@ namespace HueApi.Models
     public PowerUpPreset Preset { get; set; } = new();
 
     [JsonPropertyName("on")]
-    public On? On { get; set; }
+    public PowerUpOn? On { get; set; }
 
     [JsonPropertyName("dimming")]
     public Dimming? Dimming { get; set; }
 
     [JsonPropertyName("color")]
     public Color? Color { get; set; }
+
+    [JsonPropertyName("configured")]
+    public bool? Configured { get; set; }
 
   }
 
@@ -268,6 +283,12 @@ namespace HueApi.Models
   public enum PowerUpPreset
   {
     safety, powerfail, last_on_state, custom
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum PowerUpOnMode
+  {
+    on, toggle, previous
   }
 
   [JsonConverter(typeof(JsonStringEnumConverter))]
