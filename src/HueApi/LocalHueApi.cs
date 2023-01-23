@@ -50,27 +50,34 @@ namespace HueApi
 
         while (!cancelToken.IsCancellationRequested) //Auto retry on stop
         {
+          try
+          {
 #if NET461
           using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl)))
 #else
-          using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl, cancelToken)))
+            using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl, cancelToken)))
 #endif
-          {
-            while (!streamReader.EndOfStream)
             {
-              var jsonMsg = await streamReader.ReadLineAsync();
-              //Console.WriteLine($"Received message: {message}");
-
-              if (jsonMsg != null)
+              while (!streamReader.EndOfStream)
               {
-                var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+                var jsonMsg = await streamReader.ReadLineAsync();
+                //Console.WriteLine($"Received message: {message}");
 
-                if (data != null && data.Any())
+                if (jsonMsg != null)
                 {
-                  OnEventStreamMessage?.Invoke(data);
+                  var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+
+                  if (data != null && data.Any())
+                  {
+                    OnEventStreamMessage?.Invoke(data);
+                  }
                 }
               }
             }
+          }
+          catch(TaskCanceledException ex)
+          {
+            //Ignore
           }
         }
       }
