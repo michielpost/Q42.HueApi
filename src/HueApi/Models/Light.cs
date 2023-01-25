@@ -202,7 +202,7 @@ namespace HueApi.Models
     public DeltaAction Action { get; set; }
 
     [JsonPropertyName("brightness_delta")]
-    public int BrightnessDelta { get; set; }
+    public double BrightnessDelta { get; set; }
   }
 
   public class Effects

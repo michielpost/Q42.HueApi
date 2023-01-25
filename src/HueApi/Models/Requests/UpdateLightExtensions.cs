@@ -88,7 +88,7 @@ namespace HueApi.Models.Requests
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static T SetBrightnessDelta<T>(this T lightCommand, DeltaAction action, int brightnessDelta) where T : IUpdateDimmingDelta
+    public static T SetBrightnessDelta<T>(this T lightCommand, DeltaAction action, double brightnessDelta) where T : IUpdateDimmingDelta
     {
       if (lightCommand == null)
         throw new ArgumentNullException(nameof(lightCommand));
@@ -113,7 +113,7 @@ namespace HueApi.Models.Requests
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static T SetBrightness<T>(this T lightCommand, int brightness) where T : IUpdateDimming
+    public static T SetBrightness<T>(this T lightCommand, double brightness) where T : IUpdateDimming
     {
       if (lightCommand == null)
         throw new ArgumentNullException(nameof(lightCommand));
