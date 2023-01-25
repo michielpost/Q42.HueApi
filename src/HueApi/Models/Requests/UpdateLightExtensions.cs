@@ -79,5 +79,53 @@ namespace HueApi.Models.Requests
       return lightCommand;
     }
 
+    /// <summary>
+    /// Helper to create DimmingDelta command
+    /// </summary>
+    /// <param name="lightCommand"></param>
+    /// <param name="action"></param>
+    /// <param name="brightnessDelta"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static T SetBrightnessDelta<T>(this T lightCommand, DeltaAction action, int brightnessDelta) where T : IUpdateDimmingDelta
+    {
+      if (lightCommand == null)
+        throw new ArgumentNullException(nameof(lightCommand));
+
+      if (!(1 <= brightnessDelta && brightnessDelta <= 100))
+        throw new ArgumentOutOfRangeException(nameof(brightnessDelta), "Value must be between 1 and 100");
+
+      lightCommand.DimmingDelta = new DimmingDelta
+      {
+        Action = action,
+        BrightnessDelta = brightnessDelta
+      };
+      return lightCommand;
+    }
+
+    /// <summary>
+    /// Helper to create Dimming command
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="lightCommand"></param>
+    /// <param name="brightness"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static T SetBrightness<T>(this T lightCommand, int brightness) where T : IUpdateDimming
+    {
+      if (lightCommand == null)
+        throw new ArgumentNullException(nameof(lightCommand));
+
+      if (!(0 <= brightness && brightness <= 100))
+        throw new ArgumentOutOfRangeException(nameof(brightness), "Value must be between 0 and 100");
+
+      lightCommand.Dimming = new Dimming
+      {
+        Brightness = brightness
+      };
+      return lightCommand;
+    }
   }
 }

@@ -104,5 +104,53 @@ namespace HueApi.Tests
       Assert.IsNotNull(request);
 
     }
+
+    [TestMethod]
+    public async Task SetBrightnessDeltaDown()
+    {
+      var all = await localHueClient.GetLightsAsync();
+      var id = all.Data.First().Id;
+
+      var req = new UpdateLight().SetBrightnessDelta(DeltaAction.down, 10);
+      var result = await localHueClient.UpdateLightAsync(id, req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.AreEqual(id, result.Data.First().Rid);
+    }
+
+    [TestMethod]
+    public async Task SetBrightnessDeltaUp()
+    {
+      var all = await localHueClient.GetLightsAsync();
+      var id = all.Data.First().Id;
+
+      var req = new UpdateLight().SetBrightnessDelta(DeltaAction.up, 10);
+      var result = await localHueClient.UpdateLightAsync(id, req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.AreEqual(id, result.Data.First().Rid);
+    }
+
+    [TestMethod]
+    public async Task SetBrightness()
+    {
+      var all = await localHueClient.GetLightsAsync();
+      var id = all.Data.First().Id;
+
+      var req = new UpdateLight().SetBrightness(50);
+      var result = await localHueClient.UpdateLightAsync(id, req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.AreEqual(id, result.Data.First().Rid);
+    }
   }
 }

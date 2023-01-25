@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HueApi.ColorConverters.Original.Extensions
 {
-  public static class UpdateLightExtensions
+  public static class LightCommandExtensions
   {
     public static T SetColor<T>(this T UpdateLight, RGBColor color, string model = "LCT001") where T: IUpdateColor
     {

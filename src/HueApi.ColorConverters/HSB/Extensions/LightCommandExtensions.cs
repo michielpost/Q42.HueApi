@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HueApi.ColorConverters.HSB.Extensions
 {
-  public static class UpdateLightExtensions
+  public static class LightCommandExtensions
   {
 
     //TODO
