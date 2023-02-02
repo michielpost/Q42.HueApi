@@ -211,13 +211,13 @@ namespace HueApi.Models
     public Effect Effect { get; set; } = new();
 
     [JsonPropertyName("effect_values")]
-    public List<string> EffectValues { get; set; } = new();
+    public List<string>? EffectValues { get; set; }
 
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 
     [JsonPropertyName("status_values")]
-    public List<string> StatusValues { get; set; } = new();
+    public List<string>? StatusValues { get; set; }
   }
 
   [JsonConverter(typeof(JsonStringEnumConverter))]

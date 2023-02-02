@@ -23,31 +23,6 @@ namespace HueApi.Models
     public double Speed { get; set; }
   }
 
-  public class LightAction : IUpdateColor, IUpdateColorTemperature, IUpdateOn
-  {
-    [JsonPropertyName("on")]
-    public On? On { get; set; }
-
-    [JsonPropertyName("dimming")]
-    public Dimming? Dimming { get; set; }
-
-    [JsonPropertyName("color")]
-    public Color? Color { get; set; }
-
-    [JsonPropertyName("color_temperature")]
-    public ColorTemperature? ColorTemperature { get; set; }
-
-    [JsonPropertyName("gradient")]
-    public Gradient? Gradient { get; set; }
-
-    [JsonPropertyName("effects")]
-    public Effects? Effects { get; set; }
-
-    [JsonPropertyName("dynamics")]
-    public Dynamics? Dynamics { get; set; }
-  }
-
-
   public class SceneAction
   {
     [JsonPropertyName("action")]

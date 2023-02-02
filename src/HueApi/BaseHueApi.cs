@@ -1,5 +1,6 @@
 using HueApi.Models;
 using HueApi.Models.Requests;
+using HueApi.Models.Requests.SmartScene;
 using HueApi.Models.Responses;
 using HueApi.Models.Sensors;
 using System.Net.Http.Json;
@@ -17,6 +18,7 @@ namespace HueApi
     protected const string ResourceUrl = "clip/v2/resource";
     protected const string LightUrl = $"{ResourceUrl}/light";
     protected const string SceneUrl = $"{ResourceUrl}/scene";
+    protected const string SmartSceneUrl = $"{ResourceUrl}/smart_scene";
     protected const string RoomUrl = $"{ResourceUrl}/room";
     protected const string ZoneUrl = $"{ResourceUrl}/zone";
     protected const string BridgeHomeUrl = $"{ResourceUrl}/bridge_home";
@@ -37,6 +39,8 @@ namespace HueApi
     protected const string EntertainmentConfigurationUrl = $"{ResourceUrl}/entertainment_configuration";
     protected const string EntertainmentUrl = $"{ResourceUrl}/entertainment";
     protected const string HomekitUrl = $"{ResourceUrl}/homekit";
+    protected const string MatterUrl = $"{ResourceUrl}/matter";
+    protected const string MatterFabricUrl = $"{ResourceUrl}/matter_fabric";
 
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
 
@@ -53,6 +57,14 @@ namespace HueApi
     public Task<HueResponse<Scene>> GetSceneAsync(Guid id) => HueGetRequestAsync<Scene>(ResourceIdUrl(SceneUrl, id));
     public Task<HuePutResponse> UpdateSceneAsync(Guid id, UpdateScene data) => HuePutRequestAsync(ResourceIdUrl(SceneUrl, id), data);
     public Task<HueDeleteResponse> DeleteSceneAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(SceneUrl, id));
+    #endregion
+
+    #region SmartScene
+    public Task<HueResponse<SmartScene>> GetSmartScenesAsync() => HueGetRequestAsync<SmartScene>(SmartSceneUrl);
+    public Task<HuePostResponse> CreateSmartSceneAsync(CreateSmartScene data) => HuePostRequestAsync(SmartSceneUrl, data);
+    public Task<HueResponse<SmartScene>> GetSmartSceneAsync(Guid id) => HueGetRequestAsync<SmartScene>(ResourceIdUrl(SmartSceneUrl, id));
+    public Task<HuePutResponse> UpdateSmartSceneAsync(Guid id, UpdateSmartScene data) => HuePutRequestAsync(ResourceIdUrl(SmartSceneUrl, id), data);
+    public Task<HueDeleteResponse> DeleteSmartSceneAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(SmartSceneUrl, id));
     #endregion
 
     #region Room
@@ -189,6 +201,17 @@ namespace HueApi
     public Task<HueResponse<HueResource>> GetResourcesAsync() => HueGetRequestAsync<HueResource>(ResourceUrl);
     #endregion
 
+    #region Matter
+    public Task<HueResponse<Models.MatterItem>> GetMatterItemsAsync() => HueGetRequestAsync<Models.MatterItem>(MatterUrl);
+    public Task<HueResponse<Models.MatterItem>> GetMatterItemAsync(Guid id) => HueGetRequestAsync<Models.MatterItem>(ResourceIdUrl(MatterUrl, id));
+    public Task<HuePutResponse> UpdateMatterItemAsync(Guid id, MatterItemUpdate data) => HuePutRequestAsync(ResourceIdUrl(MatterUrl, id), data);
+    #endregion
+
+    #region MatterFabric
+    public Task<HueResponse<Models.MatterItem>> GetMatterFabricsAsync() => HueGetRequestAsync<Models.MatterItem>(MatterFabricUrl);
+    public Task<HueResponse<Models.MatterItem>> GetMatterFabricAsync(Guid id) => HueGetRequestAsync<Models.MatterItem>(ResourceIdUrl(MatterFabricUrl, id));
+    public Task<HueDeleteResponse> DeleteMatterFabricAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(MatterFabricUrl, id));
+    #endregion
 
 
 
