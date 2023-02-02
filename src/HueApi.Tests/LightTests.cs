@@ -97,6 +97,77 @@ namespace HueApi.Tests
     }
 
     [TestMethod]
+    public async Task ChangeGradientLightColor()
+    {
+      var all = await localHueClient.GetLightsAsync();
+
+      //Get gradient light
+      var gradientLight = all.Data.Where(x => x.Gradient != null).FirstOrDefault();
+
+      if (gradientLight == null)
+        throw new Exception("No Gradient light found.");
+
+      var id = gradientLight.Id;
+
+      //Turn on
+      var req = new UpdateLight().TurnOn();
+
+      req.Gradient = new Gradient();
+      req.Gradient.Mode = GradientMode.interpolated_palette;
+      req.Gradient.Points = new System.Collections.Generic.List<GradientPoint>()
+      {
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("FF0000")), //red
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("00FF00")), //green
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("0000FF")), //blue
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("FFA500")), //orange
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("A020F0")), //purple
+      };
+
+      //req.Effects = new Effects() { Effect = Effect.fire };
+
+      var result = await localHueClient.UpdateLightAsync(id, req);
+
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.AreEqual(id, result.Data.First().Rid);
+
+    }
+
+    [TestMethod]
+    public async Task ChangePlayStripLightColor()
+    {
+      var all = await localHueClient.GetLightsAsync();
+
+      //Get gradient light
+      var playStrip = all.Data
+        .Where(x => x.Metadata != null)
+        .Where(x => x.Metadata!.Archetype  == "hue_lightstrip_tv")
+        .FirstOrDefault();
+
+      if (playStrip == null)
+        throw new Exception("No Play Led Strip found.");
+
+      var id = playStrip.Id;
+
+      //Turn red
+      var req = new UpdateLight()
+        .TurnOn()
+        .SetColor(new ColorConverters.RGBColor("FF0000"));
+
+      var result = await localHueClient.UpdateLightAsync(id, req);
+
+      Assert.IsNotNull(result);
+      Assert.IsFalse(result.HasErrors);
+
+      Assert.IsTrue(result.Data.Count == 1);
+      Assert.AreEqual(id, result.Data.First().Rid);
+
+    }
+
+    [TestMethod]
     public void ColorTest()
     {
       var request = new UpdateLight().SetColor(new HueApi.ColorConverters.RGBColor("FF0000"));

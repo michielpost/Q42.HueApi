@@ -131,6 +131,23 @@ namespace Q42.HueApi.Tests
     }
 
     [TestMethod]
+    public async Task SendColorLoopCommandAsync()
+    {
+      //Create command
+      var command = new LightCommand();
+      command.TurnOn();
+      command.Effect = Effect.ColorLoop;
+
+      List<string> lights = new List<string>() { "8", "9" };
+
+      //Send Command
+      var result = await _client.SendCommandAsync(command, lights);
+
+      Assert.IsTrue(result.Count > 0 && result.Any(r => r.Error == null));
+
+    }
+
+    [TestMethod]
     public async Task DeleteLightsAsyncTest()
     {
       var result = await _client.DeleteLightAsync("1");

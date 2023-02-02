@@ -78,25 +78,5 @@ namespace HueApi.Models
     [JsonPropertyName("dimming")]
     public Dimming Dimming { get; set; } = new();
   }
-
-  public class Gradient
-  {
-    [JsonPropertyName("points")]
-    public List<GradientPoint> Points { get; set; } = new();
-
-    [JsonPropertyName("mode")]
-    public GradientMode Mode { get; set; } = new();
-  }
-
-  public class GradientPoint
-  {
-    [JsonPropertyName("color")]
-    public Color Color { get; set; } = default!;
-  }
-
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum GradientMode
-  {
-    interpolated_palette, interpolated_palette_mirrored, random_pixelated
-  }
+ 
 }
