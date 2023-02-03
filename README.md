@@ -5,8 +5,11 @@ Open source library for communication with the Philips Hue bridge.
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
 This library targets `.netstandard2.1`, `.net45`, `.net 6` and `.net 7`!
-Download directly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
+Download directly from NuGet:
+- Clip API v1: [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
+- Clip API v2: **new** [HueApi on NuGet](https://nuget.org/packages/HueApi)
 
+Features:
 - Support for Hue Entertainment API
 - Support for the Hue Remote API
 - Multiple Color Converters
@@ -82,7 +85,7 @@ Or send it to all lights
 ```
 
 ## Clip V2 API
-Recently Hue releases a new Clip V2 API. This library has support for the new Clip V2 APIs. Not everything is implemented yet. Please create an issue or PR if you need something that is not supported yet.
+Hue is developing a new Clip V2 API. This library has support for the new Clip V2 APIs. Philips Hue is still developing these APIs and new functionality is added regularly. Please create an issue or PR if you need something that is not supported yet.
 
 Make sure to install the new packages:
 - [HueApi from NuGet](https://nuget.org/packages/HueApi)
@@ -95,7 +98,6 @@ Use the LocalHueApi:
 ```cs
 var localHueApi = new LocalHueApi("BRIDGE_IP", "KEY");
 ```
-For remote usage, use the `new RemoteHueApi("KEY", "token")`
 
 Register your application
 	
@@ -143,15 +145,18 @@ void EventStreamMessage(List<EventStreamResponse> events)
 
 Sample usage can be found in the included Console Sample App: `HueApi.ConsoleSample`
 
+
 ## Support for Hue Entertainment.  
-Check out the [Q42.HueApi.Streaming documentation](https://github.com/Q42/Q42.HueApi/blob/master/EntertainmentApi.md)   
+Check out the [HueApi.Entertainment documentation](https://github.com/michielpost/Q42.HueApi/blob/master/EntertainmentApi.md)   
 Read about the [Philips Entertainment API](https://developers.meethue.com/entertainment-blog)
 
 	
 ## Remote API
 There is also a Philips Hue Remote API. It allows you to send commands to a bridge over the internet. You can request access here: http://www.developers.meethue.com/content/remote-api  
 Q42.HueApi is compatible with the remote API.  There's a sample app and documentation can be found here:
-https://github.com/Q42/Q42.HueApi/blob/master/RemoteApi.md
+https://github.com/michielpost/Q42.HueApi/blob/master/RemoteApi.md
+
+For remote usage, use the `new RemoteHueApi("KEY", "token")`
 
 
 ### Color Conversion
@@ -175,7 +180,9 @@ The `Q42.HueApi.ColorConverters` NuGet package contains:
  
 
 ## How To install?
-Download the source from GitHub or get the compiled assembly from NuGet [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi).
+Download the source from GitHub or get the compiled assembly from NuGet
+- Clip API v1: [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
+- Clip API v2: **new** [HueApi on NuGet](https://nuget.org/packages/HueApi)
 
 ## Credits
 This library is made possible by contributions from:
@@ -184,15 +191,15 @@ This library is made possible by contributions from:
 * [@ermau](https://github.com/ermau)
 * [@koenvanderlinden](https://github.com/koenvanderlinden)
 * [@Indigo744](https://github.com/Indigo744)
-* [and others](https://github.com/Q42/Q42.HueApi/graphs/contributors)
+* [and others](https://github.com/michielpost/Q42.HueApi/graphs/contributors)
 
 ### Open Source Project Credits
 
-* Newtonsoft.Json is used for object serialization
+* Q42.HueApi: Newtonsoft.Json is used for object serialization
 
 ## License
 
-Q42.HueApi is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form"). Refer to [license.txt](https://github.com/Q42/Q42.HueApi/blob/master/LICENSE.txt) for more information.
+Q42.HueApi is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form"). Refer to [license.txt](https://github.com/michielpost/Q42.HueApi/blob/master/LICENSE.txt) for more information.
 
 ## Contributions
 
