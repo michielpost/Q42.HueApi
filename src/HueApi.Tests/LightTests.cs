@@ -152,10 +152,24 @@ namespace HueApi.Tests
 
       var id = playStrip.Id;
 
+      //Latest update also supports gradient on a play ledstrip
+      Assert.IsNotNull(playStrip.Gradient);
+
       //Turn red
       var req = new UpdateLight()
-        .TurnOn()
-        .SetColor(new ColorConverters.RGBColor("FF0000"));
+        .TurnOn();
+        //.SetColor(new ColorConverters.RGBColor("FF0000"));
+
+      req.Gradient = new Gradient();
+      req.Gradient.Mode = GradientMode.interpolated_palette;
+      req.Gradient.Points = new System.Collections.Generic.List<GradientPoint>()
+      {
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("FF0000")), //red
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("00FF00")), //green
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("0000FF")), //blue
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("FFA500")), //orange
+        new GradientPoint().SetColor(new ColorConverters.RGBColor("A020F0")), //purple
+      };
 
       var result = await localHueClient.UpdateLightAsync(id, req);
 

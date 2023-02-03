@@ -27,6 +27,12 @@ namespace HueApi.Models
     [JsonPropertyName("creation_time")]
     public DateTimeOffset? CreationTime { get; set; }
 
+    [JsonPropertyName("owner")]
+    public ResourceIdentifier? Owner { get; set; }
+
+    [JsonPropertyName("services")]
+    public List<ResourceIdentifier>? Services { get; set; }
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement> ExtensionData { get; set; } = new();
   }

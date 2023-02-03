@@ -10,6 +10,7 @@ namespace Q42.HueApi.Streaming.Sample
     public static async Task Main(string[] args)
     {
       Console.WriteLine("Q42.HueApi Streaming Sample App");
+      Console.WriteLine("Edit your bridge keys in StreamingSetup.cs");
 
       HueStreaming s = new HueStreaming();
       await s.Start();

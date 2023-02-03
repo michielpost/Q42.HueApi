@@ -1,9 +1,23 @@
-﻿using System.Text.Json.Serialization;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace HueApi.Models
 {
+  [DebuggerDisplay("{X}, {Y}, {Z}")]
   public class HuePosition
   {
+    public HuePosition()
+    {
+
+    }
+
+    public HuePosition(double x, double y, double z)
+    {
+      X = x;
+      Y = y;
+      Z = z;
+    }
+
     [JsonPropertyName("x")]
     public double X { get; set; }
 
@@ -13,18 +27,28 @@ namespace HueApi.Models
     [JsonPropertyName("z")]
     public double Z { get; set; }
 
-
+    [JsonIgnore]
     public bool IsLeft => X <= 0; //Include 0 with left
-    public bool IsRight => X > 0;
-    public bool IsFront => Y >= 0; //Include 0 with front
-    public bool IsBack => Y < 0;
-    public bool IsTop => Z >= 0; //Include 0 with top
-    public bool IsBottom => Z < 0;
 
+    [JsonIgnore]
+    public bool IsRight => X > 0;
+
+    [JsonIgnore]
+    public bool IsFront => Y >= 0; //Include 0 with front
+
+    [JsonIgnore]
+    public bool IsBack => Y < 0;
+
+    [JsonIgnore]
+    public bool IsTop => Z >= 0; //Include 0 with top
+
+    [JsonIgnore]
+    public bool IsBottom => Z < 0;
 
     /// <summary>
     /// X > -0.1 && X < 0.1
     /// </summary>
+    [JsonIgnore]
     public bool IsCenter => X > -0.1 && X < 0.1;
 
     public double Distance(double x, double y, double z)

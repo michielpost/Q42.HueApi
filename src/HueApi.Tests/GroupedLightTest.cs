@@ -35,7 +35,7 @@ namespace HueApi.Tests
     public async Task GetById()
     {
       var all = await localHueClient.GetGroupedLightsAsync();
-      var id = all.Data.First().Id;
+      var id = all.Data.Last().Id;
 
       var result = await localHueClient.GetGroupedLightAsync(id);
 

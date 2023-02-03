@@ -10,11 +10,11 @@ namespace HueApi.Extensions
 {
   public static class BaseHueApiExtensions
   {
-    public static Task<HuePutResponse> SetStreamingAsync(this BaseHueApi hueApi, Guid entertainmentAreaId)
+    public static Task<HuePutResponse> SetStreamingAsync(this BaseHueApi hueApi, Guid entertainmentAreaId, bool active = true)
     {
       UpdateEntertainmentConfiguration req = new UpdateEntertainmentConfiguration()
       {
-        Action = EntertainmentConfigurationAction.start
+        Action = active ? EntertainmentConfigurationAction.start : EntertainmentConfigurationAction.stop
       };
 
       return hueApi.UpdateEntertainmentConfigurationAsync(entertainmentAreaId, req);

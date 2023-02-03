@@ -28,10 +28,12 @@ namespace HueApi
     protected const string DevicePowerUrl = $"{ResourceUrl}/device_power";
     protected const string ZigbeeConnectivityUrl = $"{ResourceUrl}/zigbee_connectivity";
     protected const string ZgpConnectivityUrl = $"{ResourceUrl}/zgp_connectivity";
+    protected const string ZigbeeDeviceDiscoveryUrl = $"{ResourceUrl}/zigbee_device_discovery";
     protected const string MotionUrl = $"{ResourceUrl}/motion";
     protected const string TemperatureUrl = $"{ResourceUrl}/temperature";
     protected const string LightLevelUrl = $"{ResourceUrl}/light_level";
     protected const string ButtonUrl = $"{ResourceUrl}/button";
+    protected const string RelativeRotaryUrl = $"{ResourceUrl}/relative_rotary";
     protected const string BehaviorScriptUrl = $"{ResourceUrl}/behavior_script";
     protected const string BehaviorInstanceUrl = $"{ResourceUrl}/behavior_instance";
     protected const string GeofenceClientUrl = $"{ResourceUrl}/geofence_client";
@@ -125,6 +127,12 @@ namespace HueApi
     public Task<HuePutResponse> UpdateZgpConnectivityAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ZgpConnectivityUrl, id), data);
     #endregion
 
+    #region zigbee_device_discovery
+    public Task<HueResponse<ZigbeeDeviceDiscovery>> GetZigbeeDeviceDiscoveryAsync() => HueGetRequestAsync<ZigbeeDeviceDiscovery>(ZigbeeDeviceDiscoveryUrl);
+    public Task<HueResponse<ZigbeeDeviceDiscovery>> GetZigbeeDeviceDiscoveryAsync(Guid id) => HueGetRequestAsync<ZigbeeDeviceDiscovery>(ResourceIdUrl(ZigbeeDeviceDiscoveryUrl, id));
+    public Task<HuePutResponse> UpdateZigbeeDeviceDiscoveryAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ZigbeeDeviceDiscoveryUrl, id), data);
+    #endregion
+
     #region Motion
     public Task<HueResponse<Motion>> GetMotionsAsync() => HueGetRequestAsync<Motion>(MotionUrl);
     public Task<HueResponse<Motion>> GetMotionAsync(Guid id) => HueGetRequestAsync<Motion>(ResourceIdUrl(MotionUrl, id));
@@ -144,9 +152,15 @@ namespace HueApi
     #endregion
 
     #region Button
-    public Task<HueResponse<Button>> GetButtonsAsync() => HueGetRequestAsync<Button>(ButtonUrl);
-    public Task<HueResponse<Button>> GetButtonAsync(Guid id) => HueGetRequestAsync<Button>(ResourceIdUrl(ButtonUrl, id));
+    public Task<HueResponse<ButtonResource>> GetButtonsAsync() => HueGetRequestAsync<ButtonResource>(ButtonUrl);
+    public Task<HueResponse<ButtonResource>> GetButtonAsync(Guid id) => HueGetRequestAsync<ButtonResource>(ResourceIdUrl(ButtonUrl, id));
     public Task<HuePutResponse> UpdateButtonAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ButtonUrl, id), data);
+    #endregion
+
+    #region Relative Rotary
+    public Task<HueResponse<RelativeRotary>> GetRelativeRotaryAsync() => HueGetRequestAsync<RelativeRotary>(RelativeRotaryUrl);
+    public Task<HueResponse<RelativeRotary>> GetRelativeRotaryAsync(Guid id) => HueGetRequestAsync<RelativeRotary>(ResourceIdUrl(RelativeRotaryUrl, id));
+    public Task<HuePutResponse> UpdateRelativeRotaryAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(RelativeRotaryUrl, id), data);
     #endregion
 
     #region BehaviorScript

@@ -1,3 +1,4 @@
+using HueApi.Models;
 using HueApi.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -59,6 +60,28 @@ namespace HueApi.Tests
 
       Assert.IsTrue(result.Data.Count == 1);
       Assert.AreEqual(id, result.Data.First().Rid);
+
+    }
+
+    [TestMethod]
+    public async Task StreamingIsNotActive()
+    {
+      //Optional: Check if streaming is currently active
+      var entServices = await localHueClient.GetEntertainmentServicesAsync();
+      Assert.IsNotNull(entServices.Data);
+
+      var numSupported = entServices.Data.Sum(x => x.MaxStreams);
+
+      var entConfigs = await localHueClient.GetEntertainmentConfigurationsAsync();
+      Assert.IsNotNull(entConfigs.Data);
+
+      var active = entConfigs.Data.Where(x => x.Status == EntertainmentConfigurationStatus.active).Count();
+
+      var streamingChannelsLeft = numSupported - active;
+
+      Console.WriteLine($"{streamingChannelsLeft} our of {numSupported} streaming channels left");
+
+      Assert.IsTrue(streamingChannelsLeft > 0);
 
     }
   }

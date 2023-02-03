@@ -26,5 +26,6 @@ namespace HueApi.Models.Requests
 
     [JsonPropertyName("stream_proxy")]
     public StreamProxy? StreamProxy { get; set; }
+
   }
 }

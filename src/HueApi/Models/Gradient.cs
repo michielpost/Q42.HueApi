@@ -15,6 +15,15 @@ namespace HueApi.Models
 
     [JsonPropertyName("mode")]
     public GradientMode Mode { get; set; } = new();
+
+    [JsonPropertyName("mode_values")]
+    public List<string>? ModeValues { get; set; }
+
+    [JsonPropertyName("points_capable")]
+    public int? PointsCapable { get; set; }
+
+    [JsonPropertyName("pixel_count")]
+    public int? PixelCount { get; set; }
   }
 
   public class GradientPoint : IUpdateColor

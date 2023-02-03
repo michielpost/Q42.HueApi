@@ -1,3 +1,4 @@
+using HueApi.ColorConverters.Original.Extensions;
 using HueApi.Extensions.cs;
 using HueApi.Models;
 using HueApi.Models.Requests;
@@ -35,7 +36,7 @@ namespace HueApi.Tests
     public async Task GetById()
     {
       var all = await localHueClient.GetEntertainmentConfigurationsAsync();
-      var id = all.Data.First().Id;
+      var id = all.Data.Last().Id;
 
       var result = await localHueClient.GetEntertainmentConfigurationAsync(id);
 
@@ -44,6 +45,23 @@ namespace HueApi.Tests
 
       Assert.IsTrue(result.Data.Count == 1);
 
+      //Turn all lights in this entertainment group on
+      var entServices = result.Data.First().Locations.ServiceLocations.Select(x => x.Service?.Rid).ToList();
+      var allResources = await localHueClient.GetResourcesAsync();
+
+      var devices = allResources.Data.Where(x => entServices.Contains(x.Id)).Select(x => x.Owner?.Rid).ToList();
+
+      var lights = allResources.Data.Where(x => devices.Contains(x.Id)).Select(x => x.Services?.Where(x => x.Rtype == "light").FirstOrDefault()?.Rid).ToList();
+
+      UpdateLight update = new UpdateLight()
+        .TurnOn()
+        .SetColor(new ColorConverters.RGBColor("FF0000"));
+
+      foreach(var light in lights.Where(x => x.HasValue))
+      {
+        await localHueClient.UpdateLightAsync(light!.Value, update);
+      }
+
     }
 
 
@@ -51,9 +69,17 @@ namespace HueApi.Tests
     public async Task PutById()
     {
       var all = await localHueClient.GetEntertainmentConfigurationsAsync();
-      var id = all.Data.Last().Id;
+      var current = all.Data.Last();
+      var id = current.Id;
 
       UpdateEntertainmentConfiguration req = new UpdateEntertainmentConfiguration();
+      req.Locations = current.Locations;
+      //foreach(var location in current.Locations.ServiceLocations)
+      //{
+      //  //location.EqualizationFactor = null;
+      //  location.Service.Rtype = null;
+      //}
+
       var result = await localHueClient.UpdateEntertainmentConfigurationAsync(id, req);
 
       Assert.IsNotNull(result);

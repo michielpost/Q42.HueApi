@@ -27,7 +27,7 @@ namespace HueApi.Entertainment.ConsoleSample
 
       //Get the entertainment group
       var all = await client.LocalHueApi.GetEntertainmentConfigurationsAsync();
-      var group = all.Data.FirstOrDefault();
+      var group = all.Data.LastOrDefault();
 
       if (group == null)
         throw new HueEntertainmentException("No Entertainment Group found. Create one using the Q42.HueApi.UniversalWindows.Sample");

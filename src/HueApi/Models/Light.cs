@@ -18,8 +18,14 @@ namespace HueApi.Models
     [JsonPropertyName("dimming")]
     public Dimming? Dimming { get; set; }
 
+    [JsonPropertyName("dimming_delta")]
+    public DimmingDelta? DimmingDelta { get; set; }
+
     [JsonPropertyName("color_temperature")]
     public ColorTemperature? ColorTemperature { get; set; }
+
+    [JsonPropertyName("color_temperature_delta")]
+    public ColorTemperatureDelta? ColorTemperatureDelta { get; set; }
 
     [JsonPropertyName("color")]
     public Color? Color { get; set; }
