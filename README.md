@@ -4,95 +4,24 @@ Q42.HueApi
 Open source library for communication with the Philips Hue bridge.
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
-This library targets `.netstandard2.1`, `.net45`, `.net 6` and `.net 7`!
+This library targets `.net461`, `.net 6` and `.net 7`!
 Download directly from NuGet:
-- Clip API v1: [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
 - Clip API v2: **new** [HueApi on NuGet](https://nuget.org/packages/HueApi)
+- Clip API v1: (legacy) [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
 
 Features:
 - Support for Hue Entertainment API
 - Support for the Hue Remote API
 - Multiple Color Converters
-- **NEW: Support for Clip V2 API** with the new [HueApi package on NuGet](https://www.nuget.org/packages/HueApi/)
-
-## How to use?
-Some basic usage examples
-
-### Bridge
-Before you can communicate with the Philips Hue Bridge, you need to find the bridge and register your application:
-
-```cs
-	IBridgeLocator locator = new HttpBridgeLocator(); //Or: LocalNetworkScanBridgeLocator, MdnsBridgeLocator, MUdpBasedBridgeLocator
-	var bridges  = await locator.LocateBridgesAsync(TimeSpan.FromSeconds(5));
-
-	//Advanced Bridge Discovery options:
-	bridges = await HueBridgeDiscovery.CompleteDiscoveryAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(30));
-	bridges	= await HueBridgeDiscovery.FastDiscoveryWithNetworkScanFallbackAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(30));
-	bridges = await HueBridgeDiscovery.CompleteDiscoveryAsync(TimeSpan.FromSeconds(5));
-
-```
-	
-Register your application
-	
-```cs
-	ILocalHueClient client = new LocalHueClient("ip");
-	//Make sure the user has pressed the button on the bridge before calling RegisterAsync
-	//It will throw an LinkButtonNotPressedException if the user did not press the button
-	var appKey = await client.RegisterAsync("mypersonalappname", "mydevicename");
-	//Save the app key for later use
-```
-
-If you already registered an appname, you can initialize the HueClient with the app's key:	
-
-```cs
-	client.Initialize("mypersonalappkey");
-```
-
-### Control the lights
-Main usage of this library is to be able to control your lights. We use a LightCommand for that. A LightCommand can be send to one or more / multiple lights. A LightCommand can hold a color, effect, on/off etc.
-
-```cs
-	var command = new LightCommand();
-	command.On = true;
-```
-	
-There are some helpers to set a color on a command:
-	
-```cs
-	//Turn the light on and set a Hex color for the command (see the section about Color Converters)
-    command.TurnOn().SetColor(new RGBColor("FF00AA"))
-```
-
-LightCommands also support Effects and Alerts
-```cs
-	//Blink once
-	command.Alert = Alert.Once;
-	
-	//Or start a colorloop
-	command.Effect = Effect.ColorLoop;
-```
-
-Once you have composed your command, send it to one or more lights
-
-```cs
-	client.SendCommandAsync(command, new List<string> { "1" });
-```
-
-Or send it to all lights
-
-```cs
-	client.SendCommandAsync(command);
-```
-
-## Clip V2 API
-Hue is developing a new Clip V2 API. This library has support for the new Clip V2 APIs. Philips Hue is still developing these APIs and new functionality is added regularly. Please create an issue or PR if you need something that is not supported yet.
+- **NEW: Support for Clip V2 API** 
 
 Make sure to install the new packages:
 - [HueApi from NuGet](https://nuget.org/packages/HueApi)
 - [HueApi.ColorConverters from NuGet](https://nuget.org/packages/HueApi.ColorConverters)
 - [HueApi.Entertainment from NuGet](https://nuget.org/packages/HueApi.Entertainment)
 
-### Clip V2 Example
+## How to use?
+Some basic usage examples
 
 Use the LocalHueApi:
 ```cs
@@ -120,6 +49,10 @@ var req = new UpdateLight()
 var result = await localHueApi.UpdateLightAsync(id, req);
 ```
 
+## API Reference
+Use the API reference provided by Hue to discover the capabilities of the API.
+https://developers.meethue.com/develop/hue-api-v2/api-reference/
+
 ## EventStream
 Listen to the new EventStream to get notified by the Hue Bridge when new events occur.
 
@@ -145,6 +78,9 @@ void EventStreamMessage(List<EventStreamResponse> events)
 
 Sample usage can be found in the included Console Sample App: `HueApi.ConsoleSample`
 
+## Clip V2 API
+Philips Hue has developed a new Clip V2 API. This library has support for the new Clip V2 APIs. Philips Hue is still developing these APIs and new functionality is added regularly. Please create an issue or PR if you need something that is not supported yet.
+
 
 ## Support for Hue Entertainment.  
 Check out the [HueApi.Entertainment documentation](https://github.com/michielpost/Q42.HueApi/blob/master/EntertainmentApi.md)   
@@ -156,23 +92,21 @@ There is also a Philips Hue Remote API. It allows you to send commands to a brid
 Q42.HueApi is compatible with the remote API.  There's a sample app and documentation can be found here:
 https://github.com/michielpost/Q42.HueApi/blob/master/RemoteApi.md
 
-For remote usage, use the `new RemoteHueApi("KEY", "token")`
+For remote usage with the new CLIP v2 API, use the `new RemoteHueApi("KEY", "token")`
 
 
 ### Color Conversion
 The Philips Hue lights work with Brightness, Saturation, Hue and X, Y properties. More info can be found in the Philips Hue Developer documentation: http://www.developers.meethue.com/documentation/core-concepts#color_gets_more_complicated
-It's not trivial to convert the light colors to a color system developers like to work with, like RGB or HEX. Q42.HueApi has 3 different color converters out of the box. They are in a seperate package and it's easy to create your own color converter.
+It's not trivial to convert the light colors to a color system developers like to work with, like RGB or HEX. HueApi has 2 different color converters out of the box. They are in a seperate package and it's easy to create your own color converter.
 
-The `Q42.HueApi.ColorConverters` NuGet package contains:
+The `HueApi.ColorConverters` NuGet package contains:
  - *Original*:  The original converter based on a large XY array.
- - *Gamut*: Uses the provided Gamut (type) provided by each light.
  - *HSB*: Converts based on Hue, Brightness and Saturation.
 
  How to use a color converter?
  Add one of the following usings:  
- `using Q42.HueApi.ColorConverters.Original`  
- `using Q42.HueApi.ColorConverters.Gamut`  
- `using Q42.HueApi.ColorConverters.HSB`  
+ `using HueApi.ColorConverters.Original`  
+ `using HueApi.ColorConverters.HSB`  
 
  This will add extension methods to `Light`, `State` and `LightCommand`. So you can set the color using `new RGBColor()` and convert the `State` back to `RGBColor`
 
@@ -181,8 +115,8 @@ The `Q42.HueApi.ColorConverters` NuGet package contains:
 
 ## How To install?
 Download the source from GitHub or get the compiled assembly from NuGet
-- Clip API v1: [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
 - Clip API v2: **new** [HueApi on NuGet](https://nuget.org/packages/HueApi)
+- Clip API v1: (legacy) [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
 
 ## Credits
 This library is made possible by contributions from:
@@ -193,13 +127,9 @@ This library is made possible by contributions from:
 * [@Indigo744](https://github.com/Indigo744)
 * [and others](https://github.com/michielpost/Q42.HueApi/graphs/contributors)
 
-### Open Source Project Credits
-
-* Q42.HueApi: Newtonsoft.Json is used for object serialization
-
 ## License
 
-Q42.HueApi is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form"). Refer to [license.txt](https://github.com/michielpost/Q42.HueApi/blob/master/LICENSE.txt) for more information.
+HueApi is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form"). Refer to [license.txt](https://github.com/michielpost/Q42.HueApi/blob/master/LICENSE.txt) for more information.
 
 ## Contributions
 

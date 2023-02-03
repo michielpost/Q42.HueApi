@@ -1,4 +1,4 @@
-Q42.HueApi.Streaming
+HueApi.Entertainment
 =========
 
 Hue Entertainment API client to stream messages to the Hue Bridge.
