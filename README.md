@@ -4,7 +4,7 @@ Q42.HueApi
 Open source library for communication with the Philips Hue bridge.
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
-This library targets `.net461`, `.net 6` and `.net 7`!
+This library targets `.net462`, `.net 6` and `.net 7`!
 Download directly from NuGet:
 - Clip API v2: **new** [HueApi on NuGet](https://nuget.org/packages/HueApi)
 - Clip API v1: (legacy) [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
@@ -31,11 +31,12 @@ var localHueApi = new LocalHueApi("BRIDGE_IP", "KEY");
 Register your application
 	
 ```cs
-	//Make sure the user has pressed the button on the bridge before calling RegisterAsync
-	//It will throw an LinkButtonNotPressedException if the user did not press the button
-	var regResult = await LocalHueClient.RegisterAsync("BRIDGE_IP", "mypersonalappname", "mydevicename");
-	//Save the app key for later use and use it to initialize LocalHueApi
-	var appKey = regResult.Username;
+//Make sure the user has pressed the button on the bridge before calling RegisterAsync
+//It will throw an LinkButtonNotPressedException if the user did not press the button
+var regResult = await LocalHueClient.RegisterAsync("BRIDGE_IP", "mypersonalappname", "mydevicename");
+
+//Save the app key for later use and use it to initialize LocalHueApi
+var appKey = regResult.Username;
 ```
 
 Change the lights:
@@ -46,6 +47,7 @@ var id = all.Data.Last().Id; //Pick a light
 var req = new UpdateLight()
 	.TurnOn()
 	.SetColor(new ColorConverters.RGBColor("FF0000"));
+	
 var result = await localHueApi.UpdateLightAsync(id, req);
 ```
 
