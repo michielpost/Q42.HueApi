@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace HueApi.Models
 {
   [DebuggerDisplay("{X}, {Y}, {Z}")]
-  public class HuePosition
+  public record HuePosition
   {
     public HuePosition()
     {

@@ -91,7 +91,7 @@ namespace HueApi.Entertainment.Models
     private readonly object transitionLock = new object();
 
     public HuePosition LightLocation { get; private set; }
-
+    public List<Guid> DeviceIds { get; }
     public byte Id { get; set; }
 
     public EntertainmentState State { get; set; } = new EntertainmentState();
@@ -113,10 +113,11 @@ namespace HueApi.Entertainment.Models
     }
 
 
-    public EntertainmentLight(byte id, HuePosition location)
+    public EntertainmentLight(byte id, HuePosition location, List<Guid> deviceIds)
     {
       Id = id;
       LightLocation = location;
+      DeviceIds = deviceIds;
     }
 
     /// <summary>

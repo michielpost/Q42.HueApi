@@ -33,6 +33,8 @@ namespace HueApi.Entertainment.ConsoleSample
       var allLightsOrderedFlat = baseEntLayer.OrderBy(x => x.LightLocation.X).ThenBy(x => x.LightLocation.Y).ToList();
       var orderedByDistance = baseEntLayer.OrderBy(x => x.LightLocation.Distance(0, 0, 0)).To2DGroup();
       var orderedByAngle = baseEntLayer.OrderBy(x => x.LightLocation.Angle(0, 0)).To2DGroup();
+      var groupedByDevice = baseEntLayer.To2DDeviceGroup();
+
       var line1 = baseEntLayer.Where(x => x.LightLocation.X <= -0.6).ToList();
       var line2 = baseEntLayer.Where(x => x.LightLocation.X > -0.6 && x.LightLocation.X <= -0.1).ToList();
       var line3 = baseEntLayer.Where(x => x.LightLocation.X > -0.1 && x.LightLocation.X <= 0.1).ToList();
@@ -44,6 +46,19 @@ namespace HueApi.Entertainment.ConsoleSample
 
 
       CancellationTokenSource cst = new CancellationTokenSource();
+
+      if(groupedByDevice.Where(x => x.Count() > 5).Any())
+      {
+        Console.WriteLine("Knight Rider on Gradient Play Lightstrips");
+        foreach(var group in groupedByDevice.Where(x => x.Count() > 5))
+        {
+          group.To2DGroup().KnightRider(cst.Token);
+        }
+       
+        //allLightsOrdered.KnightRider(cst.Token);
+        cst = WaitCancelAndNext(cst);
+
+      }
 
       //Console.WriteLine("Blue line on 90 degree angle");
       //var blueLineEffect = new HorizontalScanLineEffect();

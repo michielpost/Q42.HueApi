@@ -18,6 +18,22 @@ namespace HueApi.Entertainment.Effects
       return group.Select(x => new List<EntertainmentLight> { x });
     }
 
+    public static IEnumerable<IEnumerable<EntertainmentLight>> To2DDeviceGroup(this IEnumerable<EntertainmentLight> group)
+    {
+      List<List<EntertainmentLight>> result = new();
+
+      var devices = group.SelectMany(x => x.DeviceIds).Distinct();
+      foreach(var deviceId in devices)
+      {
+        var channelsForDevice = group.Where(x => x.DeviceIds.Contains(deviceId)).ToList();
+
+        if(channelsForDevice.Any())
+          result.Add(channelsForDevice);
+      }
+
+      return result;
+    }
+
     public static Task SetColor(this IEnumerable<IEnumerable<EntertainmentLight>> group, CancellationToken cancellationToken, RGBColor color, IteratorEffectMode mode = IteratorEffectMode.Cycle, IteratorEffectMode secondaryIteratorMode = IteratorEffectMode.All, Func<TimeSpan>? waitTime = null, Func<TimeSpan>? transitionTime = null, TimeSpan? duration = null)
     {
       var list = new List<RGBColor>() { color };
@@ -152,7 +168,7 @@ namespace HueApi.Entertainment.Effects
         Task.Run(async () =>
         {
           await Task.Delay(t, ct).ConfigureAwait(false);
-          current.SetBrightness(ct, 0, TimeSpan.FromMilliseconds(750));
+          current.SetBrightness(ct, 0, TimeSpan.FromMilliseconds(250));
         }, ct);
         return Task.CompletedTask;
       }, IteratorEffectMode.Bounce, IteratorEffectMode.All, () => TimeSpan.FromMilliseconds(225), duration);

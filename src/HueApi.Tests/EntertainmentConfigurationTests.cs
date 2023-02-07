@@ -91,6 +91,38 @@ namespace HueApi.Tests
     }
 
     [TestMethod]
+    public async Task SetGradientLightStripLocation()
+    {
+      var all = await localHueClient.GetEntertainmentConfigurationsAsync();
+      var current = all.Data.Last();
+
+      await SetAndCheckPositions(current, new HuePosition(-0.5, -0.2, 0), new HuePosition(-0.1, -0.1, 0));
+
+    }
+
+    private async Task SetAndCheckPositions(EntertainmentConfiguration current, HuePosition pos1, HuePosition pos2)
+    {
+      var id = current.Id;
+
+      UpdateEntertainmentConfiguration req = new UpdateEntertainmentConfiguration();
+      req.Locations = current.Locations;
+      req.Locations.ServiceLocations[0].Positions[0] = pos1;
+      req.Locations.ServiceLocations[0].Positions[1] = pos2;
+
+      var result = await localHueClient.UpdateEntertainmentConfigurationAsync(id, req);
+      Assert.IsFalse(result.HasErrors);
+
+      var newConfig = await localHueClient.GetEntertainmentConfigurationAsync(id);
+
+      Assert.IsNotNull(newConfig);
+      Assert.AreEqual(newConfig.Data.First().Locations.ServiceLocations[0].Positions[0], pos1);
+      Assert.AreEqual(newConfig.Data.First().Locations.ServiceLocations[0].Positions[1], pos2);
+
+      Assert.AreEqual(newConfig.Data.First().Channels[0].Position, pos1);
+      Assert.AreEqual(newConfig.Data.First().Channels[2].Position, pos2);
+    }
+
+    [TestMethod]
     public async Task CreateGetDeleteEntertainmentConfiguration()
     {
       //Get light to use in the entertainment area

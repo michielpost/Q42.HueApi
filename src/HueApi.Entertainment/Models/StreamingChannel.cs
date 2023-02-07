@@ -13,7 +13,7 @@ namespace HueApi.Entertainment.Models
   public class StreamingChannel
   {
     public HuePosition ChannelLocation { get; private set; }
-
+    public List<Guid> DeviceIds { get; }
     public byte Id { get; set; }
 
     public StreamingState State { get; set; } = new StreamingState();
@@ -21,10 +21,17 @@ namespace HueApi.Entertainment.Models
     // public List<Transition> Transitions { get; set; } = new List<Transition>();
 
 
-    public StreamingChannel(int id, HuePosition location)
+    /// <summary>
+    /// StreamingChannel
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="location"></param>
+    /// <param name="deviceIds">Device IDs targeted with this channel</param>
+    public StreamingChannel(int id, HuePosition location, List<Guid> deviceIds)
     {
       Id = Convert.ToByte(id);
       ChannelLocation = location;
+      DeviceIds = deviceIds;
     }
 
     internal IEnumerable<byte> GetState()

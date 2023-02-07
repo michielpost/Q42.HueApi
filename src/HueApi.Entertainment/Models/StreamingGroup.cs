@@ -32,21 +32,21 @@ namespace HueApi.Entertainment.Models
     /// <param name="lightIds"></param>
     public StreamingGroup(List<int> channelIds)
     {
-      this.AddRange(channelIds.Select(x => new StreamingChannel(x, new HuePosition())));
-    }
-
-    public StreamingGroup(List<EntertainmentChannel> channels)
-    {
-      AddRange(channels.Select(x => new StreamingChannel(x.ChannelId, x.Position)));
+      this.AddRange(channelIds.Select(x => new StreamingChannel(x, new HuePosition(), new())));
     }
 
     /// <summary>
     /// Default constructor
     /// </summary>
-    /// <param name="locations"></param>
-    public StreamingGroup(Dictionary<int, HuePosition> locations)
+    /// <param name="channels"></param>
+    public StreamingGroup(List<EntertainmentChannel> channels)
     {
-      AddRange(locations.Select(x => new StreamingChannel(x.Key, x.Value)));
+      AddRange(channels.Select(x => new StreamingChannel(x.ChannelId, x.Position, x.Members.Select(x => x.Service?.Rid).Where(x => x.HasValue).Select(x => x!.Value).ToList())));
+    }
+
+    public StreamingGroup(Dictionary<int, Tuple<HuePosition, List<Guid>>> locations)
+    {
+      AddRange(locations.Select(x => new StreamingChannel(x.Key, x.Value.Item1, x.Value.Item2)));
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace HueApi.Entertainment.Models
     public EntertainmentLayer GetNewLayer(bool isBaseLayer = false)
     {
       var layer = new EntertainmentLayer(isBaseLayer);
-      var all = this.Select(x => new EntertainmentLight(x.Id, x.ChannelLocation));
+      var all = this.Select(x => new EntertainmentLight(x.Id, x.ChannelLocation, x.DeviceIds));
       layer.AddRange(all);
 
       Layers.Add(layer);
