@@ -55,7 +55,14 @@ namespace HueApi.BridgeLocator
 
       using (CancellationTokenSource cancelSource = new CancellationTokenSource(timeout))
       {
-        return await LocateBridgesAsync(cancelSource.Token);
+        try
+        {
+          return await LocateBridgesAsync(cancelSource.Token);
+        }
+        catch
+        {
+          return Enumerable.Empty<LocatedBridge>();
+        }
       }
     }
 
