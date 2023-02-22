@@ -1,0 +1,114 @@
+@ip=192.168.0.4
+@key=YOURKEY
+@keyHeaderName=hue-application-key
+@resourceUrl=clip/v2/resource
+
+### NOTE: Fill in your key and use Fiddler or another proxy with a trusted SSL certificate
+
+### Light
+GET https://{{ip}}/{{resourceUrl}}/light
+{{keyHeaderName}}: {{key}}
+
+### scene
+GET https://{{ip}}/{{resourceUrl}}/scene
+{{keyHeaderName}}: {{key}}
+
+### smart_scene
+GET https://{{ip}}/{{resourceUrl}}/smart_scene
+{{keyHeaderName}}: {{key}}
+
+### room
+GET https://{{ip}}/{{resourceUrl}}/room
+{{keyHeaderName}}: {{key}}
+
+### zone
+GET https://{{ip}}/{{resourceUrl}}/zone
+{{keyHeaderName}}: {{key}}
+
+### bridge_home
+GET https://{{ip}}/{{resourceUrl}}/bridge_home
+{{keyHeaderName}}: {{key}}
+
+### grouped_light
+GET https://{{ip}}/{{resourceUrl}}/grouped_light
+{{keyHeaderName}}: {{key}}
+
+### device
+GET https://{{ip}}/{{resourceUrl}}/device
+{{keyHeaderName}}: {{key}}
+
+### bridge
+GET https://{{ip}}/{{resourceUrl}}/bridge
+{{keyHeaderName}}: {{key}}
+
+### device_power
+GET https://{{ip}}/{{resourceUrl}}/device_power
+{{keyHeaderName}}: {{key}}
+
+### zigbee_connectivity
+GET https://{{ip}}/{{resourceUrl}}/zigbee_connectivity
+{{keyHeaderName}}: {{key}}
+
+### zgp_connectivity
+GET https://{{ip}}/{{resourceUrl}}/zgp_connectivity
+{{keyHeaderName}}: {{key}}
+
+### zigbee_device_discovery
+GET https://{{ip}}/{{resourceUrl}}/zigbee_device_discovery
+{{keyHeaderName}}: {{key}}
+
+### motion
+GET https://{{ip}}/{{resourceUrl}}/motion
+{{keyHeaderName}}: {{key}}
+
+### temperature
+GET https://{{ip}}/{{resourceUrl}}/temperature
+{{keyHeaderName}}: {{key}}
+
+### light_level
+GET https://{{ip}}/{{resourceUrl}}/light_level
+{{keyHeaderName}}: {{key}}
+
+### button
+GET https://{{ip}}/{{resourceUrl}}/button
+{{keyHeaderName}}: {{key}}
+
+### relative_rotary
+GET https://{{ip}}/{{resourceUrl}}/relative_rotary
+{{keyHeaderName}}: {{key}}
+
+### behavior_script
+GET https://{{ip}}/{{resourceUrl}}/behavior_script
+{{keyHeaderName}}: {{key}}
+
+### behavior_instance
+GET https://{{ip}}/{{resourceUrl}}/behavior_instance
+{{keyHeaderName}}: {{key}}
+
+### geofence_client
+GET https://{{ip}}/{{resourceUrl}}/geofence_client
+{{keyHeaderName}}: {{key}}
+
+### geolocation
+GET https://{{ip}}/{{resourceUrl}}/geolocation
+{{keyHeaderName}}: {{key}}
+
+### entertainment_configuration
+GET https://{{ip}}/{{resourceUrl}}/entertainment_configuration
+{{keyHeaderName}}: {{key}}
+
+### entertainment
+GET https://{{ip}}/{{resourceUrl}}/entertainment
+{{keyHeaderName}}: {{key}}
+
+### homekit
+GET https://{{ip}}/{{resourceUrl}}/homekit
+{{keyHeaderName}}: {{key}}
+
+### matter
+GET https://{{ip}}/{{resourceUrl}}/matter
+{{keyHeaderName}}: {{key}}
+
+### matter_fabric
+GET https://{{ip}}/{{resourceUrl}}/matter_fabric
+{{keyHeaderName}}: {{key}}
