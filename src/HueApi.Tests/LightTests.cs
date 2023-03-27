@@ -237,5 +237,29 @@ namespace HueApi.Tests
       Assert.IsTrue(result.Data.Count == 1);
       Assert.AreEqual(id, result.Data.First().Rid);
     }
+
+
+    [TestMethod]
+    public async Task TurnOnTurnOffTest()
+    {
+      var all = await localHueClient.GetLightsAsync();
+      var id = all.Data.First().Id;
+
+      var turnOnreq = new UpdateLight().TurnOn();
+      var turnOnResult = await localHueClient.UpdateLightAsync(id, turnOnreq);
+
+      Assert.IsNotNull(turnOnResult);
+      Assert.IsFalse(turnOnResult.HasErrors);
+      Assert.AreEqual(id, turnOnResult.Data.First().Rid);
+
+
+      var turnOffreq = new UpdateLight().TurnOff();
+      var turnOffResult = await localHueClient.UpdateLightAsync(id, turnOffreq);
+
+      Assert.IsNotNull(turnOffResult);
+      Assert.IsFalse(turnOffResult.HasErrors);
+      Assert.AreEqual(id, turnOffResult.Data.First().Rid);
+
+    }
   }
 }
