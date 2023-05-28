@@ -158,8 +158,8 @@ namespace HueApi
     #endregion
 
     #region Relative Rotary
-    public Task<HueResponse<RelativeRotary>> GetRelativeRotaryAsync() => HueGetRequestAsync<RelativeRotary>(RelativeRotaryUrl);
-    public Task<HueResponse<RelativeRotary>> GetRelativeRotaryAsync(Guid id) => HueGetRequestAsync<RelativeRotary>(ResourceIdUrl(RelativeRotaryUrl, id));
+    public Task<HueResponse<RelativeRotaryResource>> GetRelativeRotaryAsync() => HueGetRequestAsync<RelativeRotaryResource>(RelativeRotaryUrl);
+    public Task<HueResponse<RelativeRotaryResource>> GetRelativeRotaryAsync(Guid id) => HueGetRequestAsync<RelativeRotaryResource>(ResourceIdUrl(RelativeRotaryUrl, id));
     public Task<HuePutResponse> UpdateRelativeRotaryAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(RelativeRotaryUrl, id), data);
     #endregion
 
