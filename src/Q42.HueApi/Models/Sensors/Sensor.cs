@@ -25,6 +25,7 @@ namespace Q42.HueApi.Models
       ZGPSwitch,
       ZLLPresence,
       ZLLSwitch,
+      ZLLRelativeRotary,
       ZLLTemperature
   {
     [JsonProperty("state")]
@@ -76,10 +77,20 @@ namespace Q42.HueApi.Models
       ZGPSwitchState,
       ZLLPresenceState,
       ZLLSwitchState,
+      ZLLRelativeRotaryState,
       ZLLTemperatureState
   {
     [JsonProperty("buttonevent")]
     public int? ButtonEvent { get; set; }
+
+    [JsonProperty("rotaryevent")]
+    public int? RotaryEvent { get; set; }
+
+    [JsonProperty("expectedrotation")]
+    public int? ExpectedRotation { get; set; }
+
+    [JsonProperty("expectedeventduration")]
+    public int? ExpectedEventDuration { get; set; }
 
     [JsonProperty("dark")]
     public bool? Dark { get; set; }
@@ -125,6 +136,7 @@ namespace Q42.HueApi.Models
       ZGPSwitchConfig,
       ZLLPresenceConfig,
       ZLLSwitchConfig,
+      ZLLRelativeRotaryConfig,
       ZLLTemperatureConfig
   {
     [JsonProperty("alert")]
@@ -205,6 +217,9 @@ namespace Q42.HueApi.Models
   {
     [JsonProperty("buttonevent")]
     public int ButtonEvent { get; set; }
+
+    [JsonProperty("rotaryevent")]
+    public int RotaryEvent { get; set; }
 
     [JsonProperty("eventtype")]
     public string EventType { get; set; } = default!;
