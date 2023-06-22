@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetLightLevelsAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateSensorRequest req = new UpdateSensorRequest();
       var result = await localHueClient.UpdateLightLevelAsync(id, req);
 
       Assert.IsNotNull(result);

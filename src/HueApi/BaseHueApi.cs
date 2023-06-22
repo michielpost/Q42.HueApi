@@ -134,21 +134,21 @@ namespace HueApi
     #endregion
 
     #region Motion
-    public Task<HueResponse<Motion>> GetMotionsAsync() => HueGetRequestAsync<Motion>(MotionUrl);
-    public Task<HueResponse<Motion>> GetMotionAsync(Guid id) => HueGetRequestAsync<Motion>(ResourceIdUrl(MotionUrl, id));
-    public Task<HuePutResponse> UpdateMotionAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(MotionUrl, id), data);
+    public Task<HueResponse<MotionResource>> GetMotionsAsync() => HueGetRequestAsync<MotionResource>(MotionUrl);
+    public Task<HueResponse<MotionResource>> GetMotionAsync(Guid id) => HueGetRequestAsync<MotionResource>(ResourceIdUrl(MotionUrl, id));
+    public Task<HuePutResponse> UpdateMotionAsync(Guid id, UpdateSensorRequest data) => HuePutRequestAsync(ResourceIdUrl(MotionUrl, id), data);
     #endregion
 
     #region Temperature
-    public Task<HueResponse<Temperature>> GetTemperaturesAsync() => HueGetRequestAsync<Temperature>(TemperatureUrl);
-    public Task<HueResponse<Temperature>> GetTemperatureAsync(Guid id) => HueGetRequestAsync<Temperature>(ResourceIdUrl(TemperatureUrl, id));
-    public Task<HuePutResponse> UpdateTemperatureAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(TemperatureUrl, id), data);
+    public Task<HueResponse<TemperatureResource>> GetTemperaturesAsync() => HueGetRequestAsync<TemperatureResource>(TemperatureUrl);
+    public Task<HueResponse<TemperatureResource>> GetTemperatureAsync(Guid id) => HueGetRequestAsync<TemperatureResource>(ResourceIdUrl(TemperatureUrl, id));
+    public Task<HuePutResponse> UpdateTemperatureAsync(Guid id, UpdateSensorRequest data) => HuePutRequestAsync(ResourceIdUrl(TemperatureUrl, id), data);
     #endregion
 
     #region LightLevel
     public Task<HueResponse<LightLevel>> GetLightLevelsAsync() => HueGetRequestAsync<LightLevel>(LightLevelUrl);
     public Task<HueResponse<LightLevel>> GetLightLevelAsync(Guid id) => HueGetRequestAsync<LightLevel>(ResourceIdUrl(LightLevelUrl, id));
-    public Task<HuePutResponse> UpdateLightLevelAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(LightLevelUrl, id), data);
+    public Task<HuePutResponse> UpdateLightLevelAsync(Guid id, UpdateSensorRequest data) => HuePutRequestAsync(ResourceIdUrl(LightLevelUrl, id), data);
     #endregion
 
     #region Button
@@ -179,16 +179,16 @@ namespace HueApi
 
     #region GeofenceClient
     public Task<HueResponse<GeofenceClient>> GetGeofenceClientsAsync() => HueGetRequestAsync<GeofenceClient>(GeofenceClientUrl);
-    public Task<HuePostResponse> CreateGeofenceClientAsync(BaseResourceRequest data) => HuePostRequestAsync(GeofenceClientUrl, data);
+    public Task<HuePostResponse> CreateGeofenceClientAsync(UpdateGeofenceClient data) => HuePostRequestAsync(GeofenceClientUrl, data);
     public Task<HueResponse<GeofenceClient>> GetGeofenceClientAsync(Guid id) => HueGetRequestAsync<GeofenceClient>(ResourceIdUrl(GeofenceClientUrl, id));
-    public Task<HuePutResponse> UpdateGeofenceClientAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(GeofenceClientUrl, id), data);
+    public Task<HuePutResponse> UpdateGeofenceClientAsync(Guid id, UpdateGeofenceClient data) => HuePutRequestAsync(ResourceIdUrl(GeofenceClientUrl, id), data);
     public Task<HueDeleteResponse> DeleteGeofenceClientAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(GeofenceClientUrl, id));
     #endregion
 
     #region Geolocation
     public Task<HueResponse<Geolocation>> GetGeolocationsAsync() => HueGetRequestAsync<Geolocation>(GeolocationUrl);
     public Task<HueResponse<Geolocation>> GetGeolocationAsync(Guid id) => HueGetRequestAsync<Geolocation>(ResourceIdUrl(GeolocationUrl, id));
-    public Task<HuePutResponse> UpdateGeolocationAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(GeolocationUrl, id), data);
+    public Task<HuePutResponse> UpdateGeolocationAsync(Guid id, UpdateGeolocation data) => HuePutRequestAsync(ResourceIdUrl(GeolocationUrl, id), data);
     #endregion
 
     #region EntertainmentConfiguration

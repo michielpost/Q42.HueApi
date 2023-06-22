@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetMotionsAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateSensorRequest req = new UpdateSensorRequest();
       var result = await localHueClient.UpdateMotionAsync(id, req);
 
       Assert.IsNotNull(result);

@@ -5,9 +5,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HueApi.Models
+namespace HueApi.Models.Requests
 {
-  public class GeofenceClient : HueResource
+  public class UpdateGeofenceClient : BaseResourceRequest
   {
     /// <summary>
     /// (string – minLength: 1 – maxLength: 32)

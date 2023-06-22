@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetTemperaturesAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateSensorRequest req = new UpdateSensorRequest();
       var result = await localHueClient.UpdateTemperatureAsync(id, req);
 
       Assert.IsNotNull(result);

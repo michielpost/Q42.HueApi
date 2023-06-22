@@ -5,10 +5,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HueApi.Models.Sensors
+namespace HueApi.Models.Requests
 {
-  public class Temperature : HueResource
+  public class UpdateSensorRequest : BaseResourceRequest
   {
+    [JsonPropertyName("enabled")]
+    public bool Enabled { get; set; }
+
 
   }
 }

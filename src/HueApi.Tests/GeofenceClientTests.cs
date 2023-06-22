@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetGeofenceClientsAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateGeofenceClient req = new UpdateGeofenceClient();
       var result = await localHueClient.UpdateGeofenceClientAsync(id, req);
 
       Assert.IsNotNull(result);

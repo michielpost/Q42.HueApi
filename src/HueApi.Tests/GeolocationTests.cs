@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetGeolocationsAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateGeolocation req = new UpdateGeolocation();
       var result = await localHueClient.UpdateGeolocationAsync(id, req);
 
       Assert.IsNotNull(result);
