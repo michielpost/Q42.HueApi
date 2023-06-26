@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.GetBehaviorInstancesAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      UpdateBehaviorInstance req = new UpdateBehaviorInstance();
       var result = await localHueClient.UpdateBehaviorInstanceAsync(id, req);
 
       Assert.IsNotNull(result);

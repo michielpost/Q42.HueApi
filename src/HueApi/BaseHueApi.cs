@@ -171,9 +171,9 @@ namespace HueApi
 
     #region BehaviorInstance
     public Task<HueResponse<BehaviorInstance>> GetBehaviorInstancesAsync() => HueGetRequestAsync<BehaviorInstance>(BehaviorInstanceUrl);
-    public Task<HuePostResponse> CreateBehaviorInstanceAsync(BaseResourceRequest data) => HuePostRequestAsync(BehaviorInstanceUrl, data);
+    public Task<HuePostResponse> CreateBehaviorInstanceAsync(UpdateBehaviorInstance data) => HuePostRequestAsync(BehaviorInstanceUrl, data);
     public Task<HueResponse<BehaviorInstance>> GetBehaviorInstanceAsync(Guid id) => HueGetRequestAsync<BehaviorInstance>(ResourceIdUrl(BehaviorInstanceUrl, id));
-    public Task<HuePutResponse> UpdateBehaviorInstanceAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(BehaviorInstanceUrl, id), data);
+    public Task<HuePutResponse> UpdateBehaviorInstanceAsync(Guid id, UpdateBehaviorInstance data) => HuePutRequestAsync(ResourceIdUrl(BehaviorInstanceUrl, id), data);
     public Task<HueDeleteResponse> DeleteBehaviorInstanceAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(BehaviorInstanceUrl, id));
     #endregion
 
