@@ -10,8 +10,6 @@ namespace HueApi.Models.Sensors
     [JsonPropertyName("light")]
     public Light Light { get; set; } = default!;
 
-    [JsonPropertyName("owner")]
-    public ResourceIdentifier? Owner { get; set; }
   }
 
   public class Light

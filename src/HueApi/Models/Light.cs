@@ -9,9 +9,6 @@ namespace HueApi.Models
 {
   public class Light : HueResource
   {
-    [JsonPropertyName("owner")]
-    public ResourceIdentifier Owner { get; set; } = default!;
-
     [JsonPropertyName("on")]
     public On On { get; set; } = default!;
 

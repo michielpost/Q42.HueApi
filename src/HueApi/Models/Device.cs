@@ -34,8 +34,6 @@ namespace HueApi.Models
     [JsonPropertyName("product_data")]
     public ProductData ProductData { get; set; } = new();
 
-    [JsonPropertyName("services")]
-    public List<ResourceIdentifier> Services { get; set; } = new();
 
   }
 }

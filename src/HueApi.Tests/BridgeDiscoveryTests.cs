@@ -83,6 +83,15 @@ namespace HueApi.Tests
       });
     }
 
+    [TestMethod]
+    public async Task TestComplete()
+    {
+      var result = await HueBridgeDiscovery.CompleteDiscoveryAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(15));
+
+      Assert.IsNotNull(result);
+    }
+
+
     private async Task TestBridgeLocatorWithTimeout(IBridgeLocator locator, TimeSpan timeout)
     {
       var startTime = DateTime.Now;

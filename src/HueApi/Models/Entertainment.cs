@@ -9,9 +9,6 @@ namespace HueApi.Models
 {
   public class Entertainment : HueResource
   {
-    [JsonPropertyName("owner")]
-    public ResourceIdentifier? Owner { get; set; }
-
     [JsonPropertyName("proxy")]
     public bool Proxy { get; set; }
 

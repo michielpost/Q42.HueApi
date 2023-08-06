@@ -15,8 +15,5 @@ namespace HueApi.Models
     [JsonPropertyName("grouped_services")]
     public List<ResourceIdentifier> GroupedServices { get; set; } = new();
 
-    [JsonPropertyName("services")]
-    public List<ResourceIdentifier> Services { get; set; } = new();
-
   }
 }
