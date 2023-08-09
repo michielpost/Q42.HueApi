@@ -5,6 +5,10 @@
 
 ### NOTE: Fill in your key and use Fiddler or another proxy with a trusted SSL certificate
 
+### Resources
+GET https://{{ip}}/{{resourceUrl}}
+{{keyHeaderName}}: {{key}}
+
 ### Light
 GET https://{{ip}}/{{resourceUrl}}/light
 {{keyHeaderName}}: {{key}}

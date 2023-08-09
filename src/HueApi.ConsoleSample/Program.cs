@@ -1,5 +1,6 @@
 // See https://aka.ms/new-console-template for more information
 using HueApi;
+using HueApi.Models;
 using HueApi.Models.Responses;
 using Microsoft.Extensions.Configuration;
 
@@ -15,6 +16,27 @@ Console.WriteLine($"Connecting to {ip} with key: {key}");
 
 
 var localHueClient = new LocalHueApi(ip, key);
+
+Console.WriteLine("Getting all resources...");
+
+var resources = await localHueClient.GetResourcesAsync();
+var roots = resources.Data.Where(x => x.Owner == null);
+
+PrintChildren(resources, null, 0);
+
+void PrintChildren(HueResponse<HueResource> resources, Guid? owner, int level)
+{
+  var children = resources.Data.Where(x => x.Owner?.Rid == owner);
+
+  foreach (var child in children)
+  {
+    string spaces = new string(' ', level);
+    Console.WriteLine(spaces + $"- {child.Type}");
+
+    PrintChildren(resources, child.Id, level + 1);
+  }
+}
+
 
 localHueClient.OnEventStreamMessage += EventStreamMessage;
 localHueClient.StartEventStream();
