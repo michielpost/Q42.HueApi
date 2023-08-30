@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace HueApi
 {
-  public delegate void EventStreamMessage(List<EventStreamResponse> events);
+  public delegate void EventStreamMessage(string bridgeIp, List<EventStreamResponse> events);
 
   public abstract class BaseHueApi
   {

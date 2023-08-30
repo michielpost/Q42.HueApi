@@ -54,7 +54,7 @@ Console.WriteLine("Stoped listening for Hue Bridge events...");
 Console.ReadLine();
 
 
-void EventStreamMessage(List<EventStreamResponse> events)
+void EventStreamMessage(string bridgeIp, List<EventStreamResponse> events)
 {
   Console.WriteLine($"{DateTimeOffset.UtcNow} | {events.Count} new events");
 
@@ -62,7 +62,7 @@ void EventStreamMessage(List<EventStreamResponse> events)
   {
     foreach(var data in hueEvent.Data)
     {
-      Console.WriteLine($"Data: {data.Metadata?.Name} / {data.IdV1}");
+      Console.WriteLine($"Bridge IP: {bridgeIp} | Data: {data.Metadata?.Name} / {data.IdV1}");
     }
   }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HueApi.Models
 {
-  public class LightAction : IUpdateColor, IUpdateColorTemperature, IUpdateOn
+  public class LightAction : IUpdateColor, IUpdateColorTemperature, IUpdateOn, IUpdateDynamics
   {
     [JsonPropertyName("on")]
     public On? On { get; set; }

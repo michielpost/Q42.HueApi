@@ -226,7 +226,7 @@ namespace HueApi.Models
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum Effect
   {
-    no_effect, fire, candle, sparkle
+    no_effect, fire, candle, sparkle, prism, glisten, opal
   }
 
   public class TimedEffects

@@ -158,17 +158,22 @@ namespace HueApi.Tests
       //Turn red
       var req = new UpdateLight()
         .TurnOn();
-        //.SetColor(new ColorConverters.RGBColor("FF0000"));
+      //.SetColor(new ColorConverters.RGBColor("FF0000"));
 
-      req.Gradient = new Gradient();
-      req.Gradient.Mode = GradientMode.interpolated_palette;
-      req.Gradient.Points = new System.Collections.Generic.List<GradientPoint>()
+      //req.Gradient = new Gradient();
+      //req.Gradient.Mode = GradientMode.interpolated_palette;
+      //req.Gradient.Points = new System.Collections.Generic.List<GradientPoint>()
+      //{
+      //  new GradientPoint().SetColor(new ColorConverters.RGBColor("FF0000")), //red
+      //  new GradientPoint().SetColor(new ColorConverters.RGBColor("00FF00")), //green
+      //  new GradientPoint().SetColor(new ColorConverters.RGBColor("0000FF")), //blue
+      //  new GradientPoint().SetColor(new ColorConverters.RGBColor("FFA500")), //orange
+      //  new GradientPoint().SetColor(new ColorConverters.RGBColor("A020F0")), //purple
+      //};
+
+      req.Effects = new Effects()
       {
-        new GradientPoint().SetColor(new ColorConverters.RGBColor("FF0000")), //red
-        new GradientPoint().SetColor(new ColorConverters.RGBColor("00FF00")), //green
-        new GradientPoint().SetColor(new ColorConverters.RGBColor("0000FF")), //blue
-        new GradientPoint().SetColor(new ColorConverters.RGBColor("FFA500")), //orange
-        new GradientPoint().SetColor(new ColorConverters.RGBColor("A020F0")), //purple
+        Effect = Effect.prism
       };
 
       var result = await localHueClient.UpdateLightAsync(id, req);

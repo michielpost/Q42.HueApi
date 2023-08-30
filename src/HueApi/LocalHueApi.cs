@@ -69,7 +69,7 @@ namespace HueApi
 
                   if (data != null && data.Any())
                   {
-                    OnEventStreamMessage?.Invoke(data);
+                    OnEventStreamMessage?.Invoke(this.ip, data);
                   }
                 }
               }

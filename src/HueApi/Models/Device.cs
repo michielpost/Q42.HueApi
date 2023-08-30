@@ -27,6 +27,9 @@ namespace HueApi.Models
 
     [JsonPropertyName("software_version")]
     public string SoftwareVersion { get; set; } = default!;
+
+    [JsonPropertyName("hardware_platform_type")]
+    public string HardwarePlatformType { get; set; } = default!;
   }
 
   public class Device : HueResource

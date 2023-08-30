@@ -127,5 +127,44 @@ namespace HueApi.Models.Requests
       };
       return lightCommand;
     }
+
+    public static T SetDuration<T>(this T lightCommand, TimeSpan duration) where T : IUpdateDynamics
+    {
+      if (lightCommand == null)
+        throw new ArgumentNullException(nameof(lightCommand));
+
+      lightCommand.Dynamics = new Dynamics
+      {
+        Duration = (int)duration.TotalMilliseconds
+      };
+      return lightCommand;
+    }
+
+    public static T SetDuration<T>(this T lightCommand, int durationMs) where T : IUpdateDynamics
+    {
+      if (lightCommand == null)
+        throw new ArgumentNullException(nameof(lightCommand));
+
+      lightCommand.Dynamics = new Dynamics
+      {
+        Duration = durationMs
+      };
+      return lightCommand;
+    }
+
+    public static T SetSpeed<T>(this T lightCommand, double speed) where T : IUpdateDynamics
+    {
+      if (lightCommand == null)
+        throw new ArgumentNullException(nameof(lightCommand));
+
+      if (!(0 <= speed && speed <= 1))
+        throw new ArgumentOutOfRangeException(nameof(speed), "Value must be between 0 and 1");
+
+      lightCommand.Dynamics = new Dynamics
+      {
+        Speed = speed
+      };
+      return lightCommand;
+    }
   }
 }

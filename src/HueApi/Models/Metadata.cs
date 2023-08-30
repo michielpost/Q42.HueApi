@@ -14,5 +14,12 @@ namespace HueApi.Models
 
     [JsonPropertyName("image")]
     public ResourceIdentifier? Image { get; set; }
+
+    /// <summary>
+    /// Used with Button
+    /// control identifier of the switch which is unique per device. Meaning in combination with type – dots Number of dots – number Number printed on device – other a logical order of controls in switch
+    /// </summary>
+    [JsonPropertyName("control_id")]
+    public int? ControlId { get; set; }
   }
 }
