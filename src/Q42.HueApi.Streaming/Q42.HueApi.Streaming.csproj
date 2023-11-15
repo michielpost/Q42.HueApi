@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net471;net6.0;net7.0</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <TargetFrameworks>netstandard2.1;net471;net8.0;net7.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8625;CS8613</WarningsAsErrors>
     <Authors>Michiel Post, Q42</Authors>
@@ -14,7 +13,7 @@
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>philips hue lights entertainment</PackageTags>
     <PackageId>Q42.HueApi.Entertainment</PackageId>
-    <Version>3.20.1</Version>
+    <Version>3.23.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>

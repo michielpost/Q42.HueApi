@@ -52,11 +52,7 @@ namespace HueApi
         {
           try
           {
-#if NET461
-          using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl)))
-#else
             using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl, cancelToken)))
-#endif
             {
               while (!streamReader.EndOfStream)
               {
@@ -182,11 +178,7 @@ namespace HueApi
       {
         var handler = new HttpClientHandler()
         {
-#if NET461
-          ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-#else
           ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-#endif
         };
 
         client = new HttpClient(handler);

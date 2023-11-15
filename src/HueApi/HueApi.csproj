@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net7.0</TargetFrameworks>
     <LangVersion>preview</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <Authors>Michiel Post</Authors>
     <Description>For Clip v2 API. Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#.</Description>
     <PackageProjectUrl>https://github.com/michielpost/Q42.HueApi</PackageProjectUrl>
@@ -19,11 +19,5 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <NoWarn>CS0105</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Net.Http.Json" Version="7.0.1" Condition="'$(TargetFramework)' == 'net461'" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" Condition="'$(TargetFramework)' == 'net461'" />
-  </ItemGroup>
-
 
 </Project>
