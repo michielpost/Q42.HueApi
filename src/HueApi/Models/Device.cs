@@ -11,25 +11,28 @@ namespace HueApi.Models
   public class ProductData
   {
     [JsonPropertyName("certified")]
-    public bool Certified { get; set; }
+    public bool? Certified { get; set; }
 
     [JsonPropertyName("manufacturer_name")]
-    public string ManufacturerName { get; set; } = default!;
+    public string? ManufacturerName { get; set; }
 
     [JsonPropertyName("model_id")]
-    public string ModelId { get; set; } = default!;
+    public string? ModelId { get; set; }
 
     [JsonPropertyName("product_archetype")]
-    public string ProductArchetype { get; set; } = default!;
+    public string? ProductArchetype { get; set; }
 
     [JsonPropertyName("product_name")]
-    public string ProductName { get; set; } = default!;
+    public string? ProductName { get; set; } 
 
     [JsonPropertyName("software_version")]
-    public string SoftwareVersion { get; set; } = default!;
+    public string? SoftwareVersion { get; set; }
 
     [JsonPropertyName("hardware_platform_type")]
-    public string HardwarePlatformType { get; set; } = default!;
+    public string? HardwarePlatformType { get; set; }
+
+    [JsonPropertyName("function")]
+    public string? Function { get; set; }
   }
 
   public class Device : HueResource

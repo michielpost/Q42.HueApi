@@ -5,6 +5,7 @@ using HueApi.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace HueApi.Tests
     public async Task GetById()
     {
       var all = await localHueClient.GetLightsAsync();
-      var id = all.Data.First().Id;
+      var id = all.Data.Last().Id;
 
       var result = await localHueClient.GetLightAsync(id);
 
@@ -56,12 +57,23 @@ namespace HueApi.Tests
 
       UpdateLight req = new UpdateLight()
       {
-        Alert = new UpdateAlert()
+        Signaling = new SignalingUpdate
+        {
+          Signal = Signal.alternating,
+          Duration = 60000,
+          Colors = new List<Color>
+          {
+            new Color { Xy = new XyPosition { X = 0.456, Y = 0.123, }},
+            new Color { Xy = new XyPosition { X = 0.333, Y = 0.712, }}
+          }
+        }
       };
       var result = await localHueClient.UpdateLightAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
+
+      var resultRead = await localHueClient.GetLightAsync(id);
 
       Assert.IsTrue(result.Data.Count == 1);
       Assert.AreEqual(id, result.Data.First().Rid);

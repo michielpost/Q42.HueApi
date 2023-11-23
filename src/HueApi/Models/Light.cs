@@ -33,6 +33,9 @@ namespace HueApi.Models
     [JsonPropertyName("alert")]
     public Alert? Alert { get; set; }
 
+    [JsonPropertyName("product_data")]
+    public ProductData? ProductData { get; set; }
+
     [JsonPropertyName("signaling")]
     public Signaling? Signaling { get; set; }
 
@@ -61,6 +64,9 @@ namespace HueApi.Models
 
   public class Signaling
   {
+    [JsonPropertyName("signal_values")]
+    public List<Signal>? SignalValues { get; set; }
+
     [JsonPropertyName("status")]
     public SignalingStatus? Status { get; set; }
   }
@@ -78,6 +84,25 @@ namespace HueApi.Models
     /// </summary>
     [JsonPropertyName("estimated_end")]
     public DateTimeOffset? EstimatedEnd { get; set; }
+
+    [JsonPropertyName("colors")]
+    public List<XyPosition>? Colors { get; set; }
+  }
+
+  public class SignalingUpdate
+  {
+    [JsonPropertyName("signal")]
+    public Signal Signal { get; set; }
+
+    [JsonPropertyName("duration")]
+    public int Duration { get; set; }
+
+    /// <summary>
+    /// List of colors to apply to the signal (not supported by all signals)
+    /// </summary>
+    [JsonPropertyName("colors")]
+    public List<Color>? Colors { get; set; }
+
   }
 
   public class Dynamics
@@ -297,6 +322,6 @@ namespace HueApi.Models
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum Signal
   {
-    no_signal, on_off
+    no_signal, on_off, on_off_color, alternating
   }
 }

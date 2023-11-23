@@ -34,6 +34,9 @@ namespace HueApi.Models.Requests
     [JsonPropertyName("alert")]
     public UpdateAlert? Alert { get; set; }
 
+    [JsonPropertyName("signaling")]
+    public SignalingUpdate? Signaling { get; set; }
+
     [JsonPropertyName("gradient")]
     public Gradient? Gradient { get; set; }
 
