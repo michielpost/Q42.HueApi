@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HueApi.Models.Sensors
 {
@@ -12,20 +7,24 @@ namespace HueApi.Models.Sensors
     [JsonPropertyName("enabled")]
     public bool Enabled { get; set; } = default!;
 
-    [JsonPropertyName("motion")]
+    [JsonPropertyName("temperature")]
     public Temperature Temperature { get; set; } = default!;
   }
 
   public class Temperature
   {
-    /// <summary>
-    /// Temperature in 1.00 degrees Celsius
-    /// </summary>
-    [JsonPropertyName("temperature")]
-    public int TemperatureValue { get; set; }
-
     [JsonPropertyName("temperature_valid")]
-    public bool Temperature_valid { get; set; }
+    public bool TemperatureValid { get; set; }
+
+  }
+
+  public class TemperatureReport
+  {
+    [JsonPropertyName("changed")]
+    public DateTimeOffset Changed { get; set; }
+
+    [JsonPropertyName("temperature")]
+    public decimal Temperature { get; set; }
 
   }
 }
