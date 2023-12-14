@@ -16,6 +16,9 @@ namespace HueApi.Models.Sensors
     [JsonPropertyName("temperature_valid")]
     public bool TemperatureValid { get; set; }
 
+    [JsonPropertyName("temperature_report")]
+    public TemperatureReport TemperatureReport { get; set; } = default!;
+
   }
 
   public class TemperatureReport
