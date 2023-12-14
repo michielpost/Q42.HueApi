@@ -14,11 +14,22 @@ namespace HueApi.Models.Sensors
 
   public class Light
   {
+    [JsonPropertyName("light_level_report")]
+    public LightLevelReport LightLevelReport { get; set; } = default!;
+
+  }
+
+  public class LightLevelReport
+  {
+
+    [JsonPropertyName("changed")]
+    public DateTimeOffset Changed { get; set; }
+
+    /// <summary>
+    /// Light level in 10000*log10(lux) +1 measured by sensor. Logarithmic scale used because the human eye adjusts to light levels and small changes at low lux levels are more noticeable than at high lux levels. This allows use of linear scale configuration sliders.
+    /// </summary>
     [JsonPropertyName("light_level")]
     public int LightLevel { get; set; } = default!;
-
-    [JsonPropertyName("light_level_valid")]
-    public bool LightLevelValid { get; set; }
 
     public double LuxLevel
     {

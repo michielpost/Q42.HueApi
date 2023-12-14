@@ -14,15 +14,45 @@ namespace HueApi.Models.Sensors
 
     [JsonPropertyName("motion")]
     public Motion Motion { get; set; } = default!;
+
+    [JsonPropertyName("sensitivity")]
+    public Sensitivity? Sensitivity { get; set; }
+  }
+
+  public class Sensitivity
+  {
+    [JsonPropertyName("status")]
+    public SensitivityStatus Status { get; set; } = default!;
+
+    [JsonPropertyName("sensitivity")]
+    public int SensitivityValue { get; set; }
+
+    [JsonPropertyName("sensitivity_max")]
+    public int? SensitivityMax { get; set; }
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum SensitivityStatus
+  {
+    set, changing
   }
 
   public class Motion
   {
-    [JsonPropertyName("motion")]
-    public bool MotionState { get; set; }
+    [JsonPropertyName("motion_report")]
+    public MotionReport? MotionReport { get; set; }
+  }
 
-    [JsonPropertyName("motion_valid")]
-    public bool MotionValid { get; set; }
-  
+  public class MotionReport
+  {
+    [JsonPropertyName("changed")]
+    public DateTimeOffset Changed { get; set; }
+
+    /// <summary>
+    /// true if motion is detected
+    /// </summary>
+    [JsonPropertyName("motion")]
+    public bool Motion { get; set; }
+
   }
 }

@@ -15,12 +15,27 @@ namespace HueApi.Models
 
   public class Button
   {
-    [JsonPropertyName("last_event")]
-    public ButtonLastEvent? LastEvent { get; set; }
+    [JsonPropertyName("button_report")]
+    public ButtonReport? ButtonReport { get; set; }
+
+    [JsonPropertyName("repeat_interval")]
+    public int? RepeatInterval { get; set; }
+
+    [JsonPropertyName("event_values")]
+    public List<ButtonEvent>? EventValues { get; set; }
+  }
+
+  public class ButtonReport
+  {
+    [JsonPropertyName("updated")]
+    public DateTimeOffset? Updated { get; set; }
+
+    [JsonPropertyName("event")]
+    public ButtonEvent? Event { get; set; }
   }
 
   [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum ButtonLastEvent
+  public enum ButtonEvent
   {
     initial_press, repeat, short_release, long_release, double_short_release, long_press
   }

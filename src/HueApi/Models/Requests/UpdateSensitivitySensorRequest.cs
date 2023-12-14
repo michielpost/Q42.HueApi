@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace HueApi.Models.Requests
 {
-  public class UpdateSensorRequest : BaseResourceRequest
+  public class UpdateSensitivitySensorRequest : UpdateSensorRequest
   {
-    [JsonPropertyName("enabled")]
-    public bool Enabled { get; set; }
+    [JsonPropertyName("sensitivity")]
+    public Sensitivity? Sensitivity { get; set; }
 
   }
 }

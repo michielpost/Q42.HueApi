@@ -18,7 +18,6 @@ namespace HueApi
     protected const string ResourceUrl = "clip/v2/resource";
     protected const string LightUrl = $"{ResourceUrl}/light";
     protected const string SceneUrl = $"{ResourceUrl}/scene";
-    protected const string SmartSceneUrl = $"{ResourceUrl}/smart_scene";
     protected const string RoomUrl = $"{ResourceUrl}/room";
     protected const string ZoneUrl = $"{ResourceUrl}/zone";
     protected const string BridgeHomeUrl = $"{ResourceUrl}/bridge_home";
@@ -30,6 +29,7 @@ namespace HueApi
     protected const string ZgpConnectivityUrl = $"{ResourceUrl}/zgp_connectivity";
     protected const string ZigbeeDeviceDiscoveryUrl = $"{ResourceUrl}/zigbee_device_discovery";
     protected const string MotionUrl = $"{ResourceUrl}/motion";
+    protected const string CameraMotionUrl = $"{ResourceUrl}/camera_motion";
     protected const string TemperatureUrl = $"{ResourceUrl}/temperature";
     protected const string LightLevelUrl = $"{ResourceUrl}/light_level";
     protected const string ButtonUrl = $"{ResourceUrl}/button";
@@ -43,6 +43,11 @@ namespace HueApi
     protected const string HomekitUrl = $"{ResourceUrl}/homekit";
     protected const string MatterUrl = $"{ResourceUrl}/matter";
     protected const string MatterFabricUrl = $"{ResourceUrl}/matter_fabric";
+    //recource
+    protected const string SmartSceneUrl = $"{ResourceUrl}/smart_scene";
+    protected const string ContactUrl = $"{ResourceUrl}/contact";
+    protected const string TamperUrl = $"{ResourceUrl}/tamper";
+
 
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
 
@@ -136,7 +141,13 @@ namespace HueApi
     #region Motion
     public Task<HueResponse<MotionResource>> GetMotionsAsync() => HueGetRequestAsync<MotionResource>(MotionUrl);
     public Task<HueResponse<MotionResource>> GetMotionAsync(Guid id) => HueGetRequestAsync<MotionResource>(ResourceIdUrl(MotionUrl, id));
-    public Task<HuePutResponse> UpdateMotionAsync(Guid id, UpdateSensorRequest data) => HuePutRequestAsync(ResourceIdUrl(MotionUrl, id), data);
+    public Task<HuePutResponse> UpdateMotionAsync(Guid id, UpdateSensitivitySensorRequest data) => HuePutRequestAsync(ResourceIdUrl(MotionUrl, id), data);
+    #endregion
+
+    #region CameraMotion
+    public Task<HueResponse<CameraMotionResource>> GetCameraMotionsAsync() => HueGetRequestAsync<CameraMotionResource>(CameraMotionUrl);
+    public Task<HueResponse<CameraMotionResource>> GetCameraMotionAsync(Guid id) => HueGetRequestAsync<CameraMotionResource>(ResourceIdUrl(CameraMotionUrl, id));
+    public Task<HuePutResponse> UpdateCameraMotionAsync(Guid id, UpdateSensitivitySensorRequest data) => HuePutRequestAsync(ResourceIdUrl(CameraMotionUrl, id), data);
     #endregion
 
     #region Temperature
@@ -227,7 +238,17 @@ namespace HueApi
     public Task<HueDeleteResponse> DeleteMatterFabricAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(MatterFabricUrl, id));
     #endregion
 
+    #region Contact
+    public Task<HueResponse<ContactSensor>> GetContactSensorsAsync() => HueGetRequestAsync<ContactSensor>(ContactUrl);
+    public Task<HueResponse<ContactSensor>> GetContactSensorAsync(Guid id) => HueGetRequestAsync<ContactSensor>(ResourceIdUrl(ContactUrl, id));
+    public Task<HuePutResponse> UpdateContactSensorsAsync(Guid id, UpdateSensorRequest data) => HuePutRequestAsync(ResourceIdUrl(ContactUrl, id), data);
+    #endregion
 
+    #region Tamper
+    public Task<HueResponse<TamperSensor>> GetTamperSensorsAsync() => HueGetRequestAsync<TamperSensor>(TamperUrl);
+    public Task<HueResponse<TamperSensor>> GetTamperSensorAsync(Guid id) => HueGetRequestAsync<TamperSensor>(ResourceIdUrl(TamperUrl, id));
+    public Task<HuePutResponse> UpdateTamperSensorAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(TamperUrl, id), data);
+    #endregion
 
     protected async Task<HueResponse<T>> HueGetRequestAsync<T>(string url)
     {
