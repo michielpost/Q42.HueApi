@@ -34,7 +34,7 @@ namespace HueApi
 
   
 
-    public async void StartEventStream(HttpClient? client = null, CancellationToken? cancellationToken = null)
+    public async Task StartEventStream(HttpClient? client = null, CancellationToken? cancellationToken = null)
     {
       this.eventStreamCancellationTokenSource?.Cancel();
 

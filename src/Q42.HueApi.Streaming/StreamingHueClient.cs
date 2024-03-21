@@ -168,7 +168,7 @@ namespace Q42.HueApi.Streaming
     /// Send a list of states to the Hue Bridge
     /// </summary>
     /// <param name="states"></param>
-    protected virtual void Send(List<byte[]> states)
+    protected virtual void Send(List<byte[]>? states)
     {
       if (states != null)
       {
