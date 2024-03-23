@@ -8,6 +8,7 @@
     <Version>3.23.0</Version>
     <Company>Q42</Company>
     <Authors>Michiel Post, Q42</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>This package only contains the ColorConverers used with Q42.HueApi</Description>
     <PackageProjectUrl>https://github.com/Q42/Q42.HueApi</PackageProjectUrl>
     <PackageIconUrl>https://nugetgallery.blob.core.windows.net/icons/DotLessMinification.0.42.1.png</PackageIconUrl>

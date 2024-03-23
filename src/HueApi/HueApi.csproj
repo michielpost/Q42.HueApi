@@ -8,6 +8,7 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <Version>1.6.1</Version>
     <Authors>Michiel Post</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>For Clip v2 API. Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#.</Description>
     <PackageProjectUrl>https://github.com/michielpost/Q42.HueApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/michielpost/Q42.HueApi</RepositoryUrl>
