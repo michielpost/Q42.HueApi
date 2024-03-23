@@ -5,7 +5,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8625;CS8613</WarningsAsErrors>
-    <Version>3.23.0</Version>
+    <Version>3.23.1</Version>
     <Authors>Michiel Post</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#. Supports .Net Standard 2.0 and .net45</Description>

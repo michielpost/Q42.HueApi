@@ -5,7 +5,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8625;CS8613</WarningsAsErrors>
-    <Version>3.23.0</Version>
+    <Version>3.23.1</Version>
     <Company>Q42</Company>
     <Authors>Michiel Post, Q42</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
