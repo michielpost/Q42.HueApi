@@ -40,6 +40,29 @@ namespace HueApi.Models
     [JsonPropertyName("product_data")]
     public ProductData ProductData { get; set; } = new();
 
+    [JsonPropertyName("usertest")]
+    public UserTest? UserTest { get; set; }
 
+  }
+
+  public class UserTest
+  {
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("usertest")]
+    public bool UserTestValue { get; set; }
+  }
+
+  public class DeviceMode
+  {
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("mode")]
+    public string? Mode { get; set; }
+
+    [JsonPropertyName("mode_values")]
+    public List<string>? ModeValues { get; set; }
   }
 }

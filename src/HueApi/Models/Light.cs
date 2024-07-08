@@ -34,7 +34,7 @@ namespace HueApi.Models
     public Alert? Alert { get; set; }
 
     [JsonPropertyName("product_data")]
-    public ProductData? ProductData { get; set; }
+    public LightProductData? ProductData { get; set; }
 
     [JsonPropertyName("signaling")]
     public Signaling? Signaling { get; set; }
@@ -54,6 +54,18 @@ namespace HueApi.Models
     [JsonPropertyName("powerup")]
     public PowerUp? PowerUp { get; set; }
 
+  }
+
+  public class LightProductData
+  {
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
+
+    [JsonPropertyName("archetype")]
+    public string? ArcheType { get; set; }
+
+    [JsonPropertyName("function")]
+    public string? Function { get; set; }
   }
 
   public class Alert
@@ -298,7 +310,7 @@ namespace HueApi.Models
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum TimedEffect
   {
-    no_effect, sunrise
+    no_effect, sunrise, sunset
   }
 
   [JsonConverter(typeof(JsonStringEnumConverter))]
