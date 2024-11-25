@@ -205,7 +205,7 @@ namespace HueApi.ColorConverters.Original
     /// <param name="xNumber"></param>
     /// <param name="yNumber"></param>
     /// <returns></returns>
-    private static string HexFromXy(double xNumber, double yNumber)
+    internal static string HexFromXy(double xNumber, double yNumber)
     {
       if (xNumber == 0 && yNumber == 0)
       {
@@ -514,7 +514,7 @@ namespace HueApi.ColorConverters.Original
       return new RGBColor("FFFFFF"); //White
     }
 
-    private static RGBColor ColorFromXY(CGPoint xy, string model)
+    internal static RGBColor ColorFromXY(CGPoint xy, string model)
     {
       List<CGPoint> colorPoints = ColorPointsForModel(model);
       bool inReachOfLamps = CheckPointInLampsReach(xy, colorPoints);

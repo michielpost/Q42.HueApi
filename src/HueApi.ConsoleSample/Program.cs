@@ -63,6 +63,12 @@ void EventStreamMessage(string bridgeIp, List<EventStreamResponse> events)
     foreach(var data in hueEvent.Data)
     {
       Console.WriteLine($"Bridge IP: {bridgeIp} | Data: {data.Metadata?.Name} / {data.IdV1}");
+
+      foreach(var jsonData in data.ExtensionData)
+      {
+        Console.WriteLine(jsonData);
+      }
+      Console.WriteLine();
     }
   }
 }
