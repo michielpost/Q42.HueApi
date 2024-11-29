@@ -1,8 +1,9 @@
-// See https://aka.ms/new-console-template for more information
 using HueApi;
 using HueApi.Models;
+using HueApi.Models.Requests;
 using HueApi.Models.Responses;
 using Microsoft.Extensions.Configuration;
+using HueApi.ColorConverters.Original.Extensions;
 
 Console.WriteLine("HueApi Console Sample");
 
@@ -17,34 +18,37 @@ Console.WriteLine($"Connecting to {ip} with key: {key}");
 
 var localHueClient = new LocalHueApi(ip, key);
 
-Console.WriteLine("Getting all resources...");
+//Console.WriteLine("Getting all resources...");
 
-var resources = await localHueClient.GetResourcesAsync();
-var roots = resources.Data.Where(x => x.Owner == null);
+//var resources = await localHueClient.GetResourcesAsync();
+//var roots = resources.Data.Where(x => x.Owner == null);
 
-PrintChildren(resources, null, 0);
+//PrintChildren(resources, null, 0);
 
-void PrintChildren(HueResponse<HueResource> resources, Guid? owner, int level)
-{
-  var children = resources.Data.Where(x => x.Owner?.Rid == owner);
+var allLights = await localHueClient.GetLightsAsync();
+var firstLightId = allLights.Data.First().Id; //First
 
-  foreach (var child in children)
-  {
-    string spaces = new string(' ', level);
-    Console.WriteLine(spaces + $"- {child.Type}");
-
-    PrintChildren(resources, child.Id, level + 1);
-  }
-}
-
+var allGroups = await localHueClient.GetGroupedLightsAsync();
+var allGroupId = allGroups.Data.OrderBy(x=> x.IdV1).First().Id; //All
 
 localHueClient.OnEventStreamMessage += EventStreamMessage;
 localHueClient.StartEventStream();
 
 Console.WriteLine("Waiting for Hue Bridge events...");
 
-//await Task.Delay(TimeSpan.FromHours(1));
 
+Console.WriteLine("Press enter to change the lights to red..");
+Console.ReadLine();
+await ChangeColorForGroup(allGroupId, "FF0000");
+//await ChangeColorForLight(firstLightId, "FF0000");
+
+Console.WriteLine("Press enter to change the lights to green..");
+Console.ReadLine();
+await ChangeColorForGroup(allGroupId, "00FF00");
+//await ChangeColorForLight(firstLightId, "00FF00");
+
+
+Console.WriteLine("Press enter to stop listening for events...");
 Console.ReadLine();
 localHueClient.StopEventStream();
 
@@ -71,5 +75,38 @@ void EventStreamMessage(string bridgeIp, List<EventStreamResponse> events)
       Console.WriteLine();
     }
   }
+}
+
+void PrintChildren(HueResponse<HueResource> resources, Guid? owner, int level)
+{
+  var children = resources.Data.Where(x => x.Owner?.Rid == owner);
+
+  foreach (var child in children)
+  {
+    string spaces = new string(' ', level);
+    Console.WriteLine(spaces + $"- {child.Type}");
+
+    PrintChildren(resources, child.Id, level + 1);
+  }
+}
+
+
+
+Task ChangeColorForGroup(Guid id, string hex)
+{
+  var req = new UpdateGroupedLight()
+  .TurnOn()
+  .SetColor(new HueApi.ColorConverters.RGBColor(hex));
+
+  return localHueClient.UpdateGroupedLightAsync(id, req);
+}
+
+Task ChangeColorForLight(Guid id, string hex)
+{
+  var req = new UpdateLight()
+  .TurnOn()
+  .SetColor(new HueApi.ColorConverters.RGBColor(hex));
+
+  return localHueClient.UpdateLightAsync(id, req);
 }
 
