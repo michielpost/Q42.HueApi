@@ -23,6 +23,6 @@ namespace HueApi.Models
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum ConnectivityStatus
   {
-    connected, disconnected, connectivity_issue, unidirectional_incoming
+    connected, disconnected, connectivity_issue, unidirectional_incoming, pending_discovery
   }
 }

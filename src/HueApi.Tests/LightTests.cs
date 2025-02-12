@@ -175,18 +175,19 @@ namespace HueApi.Tests
       var all = await localHueClient.GetLightsAsync();
 
       //Get gradient light
-      var playStrip = all.Data
+      var officeStrip = all.Data
         .Where(x => x.Metadata != null)
-        .Where(x => x.Metadata!.Archetype  == "hue_lightstrip_tv")
+        .Where(x => x.Metadata!.Archetype  == "hue_lightstrip")
+        .Where(x => x.Metadata!.Name.Contains("office", StringComparison.InvariantCultureIgnoreCase))
         .FirstOrDefault();
 
-      if (playStrip == null)
-        throw new Exception("No Play Led Strip found.");
+      if (officeStrip == null)
+        throw new Exception("No Gradient Led Strip found.");
 
-      var id = playStrip.Id;
+      var id = officeStrip.Id;
 
       //Latest update also supports gradient on a play ledstrip
-      Assert.IsNotNull(playStrip.Gradient);
+      Assert.IsNotNull(officeStrip.Gradient);
 
       //Turn red
       var req = new UpdateLight()
@@ -204,9 +205,12 @@ namespace HueApi.Tests
       //  new GradientPoint().SetColor(new ColorConverters.RGBColor("A020F0")), //purple
       //};
 
-      req.Effects = new Effects()
+      req.EffectsV2 = new EffectsV2()
       {
-        Effect = Effect.prism
+         Action = new EffectAction
+         {
+            Effect = Effect.prism,
+         }
       };
 
       var result = await localHueClient.UpdateLightAsync(id, req);

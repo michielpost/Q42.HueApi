@@ -45,8 +45,13 @@ namespace HueApi.Models
     [JsonPropertyName("gradient")]
     public Gradient? Gradient { get; set; }
 
+    [Obsolete("Use EffectsV2")]
     [JsonPropertyName("effects")]
     public Effects? Effects { get; set; }
+
+    [JsonPropertyName("effects_v2")]
+    public EffectsV2? EffectsV2 { get; set; }
+
 
     [JsonPropertyName("timed_effects")]
     public TimedEffects? TimedEffects { get; set; }
@@ -245,6 +250,7 @@ namespace HueApi.Models
     public double BrightnessDelta { get; set; }
   }
 
+  [Obsolete("Use EffectsV2")]
   public class Effects
   {
     [JsonPropertyName("effect")]
@@ -260,10 +266,44 @@ namespace HueApi.Models
     public List<string>? StatusValues { get; set; }
   }
 
+  public class EffectsV2
+  {
+    [JsonPropertyName("action")]
+    public EffectAction Action { get; set; } = new();
+  }
+
+
+  public class EffectAction
+  {
+    [JsonPropertyName("effect")]
+    public Effect Effect { get; set; } = new();
+
+    [JsonPropertyName("parameters")]
+    public EffectParams? Parameters { get; set; }
+
+  }
+
+  public class EffectParams
+  {
+    [JsonPropertyName("color")]
+    public Color? Color { get; set; }
+
+    [JsonPropertyName("color_temperature")]
+    public ColorTemperature? ColorTemperature { get; set; }
+
+    /// <summary>
+    /// minimum: 0 – maximum: 1)
+    /// </summary>
+    [JsonPropertyName("speed")]
+    public double? Speed { get; set; }
+
+  }
+
+
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum Effect
   {
-    no_effect, fire, candle, sparkle, prism, glisten, opal
+    prism, opal, glisten, sparkle, fire, candle, underwater, cosmos, sunbeam, enchant, no_effect
   }
 
   public class TimedEffects
