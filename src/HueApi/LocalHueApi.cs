@@ -128,8 +128,8 @@ namespace HueApi
       if (generateClientKey)
         obj["generateclientkey"] = true;
 
-      HttpClient client = new HttpClient();
-      var response = await client.PostAsJsonAsync(new Uri($"http://{ip}/api"), obj, cancellationToken.Value).ConfigureAwait(false);
+      var client = GetConfiguredHttpClient(ip);
+      var response = await client.PostAsJsonAsync("api", obj, cancellationToken.Value).ConfigureAwait(false);
       var stringResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
       JsonObject? result;
@@ -172,7 +172,7 @@ namespace HueApi
       return null;
     }
 
-    private HttpClient GetConfiguredHttpClient(HttpClient? client = null, TimeSpan? timeout = null)
+    private static HttpClient GetConfiguredHttpClient(string ip, HttpClient? client = null, TimeSpan? timeout = null)
     {
       if (client == null)
       {
@@ -184,10 +184,18 @@ namespace HueApi
         client = new HttpClient(handler);
       }
 
-      if(timeout.HasValue)
-        client.Timeout= timeout.Value;
+      if (timeout.HasValue)
+        client.Timeout = timeout.Value;
 
       client.BaseAddress = new Uri($"https://{ip}/");
+
+      return client;
+    }
+
+
+    private HttpClient GetConfiguredHttpClient(HttpClient? client = null, TimeSpan? timeout = null)
+    {
+      client = GetConfiguredHttpClient(this.ip, client, timeout);
 
       if (!string.IsNullOrEmpty(key))
         client.DefaultRequestHeaders.Add(KeyHeaderName, key);
@@ -195,7 +203,6 @@ namespace HueApi
       this.client = client;
       return client;
     }
-
 
   }
 }
