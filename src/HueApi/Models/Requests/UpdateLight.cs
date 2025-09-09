@@ -1,10 +1,5 @@
 using HueApi.Models.Requests.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HueApi.Models.Requests
 {
@@ -52,6 +47,9 @@ namespace HueApi.Models.Requests
 
     [JsonPropertyName("powerup")]
     public PowerUp? PowerUp { get; set; }
+
+    [JsonPropertyName("content_configuration")]
+    public ContentConfiguration? ContentConfiguration { get; set; }
 
   }
 

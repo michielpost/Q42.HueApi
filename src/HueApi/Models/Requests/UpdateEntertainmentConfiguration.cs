@@ -18,8 +18,11 @@ namespace HueApi.Models.Requests
     [JsonPropertyName("action")]
     public EntertainmentConfigurationAction? Action { get; set; }
 
+    /// <summary>
+    /// one of screen, monitor, music, 3dspace, other
+    /// </summary>
     [JsonPropertyName("configuration_type")]
-    public EntertainmentConfigurationType? ConfigurationType { get; set; }
+    public string? ConfigurationType { get; set; }
 
     [JsonPropertyName("locations")]
     public Locations? Locations { get; set; }

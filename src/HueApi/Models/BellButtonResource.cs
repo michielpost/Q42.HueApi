@@ -2,13 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace HueApi.Models
 {
-  public class ButtonResource : HueResource
+  public class BellButtonResource : HueResource
   {
     [JsonPropertyName("button")]
-    public Button? Button { get; set; }
+    public BellButton? Button { get; set; }
   }
 
-  public class Button
+  public class BellButton
   {
     [JsonPropertyName("last_event")]
     public ButtonEvent? LastEvent { get; set; }
@@ -23,18 +23,5 @@ namespace HueApi.Models
     public List<ButtonEvent>? EventValues { get; set; }
   }
 
-  public class ButtonReport
-  {
-    [JsonPropertyName("updated")]
-    public DateTimeOffset? Updated { get; set; }
 
-    [JsonPropertyName("event")]
-    public ButtonEvent? Event { get; set; }
-  }
-
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum ButtonEvent
-  {
-    initial_press, repeat, short_release, long_release, double_short_release, long_press
-  }
 }

@@ -24,15 +24,20 @@ namespace HueApi
     protected const string GroupedLightUrl = $"{ResourceUrl}/grouped_light";
     protected const string DeviceUrl = $"{ResourceUrl}/device";
     protected const string BridgeUrl = $"{ResourceUrl}/bridge";
+    protected const string DeviceSoftwareUpdateUrl = $"{ResourceUrl}/device_software_update";
     protected const string DevicePowerUrl = $"{ResourceUrl}/device_power";
     protected const string ZigbeeConnectivityUrl = $"{ResourceUrl}/zigbee_connectivity";
     protected const string ZgpConnectivityUrl = $"{ResourceUrl}/zgp_connectivity";
     protected const string ZigbeeDeviceDiscoveryUrl = $"{ResourceUrl}/zigbee_device_discovery";
     protected const string MotionUrl = $"{ResourceUrl}/motion";
+    protected const string ServiceGroupUrl = $"{ResourceUrl}/service_group";
+    protected const string GroupedMotionUrl = $"{ResourceUrl}/grouped_motion";
+    protected const string GroupedLightLevelUrl = $"{ResourceUrl}/grouped_light_level";
     protected const string CameraMotionUrl = $"{ResourceUrl}/camera_motion";
     protected const string TemperatureUrl = $"{ResourceUrl}/temperature";
     protected const string LightLevelUrl = $"{ResourceUrl}/light_level";
     protected const string ButtonUrl = $"{ResourceUrl}/button";
+    protected const string BellButtonUrl = $"{ResourceUrl}/bell_button";
     protected const string RelativeRotaryUrl = $"{ResourceUrl}/relative_rotary";
     protected const string BehaviorScriptUrl = $"{ResourceUrl}/behavior_script";
     protected const string BehaviorInstanceUrl = $"{ResourceUrl}/behavior_instance";
@@ -43,10 +48,18 @@ namespace HueApi
     protected const string HomekitUrl = $"{ResourceUrl}/homekit";
     protected const string MatterUrl = $"{ResourceUrl}/matter";
     protected const string MatterFabricUrl = $"{ResourceUrl}/matter_fabric";
-    //recource
     protected const string SmartSceneUrl = $"{ResourceUrl}/smart_scene";
     protected const string ContactUrl = $"{ResourceUrl}/contact";
     protected const string TamperUrl = $"{ResourceUrl}/tamper";
+
+    protected const string MotionAreaConfigUrl = $"{ResourceUrl}/motion_area_configuration";
+    protected const string MotionAreaCandidateUrl = $"{ResourceUrl}/motion_area_candidate";
+    protected const string ConvenienceAreaMotionUrl = $"{ResourceUrl}/convenience_area_motion";
+    protected const string SecurityAreaMotionUrl = $"{ResourceUrl}/security_area_motion";
+    protected const string SpeakerUrl = $"{ResourceUrl}/speaker";
+    protected const string ClipUrl = $"{ResourceUrl}/clip";
+    protected const string WifiConnectivityUrl = $"{ResourceUrl}/wifi_connectivity";
+
 
 
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
@@ -114,6 +127,12 @@ namespace HueApi
     public Task<HuePutResponse> UpdateBridgeAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(BridgeUrl, id), data);
     #endregion
 
+    #region DeviceSoftwareUpdate
+    public Task<HueResponse<DeviceSoftwareUpdate>> GetDeviceSoftwareUpdatesAsync() => HueGetRequestAsync<DeviceSoftwareUpdate>(DeviceSoftwareUpdateUrl);
+    public Task<HueResponse<DeviceSoftwareUpdate>> GetDeviceSoftwareUpdateAsync(Guid id) => HueGetRequestAsync<DeviceSoftwareUpdate>(ResourceIdUrl(DeviceSoftwareUpdateUrl, id));
+    public Task<HuePutResponse> UpdateDeviceSoftwareUpdateAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(DeviceSoftwareUpdateUrl, id), data);
+    #endregion
+
     #region DevicePower
     public Task<HueResponse<DevicePower>> GetDevicePowersAsync() => HueGetRequestAsync<DevicePower>(DevicePowerUrl);
     public Task<HueResponse<DevicePower>> GetDevicePowerAsync(Guid id) => HueGetRequestAsync<DevicePower>(ResourceIdUrl(DevicePowerUrl, id));
@@ -144,6 +163,26 @@ namespace HueApi
     public Task<HuePutResponse> UpdateMotionAsync(Guid id, UpdateSensitivitySensorRequest data) => HuePutRequestAsync(ResourceIdUrl(MotionUrl, id), data);
     #endregion
 
+    #region ServiceGroup
+    public Task<HueResponse<ServiceGroupResource>> GetServiceGroupsAsync() => HueGetRequestAsync<ServiceGroupResource>(ServiceGroupUrl);
+    public Task<HuePostResponse> CreateServiceGroupAsync(CreateUpdateServiceGroup data) => HuePostRequestAsync(ServiceGroupUrl, data);
+    public Task<HueResponse<ServiceGroupResource>> GetServiceGroupAsync(Guid id) => HueGetRequestAsync<ServiceGroupResource>(ResourceIdUrl(ServiceGroupUrl, id));
+    public Task<HuePutResponse> UpdateServiceGroupAsync(Guid id, CreateUpdateServiceGroup data) => HuePutRequestAsync(ResourceIdUrl(ServiceGroupUrl, id), data);
+    public Task<HueDeleteResponse> DeleteServiceGroupAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(ServiceGroupUrl, id));
+    #endregion
+
+    #region GroupedMotion
+    public Task<HueResponse<GroupedMotionResource>> GetGroupedMotionsAsync() => HueGetRequestAsync<GroupedMotionResource>(GroupedMotionUrl);
+    public Task<HueResponse<GroupedMotionResource>> GetGroupedMotionAsync(Guid id) => HueGetRequestAsync<GroupedMotionResource>(ResourceIdUrl(GroupedMotionUrl, id));
+    public Task<HuePutResponse> UpdateGroupedMotionAsync(Guid id, UpdateGroupedMotionRequest data) => HuePutRequestAsync(ResourceIdUrl(GroupedMotionUrl, id), data);
+    #endregion
+
+    #region GroupedLightLevel
+    public Task<HueResponse<GroupedLightLevelResource>> GetGroupedLightLevelsAsync() => HueGetRequestAsync<GroupedLightLevelResource>(GroupedLightLevelUrl);
+    public Task<HueResponse<GroupedLightLevelResource>> GetGroupedLightLevelAsync(Guid id) => HueGetRequestAsync<GroupedLightLevelResource>(ResourceIdUrl(GroupedLightLevelUrl, id));
+    public Task<HuePutResponse> UpdateGroupedLightLevelAsync(Guid id, UpdateGroupedLightLevelRequest data) => HuePutRequestAsync(ResourceIdUrl(GroupedLightLevelUrl, id), data);
+    #endregion
+
     #region CameraMotion
     public Task<HueResponse<CameraMotionResource>> GetCameraMotionsAsync() => HueGetRequestAsync<CameraMotionResource>(CameraMotionUrl);
     public Task<HueResponse<CameraMotionResource>> GetCameraMotionAsync(Guid id) => HueGetRequestAsync<CameraMotionResource>(ResourceIdUrl(CameraMotionUrl, id));
@@ -157,8 +196,8 @@ namespace HueApi
     #endregion
 
     #region LightLevel
-    public Task<HueResponse<LightLevel>> GetLightLevelsAsync() => HueGetRequestAsync<LightLevel>(LightLevelUrl);
-    public Task<HueResponse<LightLevel>> GetLightLevelAsync(Guid id) => HueGetRequestAsync<LightLevel>(ResourceIdUrl(LightLevelUrl, id));
+    public Task<HueResponse<LightLevelResource>> GetLightLevelsAsync() => HueGetRequestAsync<LightLevelResource>(LightLevelUrl);
+    public Task<HueResponse<LightLevelResource>> GetLightLevelAsync(Guid id) => HueGetRequestAsync<LightLevelResource>(ResourceIdUrl(LightLevelUrl, id));
     public Task<HuePutResponse> UpdateLightLevelAsync(Guid id, UpdateSensorRequest data) => HuePutRequestAsync(ResourceIdUrl(LightLevelUrl, id), data);
     #endregion
 
@@ -166,6 +205,12 @@ namespace HueApi
     public Task<HueResponse<ButtonResource>> GetButtonsAsync() => HueGetRequestAsync<ButtonResource>(ButtonUrl);
     public Task<HueResponse<ButtonResource>> GetButtonAsync(Guid id) => HueGetRequestAsync<ButtonResource>(ResourceIdUrl(ButtonUrl, id));
     public Task<HuePutResponse> UpdateButtonAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ButtonUrl, id), data);
+    #endregion
+
+    #region BellButton
+    public Task<HueResponse<BellButtonResource>> GetBellButtonsAsync() => HueGetRequestAsync<BellButtonResource>(BellButtonUrl);
+    public Task<HueResponse<BellButtonResource>> GetBellButtonAsync(Guid id) => HueGetRequestAsync<BellButtonResource>(ResourceIdUrl(BellButtonUrl, id));
+    public Task<HuePutResponse> UpdateBellButtonAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(BellButtonUrl, id), data);
     #endregion
 
     #region Relative Rotary
@@ -249,6 +294,51 @@ namespace HueApi
     public Task<HueResponse<TamperSensor>> GetTamperSensorAsync(Guid id) => HueGetRequestAsync<TamperSensor>(ResourceIdUrl(TamperUrl, id));
     public Task<HuePutResponse> UpdateTamperSensorAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(TamperUrl, id), data);
     #endregion
+
+    #region MotionAreaConfiguration
+    public Task<HueResponse<MotionAreaConfigResource>> GetMotionAreaConfigsAsync() => HueGetRequestAsync<MotionAreaConfigResource>(MotionAreaConfigUrl);
+    public Task<HuePostResponse> CreateMotionAreaConfigAsync(CreateUpdateMotionAreaConfig data) => HuePostRequestAsync(MotionAreaConfigUrl, data);
+    public Task<HueResponse<MotionAreaConfigResource>> GetMotionAreaConfigAsync(Guid id) => HueGetRequestAsync<MotionAreaConfigResource>(ResourceIdUrl(MotionAreaConfigUrl, id));
+    public Task<HuePutResponse> UpdateMotionAreaConfigAsync(Guid id, CreateUpdateMotionAreaConfig data) => HuePutRequestAsync(ResourceIdUrl(MotionAreaConfigUrl, id), data);
+    public Task<HueDeleteResponse> DeleteMotionAreaConfigAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(MotionAreaConfigUrl, id));
+    #endregion
+
+    #region MotionAreaCandidate
+    public Task<HueResponse<MotionAreaCandidateResource>> GetMotionAreaCandidatesAsync() => HueGetRequestAsync<MotionAreaCandidateResource>(MotionAreaCandidateUrl);
+    public Task<HueResponse<MotionAreaCandidateResource>> GetMotionAreaCandidateAsync(Guid id) => HueGetRequestAsync<MotionAreaCandidateResource>(ResourceIdUrl(MotionAreaCandidateUrl, id));
+    public Task<HuePutResponse> UpdateMotionAreaCandidateAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(MotionAreaCandidateUrl, id), data);
+    #endregion
+
+    #region ConvenienceAreaMotion
+    public Task<HueResponse<ConvenienceAreaMotionResource>> GetConvenienceAreaMotionsAsync() => HueGetRequestAsync<ConvenienceAreaMotionResource>(ConvenienceAreaMotionUrl);
+    public Task<HueResponse<ConvenienceAreaMotionResource>> GetConvenienceAreaMotionAsync(Guid id) => HueGetRequestAsync<ConvenienceAreaMotionResource>(ResourceIdUrl(ConvenienceAreaMotionUrl, id));
+    public Task<HuePutResponse> UpdateConvenienceAreaMotionAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ConvenienceAreaMotionUrl, id), data);
+    #endregion
+
+    #region SecurityAreaMotion
+    public Task<HueResponse<SecurityAreaMotionResource>> GetSecurityAreaMotionsAsync() => HueGetRequestAsync<SecurityAreaMotionResource>(SecurityAreaMotionUrl);
+    public Task<HueResponse<SecurityAreaMotionResource>> GetSecurityAreaMotionAsync(Guid id) => HueGetRequestAsync<SecurityAreaMotionResource>(ResourceIdUrl(SecurityAreaMotionUrl, id));
+    public Task<HuePutResponse> UpdateSecurityAreaMotionAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(SecurityAreaMotionUrl, id), data);
+    #endregion
+
+    #region Speaker
+    public Task<HueResponse<SpeakerResource>> GetSpeakersAsync() => HueGetRequestAsync<SpeakerResource>(SpeakerUrl);
+    public Task<HueResponse<SpeakerResource>> GetSpeakerAsync(Guid id) => HueGetRequestAsync<SpeakerResource>(ResourceIdUrl(SpeakerUrl, id));
+    public Task<HuePutResponse> UpdateSpeakerAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(SpeakerUrl, id), data);
+    #endregion
+
+    #region Clip
+    public Task<HueResponse<ClipResource>> GetClipsAsync() => HueGetRequestAsync<ClipResource>(ClipUrl);
+    public Task<HueResponse<ClipResource>> GetClipAsync(Guid id) => HueGetRequestAsync<ClipResource>(ResourceIdUrl(ClipUrl, id));
+    public Task<HuePutResponse> UpdateClipAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(ClipUrl, id), data);
+    #endregion
+
+    #region WifiConnectivity
+    public Task<HueResponse<WifiConnectivityResource>> GetWifiConnectivitysAsync() => HueGetRequestAsync<WifiConnectivityResource>(WifiConnectivityUrl);
+    public Task<HueResponse<WifiConnectivityResource>> GetWifiConnectivityAsync(Guid id) => HueGetRequestAsync<WifiConnectivityResource>(ResourceIdUrl(WifiConnectivityUrl, id));
+    public Task<HuePutResponse> UpdateWifiConnectivityAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(WifiConnectivityUrl, id), data);
+    #endregion
+
 
     protected async Task<HueResponse<T>> HueGetRequestAsync<T>(string url)
     {

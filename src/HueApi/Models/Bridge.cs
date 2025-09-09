@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HueApi.Models
 {
@@ -14,6 +9,12 @@ namespace HueApi.Models
 
     [JsonPropertyName("time_zone")]
     public TimeZoneConfig? TimeZone { get; set; }
+
+    /// <summary>
+    /// Available when the bridge is migrated from a previous generation bridge.
+    /// </summary>
+    [JsonPropertyName("import")]
+    public ImportData? Import { get; set; }
   }
 
   public class TimeZoneConfig
@@ -23,5 +24,20 @@ namespace HueApi.Models
     /// </summary>
     [JsonPropertyName("time_zone")]
     public string? TimeZone { get; set; }
+  }
+
+  public class ImportData
+  {
+    /// <summary>
+    /// Bridge ID (in lower case) where the imported data originates from.
+    /// </summary>
+    [JsonPropertyName("origin")]
+    public string? Origin { get; set; }
+
+    /// <summary>
+    /// UTC date and time when the import took place.
+    /// </summary>
+    [JsonPropertyName("time")]
+    public DateTimeOffset? Time { get; set; }
   }
 }

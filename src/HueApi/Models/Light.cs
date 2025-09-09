@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HueApi.Models
 {
@@ -58,6 +53,9 @@ namespace HueApi.Models
 
     [JsonPropertyName("powerup")]
     public PowerUp? PowerUp { get; set; }
+
+    [JsonPropertyName("content_configuration")]
+    public PowerUp? ContentConfiguration { get; set; }
 
   }
 
@@ -345,6 +343,51 @@ namespace HueApi.Models
     [JsonPropertyName("configured")]
     public bool? Configured { get; set; }
 
+  }
+
+  public class ContentConfiguration
+  {
+    [JsonPropertyName("orientation")]
+    public ContentConfigurationOrientation? Orientation { get; set; }
+
+    [JsonPropertyName("order")]
+    public ContentConfigurationOrder? Order { get; set; }
+  }
+
+  public class ContentConfigurationOrientation
+  {
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("configurable")]
+    public bool? Configurable { get; set; }
+
+    [JsonPropertyName("orientation")]
+    public Orientation Orientation { get; set; }
+  }
+
+  public class ContentConfigurationOrder
+  {
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("configurable")]
+    public bool? Configurable { get; set; }
+
+    [JsonPropertyName("order")]
+    public Order Order { get; set; }
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum Orientation
+  {
+    horizontal, vertical
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum Order
+  {
+    forward, reversed
   }
 
   [JsonConverter(typeof(JsonStringEnumConverter))]

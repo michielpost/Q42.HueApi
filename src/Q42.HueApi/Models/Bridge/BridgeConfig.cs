@@ -97,7 +97,7 @@ namespace Q42.HueApi
     public string ReplacesBridgeId { get; set; }
 
     /// <summary>
-    /// This parameter uniquely identifies the hardware model of the bridge (BSB001, BSB002).
+    /// This parameter uniquely identifies the hardware model of the bridge (BSB001, BSB002, BSB003).
     /// </summary>
     [DataMember(Name = "modelid")]
     public string ModelId { get; set; }

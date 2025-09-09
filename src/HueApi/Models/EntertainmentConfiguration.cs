@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace HueApi.Models
 {
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum EntertainmentConfigurationType
-  {
-    screen,
-    monitor,
-    music,
-    [EnumMember(Value = "3dspace")] //TODO: Make this work using https://stackoverflow.com/questions/59059989/system-text-json-how-do-i-specify-a-custom-name-for-an-enum-value
-    _3dspace,
-    other
-  }
+  //[JsonConverter(typeof(JsonStringEnumConverter))]
+  //public enum EntertainmentConfigurationType
+  //{
+  //  screen,
+  //  monitor,
+  //  music,
+  //  [EnumMember(Value = "3dspace")] //TODO: Make this work using https://stackoverflow.com/questions/59059989/system-text-json-how-do-i-specify-a-custom-name-for-an-enum-value
+  //  _3dspace,
+  //  other
+  //}
 
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum EntertainmentConfigurationStatus
@@ -35,7 +35,7 @@ namespace HueApi.Models
   public class EntertainmentConfiguration : HueResource
   {
     [JsonPropertyName("configuration_type")]
-    public EntertainmentConfigurationType ConfigurationType { get; set; }
+    public string? ConfigurationType { get; set; }
 
     [JsonPropertyName("locations")]
     public Locations Locations { get; set; } = new();

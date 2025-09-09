@@ -134,7 +134,7 @@ namespace HueApi.Tests
         {
           Name = "Test Config",
         },
-        ConfigurationType = Models.EntertainmentConfigurationType.other,
+        ConfigurationType = "other",
         Locations = new Models.Locations()
       };
 

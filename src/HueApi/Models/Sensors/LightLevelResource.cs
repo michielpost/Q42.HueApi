@@ -2,17 +2,17 @@ using System.Text.Json.Serialization;
 
 namespace HueApi.Models.Sensors
 {
-  public class LightLevel : HueResource
+  public class LightLevelResource : HueResource
   {
     [JsonPropertyName("enabled")]
     public bool Enabled { get; set; } = default!;
 
     [JsonPropertyName("light")]
-    public Light Light { get; set; } = default!;
+    public LightLevelLight Light { get; set; } = default!;
 
   }
 
-  public class Light
+  public class LightLevelLight
   {
     [JsonPropertyName("light_level_report")]
     public LightLevelReport LightLevelReport { get; set; } = default!;
