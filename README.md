@@ -4,21 +4,23 @@ Q42.HueApi
 Open source library for communication with the Philips Hue bridge.
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
-This library targets `.net462`, `.net 6` and `.net 7`!
+This library targets `.net 8` and `.net 9`!
 Download directly from NuGet:
-- Clip API v2: **new** [HueApi on NuGet](https://nuget.org/packages/HueApi)
-- Clip API v1: (legacy) [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
+- Clip API v2: [HueApi on NuGet](https://nuget.org/packages/HueApi) (works with Hue Bridge Pro!)
+
 
 Features:
 - Support for Hue Entertainment API
 - Support for the Hue Remote API
+- Support for the Hue Bridge Pro APIs
 - Multiple Color Converters
-- **NEW: Support for Clip V2 API** 
 
-Make sure to install the new packages:
+Make sure to install the **HueApi** packages:
 - [HueApi from NuGet](https://nuget.org/packages/HueApi)
 - [HueApi.ColorConverters from NuGet](https://nuget.org/packages/HueApi.ColorConverters)
 - [HueApi.Entertainment from NuGet](https://nuget.org/packages/HueApi.Entertainment)
+
+Do **not** use the `Q42` prefixed packages anymore. They target old APIs which will be removed in the future.
 
 ## How to use?
 Some basic usage examples
@@ -117,8 +119,8 @@ The `HueApi.ColorConverters` NuGet package contains:
 
 ## How To install?
 Download the source from GitHub or get the compiled assembly from NuGet
-- Clip API v2: **new** [HueApi on NuGet](https://nuget.org/packages/HueApi)
-- Clip API v1: (legacy) [Q42.HueApi on NuGet](https://nuget.org/packages/Q42.HueApi)
+- [HueApi on NuGet](https://nuget.org/packages/HueApi)
+
 
 ## Credits
 This library is made possible by contributions from:
