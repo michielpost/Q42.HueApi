@@ -11,7 +11,7 @@ namespace HueApi
 {
   public delegate void EventStreamMessage(string bridgeIp, List<EventStreamResponse> events);
 
-  public abstract class BaseHueApi
+  public  abstract partial class BaseHueApi
   {
     protected HttpClient client = default!;
    
@@ -67,8 +67,8 @@ namespace HueApi
 
 
     #region Light
-    public Task<HueResponse<Models.Light>> GetLightsAsync() => HueGetRequestAsync<Models.Light>(LightUrl);
-    public Task<HueResponse<Models.Light>> GetLightAsync(Guid id) => HueGetRequestAsync<Models.Light>(ResourceIdUrl(LightUrl, id));
+    public Task<HueResponse<Light>> GetLightsAsync() => HueGetRequestAsync<Light>(LightUrl);
+    public Task<HueResponse<Light>> GetLightAsync(Guid id) => HueGetRequestAsync<Light>(ResourceIdUrl(LightUrl, id));
     public Task<HuePutResponse> UpdateLightAsync(Guid id, UpdateLight data) => HuePutRequestAsync(ResourceIdUrl(LightUrl, id), data);
     #endregion
 
@@ -279,8 +279,8 @@ namespace HueApi
     #endregion
 
     #region MatterFabric
-    public Task<HueResponse<Models.MatterItem>> GetMatterFabricsAsync() => HueGetRequestAsync<Models.MatterItem>(MatterFabricUrl);
-    public Task<HueResponse<Models.MatterItem>> GetMatterFabricAsync(Guid id) => HueGetRequestAsync<Models.MatterItem>(ResourceIdUrl(MatterFabricUrl, id));
+    public Task<HueResponse<Models.MatterFabric>> GetMatterFabricsAsync() => HueGetRequestAsync<Models.MatterFabric>(MatterFabricUrl);
+    public Task<HueResponse<Models.MatterFabric>> GetMatterFabricAsync(Guid id) => HueGetRequestAsync<Models.MatterFabric>(ResourceIdUrl(MatterFabricUrl, id));
     public Task<HueDeleteResponse> DeleteMatterFabricAsync(Guid id) => HueDeleteRequestAsync(ResourceIdUrl(MatterFabricUrl, id));
     #endregion
 
@@ -340,6 +340,8 @@ namespace HueApi
     public Task<HuePutResponse> UpdateWifiConnectivityAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(WifiConnectivityUrl, id), data);
     #endregion
 
+    public Task<HueResponse<HueResource>> GetResourceAsync(string rtype, Guid? id = null) => HueGetRequestAsync<HueResource>(ResourceTypeIdUrl(rtype, id));
+    public Task<HueResponse<HueResource>> GetResourceAsync(HueResource res) => HueGetRequestAsync<HueResource>(ResourceTypeIdUrl(res.Type, res.Id));
 
     /// <summary>
     /// Generic method to get any resource by type and id
@@ -414,8 +416,6 @@ namespace HueApi
         return result;
       }
     }
-
-   
 
   }
 }
