@@ -7,53 +7,52 @@ namespace HueApi
 {
   public abstract partial class BaseHueApi
   {
-    protected Dictionary<string, Type> _resourceTypes = new Dictionary<string, Type>()
+    protected List<HueResourceTypeData> _resourceTypes = new List<HueResourceTypeData>()
     {
-      { "resource", typeof(HueResponse<HueResource>) },
-      { "light", typeof(HueResponse<Light>) },
-      { "scene", typeof(HueResponse<Scene>) },
-      { "room", typeof(HueResponse<Room>) },
-      { "zone", typeof(HueResponse<Zone>) },
-      { "bridge_home", typeof(HueResponse<BridgeHome>) },
-      { "grouped_light", typeof(HueResponse<GroupedLight>) },
-      { "device", typeof(HueResponse<Device>) },
-      { "bridge", typeof(HueResponse<Bridge>) },
-      { "device_software_update", typeof(HueResponse<DeviceSoftwareUpdate>) },
-      { "device_power", typeof(HueResponse<DevicePower>) },
-      { "zigbee_connectivity", typeof(HueResponse<ZigbeeConnectivity>) },
-      { "zgp_connectivity", typeof(HueResponse<ZgpConnectivity>) },
-      { "zigbee_device_discovery", typeof(HueResponse<ZigbeeDeviceDiscovery>) },
-      { "motion", typeof(HueResponse<MotionResource>) },
-      { "service_group", typeof(HueResponse<ServiceGroupResource>) },
-      { "grouped_motion", typeof(HueResponse<GroupedMotionResource>) },
-      { "grouped_light_level", typeof(HueResponse<GroupedLightLevelResource>) },
-      { "camera_motion", typeof(HueResponse<CameraMotionResource>) },
-      { "temperature", typeof(HueResponse<TemperatureResource>) },
-      { "light_level", typeof(HueResponse<LightLevel>) },
-      { "button", typeof(HueResponse<ButtonResource>) },
-      { "bell_button", typeof(HueResponse<BellButtonResource>) },
-      { "relative_rotary", typeof(HueResponse<RelativeRotaryResource>) },
-      { "behavior_script", typeof(HueResponse<BehaviorScript>) },
-      { "behavior_instance", typeof(HueResponse<BehaviorInstance>) },
-      { "geofence_client", typeof(HueResponse<GeofenceClient>) },
-      { "geolocation", typeof(HueResponse<Geolocation>) },
-      { "entertainment_configuration", typeof(HueResponse<EntertainmentConfiguration>) },
-      { "entertainment", typeof(HueResponse<Entertainment>) },
-      { "homekit", typeof(HueResponse<Homekit>) },
-      { "matter", typeof(HueResponse<MatterItem>) },
-      { "matter_fabric", typeof(HueResponse<MatterFabric>) },
-      { "smart_scene", typeof(HueResponse<SmartScene>) },
-      { "contact", typeof(HueResponse<ContactSensor>) },
-      { "tamper", typeof(HueResponse<TamperSensor>) },
-      { "motion_area_configuration", typeof(HueResponse<MotionAreaConfigResource>) },
-      { "motion_area_candidate", typeof(HueResponse<MotionAreaCandidateResource>) },
-      { "convenience_area_motion", typeof(HueResponse<ConvenienceAreaMotionResource>) },
-      { "security_area_motion", typeof(HueResponse<SecurityAreaMotionResource>) },
-      { "speaker", typeof(HueResponse<SpeakerResource>) },
-      { "clip", typeof(HueResponse<ClipResource>) },
-      { "wifi_connectivity", typeof(HueResponse<WifiConnectivityResource>) }
+        HueResourceTypeDataHelpers.AddHueResourceData<HueResource>("resource"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Light>("light"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Scene>("scene"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Room>("room"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Zone>("zone"),
+        HueResourceTypeDataHelpers.AddHueResourceData<BridgeHome>("bridge_home"),
+        HueResourceTypeDataHelpers.AddHueResourceData<GroupedLight>("grouped_light"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Device>("device"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Bridge>("bridge"),
+        HueResourceTypeDataHelpers.AddHueResourceData<DeviceSoftwareUpdate>("device_software_update"),
+        HueResourceTypeDataHelpers.AddHueResourceData<DevicePower>("device_power"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ZigbeeConnectivity>("zigbee_connectivity"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ZgpConnectivity>("zgp_connectivity"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ZigbeeDeviceDiscovery>("zigbee_device_discovery"),
+        HueResourceTypeDataHelpers.AddHueResourceData<MotionResource>("motion"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ServiceGroupResource>("service_group"),
+        HueResourceTypeDataHelpers.AddHueResourceData<GroupedMotionResource>("grouped_motion"),
+        HueResourceTypeDataHelpers.AddHueResourceData<GroupedLightLevelResource>("grouped_light_level"),
+        HueResourceTypeDataHelpers.AddHueResourceData<CameraMotionResource>("camera_motion"),
+        HueResourceTypeDataHelpers.AddHueResourceData<TemperatureResource>("temperature"),
+        HueResourceTypeDataHelpers.AddHueResourceData<LightLevelResource>("light_level"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ButtonResource>("button"),
+        HueResourceTypeDataHelpers.AddHueResourceData<BellButtonResource>("bell_button"),
+        HueResourceTypeDataHelpers.AddHueResourceData<RelativeRotaryResource>("relative_rotary"),
+        HueResourceTypeDataHelpers.AddHueResourceData<BehaviorScript>("behavior_script"),
+        HueResourceTypeDataHelpers.AddHueResourceData<BehaviorInstance>("behavior_instance"),
+        HueResourceTypeDataHelpers.AddHueResourceData<GeofenceClient>("geofence_client"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Geolocation>("geolocation"),
+        HueResourceTypeDataHelpers.AddHueResourceData<EntertainmentConfiguration>("entertainment_configuration"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Entertainment>("entertainment"),
+        HueResourceTypeDataHelpers.AddHueResourceData<Homekit>("homekit"),
+        HueResourceTypeDataHelpers.AddHueResourceData<MatterItem>("matter"),
+        HueResourceTypeDataHelpers.AddHueResourceData<MatterFabric>("matter_fabric"),
+        HueResourceTypeDataHelpers.AddHueResourceData<SmartScene>("smart_scene"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ContactSensor>("contact"),
+        HueResourceTypeDataHelpers.AddHueResourceData<TamperSensor>("tamper"),
+        HueResourceTypeDataHelpers.AddHueResourceData<MotionAreaConfigResource>("motion_area_configuration"),
+        HueResourceTypeDataHelpers.AddHueResourceData<MotionAreaCandidateResource>("motion_area_candidate"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ConvenienceAreaMotionResource>("convenience_area_motion"),
+        HueResourceTypeDataHelpers.AddHueResourceData<SecurityAreaMotionResource>("security_area_motion"),
+        HueResourceTypeDataHelpers.AddHueResourceData<SpeakerResource>("speaker"),
+        HueResourceTypeDataHelpers.AddHueResourceData<ClipResource>("clip"),
+        HueResourceTypeDataHelpers.AddHueResourceData<WifiConnectivityResource>("wifi_connectivity"),
     };
-
 
     public Task<HueResponse<HueResource>> GetResourceTypedAsync(HueResource res) => GetResourceTypedAsync(res.Type, res.Id);
 
@@ -68,8 +67,10 @@ namespace HueApi
     {
       var url = ResourceTypeIdUrl(rtype, id);
       var type = typeof(HueResponse<HueResource>);
-      if (_resourceTypes.ContainsKey(rtype))
-        type = _resourceTypes[rtype];
+
+      var selectedType = _resourceTypes.Where(x => x.Key == rtype).SingleOrDefault();
+      if (selectedType != null)
+        type = selectedType.GetType;
 
       var response = await client.GetAsync(url);
 
