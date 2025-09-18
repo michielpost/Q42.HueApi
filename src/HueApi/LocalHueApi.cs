@@ -29,10 +29,13 @@ namespace HueApi
       this.ip = ip;
       this.key = key;
 
-      client = GetConfiguredHttpClient(client);
+      this.client = GetConfiguredHttpClient(client);
     }
 
-  
+    public void SetBaseAddress(Uri uri)
+    {
+      this.client.BaseAddress = uri;
+    }
 
     public async Task StartEventStream(HttpClient? client = null, CancellationToken? cancellationToken = null)
     {
@@ -200,7 +203,6 @@ namespace HueApi
       if (!string.IsNullOrEmpty(key))
         client.DefaultRequestHeaders.Add(KeyHeaderName, key);
 
-      this.client = client;
       return client;
     }
 
