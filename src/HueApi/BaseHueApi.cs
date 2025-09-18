@@ -340,9 +340,6 @@ namespace HueApi
     public Task<HuePutResponse> UpdateWifiConnectivityAsync(Guid id, BaseResourceRequest data) => HuePutRequestAsync(ResourceIdUrl(WifiConnectivityUrl, id), data);
     #endregion
 
-    public Task<HueResponse<HueResource>> GetResourceAsync(string rtype, Guid? id = null) => HueGetRequestAsync<HueResource>(ResourceTypeIdUrl(rtype, id));
-    public Task<HueResponse<HueResource>> GetResourceAsync(HueResource res) => HueGetRequestAsync<HueResource>(ResourceTypeIdUrl(res.Type, res.Id));
-
     /// <summary>
     /// Generic method to get any resource by type and id
     /// </summary>
