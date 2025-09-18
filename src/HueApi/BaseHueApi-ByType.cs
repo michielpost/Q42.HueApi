@@ -72,6 +72,7 @@ namespace HueApi
       if (selectedType != null)
         type = selectedType.GetType;
 
+
       var response = await client.GetAsync(url);
 
       var result = await ProcessResponseAsync(response, type);
