@@ -17,7 +17,7 @@ namespace HueApi.Extensions
         Action = active ? EntertainmentConfigurationAction.start : EntertainmentConfigurationAction.stop
       };
 
-      return hueApi.UpdateEntertainmentConfigurationAsync(entertainmentAreaId, req);
+      return hueApi.EntertainmentConfiguration.UpdateAsync(entertainmentAreaId, req);
     }
   }
 }

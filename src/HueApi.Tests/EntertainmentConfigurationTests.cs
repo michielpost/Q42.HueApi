@@ -26,7 +26,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetEntertainmentConfigurationsAsync();
+      var result = await localHueClient.EntertainmentConfiguration.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -35,10 +35,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetEntertainmentConfigurationsAsync();
+      var all = await localHueClient.EntertainmentConfiguration.GetAllAsync();
       var id = all.Data.Last().Id;
 
-      var result = await localHueClient.GetEntertainmentConfigurationAsync(id);
+      var result = await localHueClient.EntertainmentConfiguration.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -47,7 +47,7 @@ namespace HueApi.Tests
 
       //Turn all lights in this entertainment group on
       var entServices = result.Data.First().Locations.ServiceLocations.Select(x => x.Service?.Rid).ToList();
-      var allResources = await localHueClient.GetResourcesAsync();
+      var allResources = await localHueClient.Resource.GetAllAsync();
 
       var devices = allResources.Data.Where(x => entServices.Contains(x.Id)).Select(x => x.Owner?.Rid).ToList();
 
@@ -59,7 +59,7 @@ namespace HueApi.Tests
 
       foreach(var light in lights.Where(x => x.HasValue))
       {
-        await localHueClient.UpdateLightAsync(light!.Value, update);
+        await localHueClient.Light.UpdateAsync(light!.Value, update);
       }
 
     }
@@ -68,7 +68,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetEntertainmentConfigurationsAsync();
+      var all = await localHueClient.EntertainmentConfiguration.GetAllAsync();
       var current = all.Data.Last();
       var id = current.Id;
 
@@ -80,7 +80,7 @@ namespace HueApi.Tests
       //  location.Service.Rtype = null;
       //}
 
-      var result = await localHueClient.UpdateEntertainmentConfigurationAsync(id, req);
+      var result = await localHueClient.EntertainmentConfiguration.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -93,7 +93,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task SetGradientLightStripLocation()
     {
-      var all = await localHueClient.GetEntertainmentConfigurationsAsync();
+      var all = await localHueClient.EntertainmentConfiguration.GetAllAsync();
       var current = all.Data.Last();
 
       await SetAndCheckPositions(current, new HuePosition(-0.5, -0.2, 0), new HuePosition(-0.1, -0.1, 0));
@@ -109,10 +109,10 @@ namespace HueApi.Tests
       req.Locations.ServiceLocations[0].Positions[0] = pos1;
       req.Locations.ServiceLocations[0].Positions[1] = pos2;
 
-      var result = await localHueClient.UpdateEntertainmentConfigurationAsync(id, req);
+      var result = await localHueClient.EntertainmentConfiguration.UpdateAsync(id, req);
       Assert.IsFalse(result.HasErrors);
 
-      var newConfig = await localHueClient.GetEntertainmentConfigurationAsync(id);
+      var newConfig = await localHueClient.EntertainmentConfiguration.GetByIdAsync(id);
 
       Assert.IsNotNull(newConfig);
       Assert.AreEqual(newConfig.Data.First().Locations.ServiceLocations[0].Positions[0], pos1);
@@ -126,7 +126,7 @@ namespace HueApi.Tests
     public async Task CreateGetDeleteEntertainmentConfiguration()
     {
       //Get light to use in the entertainment area
-      var lights = await localHueClient.GetEntertainmentServicesAsync();
+      var lights = await localHueClient.Entertainment.GetAllAsync();
 
       UpdateEntertainmentConfiguration req = new UpdateEntertainmentConfiguration
       {
@@ -156,7 +156,7 @@ namespace HueApi.Tests
       }
 
 
-      var result = await localHueClient.CreateEntertainmentConfigurationAsync(req);
+      var result = await localHueClient.EntertainmentConfiguration.CreateAsync(req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -165,10 +165,10 @@ namespace HueApi.Tests
       var newId = result.Data.First().Rid;
 
       //Get it
-      var getResult = await localHueClient.GetEntertainmentConfigurationAsync(newId);
+      var getResult = await localHueClient.EntertainmentConfiguration.GetByIdAsync(newId);
 
       //Delete it
-      var deleteResult = await localHueClient.DeleteEntertainmentConfigurationAsync(newId);
+      var deleteResult = await localHueClient.EntertainmentConfiguration.DeleteAsync(newId);
 
 
     }

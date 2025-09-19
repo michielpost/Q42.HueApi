@@ -26,7 +26,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetResourcesAsync();
+      var result = await localHueClient.Resource.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -35,7 +35,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task LoopAllTest()
     {
-      var all = await localHueClient.GetResourcesAsync();
+      var all = await localHueClient.Resource.GetAllAsync();
 
       foreach(var res in all.Data)
       {
@@ -55,7 +55,7 @@ namespace HueApi.Tests
     public async Task LoopAllClipTest()
     {
       //var all = await localHueClient.GetResourceAsync("clip");
-      var all = await localHueClient.GetClipsAsync();
+      var all = await localHueClient.Clip.GetAllAsync();
 
       foreach (var rtype in all.Data.First().Resources)
       {

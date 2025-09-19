@@ -57,7 +57,7 @@ namespace HueApi.BridgeLocator
       {
         try
         {
-          return await LocateBridgesAsync(cancelSource.Token);
+          return await LocateBridgesAsync(cancelSource.Token).ConfigureAwait(false);
         }
         catch
         {
@@ -93,7 +93,7 @@ namespace HueApi.BridgeLocator
           {
             if (response.IsSuccessStatusCode)
             {
-              string xmlResponse = await response.Content.ReadAsStringAsync();
+              string xmlResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
               if (xmlResponseCheckHueRegex.IsMatch(xmlResponse))
               {
                 var serialNumberMatch = xmlResponseSerialNumberRegex.Match(xmlResponse);

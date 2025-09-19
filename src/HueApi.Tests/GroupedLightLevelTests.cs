@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetGroupedLightLevelsAsync();
+      var result = await localHueClient.GroupedLightLevel.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetGroupedLightLevelsAsync();
+      var all = await localHueClient.GroupedLightLevel.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetGroupedLightLevelAsync(id);
+      var result = await localHueClient.GroupedLightLevel.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetGroupedLightLevelsAsync();
+      var all = await localHueClient.GroupedLightLevel.GetAllAsync();
       var id = all.Data.Last().Id;
 
       var req = new UpdateGroupedLightLevelRequest();
-      var result = await localHueClient.UpdateGroupedLightLevelAsync(id, req);
+      var result = await localHueClient.GroupedLightLevel.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

@@ -34,7 +34,7 @@ namespace HueApi.Tests
       var httpResult = await httpClient.GetAsync("https://www.google.com");
 
       var localHueClient = new LocalHueApi(ip, key, httpClient);
-      var result = await localHueClient.GetBridgeHomesAsync();
+      var result = await localHueClient.BridgeHome.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

@@ -52,7 +52,7 @@ namespace HueApi.BridgeLocator
         foreach (var fastTask in fastLocateTask)
         {
           // Await this task to get its result
-          result = await fastTask;
+          result = await fastTask.ConfigureAwait(false);
 
           // Check if it contains anything
           if (result.Any())
@@ -70,7 +70,7 @@ namespace HueApi.BridgeLocator
         }
 
         // All fast locators failed, we wait for the network scan to complete and return whatever we found
-        result = await slowNetwScanTask;
+        result = await slowNetwScanTask.ConfigureAwait(false);
         return result.ToList();
       }
     }
@@ -108,7 +108,7 @@ namespace HueApi.BridgeLocator
         foreach (var fastTask in fastLocateTask)
         {
           // Await this task to get its result
-          result = await fastTask;
+          result = await fastTask.ConfigureAwait(false);
 
           // Check if it contains anything
           if (result.Any())
@@ -125,7 +125,7 @@ namespace HueApi.BridgeLocator
         }
 
         // All fast locators failed, let's try the network scan and return whatever we found
-        result = await new LocalNetworkScanBridgeLocator().LocateBridgesAsync(maxNetwScanTimeout);
+        result = await new LocalNetworkScanBridgeLocator().LocateBridgesAsync(maxNetwScanTimeout).ConfigureAwait(false);
         return result.ToList();
       }
     }
@@ -160,7 +160,7 @@ namespace HueApi.BridgeLocator
         foreach (var fastTask in fastLocateTask)
         {
           // Await this task to get its result
-          result = await fastTask;
+          result = await fastTask.ConfigureAwait(false);
 
           // Check if it contains anything
           if (result.Any())

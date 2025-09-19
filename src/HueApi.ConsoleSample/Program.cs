@@ -25,10 +25,10 @@ var localHueClient = new LocalHueApi(ip, key);
 
 //PrintChildren(resources, null, 0);
 
-var allLights = await localHueClient.GetLightsAsync();
+var allLights = await localHueClient.Light.GetAllAsync();
 var firstLightId = allLights.Data.First().Id; //First
 
-var allGroups = await localHueClient.GetGroupedLightsAsync();
+var allGroups = await localHueClient.GroupedLight.GetAllAsync();
 var allGroupId = allGroups.Data.OrderBy(x=> x.IdV1).First().Id; //All
 
 localHueClient.OnEventStreamMessage += EventStreamMessage;
@@ -98,7 +98,7 @@ Task ChangeColorForGroup(Guid id, string hex)
   .TurnOn()
   .SetColor(new HueApi.ColorConverters.RGBColor(hex));
 
-  return localHueClient.UpdateGroupedLightAsync(id, req);
+  return localHueClient.GroupedLight.UpdateAsync(id, req);
 }
 
 Task ChangeColorForLight(Guid id, string hex)
@@ -107,6 +107,6 @@ Task ChangeColorForLight(Guid id, string hex)
   .TurnOn()
   .SetColor(new HueApi.ColorConverters.RGBColor(hex));
 
-  return localHueClient.UpdateLightAsync(id, req);
+  return localHueClient.Light.UpdateAsync(id, req);
 }
 

@@ -25,7 +25,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetGroupedLightsAsync();
+      var result = await localHueClient.GroupedLight.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -34,10 +34,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetGroupedLightsAsync();
+      var all = await localHueClient.GroupedLight.GetAllAsync();
       var id = all.Data.Last().Id;
 
-      var result = await localHueClient.GetGroupedLightAsync(id);
+      var result = await localHueClient.GroupedLight.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -50,12 +50,12 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetGroupedLightsAsync();
+      var all = await localHueClient.GroupedLight.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateGroupedLight req = new UpdateGroupedLight();
       req.On = new Models.On() { IsOn = true };
-      var result = await localHueClient.UpdateGroupedLightAsync(id, req);
+      var result = await localHueClient.GroupedLight.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -68,7 +68,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task ChangeLightColor()
     {
-      var all = await localHueClient.GetGroupedLightsAsync();
+      var all = await localHueClient.GroupedLight.GetAllAsync();
       var id = all.Data.First().Id; //All
 
       //Turn red
@@ -76,14 +76,14 @@ namespace HueApi.Tests
         .TurnOn()
         .SetColor(new ColorConverters.RGBColor("FF0000"));
 
-      var result = await localHueClient.UpdateGroupedLightAsync(id, req);
+      var result = await localHueClient.GroupedLight.UpdateAsync(id, req);
 
       await Task.Delay(TimeSpan.FromSeconds(5));
 
       //Turn blue
       req = new UpdateGroupedLight()
         .SetColor(new ColorConverters.RGBColor("0000FF"));
-      result = await localHueClient.UpdateGroupedLightAsync(id, req);
+      result = await localHueClient.GroupedLight.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetMotionAreaCandidatesAsync();
+      var result = await localHueClient.MotionAreaCandidate.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetMotionAreaCandidatesAsync();
+      var all = await localHueClient.MotionAreaCandidate.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetMotionAreaCandidateAsync(id);
+      var result = await localHueClient.MotionAreaCandidate.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetMotionAreaCandidatesAsync();
+      var all = await localHueClient.MotionAreaCandidate.GetAllAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateMotionAreaCandidateAsync(id, req);
+      var result = await localHueClient.MotionAreaCandidate.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

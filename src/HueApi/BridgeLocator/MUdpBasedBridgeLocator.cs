@@ -55,7 +55,7 @@ namespace HueApi.BridgeLocator
           }
 
           // Wait 1 seconds (can be shorter if cancelled)
-          await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
+          await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken).ConfigureAwait(false);
         }
         while (!cancellationToken.IsCancellationRequested);
       }

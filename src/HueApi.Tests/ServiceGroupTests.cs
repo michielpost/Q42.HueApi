@@ -24,7 +24,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetServiceGroupsAsync();
+      var result = await localHueClient.ServiceGroup.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -33,10 +33,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetServiceGroupsAsync();
+      var all = await localHueClient.ServiceGroup.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetServiceGroupAsync(id);
+      var result = await localHueClient.ServiceGroup.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,7 +48,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Create()
     {
-      var resources = await localHueClient.GetMotionsAsync();
+      var resources = await localHueClient.Motion.GetAllAsync();
       var res1 = resources.Data.First();
       var res2 = resources.Data.Last();
 
@@ -65,7 +65,7 @@ namespace HueApi.Tests
         }
       };
 
-      var result = await localHueClient.CreateServiceGroupAsync(req);
+      var result = await localHueClient.ServiceGroup.CreateAsync(req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -78,11 +78,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetServiceGroupsAsync();
+      var all = await localHueClient.ServiceGroup.GetAllAsync();
       var id = all.Data.Last().Id;
 
       var req = new CreateUpdateServiceGroup();
-      var result = await localHueClient.UpdateServiceGroupAsync(id, req);
+      var result = await localHueClient.ServiceGroup.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

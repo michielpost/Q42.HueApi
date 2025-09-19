@@ -16,7 +16,7 @@ namespace HueApi.Tests
 
     public MatterTests()
     {
-      var builder = new ConfigurationBuilder().AddUserSecrets<RoomTests>();
+      var builder = new ConfigurationBuilder().AddUserSecrets<MatterTests>();
       var config = builder.Build();
 
       localHueClient = new LocalHueApi(config["ip"], key: config["key"]);
@@ -25,7 +25,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetMatterItemsAsync();
+      var result = await localHueClient.Matter.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -34,10 +34,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetMatterItemsAsync();
+      var all = await localHueClient.Matter.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetMatterItemAsync(id);
+      var result = await localHueClient.Matter.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -50,7 +50,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetMatterItemsAsync();
+      var all = await localHueClient.Matter.GetAllAsync();
       var last = all.Data.Last();
 
       //Warning, calls a reset on the bridge?

@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetBehaviorInstancesAsync();
+      var result = await localHueClient.BehaviorInstance.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetBehaviorInstancesAsync();
+      var all = await localHueClient.BehaviorInstance.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetBehaviorInstanceAsync(id);
+      var result = await localHueClient.BehaviorInstance.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetBehaviorInstancesAsync();
+      var all = await localHueClient.BehaviorInstance.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateBehaviorInstance req = new UpdateBehaviorInstance();
-      var result = await localHueClient.UpdateBehaviorInstanceAsync(id, req);
+      var result = await localHueClient.BehaviorInstance.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

@@ -24,7 +24,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetBridgeHomesAsync();
+      var result = await localHueClient.BridgeHome.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -33,10 +33,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetBridgeHomesAsync();
+      var all = await localHueClient.BridgeHome.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetBridgeHomeAsync(id);
+      var result = await localHueClient.BridgeHome.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -44,23 +44,6 @@ namespace HueApi.Tests
       Assert.IsTrue(result.Data.Count == 1);
 
     }
-
-
-    [TestMethod]
-    public async Task PutById()
-    {
-      var all = await localHueClient.GetBridgeHomesAsync();
-      var id = all.Data.Last().Id;
-
-      BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateBridgeHomeAsync(id, req);
-
-      Assert.IsNotNull(result);
-      Assert.IsFalse(result.HasErrors);
-
-      Assert.IsTrue(result.Data.Count == 1);
-      Assert.AreEqual(id, result.Data.First().Rid);
-
-    }
+   
   }
 }

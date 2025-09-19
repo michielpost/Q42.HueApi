@@ -8,6 +8,16 @@ This library targets `.net 8` and `.net 9`!
 Download directly from NuGet:
 - Clip API v2: [HueApi on NuGet](https://nuget.org/packages/HueApi) (works with Hue Bridge Pro!)
 
+**New for v3**
+The new Fluent API allows for easy access to all resources through their respective methods. For example:
+```cs
+//Light resource
+localHueApi.Light.GetAllAsync()
+localHueApi.Light.UpdateAsync(id, ...)
+
+//Room Resource
+localHueApi.Room.GetAllAsync()
+```
 
 Features:
 - Support for Hue Entertainment API
@@ -43,14 +53,14 @@ var appKey = regResult.Username;
 
 Change the lights:
 ```cs
-var lights = await localHueApi.GetLightsAsync();
+var lights = await localHueApi.Light.GetAllAsync();
 var id = all.Data.Last().Id; //Pick a light
 
 var req = new UpdateLight()
 	.TurnOn()
 	.SetColor(new ColorConverters.RGBColor("FF0000"));
 	
-var result = await localHueApi.UpdateLightAsync(id, req);
+var result = await localHueApi.Light.UpdateAsync(id, req);
 ```
 
 ## API Reference
