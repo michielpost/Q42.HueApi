@@ -74,7 +74,7 @@ namespace HueApi
               }
             }
           }
-          catch(TaskCanceledException ex)
+          catch(TaskCanceledException)
           {
             //Ignore
           }
