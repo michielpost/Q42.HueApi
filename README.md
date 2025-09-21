@@ -2,9 +2,12 @@ HueApi
 =========
 
 Open source library for communication with the Philips Hue bridge.
+
+Over **400k downloads** on NuGet (Q42.Hue + HueApi)
+
 This library covers all the Philips hue API calls! You can set the state of your lights, update the Bridge configuration, create groups, schedules etc.
 
-This library targets `.net 8` and `.net 9`!
+This library targets `.net 8` and `.net 9`!  
 Download directly from NuGet:
 - Clip API v2: [HueApi on NuGet](https://nuget.org/packages/HueApi) (works with Hue Bridge Pro!)
 
