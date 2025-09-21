@@ -1,4 +1,4 @@
-Q42.HueApi
+HueApi
 =========
 
 Open source library for communication with the Philips Hue bridge.
