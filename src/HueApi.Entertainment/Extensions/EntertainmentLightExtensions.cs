@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using HueApi.Entertainment.Models;
-using HueApi.Entertainment.Extensions;
 using HueApi.ColorConverters;
+using HueApi.Entertainment.Models;
 
 namespace HueApi.Entertainment.Extensions
 {
@@ -123,7 +116,7 @@ namespace HueApi.Entertainment.Extensions
         {
           transition = new Transition(rgb.Value, rgbTimeSpan);
         }
-        else if(brightness.HasValue)
+        else if (brightness.HasValue)
         {
           transition = new Transition(brightness.Value, briTimeSpan);
         }
@@ -136,7 +129,7 @@ namespace HueApi.Entertainment.Extensions
           // Combine new colour transition with existing brightness transition.
           transition = new Transition(rgb.Value, currentTransition!.TargetBri.Value, rgbTimeSpan, currentTransition.BrightnessRemainingTime);
         }
-        else if(currentTransition!.TargetRgb.HasValue && brightness.HasValue)
+        else if (currentTransition!.TargetRgb.HasValue && brightness.HasValue)
         {
           // Combine new brightness transition with existing colour transition.
           transition = new Transition(currentTransition!.TargetRgb.Value, brightness.Value, currentTransition.RgbRemainingTime, briTimeSpan);

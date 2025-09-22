@@ -1,28 +1,43 @@
 using HueApi.Entertainment.Models;
 using Org.BouncyCastle.Crypto.Tls;
-using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace HueApi.Entertainment.Connection
 {
   /// <summary>
   /// Based on https://github.com/jinghongbo/Ssl.Net/tree/master/src/Ssl.Net/Ssl.Net
   /// </summary>
-  internal class UdpTransport : DatagramTransport
+  internal class UdpTransport : DatagramTransport, IDisposable
   {
     private Socket _socket;
+    private bool _disposed;
 
     public UdpTransport(Socket socket)
     {
-      _socket = socket;
+      _socket = socket ?? throw new ArgumentNullException(nameof(socket));
     }
 
     public void Close()
     {
+      if (_socket != null && _socket.IsBound)
+      {
+        try
+        {
+          _socket.Shutdown(SocketShutdown.Both);
+        }
+        catch (SocketException) { /* Log or ignore if already closed */ }
+        _socket.Close();
+      }
+    }
 
+    public void Dispose()
+    {
+      if (!_disposed)
+      {
+        Close();
+        _disposed = true;
+      }
     }
 
     public int GetReceiveLimit()
@@ -37,7 +52,7 @@ namespace HueApi.Entertainment.Connection
 
     public int Receive(byte[] buf, int off, int len, int waitMillis)
     {
-      string converted = Encoding.UTF8.GetString(buf, 0, buf.Length);
+      //string converted = Encoding.UTF8.GetString(buf, 0, buf.Length);
 
       if (_socket.Connected)
       {
@@ -67,15 +82,15 @@ namespace HueApi.Entertainment.Connection
 
     public void Send(byte[] buf, int off, int len)
     {
-      string converted = Encoding.UTF8.GetString(buf, 0, buf.Length);
+      //string converted = Encoding.UTF8.GetString(buf, 0, buf.Length);
 
-      if (_socket.Connected)
+      try
       {
         _socket.Send(buf, off, len, SocketFlags.None);
       }
-      else
+      catch (SocketException ex)
       {
-        throw new HueEntertainmentException("Sending data but socket is not connected");
+        throw new HueEntertainmentException("Failed to send data over UDP", ex);
       }
     }
   }

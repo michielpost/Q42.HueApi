@@ -9,11 +9,9 @@ namespace HueApi.Entertainment.Connection
   class DtlsClient : DefaultTlsClient
   {
     private TlsPskIdentity _mPskIdentity;
-    private TlsSession _mSession;
 
-    internal DtlsClient(TlsSession session, TlsPskIdentity pskIdentity)
+    internal DtlsClient(TlsPskIdentity pskIdentity)
     {
-      _mSession = session;
       _mPskIdentity = pskIdentity;
     }
 
@@ -36,7 +34,7 @@ namespace HueApi.Entertainment.Connection
 
     public override IDictionary GetClientExtensions()
     {
-      IDictionary clientExtensions = TlsExtensionsUtilities.EnsureExtensionsInitialised(base.GetClientExtensions());
+      IDictionary clientExtensions = TlsExtensionsUtilities.EnsureExtensionsInitialised(base.GetClientExtensions() ?? new Hashtable());
       TlsExtensionsUtilities.AddEncryptThenMacExtension(clientExtensions);
       TlsExtensionsUtilities.AddExtendedMasterSecretExtension(clientExtensions);
 

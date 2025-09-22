@@ -3,15 +3,10 @@ using HueApi.Entertainment.Models;
 using HueApi.Extensions;
 using Org.BouncyCastle.Crypto.Tls;
 using Org.BouncyCastle.Security;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace HueApi.Entertainment
 {
@@ -29,11 +24,19 @@ namespace HueApi.Entertainment
     private LocalHueApi _localHueClient;
     protected string _ip, _appKey, _clientKey;
     private byte[]? entConfigIdBytes;
+    private bool _isConnected;
 
     public LocalHueApi LocalHueApi => _localHueClient;
 
     public StreamingHueClient(string ip, string appKey, string clientKey)
     {
+      if (string.IsNullOrEmpty(ip))
+        throw new ArgumentException("IP address cannot be null or empty", nameof(ip));
+      if (string.IsNullOrEmpty(appKey))
+        throw new ArgumentException("App key cannot be null or empty", nameof(appKey));
+      if (string.IsNullOrEmpty(clientKey))
+        throw new ArgumentException("Client key cannot be null or empty", nameof(clientKey));
+
       _ip = ip;
       _appKey = appKey;
       _clientKey = clientKey;
@@ -47,9 +50,20 @@ namespace HueApi.Entertainment
     public void Close()
     {
       _dtlsTransport?.Close();
-      _socket.Shutdown(SocketShutdown.Both);
-      _socket.Close();
+      (_dtlsTransport as IDisposable)?.Dispose();
+      (_udp as IDisposable)?.Dispose();
+
+      if (_socket != null && _socket.IsBound)
+      {
+        try
+        {
+          _socket.Shutdown(SocketShutdown.Both);
+        }
+        catch (SocketException) { /* Log or ignore if already closed */ }
+      }
+      _socket?.Close();
       entConfigIdBytes = null;
+      _isConnected = false; // Reset connected state
     }
 
 
@@ -63,15 +77,27 @@ namespace HueApi.Entertainment
     {
       _simulator = simulator;
       var enableResult = await _localHueClient.SetStreamingAsync(entertainmentAreaId).ConfigureAwait(false);
+      if (enableResult.HasErrors)
+        throw new HueEntertainmentException($"Failed to enable streaming for the entertainment area {entertainmentAreaId}.");
+
       entConfigIdBytes = Encoding.ASCII.GetBytes(entertainmentAreaId.ToString().ToLowerInvariant());
+      _isConnected = true; // Set connected state
 
       byte[] psk = FromHex(_clientKey);
       BasicTlsPskIdentity pskIdentity = new BasicTlsPskIdentity(_appKey, psk);
 
-      var dtlsClient = new DtlsClient(null!, pskIdentity);
+      var dtlsClient = new DtlsClient(pskIdentity);
 
       DtlsClientProtocol clientProtocol = new DtlsClientProtocol(new SecureRandom());
-      await _socket.ConnectAsync(IPAddress.Parse(_ip), 2100).ConfigureAwait(false);
+      using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5)); // 5-second timeout
+      try
+      {
+        await _socket.ConnectAsync(IPAddress.Parse(_ip), 2100, cts.Token).ConfigureAwait(false);
+      }
+      catch (OperationCanceledException)
+      {
+        throw new TimeoutException("Failed to connect to Hue Bridge within the timeout period.");
+      }
       _udp = new UdpTransport(_socket);
 
       if (!simulator)
@@ -91,7 +117,7 @@ namespace HueApi.Entertainment
       if (!_simulator)
       {
         int groupCount = streamingGroup.Count / 20 + 1;
-        frequency = frequency / groupCount;
+        frequency = (int)Math.Ceiling((double)frequency / groupCount);
       }
       else
         onlySendDirtyStates = false; //Simulator does not understand partial updates
@@ -161,7 +187,7 @@ namespace HueApi.Entertainment
 
     protected virtual void Send(IEnumerable<IEnumerable<StreamingChannel>> chunks)
     {
-      if (entConfigIdBytes == null)
+      if (!_isConnected || entConfigIdBytes == null)
         throw new HueEntertainmentException("This client is not connected to a group");
 
       var msg = StreamingGroup.GetCurrentStateAsByteArray(this.entConfigIdBytes, chunks);
@@ -190,11 +216,24 @@ namespace HueApi.Entertainment
     /// <returns></returns>
     private static byte[] FromHex(string hex)
     {
+      if (string.IsNullOrEmpty(hex))
+        throw new ArgumentException("Hex string cannot be null or empty", nameof(hex));
+
       hex = hex.Replace("-", "");
+      if (hex.Length % 2 != 0)
+        throw new ArgumentException("Hex string must have an even length", nameof(hex));
+
       byte[] raw = new byte[hex.Length / 2];
-      for (int i = 0; i < raw.Length; i++)
+      try
       {
-        raw[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
+        for (int i = 0; i < raw.Length; i++)
+        {
+          raw[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
+        }
+      }
+      catch (FormatException ex)
+      {
+        throw new ArgumentException("Invalid hex string format", nameof(hex), ex);
       }
       return raw;
     }

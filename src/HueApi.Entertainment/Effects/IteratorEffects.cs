@@ -1,13 +1,6 @@
 using HueApi.ColorConverters;
-using HueApi.Entertainment.Effects;
 using HueApi.Entertainment.Extensions;
 using HueApi.Entertainment.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace HueApi.Entertainment.Effects
 {
@@ -23,11 +16,11 @@ namespace HueApi.Entertainment.Effects
       List<List<EntertainmentLight>> result = new();
 
       var devices = group.SelectMany(x => x.DeviceIds).Distinct();
-      foreach(var deviceId in devices)
+      foreach (var deviceId in devices)
       {
         var channelsForDevice = group.Where(x => x.DeviceIds.Contains(deviceId)).ToList();
 
-        if(channelsForDevice.Any())
+        if (channelsForDevice.Any())
           result.Add(channelsForDevice);
       }
 
