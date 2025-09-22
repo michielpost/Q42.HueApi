@@ -26,7 +26,7 @@ namespace HueApi.Entertainment.ConsoleSample
       StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
       //Get the entertainment group
-      var all = await client.LocalHueApi.GetEntertainmentConfigurationsAsync();
+      var all = await client.LocalHueApi.EntertainmentConfiguration.GetAllAsync();
       var group = all.Data.LastOrDefault();
 
       if (group == null)
@@ -46,7 +46,7 @@ namespace HueApi.Entertainment.ConsoleSample
       client.AutoUpdateAsync(stream, new CancellationToken(), 50, onlySendDirtyStates: false);
 
       //Optional: Check if streaming is currently active
-      var entArea = await client.LocalHueApi.GetEntertainmentConfigurationAsync(group.Id);
+      var entArea = await client.LocalHueApi.EntertainmentConfiguration.GetByIdAsync(group.Id);
       Console.WriteLine(entArea.Data.First().Status == HueApi.Models.EntertainmentConfigurationStatus.active ? "Streaming is active" : "Streaming is not active");
       return stream;
     }

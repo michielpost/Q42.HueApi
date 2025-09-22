@@ -19,9 +19,9 @@ LocalHueClient.RegisterAsync("ipAddress", "applicationName", "deviceName", true)
 //Initialize streaming client
 StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
-//Get the entertainment group
-var all = await client.LocalHueClient.GetEntertainmentGroups();
-var group = all.FirstOrDefault();
+//Get the (first) entertainment group
+var all = await client.LocalHueClient.EntertainmentConfiguration.GetAllAsync();
+var group = all.Data.FirstOrDefault();
 
 //Create a streaming group
 var entGroup = new StreamingGroup(group.Locations);
