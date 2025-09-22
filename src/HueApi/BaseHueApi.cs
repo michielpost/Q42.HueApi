@@ -62,7 +62,20 @@ namespace HueApi
 
 
 
-    internal string ResourceTypeIdUrl(string rtype, Guid? id = null) => id.HasValue ? $"{ResourceUrl}/{rtype}/{id}" : $"{ResourceUrl}/{rtype}";
+    internal string ResourceTypeIdUrl(string? rtype, Guid? id = null)
+    {
+      var url = ResourceUrl;
+      if (!string.IsNullOrEmpty(rtype))
+      {
+        url += $"/{rtype}";
+
+        if (id.HasValue)
+          url += $"/{id.Value}";
+      }
+
+      return url;
+    }
+
     protected string ResourceIdUrl(string resourceUrl, Guid id) => $"{resourceUrl}/{id}";
 
 

@@ -5,9 +5,9 @@ namespace HueApi.HueEndpoints
   public abstract class EndpointBase
   {
     protected readonly BaseHueApi _hueApi;
-    protected readonly string _type;
+    protected readonly string? _type;
 
-    protected EndpointBase(BaseHueApi hueApi, string type)
+    protected EndpointBase(BaseHueApi hueApi, string? type)
     {
       _hueApi = hueApi;
       _type = type;
@@ -15,18 +15,20 @@ namespace HueApi.HueEndpoints
 
   }
 
-  public class ReadOnlyListEndpoint<TGet>(BaseHueApi hueApi, string type) : EndpointBase(hueApi, type),
+  public class ResourceEndpoint<TGet>(BaseHueApi hueApi) : EndpointBase(hueApi, null),
     IGetAllEndpoint<TGet>
     where TGet : HueResource
   {
     public Task<HueResponse<TGet>> GetAllAsync() => _hueApi.HueGetRequestAsync<TGet>(_hueApi.ResourceTypeIdUrl(_type, null));
   }
 
-  public class ReadOnlyEndpoint<TGet>(BaseHueApi hueApi, string type) : ReadOnlyListEndpoint<TGet>(hueApi, type),
+  public class ReadOnlyEndpoint<TGet>(BaseHueApi hueApi, string type) : EndpointBase(hueApi, type),
     IGetAllEndpoint<TGet>,
     IGetByIdEndpoint<TGet>
     where TGet : HueResource
   {
+    public Task<HueResponse<TGet>> GetAllAsync() => _hueApi.HueGetRequestAsync<TGet>(_hueApi.ResourceTypeIdUrl(_type, null));
+
     public Task<HueResponse<TGet>> GetByIdAsync(Guid id) => _hueApi.HueGetRequestAsync<TGet>(_hueApi.ResourceTypeIdUrl(_type, id));
   }
 

@@ -8,7 +8,7 @@ namespace HueApi
 {
   public abstract partial class BaseHueApi
   {
-    public ReadOnlyListEndpoint<HueResource> Resource { get; }
+    public ResourceEndpoint<HueResource> Resource { get; }
     public ReadEditEndpoint<Light, UpdateLight> Light { get; }
     public CrudEndpoint<Scene, CreateScene, UpdateScene> Scene { get; }
     public CrudEndpoint<Room, BaseResourceRequest, BaseResourceRequest> Room { get; }
@@ -55,7 +55,7 @@ namespace HueApi
 
     protected BaseHueApi()
     {
-      Resource = new ReadOnlyListEndpoint<HueResource>(this, "resource");
+      Resource = new ResourceEndpoint<HueResource>(this);
       Light = new ReadEditEndpoint<Light, UpdateLight>(this, "light");
       Scene = new CrudEndpoint<Scene, CreateScene, UpdateScene>(this, "scene");
       Room = new CrudEndpoint<Room, BaseResourceRequest, BaseResourceRequest>(this, "room");
