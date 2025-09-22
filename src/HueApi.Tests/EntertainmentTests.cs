@@ -24,7 +24,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetEntertainmentServicesAsync();
+      var result = await localHueClient.Entertainment.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -33,10 +33,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetEntertainmentServicesAsync();
+      var all = await localHueClient.Entertainment.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetEntertainmentServiceAsync(id);
+      var result = await localHueClient.Entertainment.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -49,11 +49,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetEntertainmentServicesAsync();
+      var all = await localHueClient.Entertainment.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateEntertainment req = new UpdateEntertainment();
-      var result = await localHueClient.UpdateEntertainmentServiceAsync(id, req);
+      var result = await localHueClient.Entertainment.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -67,12 +67,12 @@ namespace HueApi.Tests
     public async Task StreamingIsNotActive()
     {
       //Optional: Check if streaming is currently active
-      var entServices = await localHueClient.GetEntertainmentServicesAsync();
+      var entServices = await localHueClient.Entertainment.GetAllAsync();
       Assert.IsNotNull(entServices.Data);
 
       var numSupported = entServices.Data.Sum(x => x.MaxStreams);
 
-      var entConfigs = await localHueClient.GetEntertainmentConfigurationsAsync();
+      var entConfigs = await localHueClient.EntertainmentConfiguration.GetAllAsync();
       Assert.IsNotNull(entConfigs.Data);
 
       var active = entConfigs.Data.Where(x => x.Status == EntertainmentConfigurationStatus.active).Count();

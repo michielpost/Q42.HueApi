@@ -1,10 +1,4 @@
-using HueApi.Models.Requests.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HueApi.Models
 {
@@ -53,5 +47,5 @@ namespace HueApi.Models
     [JsonPropertyName("dimming")]
     public Dimming Dimming { get; set; } = new();
   }
- 
+
 }

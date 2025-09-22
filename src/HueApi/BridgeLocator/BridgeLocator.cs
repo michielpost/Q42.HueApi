@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace HueApi.BridgeLocator
 {
@@ -57,7 +52,7 @@ namespace HueApi.BridgeLocator
       {
         try
         {
-          return await LocateBridgesAsync(cancelSource.Token);
+          return await LocateBridgesAsync(cancelSource.Token).ConfigureAwait(false);
         }
         catch
         {
@@ -93,7 +88,7 @@ namespace HueApi.BridgeLocator
           {
             if (response.IsSuccessStatusCode)
             {
-              string xmlResponse = await response.Content.ReadAsStringAsync();
+              string xmlResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
               if (xmlResponseCheckHueRegex.IsMatch(xmlResponse))
               {
                 var serialNumberMatch = xmlResponseSerialNumberRegex.Match(xmlResponse);
@@ -101,8 +96,8 @@ namespace HueApi.BridgeLocator
                 if (serialNumberMatch.Success)
                 {
                   string bridgeId = serialNumberMatch.Groups[1].Value;
-                  if(bridgeId.Length >= 6)
-                      bridgeId = bridgeId.Insert(6, "fffe");
+                  if (bridgeId.Length >= 6)
+                    bridgeId = bridgeId.Insert(6, "fffe");
 
                   return bridgeId;
                 }

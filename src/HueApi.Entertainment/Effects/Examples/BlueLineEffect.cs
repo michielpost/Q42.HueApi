@@ -1,7 +1,4 @@
 using HueApi.Entertainment.Effects.BasEffects;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HueApi.Entertainment.Effects.Examples
 {

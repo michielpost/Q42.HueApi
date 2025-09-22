@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetBridgesAsync();
+      var result = await localHueClient.Bridge.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetBridgesAsync();
+      var all = await localHueClient.Bridge.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetBridgeAsync(id);
+      var result = await localHueClient.Bridge.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetBridgesAsync();
+      var all = await localHueClient.Bridge.GetAllAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateBridgeAsync(id, req);
+      var result = await localHueClient.Bridge.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

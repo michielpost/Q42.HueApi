@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetDevicePowersAsync();
+      var result = await localHueClient.DevicePower.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetDevicePowersAsync();
+      var all = await localHueClient.DevicePower.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetDevicePowerAsync(id);
+      var result = await localHueClient.DevicePower.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetDevicePowersAsync();
+      var all = await localHueClient.DevicePower.GetAllAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateDevicePowerAsync(id, req);
+      var result = await localHueClient.DevicePower.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

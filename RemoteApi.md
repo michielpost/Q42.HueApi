@@ -41,7 +41,7 @@ Now you can create an RemoteHueClient and give it the helper function that is ab
 
 ```cs 
 IRemoteHueClient client = new RemoteHueClient(authClient.GetValidToken);
-var bridges = await client.GetBridgesAsync();
+var bridges = await client.Bridge.GetAllAsync();
 ```
 
 The last step is to register our app with the user's Bridge
@@ -53,8 +53,10 @@ var key = await client.RegisterAsync(bridges.First().Id, "Sample App");
 //Or initialize with saved key:
 client.Initialize(bridges.First().Id, "saved_key");
 
-//Turn all lights on
-var lightResult = await client.SendCommandAsync(new LightCommand().TurnOn());
+//Turn all lights on of first group
+ var all = await client.GroupedLight.GetAllAsync();
+ var id = all.Data.First().Id; //First group
+var lightResult = await client.Light.UpdateAsync(id, new LightCommand().TurnOn());
 ```
 
             

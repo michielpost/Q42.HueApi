@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetZigbeeConnectivityAsync();
+      var result = await localHueClient.ZigbeeConnectivity.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetZigbeeConnectivityAsync();
+      var all = await localHueClient.ZigbeeConnectivity.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetZigbeeConnectivityAsync(id);
+      var result = await localHueClient.ZigbeeConnectivity.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetZigbeeConnectivityAsync();
+      var all = await localHueClient.ZigbeeConnectivity.GetAllAsync();
       var id = all.Data.Last().Id;
 
       BaseResourceRequest req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateZigbeeConnectivityAsync(id, req);
+      var result = await localHueClient.ZigbeeConnectivity.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

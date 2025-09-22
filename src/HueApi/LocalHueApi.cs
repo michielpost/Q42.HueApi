@@ -55,11 +55,11 @@ namespace HueApi
         {
           try
           {
-            using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl, cancelToken)))
+            using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl, cancelToken).ConfigureAwait(false)))
             {
               while (!streamReader.EndOfStream)
               {
-                var jsonMsg = await streamReader.ReadLineAsync();
+                var jsonMsg = await streamReader.ReadLineAsync().ConfigureAwait(false);
                 //Console.WriteLine($"Received message: {message}");
 
                 if (jsonMsg != null)
@@ -74,7 +74,7 @@ namespace HueApi
               }
             }
           }
-          catch(TaskCanceledException ex)
+          catch(TaskCanceledException)
           {
             //Ignore
           }

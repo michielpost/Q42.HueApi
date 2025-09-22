@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetContactSensorsAsync();
+      var result = await localHueClient.Contact.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetContactSensorsAsync();
+      var all = await localHueClient.Contact.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetContactSensorAsync(id);
+      var result = await localHueClient.Contact.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetContactSensorsAsync();
+      var all = await localHueClient.Contact.GetAllAsync();
       var id = all.Data.Last().Id;
 
       var req = new UpdateSensitivitySensorRequest();
-      var result = await localHueClient.UpdateContactSensorsAsync(id, req);
+      var result = await localHueClient.Contact.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

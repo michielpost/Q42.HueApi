@@ -26,7 +26,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetLightsAsync();
+      var result = await localHueClient.Light.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -35,10 +35,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.Last().Id;
 
-      var result = await localHueClient.GetLightAsync(id);
+      var result = await localHueClient.Light.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -51,7 +51,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateLight req = new UpdateLight()
@@ -67,12 +67,12 @@ namespace HueApi.Tests
           }
         }
       };
-      var result = await localHueClient.UpdateLightAsync(id, req);
+      var result = await localHueClient.Light.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
 
-      var resultRead = await localHueClient.GetLightAsync(id);
+      var resultRead = await localHueClient.Light.GetByIdAsync(id);
 
       Assert.IsTrue(result.Data.Count == 1);
       Assert.AreEqual(id, result.Data.First().Rid);
@@ -82,7 +82,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task ChangeLightColor()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.Last().Id;
 
       //Turn red
@@ -90,14 +90,14 @@ namespace HueApi.Tests
         .TurnOn()
         .SetColor(new ColorConverters.RGBColor("FF0000"));
 
-      var result = await localHueClient.UpdateLightAsync(id, req);
+      var result = await localHueClient.Light.UpdateAsync(id, req);
 
       await Task.Delay(TimeSpan.FromSeconds(5));
 
       //Turn blue
       req = new UpdateLight()
         .SetColor(new ColorConverters.RGBColor("0000FF"));
-      result = await localHueClient.UpdateLightAsync(id, req);
+      result = await localHueClient.Light.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -110,7 +110,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task TestChangeLightColor()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.First().Id;
       var rgbColorHue = new HueApi.ColorConverters.RGBColor(10, 10, 10);
 
@@ -119,7 +119,7 @@ namespace HueApi.Tests
       .TurnOn()
       .SetColor(rgbColorHue);
 
-      var result = localHueClient.UpdateLightAsync(id, req).Result;
+      var result = localHueClient.Light.UpdateAsync(id, req).Result;
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -132,7 +132,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task ChangeGradientLightColor()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
 
       //Get gradient light
       var gradientLight = all.Data.Where(x => x.Gradient != null).FirstOrDefault();
@@ -158,7 +158,7 @@ namespace HueApi.Tests
 
       //req.Effects = new Effects() { Effect = Effect.fire };
 
-      var result = await localHueClient.UpdateLightAsync(id, req);
+      var result = await localHueClient.Light.UpdateAsync(id, req);
 
 
       Assert.IsNotNull(result);
@@ -172,7 +172,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task ChangePlayStripLightColor()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
 
       //Get gradient light
       var officeStrip = all.Data
@@ -213,7 +213,7 @@ namespace HueApi.Tests
          }
       };
 
-      var result = await localHueClient.UpdateLightAsync(id, req);
+      var result = await localHueClient.Light.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -235,11 +235,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task SetBrightnessDeltaDown()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.First().Id;
 
       var req = new UpdateLight().SetBrightnessDelta(DeltaAction.down, 10);
-      var result = await localHueClient.UpdateLightAsync(id, req);
+      var result = await localHueClient.Light.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -251,11 +251,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task SetBrightnessDeltaUp()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.First().Id;
 
       var req = new UpdateLight().SetBrightnessDelta(DeltaAction.up, 10);
-      var result = await localHueClient.UpdateLightAsync(id, req);
+      var result = await localHueClient.Light.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -267,11 +267,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task SetBrightness()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.First().Id;
 
       var req = new UpdateLight().SetBrightness(50);
-      var result = await localHueClient.UpdateLightAsync(id, req);
+      var result = await localHueClient.Light.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -284,11 +284,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task TurnOnTurnOffTest()
     {
-      var all = await localHueClient.GetLightsAsync();
+      var all = await localHueClient.Light.GetAllAsync();
       var id = all.Data.First().Id;
 
       var turnOnreq = new UpdateLight().TurnOn();
-      var turnOnResult = await localHueClient.UpdateLightAsync(id, turnOnreq);
+      var turnOnResult = await localHueClient.Light.UpdateAsync(id, turnOnreq);
 
       Assert.IsNotNull(turnOnResult);
       Assert.IsFalse(turnOnResult.HasErrors);
@@ -296,7 +296,7 @@ namespace HueApi.Tests
 
 
       var turnOffreq = new UpdateLight().TurnOff();
-      var turnOffResult = await localHueClient.UpdateLightAsync(id, turnOffreq);
+      var turnOffResult = await localHueClient.Light.UpdateAsync(id, turnOffreq);
 
       Assert.IsNotNull(turnOffResult);
       Assert.IsFalse(turnOffResult.HasErrors);

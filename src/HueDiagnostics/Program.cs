@@ -148,8 +148,6 @@ namespace HueDiagnostics
               Console.WriteLine($"API: {bridgeData.Config.ApiVersion}");
               Console.WriteLine($"LocalTime: {bridgeData.Config.LocalTime}");
               Console.WriteLine($"SoftwareVersion: {bridgeData.Config.SoftwareVersion}");
-              Console.WriteLine($"SoftwareUpdate (deprecated): {bridgeData.Config.SoftwareUpdate?.UpdateState}");
-              Console.WriteLine($"SoftwareUpdate (deprecated): {bridgeData.Config.SoftwareUpdate?.Text}");
 
               Console.WriteLine($"SoftwareUpdate:");
               Console.WriteLine($"State: {bridgeData.Config.SoftwareUpdate2.State}");

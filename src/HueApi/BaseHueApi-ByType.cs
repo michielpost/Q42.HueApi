@@ -71,9 +71,9 @@ namespace HueApi
       if (_resourceTypes.ContainsKey(rtype))
         type = _resourceTypes[rtype];
 
-      var response = await client.GetAsync(url);
+      var response = await client.GetAsync(url).ConfigureAwait(false);
 
-      var result = await ProcessResponseAsync(response, type);
+      var result = await ProcessResponseAsync(response, type).ConfigureAwait(false);
 
       return result;
     }
@@ -85,7 +85,7 @@ namespace HueApi
 
       if (response.IsSuccessStatusCode)
       {
-        var data = await response.Content.ReadAsStringAsync();
+        var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var json = System.Text.Json.JsonSerializer.Deserialize(data, type);
 
         if (json == null)
@@ -120,7 +120,7 @@ namespace HueApi
       }
       else
       {
-        var errorResponse = await response.Content.ReadFromJsonAsync<HueErrorResponse>();
+        var errorResponse = await response.Content.ReadFromJsonAsync<HueErrorResponse>().ConfigureAwait(false);
 
         var result = new HueResponse<HueResource>();
         if (errorResponse != null)

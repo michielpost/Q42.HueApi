@@ -1,4 +1,3 @@
-using HueApi.BridgeLocator;
 using HueApi.ColorConverters;
 using HueApi.ColorConverters.Original.Extensions;
 using HueApi.Extensions.cs;
@@ -29,7 +28,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetScenesAsync();
+      var result = await localHueClient.Scene.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -38,10 +37,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetScenesAsync();
+      var all = await localHueClient.Scene.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetSceneAsync(id);
+      var result = await localHueClient.Scene.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -54,13 +53,13 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetScenesAsync();
+      var all = await localHueClient.Scene.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateScene req = new UpdateScene()
       {
       };
-      var result = await localHueClient.UpdateSceneAsync(id, req);
+      var result = await localHueClient.Scene.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -73,14 +72,14 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task ActivateScene()
     {
-      var all = await localHueClient.GetScenesAsync();
+      var all = await localHueClient.Scene.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateScene req = new UpdateScene()
       {
-        Recall = new Recall() {  Action =  SceneRecallAction.active }
+        Recall = new Recall() { Action = SceneRecallAction.active }
       };
-      var result = await localHueClient.UpdateSceneAsync(id, req);
+      var result = await localHueClient.Scene.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -93,26 +92,26 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task CreateAndDelete()
     {
-      var all = await localHueClient.GetScenesAsync();
-      var groups = await localHueClient.GetRoomsAsync();
+      var all = await localHueClient.Scene.GetAllAsync();
+      var groups = await localHueClient.Room.GetAllAsync();
       var group = groups.Data.Skip(1).First();
-      var groupLights = await localHueClient.GetRoomAsync(group.Id);
+      var groupLights = await localHueClient.Room.GetByIdAsync(group.Id);
       var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
       Guid? deleteId = null;
-      if(existing == null)
+      if (existing == null)
       {
         CreateScene req = new CreateScene(new Models.Metadata() { Name = "unittest" }, group.ToResourceIdentifier());
-        foreach(var light in groupLights.Data.SelectMany(x => x.Services.Where(x => x.Rtype == "light")))
+        foreach (var light in groupLights.Data.SelectMany(x => x.Services.Where(x => x.Rtype == "light")))
         {
           req.Actions.Add(new SceneAction
           {
-             Target = light,
-              Action = new LightAction().TurnOn()
+            Target = light,
+            Action = new LightAction().TurnOn()
           });
         }
 
-        var result = await localHueClient.CreateSceneAsync(req);
+        var result = await localHueClient.Scene.CreateAsync(req);
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.HasErrors);
@@ -122,7 +121,7 @@ namespace HueApi.Tests
 
       if (deleteId.HasValue)
       {
-        var deleteResult = await localHueClient.DeleteSceneAsync(deleteId.Value);
+        var deleteResult = await localHueClient.Scene.DeleteAsync(deleteId.Value);
 
         Assert.IsNotNull(deleteResult);
         Assert.IsFalse(deleteResult.HasErrors);
@@ -137,18 +136,18 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task CreateDynamicAndActivate()
     {
-      var all = await localHueClient.GetScenesAsync();
-      var groups = await localHueClient.GetRoomsAsync();
+      var all = await localHueClient.Scene.GetAllAsync();
+      var groups = await localHueClient.Room.GetAllAsync();
       var group = groups.Data.First();
-      var room = await localHueClient.GetRoomAsync(group.Id);
+      var room = await localHueClient.Room.GetByIdAsync(group.Id);
       List<ResourceIdentifier> lights = new List<ResourceIdentifier>();
-      foreach(var device in room.Data.First().Children)
+      foreach (var device in room.Data.First().Children)
       {
-        var light = await localHueClient.GetDeviceAsync(device.Rid);
+        var light = await localHueClient.Device.GetByIdAsync(device.Rid);
         lights.AddRange(light.Data.First().Services.Where(x => x.Rtype == "light").ToList());
       }
 
-      var groupLights2 = await localHueClient.GetGroupedLightAsync(group.Services.First().Rid);
+      var groupLights2 = await localHueClient.GroupedLight.GetByIdAsync(group.Services.First().Rid);
       var existing = all.Data.Where(x => x.Metadata?.Name == "testdynamic").FirstOrDefault();
 
       Guid? sceneId = existing?.Id;
@@ -164,7 +163,7 @@ namespace HueApi.Tests
           });
         }
 
-        var result = await localHueClient.CreateSceneAsync(req);
+        var result = await localHueClient.Scene.CreateAsync(req);
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.HasErrors);
@@ -172,7 +171,7 @@ namespace HueApi.Tests
         sceneId = result.Data.First().Rid;
       }
 
-      if(sceneId.HasValue)
+      if (sceneId.HasValue)
       {
         //Create a dynamic scene
         UpdateScene reqDynamic = new UpdateScene()
@@ -192,7 +191,7 @@ namespace HueApi.Tests
           },
           Speed = 0.9
         };
-        var resultDynamic = await localHueClient.UpdateSceneAsync(sceneId.Value, reqDynamic);
+        var resultDynamic = await localHueClient.Scene.UpdateAsync(sceneId.Value, reqDynamic);
 
         Assert.IsNotNull(resultDynamic);
         Assert.IsFalse(resultDynamic.HasErrors);
@@ -204,13 +203,13 @@ namespace HueApi.Tests
         {
           Recall = new Recall() { Action = SceneRecallAction.dynamic_palette }
         };
-        var result = await localHueClient.UpdateSceneAsync(sceneId.Value, req);
+        var result = await localHueClient.Scene.UpdateAsync(sceneId.Value, req);
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.HasErrors);
       }
 
-     
+
 
     }
   }

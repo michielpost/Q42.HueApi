@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetLightLevelsAsync();
+      var result = await localHueClient.LightLevel.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetLightLevelsAsync();
+      var all = await localHueClient.LightLevel.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetLightLevelAsync(id);
+      var result = await localHueClient.LightLevel.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetLightLevelsAsync();
+      var all = await localHueClient.LightLevel.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateSensorRequest req = new UpdateSensorRequest();
-      var result = await localHueClient.UpdateLightLevelAsync(id, req);
+      var result = await localHueClient.LightLevel.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

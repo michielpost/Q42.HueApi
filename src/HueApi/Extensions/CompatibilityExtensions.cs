@@ -1,11 +1,5 @@
 using HueApi.Models;
-using HueApi.Models.Exceptions;
 using HueApi.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HueApi
 {
@@ -20,7 +14,7 @@ namespace HueApi
     /// <returns></returns>
     public static Task<HueResponse<Bridge>> GetBridgeAsync(this LocalHueApi api)
     {
-      return api.GetBridgesAsync();
+      return api.Bridge.GetAllAsync();
     }
 
     /// <summary>
@@ -29,7 +23,7 @@ namespace HueApi
     /// <returns></returns>
     public static Task<HueResponse<GroupedLight>> GetGroupsAsync(this LocalHueApi api)
     {
-      return api.GetGroupedLightsAsync();
+      return api.GroupedLight.GetAllAsync();
     }
 
     /// <summary>
@@ -39,7 +33,7 @@ namespace HueApi
     /// <returns></returns>
     public static Task<HueResponse<GroupedLight>> GetGroupAsync(this LocalHueApi api, Guid id)
     {
-      return api.GetGroupedLightAsync(id);
+      return api.GroupedLight.GetByIdAsync(id);
     }
 
     /// <summary>
@@ -48,7 +42,7 @@ namespace HueApi
     /// <returns></returns>
     public static Task<HueResponse<EntertainmentConfiguration>> GetEntertainmentGroups(this LocalHueApi api)
     {
-      return api.GetEntertainmentConfigurationsAsync();
+      return api.EntertainmentConfiguration.GetAllAsync();
     }
 
     /// <summary>
@@ -67,13 +61,13 @@ namespace HueApi
         }
       };
 
-      return api.UpdateLightAsync(id, updateLight);
+      return api.Light.UpdateAsync(id, updateLight);
 
     }
-    
+
     public static Task<HuePutResponse> RecallSceneAsync(this LocalHueApi api, Guid id)
     {
-      return api.UpdateSceneAsync(id, new UpdateScene() { Recall = new Recall() { Action = SceneRecallAction.active } });
+      return api.Scene.UpdateAsync(id, new UpdateScene() { Recall = new Recall() { Action = SceneRecallAction.active } });
     }
 
   }

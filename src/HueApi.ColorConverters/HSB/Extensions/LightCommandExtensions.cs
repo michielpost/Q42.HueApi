@@ -1,12 +1,3 @@
-using HueApi.ColorConverters.HSB;
-using HueApi.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace HueApi.ColorConverters.HSB.Extensions
 {
   public static class LightCommandExtensions

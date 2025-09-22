@@ -1,9 +1,5 @@
-using HueApi.BridgeLocator;
-using HueApi.ColorConverters;
-using HueApi.ColorConverters.Original.Extensions;
 using HueApi.Extensions.cs;
 using HueApi.Models;
-using HueApi.Models.Requests;
 using HueApi.Models.Requests.SmartScene;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +26,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetSmartScenesAsync();
+      var result = await localHueClient.SmartScene.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -39,10 +35,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetSmartScenesAsync();
+      var all = await localHueClient.SmartScene.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetSmartSceneAsync(id);
+      var result = await localHueClient.SmartScene.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -55,13 +51,13 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetSmartScenesAsync();
+      var all = await localHueClient.SmartScene.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateSmartScene req = new UpdateSmartScene()
       {
       };
-      var result = await localHueClient.UpdateSmartSceneAsync(id, req);
+      var result = await localHueClient.SmartScene.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -74,14 +70,14 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task ActivateScene()
     {
-      var all = await localHueClient.GetSmartScenesAsync();
+      var all = await localHueClient.SmartScene.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateSmartScene req = new UpdateSmartScene()
       {
-        Recall = new SmartSceneRecall() {  Action = SmartSceneRecallAction.activate }
+        Recall = new SmartSceneRecall() { Action = SmartSceneRecallAction.activate }
       };
-      var result = await localHueClient.UpdateSmartSceneAsync(id, req);
+      var result = await localHueClient.SmartScene.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -94,12 +90,12 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task CreateAndDelete()
     {
-      var all = await localHueClient.GetSmartScenesAsync();
+      var all = await localHueClient.SmartScene.GetAllAsync();
 
-      var scenes = await localHueClient.GetScenesAsync();
+      var scenes = await localHueClient.SmartScene.GetAllAsync();
       var scene = scenes.Data.Last();
 
-      var groups = await localHueClient.GetRoomsAsync();
+      var groups = await localHueClient.Room.GetAllAsync();
       var group = groups.Data.Last();
       var existing = all.Data.Where(x => x.Metadata?.Name == "unittest").FirstOrDefault();
 
@@ -136,10 +132,10 @@ namespace HueApi.Tests
                 }
             }
           },
-          Recall = new SmartSceneRecall() {  Action = SmartSceneRecallAction.activate }
+          Recall = new SmartSceneRecall() { Action = SmartSceneRecallAction.activate }
         };
 
-        var result = await localHueClient.CreateSmartSceneAsync(req);
+        var result = await localHueClient.SmartScene.CreateAsync(req);
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.HasErrors);
@@ -149,7 +145,7 @@ namespace HueApi.Tests
 
       if (deleteId.HasValue)
       {
-        var deleteResult = await localHueClient.DeleteSmartSceneAsync(deleteId.Value);
+        var deleteResult = await localHueClient.SmartScene.DeleteAsync(deleteId.Value);
 
         Assert.IsNotNull(deleteResult);
         Assert.IsFalse(deleteResult.HasErrors);
@@ -160,6 +156,6 @@ namespace HueApi.Tests
 
     }
 
-   
+
   }
 }

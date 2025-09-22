@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetGroupedMotionsAsync();
+      var result = await localHueClient.GroupedMotion.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetGroupedMotionsAsync();
+      var all = await localHueClient.GroupedMotion.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetGroupedMotionAsync(id);
+      var result = await localHueClient.GroupedMotion.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetGroupedMotionsAsync();
+      var all = await localHueClient.GroupedMotion.GetAllAsync();
       var id = all.Data.Last().Id;
 
       var req = new UpdateGroupedMotionRequest();
-      var result = await localHueClient.UpdateGroupedMotionAsync(id, req);
+      var result = await localHueClient.GroupedMotion.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

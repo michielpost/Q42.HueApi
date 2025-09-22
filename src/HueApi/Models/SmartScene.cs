@@ -1,10 +1,4 @@
-using HueApi.Models.Requests.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HueApi.Models
 {
@@ -40,7 +34,7 @@ namespace HueApi.Models
     [JsonPropertyName("target")]
     public ResourceIdentifier Target { get; set; } = default!;
 
-    
+
   }
 
   public class TimeslotStartTime

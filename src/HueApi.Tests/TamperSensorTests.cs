@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetTamperSensorsAsync();
+      var result = await localHueClient.Tamper.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetTamperSensorsAsync();
+      var all = await localHueClient.Tamper.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetTamperSensorAsync(id);
+      var result = await localHueClient.Tamper.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetTamperSensorsAsync();
+      var all = await localHueClient.Tamper.GetAllAsync();
       var id = all.Data.Last().Id;
 
       var req = new BaseResourceRequest();
-      var result = await localHueClient.UpdateTamperSensorAsync(id, req);
+      var result = await localHueClient.Tamper.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

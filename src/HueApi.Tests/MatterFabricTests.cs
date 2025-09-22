@@ -25,7 +25,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetMatterFabricsAsync();
+      var result = await localHueClient.MatterFabric.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -34,10 +34,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetMatterFabricsAsync();
+      var all = await localHueClient.MatterFabric.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetMatterFabricAsync(id);
+      var result = await localHueClient.MatterFabric.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

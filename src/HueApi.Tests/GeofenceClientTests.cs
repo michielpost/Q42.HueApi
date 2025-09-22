@@ -23,7 +23,7 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task Get()
     {
-      var result = await localHueClient.GetGeofenceClientsAsync();
+      var result = await localHueClient.GeofenceClient.GetAllAsync();
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -32,10 +32,10 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task GetById()
     {
-      var all = await localHueClient.GetGeofenceClientsAsync();
+      var all = await localHueClient.GeofenceClient.GetAllAsync();
       var id = all.Data.First().Id;
 
-      var result = await localHueClient.GetGeofenceClientAsync(id);
+      var result = await localHueClient.GeofenceClient.GetByIdAsync(id);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);
@@ -48,11 +48,11 @@ namespace HueApi.Tests
     [TestMethod]
     public async Task PutById()
     {
-      var all = await localHueClient.GetGeofenceClientsAsync();
+      var all = await localHueClient.GeofenceClient.GetAllAsync();
       var id = all.Data.Last().Id;
 
       UpdateGeofenceClient req = new UpdateGeofenceClient();
-      var result = await localHueClient.UpdateGeofenceClientAsync(id, req);
+      var result = await localHueClient.GeofenceClient.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
       Assert.IsFalse(result.HasErrors);

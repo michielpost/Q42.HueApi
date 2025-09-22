@@ -1,9 +1,4 @@
 using HueApi.Entertainment.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HueApi.Entertainment.ConsoleSample
 {
@@ -11,9 +6,9 @@ namespace HueApi.Entertainment.ConsoleSample
   {
     public static async Task<StreamingGroup> SetupAndReturnGroup()
     {
-      string ip = "192.168.0.4";
-      string key = "im5PBqU--4CJq2N2t8xMVNvZ2qxOtgzLcfVTkwzP";
-      string entertainmentKey = "32C1FEB5439F313891C44369FF71388C";
+      string ip = "192.168.1.57";
+      string key = "YLRlMeKdb6Fedj7VaJdKIYVErs-STLlNbCmf4rwb";
+      string entertainmentKey = "9EF44FFF43C59CC3C51AEBF70AF4BBDD";
       var useSimulator = false;
 
       //string ip = "127.0.0.1";
@@ -26,8 +21,8 @@ namespace HueApi.Entertainment.ConsoleSample
       StreamingHueClient client = new StreamingHueClient(ip, key, entertainmentKey);
 
       //Get the entertainment group
-      var all = await client.LocalHueApi.GetEntertainmentConfigurationsAsync();
-      var group = all.Data.LastOrDefault();
+      var all = await client.LocalHueApi.EntertainmentConfiguration.GetAllAsync();
+      var group = all.Data.Skip(1).FirstOrDefault();
 
       if (group == null)
         throw new HueEntertainmentException("No Entertainment Group found. Create one using the Q42.HueApi.UniversalWindows.Sample");
@@ -46,7 +41,7 @@ namespace HueApi.Entertainment.ConsoleSample
       client.AutoUpdateAsync(stream, new CancellationToken(), 50, onlySendDirtyStates: false);
 
       //Optional: Check if streaming is currently active
-      var entArea = await client.LocalHueApi.GetEntertainmentConfigurationAsync(group.Id);
+      var entArea = await client.LocalHueApi.EntertainmentConfiguration.GetByIdAsync(group.Id);
       Console.WriteLine(entArea.Data.First().Status == HueApi.Models.EntertainmentConfigurationStatus.active ? "Streaming is active" : "Streaming is not active");
       return stream;
     }

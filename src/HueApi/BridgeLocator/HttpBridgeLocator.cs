@@ -20,7 +20,7 @@ namespace HueApi.BridgeLocator
       {
         if (response.IsSuccessStatusCode && !cancellationToken.IsCancellationRequested)
         {
-          var responseModel = await response.Content.ReadFromJsonAsync<List<DiscoveryResponse>>();
+          var responseModel = await response.Content.ReadFromJsonAsync<List<DiscoveryResponse>>().ConfigureAwait(false);
 
           if (responseModel != null)
           {
