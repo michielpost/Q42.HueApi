@@ -5,6 +5,9 @@ namespace HueApi.Models.Requests
 {
   public class UpdateLight : BaseResourceRequest, IUpdateColor, IUpdateColorTemperature, IUpdateOn, IUpdateDimmingDelta, IUpdateDimming, IUpdateDynamics
   {
+    [JsonPropertyName("identify")]
+    public Identify? Identify { get; set; }
+
     [JsonPropertyName("on")]
     public On? On { get; set; }
 
