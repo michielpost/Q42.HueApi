@@ -1,10 +1,4 @@
 using HueApi.Models;
-using HueApi.ColorConverters.Original;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HueApi.ColorConverters.Original.Extensions
 {

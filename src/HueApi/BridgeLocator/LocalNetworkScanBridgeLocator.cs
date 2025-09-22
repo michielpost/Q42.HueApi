@@ -1,11 +1,6 @@
 using HueApi.Extensions;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace HueApi.BridgeLocator
 {
@@ -60,7 +55,7 @@ namespace HueApi.BridgeLocator
               if (!string.IsNullOrEmpty(serialNumber))
               {
                 var locatedBridge = new LocatedBridge(serialNumber!, ip.ToString(), null);
-                
+
                 if (discoveredBridges.TryAdd(ip.ToString(), locatedBridge))
                 {
                   OnBridgeFound(locatedBridge);

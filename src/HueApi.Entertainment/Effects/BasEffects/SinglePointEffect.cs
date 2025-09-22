@@ -1,8 +1,5 @@
 using HueApi.Entertainment.Models;
 using HueApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HueApi.Entertainment.Effects.BasEffects
 {

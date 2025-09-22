@@ -1,11 +1,5 @@
 using HueApi.Models;
-using HueApi.Models.Exceptions;
 using HueApi.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HueApi
 {
@@ -70,7 +64,7 @@ namespace HueApi
       return api.Light.UpdateAsync(id, updateLight);
 
     }
-    
+
     public static Task<HuePutResponse> RecallSceneAsync(this LocalHueApi api, Guid id)
     {
       return api.Scene.UpdateAsync(id, new UpdateScene() { Recall = new Recall() { Action = SceneRecallAction.active } });
