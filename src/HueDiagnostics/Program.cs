@@ -1,8 +1,10 @@
+using HueApi;
+using HueApi.BridgeLocator;
+using HueApi.Models;
+using HueApi.Models.Requests;
 using HueDiagnostics.Models;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.Extensions.Configuration;
-using Q42.HueApi;
-using Q42.HueApi.Interfaces;
 using System.Text.Json;
 
 namespace HueDiagnostics
@@ -77,13 +79,15 @@ namespace HueDiagnostics
           diagData.BridgeIp = bridgeIp;
 
           //Get local client
-          ILocalHueClient client = new LocalHueClient(bridgeIp!);
+          LocalHueApi client = new LocalHueApi(bridgeIp!, key: null);
 
           //Get config
           try
           {
-            var config = await client.GetConfigAsync();
-            diagData.BridgeConfig = config;
+            var deviceDataResult = await client.Device.GetAllAsync();
+
+            var deviceData = deviceDataResult.Data.FirstOrDefault();
+            diagData.Device = deviceData;
           }
           catch(Exception ex)
           {
@@ -135,27 +139,30 @@ namespace HueDiagnostics
           diagData.BridgeIp = bridge.Ip;
 
           //Get local client
-          ILocalHueClient client = new LocalHueClient(bridge.Ip!, bridge.Key!);
+          LocalHueApi client = new LocalHueApi(bridge.Ip!, bridge.Key!);
 
           //Get config
           try
           {
-            var bridgeData = await client.GetBridgeAsync();
+            var deviceDataResult = await client.Device.GetAllAsync();
+            var bridgeDataResult = await client.Bridge.GetAllAsync();
+
+            var bridgeData = bridgeDataResult.Data.FirstOrDefault();
             diagData.Bridge = bridgeData;
 
-            if (bridgeData?.Config != null)
-            {
-              Console.WriteLine($"API: {bridgeData.Config.ApiVersion}");
-              Console.WriteLine($"LocalTime: {bridgeData.Config.LocalTime}");
-              Console.WriteLine($"SoftwareVersion: {bridgeData.Config.SoftwareVersion}");
+            var deviceData = deviceDataResult.Data.FirstOrDefault();
+            diagData.Device = deviceData;
 
-              Console.WriteLine($"SoftwareUpdate:");
-              Console.WriteLine($"State: {bridgeData.Config.SoftwareUpdate2.State}");
-              Console.WriteLine($"LastChange: {bridgeData.Config.SoftwareUpdate2.LastChange}");
-              Console.WriteLine($"AutoInstall: {bridgeData.Config.SoftwareUpdate2.AutoInstall.On}");
-              Console.WriteLine($"AutoInstall: {bridgeData.Config.SoftwareUpdate2.AutoInstall.UpdateTime}");
+            if (deviceData != null)
+            {
+              Console.WriteLine($"SoftwareVersion: {deviceData.ProductData.SoftwareVersion}");
               Console.WriteLine();
 
+            }
+
+            if (bridgeData != null)
+            {
+              Console.WriteLine($"TimeZone: {bridgeData.TimeZone}");
             }
           }
           catch (Exception ex)
@@ -166,10 +173,10 @@ namespace HueDiagnostics
 
           diagDataList.Add(diagData);
 
-          var command = new LightCommand();
-          command.Alert = Alert.Multiple;
+          var command = new UpdateLight();
+          command.Alert = new UpdateAlert();
 
-          await client.SendGroupCommandAsync(command);
+          await client.Light.UpdateAsync(Guid.Empty, command);
           Console.WriteLine("Sending Alert");
           //Console.ReadLine();
 
@@ -178,7 +185,7 @@ namespace HueDiagnostics
         Console.WriteLine();
         if (diagDataList.Count == 1)
         {
-          var json = JsonSerializer.Serialize(diagDataList.First().Bridge?.Config, new JsonSerializerOptions { WriteIndented = true });
+          var json = JsonSerializer.Serialize(diagDataList.First().Bridge, new JsonSerializerOptions { WriteIndented = true });
           Console.WriteLine("Bridge:");
           Console.WriteLine(json);
         }
@@ -189,7 +196,7 @@ namespace HueDiagnostics
 
           foreach (var diag in diagDataList.Skip(1))
           {
-            ComparisonResult result = compareLogic.Compare(first.Bridge?.Config, diag.Bridge?.Config);
+            ComparisonResult result = compareLogic.Compare(first.Bridge, diag.Bridge);
 
             if (!result.AreEqual)
               Console.WriteLine(result.DifferencesString);

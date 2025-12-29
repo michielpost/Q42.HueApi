@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <Authors>Michiel Post</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>For Clip v2 API. Open source library for interaction with the Philips Hue Bridge. Allows you to control your lights from C#.</Description>
@@ -26,13 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HueApi.ColorConverters\HueApi.ColorConverters.csproj" />
-    <ProjectReference Include="..\HueApi\HueApi.csproj" />
+    <None Include="../../hueapi_logo.png" Pack="true" PackagePath="\" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../hueapi_logo.png" Pack="true" PackagePath="\" />
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
+    <ProjectReference Include="..\HueApi.ColorConverters\HueApi.ColorConverters.csproj" />
   </ItemGroup>
 
 </Project>
