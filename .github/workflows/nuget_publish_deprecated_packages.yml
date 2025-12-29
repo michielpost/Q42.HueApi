@@ -1,4 +1,4 @@
-name: Build and publish
+name: DEPRECATED Build and publish old Q42 packages
 on:
   push:
     branches:
@@ -25,7 +25,7 @@ jobs:
         run: nuget restore src\Q42.HueApi.v1.deprecated.sln
 
       - name: Build
-        run: msbuild src\Q42.HueApi.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+        run: msbuild src\Q42.HueApi.v1.deprecated.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
       - name: Publish Q42 HueApi
         run: dotnet nuget push src\Q42.HueApi\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
