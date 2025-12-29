@@ -6,41 +6,26 @@ on:
 jobs:
   publish:
     name: build, pack & publish
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9.0.x
-
-      - name: Setup MSBuild Path
-        uses: microsoft/setup-msbuild@v1.1
-
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1
+          dotnet-version: 10.0.x
 
       - name: Restore NuGet Packages
-        run: nuget restore src\Q42.HueApi.sln
+        run: dotnet restore src/Q42.HueApi.sln
 
       - name: Build
-        run: msbuild src\Q42.HueApi.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+        run: dotnet build src/Q42.HueApi.sln --configuration Release
 
       - name: Publish HueApi
-        run: dotnet nuget push src\HueApi\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src/HueApi/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish HueApi ColorConverters
-        run: dotnet nuget push src\HueApi.ColorConverters\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src/HueApi.ColorConverters/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish HueApi Entertainment
-        run: dotnet nuget push src\HueApi.Entertainment\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
-
-      - name: Publish Q42 HueApi
-        run: dotnet nuget push src\Q42.HueApi\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
-
-      - name: Publish Q42 HueApi ColorConverters
-        run: dotnet nuget push src\Q42.HueApi.ColorConverters\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
-
-      - name: Publish Q42 HueApi Streaming
-        run: dotnet nuget push src\Q42.HueApi.Streaming\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src/HueApi.Entertainment/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
