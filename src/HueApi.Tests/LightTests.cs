@@ -67,6 +67,8 @@ namespace HueApi.Tests
           }
         }
       };
+      req.SetDuration(TimeSpan.FromSeconds(1));
+
       var result = await localHueClient.Light.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);

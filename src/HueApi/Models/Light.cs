@@ -135,13 +135,13 @@ namespace HueApi.Models
     public double Speed { get; set; }
 
     [JsonPropertyName("speed_valid")]
-    public bool SpeedValid { get; set; }
+    public bool? SpeedValid { get; set; }
 
     [JsonPropertyName("status")]
-    public string Status { get; set; } = default!;
+    public string? Status { get; set; }
 
     [JsonPropertyName("status_values")]
-    public List<string> StatusValues { get; set; } = new();
+    public List<string>? StatusValues { get; set; }
   }
 
   public class On
