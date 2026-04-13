@@ -37,16 +37,8 @@ namespace HueApi.Models
     [JsonPropertyName("stream_proxy")]
     public StreamProxy StreamProxy { get; set; } = new();
 
-    [Obsolete("Deprecated: resolve via entertainment services in locations object")]
-    [JsonPropertyName("light_services")]
-    public List<ResourceIdentifier> LightServices { get; set; } = new();
-
     [JsonPropertyName("channels")]
     public List<EntertainmentChannel> Channels { get; set; } = new();
-
-    [Obsolete("Deprecated: use metadata/name")]
-    [JsonPropertyName("name")]
-    public string? Name { get; set; }
 
     [JsonPropertyName("status")]
     public EntertainmentConfigurationStatus Status { get; set; }
@@ -96,10 +88,6 @@ namespace HueApi.Models
 
     [JsonPropertyName("service")]
     public ResourceIdentifier? Service { get; set; }
-
-    [Obsolete("Use Positions")]
-    [JsonPropertyName("position")]
-    public HuePosition? Position { get; set; }
 
     /// <summary>
     /// Relative equalization factor applied to the entertainment service, to compensate for differences in brightness in the entertainment configuration. Value cannot be 0, writing 0 changes it to lowest possible value.

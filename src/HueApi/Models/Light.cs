@@ -40,10 +40,6 @@ namespace HueApi.Models
     [JsonPropertyName("gradient")]
     public Gradient? Gradient { get; set; }
 
-    [Obsolete("Use EffectsV2")]
-    [JsonPropertyName("effects")]
-    public Effects? Effects { get; set; }
-
     [JsonPropertyName("effects_v2")]
     public EffectsV2? EffectsV2 { get; set; }
 
@@ -249,22 +245,6 @@ namespace HueApi.Models
 
     [JsonPropertyName("brightness_delta")]
     public double BrightnessDelta { get; set; }
-  }
-
-  [Obsolete("Use EffectsV2")]
-  public class Effects
-  {
-    [JsonPropertyName("effect")]
-    public Effect Effect { get; set; } = new();
-
-    [JsonPropertyName("effect_values")]
-    public List<string>? EffectValues { get; set; }
-
-    [JsonPropertyName("status")]
-    public string? Status { get; set; }
-
-    [JsonPropertyName("status_values")]
-    public List<string>? StatusValues { get; set; }
   }
 
   public class EffectsV2

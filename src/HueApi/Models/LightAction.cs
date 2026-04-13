@@ -20,10 +20,6 @@ namespace HueApi.Models
     [JsonPropertyName("gradient")]
     public Gradient? Gradient { get; set; }
 
-    [Obsolete("Use EffectsV2")]
-    [JsonPropertyName("effects")]
-    public Effects? Effects { get; set; }
-
     [JsonPropertyName("effects_v2")]
     public EffectsV2? EffectsV2 { get; set; }
 
