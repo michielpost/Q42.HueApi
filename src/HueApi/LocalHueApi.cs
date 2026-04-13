@@ -52,19 +52,16 @@ namespace HueApi
           {
             using (var streamReader = new StreamReader(await infiniteHttpClient.GetStreamAsync(EventStreamUrl, cancelToken).ConfigureAwait(false)))
             {
-              while (!streamReader.EndOfStream)
+              string? jsonMsg;
+              while ((jsonMsg = await streamReader.ReadLineAsync().ConfigureAwait(false)) != null)
               {
-                var jsonMsg = await streamReader.ReadLineAsync().ConfigureAwait(false);
                 //Console.WriteLine($"Received message: {message}");
 
-                if (jsonMsg != null)
-                {
-                  var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
+                var data = System.Text.Json.JsonSerializer.Deserialize<List<EventStreamResponse>>(jsonMsg);
 
-                  if (data != null && data.Any())
-                  {
-                    OnEventStreamMessage?.Invoke(this.ip, data);
-                  }
+                if (data != null && data.Any())
+                {
+                  OnEventStreamMessage?.Invoke(this.ip, data);
                 }
               }
             }
@@ -82,8 +79,6 @@ namespace HueApi
     {
       this.eventStreamCancellationTokenSource?.Cancel();
     }
-
-
 
     /// <summary>
     /// Register your <paramref name="applicationName"/> and <paramref name="deviceName"/> at the Hue Bridge.
