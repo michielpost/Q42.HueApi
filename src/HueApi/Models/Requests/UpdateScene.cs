@@ -27,7 +27,7 @@ namespace HueApi.Models.Requests
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum SceneRecallAction
   {
-    active, dynamic_palette
+    active, dynamic_palette, @static
   }
 
   [JsonConverter(typeof(JsonStringEnumConverter))]

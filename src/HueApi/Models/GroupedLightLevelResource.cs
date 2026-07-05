@@ -19,7 +19,7 @@ namespace HueApi.Models
 
   public class LightLevelReport
   {
-    [JsonPropertyName("Changed")]
+    [JsonPropertyName("changed")]
     public DateTimeOffset changed { get; set; }
 
     [JsonPropertyName("light_level")]

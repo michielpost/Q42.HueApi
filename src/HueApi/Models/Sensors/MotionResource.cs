@@ -16,8 +16,11 @@ namespace HueApi.Models.Sensors
 
   public class Sensitivity
   {
+    /// <summary>
+    /// Read only. Only used in GET responses, should not be set in PUT requests.
+    /// </summary>
     [JsonPropertyName("status")]
-    public SensitivityStatus Status { get; set; } = default!;
+    public SensitivityStatus? Status { get; set; }
 
     [JsonPropertyName("sensitivity")]
     public int SensitivityValue { get; set; }

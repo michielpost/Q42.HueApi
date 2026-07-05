@@ -38,6 +38,18 @@ namespace HueApi.Models
     [JsonPropertyName("usertest")]
     public UserTest? UserTest { get; set; }
 
+    [JsonPropertyName("identify")]
+    public IdentifyFeature? Identify { get; set; }
+
+    [JsonPropertyName("geometry")]
+    public ResourceGeometry? Geometry { get; set; }
+
+    /// <summary>
+    /// Deprecated: use switch_mode in SwitchInputConfiguration
+    /// </summary>
+    [JsonPropertyName("device_mode")]
+    public DeviceMode? DeviceMode { get; set; }
+
   }
 
   public class UserTest

@@ -15,6 +15,12 @@ namespace HueApi.Models
 
     [JsonPropertyName("state")]
     public SmartSceneState State { get; set; }
+
+    /// <summary>
+    /// Duration of the transition from on one timeslot's scene to the other (defaults to 60000ms)
+    /// </summary>
+    [JsonPropertyName("transition_duration")]
+    public int? TransitionDuration { get; set; }
   }
 
   public class SmartSceneDayTimeslot

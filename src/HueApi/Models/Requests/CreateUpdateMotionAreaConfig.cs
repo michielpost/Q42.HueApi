@@ -11,10 +11,10 @@ namespace HueApi.Models.Requests
     public ResourceIdentifier? Group { get; set; }
 
     /// <summary>
-    /// A list of motion area services used in this configuration, with each service including its health status. Supported types “MotionAreaCandidate”
+    /// A list of motion area services used in this configuration. Supported types “MotionAreaCandidate”. Required on create.
     /// </summary>
     [JsonPropertyName("participants")]
-    public List<ResourceIdentifier>? Participants { get; set; }
+    public List<MotionAreaParticipant>? Participants { get; set; }
 
 
     [JsonPropertyName("enabled")]

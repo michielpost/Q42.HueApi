@@ -20,6 +20,12 @@ namespace HueApi.HueEndpoints
     where TGet : HueResource
   {
     public Task<HueResponse<TGet>> GetAllAsync() => _hueApi.HueGetRequestAsync<TGet>(_hueApi.ResourceTypeIdUrl(_type, null));
+
+    /// <summary>
+    /// List all resources, filtered by resource type
+    /// </summary>
+    /// <param name="types">Resource types to filter on, e.g. "light", "scene"</param>
+    public Task<HueResponse<TGet>> GetAllAsync(IEnumerable<string> types) => _hueApi.HueGetRequestAsync<TGet>($"{_hueApi.ResourceTypeIdUrl(_type, null)}?type={string.Join(",", types)}");
   }
 
   public class ReadOnlyEndpoint<TGet>(BaseHueApi hueApi, string type) : EndpointBase(hueApi, type),

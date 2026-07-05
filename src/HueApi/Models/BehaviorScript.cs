@@ -24,7 +24,7 @@ namespace HueApi.Models
     public List<string>? SupportedFeatures { get; set; }
 
     [JsonPropertyName("max_number_instances")]
-    public int MaxNumberInstances { get; set; }
+    public int? MaxNumberInstances { get; set; }
 
   }
 }

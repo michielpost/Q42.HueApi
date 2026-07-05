@@ -15,5 +15,11 @@ namespace HueApi.Models.Requests.SmartScene
 
     [JsonPropertyName("recall")]
     public SmartSceneRecall Recall { get; set; } = default!;
+
+    /// <summary>
+    /// Duration of the transition from on one timeslot's scene to the other (defaults to 60000ms)
+    /// </summary>
+    [JsonPropertyName("transition_duration")]
+    public int? TransitionDuration { get; set; }
   }
 }
