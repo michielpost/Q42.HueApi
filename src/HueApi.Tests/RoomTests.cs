@@ -53,7 +53,7 @@ namespace HueApi.Tests
       var all = await localHueClient.Room.GetAllAsync();
       var last = all.Data.Last();
 
-      BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = last.Metadata!.Name } };
+      var req = new CreateUpdateRoom() { Metadata = new Models.Metadata() { Name = last.Metadata!.Name } };
       var result = await localHueClient.Room.UpdateAsync(last.Id, req);
 
       Assert.IsNotNull(result);
@@ -73,7 +73,7 @@ namespace HueApi.Tests
       Guid? deleteId = null;
       if(existing == null)
       {
-        BaseResourceRequest req = new BaseResourceRequest() { Metadata = new Models.Metadata() { Name = "unittest", Archetype = "other" } };
+        var req = new CreateUpdateRoom() { Metadata = new Models.Metadata() { Name = "unittest", Archetype = "other" } };
         var result = await localHueClient.Room.CreateAsync(req);
 
         Assert.IsNotNull(result);
