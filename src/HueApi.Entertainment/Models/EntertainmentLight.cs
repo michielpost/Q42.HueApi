@@ -1,27 +1,97 @@
 using HueApi.Entertainment.Effects.BasEffects;
 using HueApi.Entertainment.Extensions;
 using HueApi.Models;
+using System.Collections;
 
 namespace HueApi.Entertainment.Models
 {
-  public class EntertainmentLayer : List<EntertainmentLight>
+  public class EntertainmentLayer : IReadOnlyList<EntertainmentLight>
   {
+    //Guards both lights and effects. Enumeration hands out snapshots so callers
+    //can mutate the layer while AutoCalculateEffectUpdate is reading on another thread.
+    private readonly object syncLock = new object();
+    private readonly List<EntertainmentLight> lights = new List<EntertainmentLight>();
+    private readonly List<BaseEffect> effects = new List<BaseEffect>();
 
     public bool IsBaseLayer { get; set; }
 
     /// <summary>
-    /// List of effects applied to this streaminggroup
+    /// Snapshot of the effects applied to this layer. Use PlaceEffect/RemoveEffect/ClearEffects to modify
     /// </summary>
-    public List<BaseEffect> Effects { get; set; } = new List<BaseEffect>();
+    public IReadOnlyList<BaseEffect> Effects
+    {
+      get
+      {
+        lock (syncLock)
+          return effects.ToList();
+      }
+    }
+
+    public int Count
+    {
+      get
+      {
+        lock (syncLock)
+          return lights.Count;
+      }
+    }
+
+    public EntertainmentLight this[int index]
+    {
+      get
+      {
+        lock (syncLock)
+          return lights[index];
+      }
+    }
 
     public EntertainmentLayer(bool isBaseLayer = false)
     {
       IsBaseLayer = isBaseLayer;
     }
 
+    public void Add(EntertainmentLight light)
+    {
+      lock (syncLock)
+        lights.Add(light);
+    }
+
+    public void AddRange(IEnumerable<EntertainmentLight> newLights)
+    {
+      lock (syncLock)
+        lights.AddRange(newLights);
+    }
+
+    public bool Remove(EntertainmentLight light)
+    {
+      lock (syncLock)
+        return lights.Remove(light);
+    }
+
+    public void Clear()
+    {
+      lock (syncLock)
+        lights.Clear();
+    }
+
+    /// <summary>
+    /// Enumerates a snapshot of the lights in this layer
+    /// </summary>
+    public IEnumerator<EntertainmentLight> GetEnumerator()
+    {
+      List<EntertainmentLight> snapshot;
+      lock (syncLock)
+        snapshot = lights.ToList();
+
+      return snapshot.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
     internal void ProcessTransitions()
     {
-      ForEach(x => x.ProcessTransitions());
+      foreach (var light in this)
+        light.ProcessTransitions();
     }
 
     /// <summary>
@@ -30,7 +100,27 @@ namespace HueApi.Entertainment.Models
     /// <param name="baseEffect"></param>
     public void PlaceEffect(BaseEffect baseEffect)
     {
-      Effects.Add(baseEffect);
+      lock (syncLock)
+        effects.Add(baseEffect);
+    }
+
+    /// <summary>
+    /// Removes an effect from the effect list
+    /// </summary>
+    /// <param name="baseEffect"></param>
+    public bool RemoveEffect(BaseEffect baseEffect)
+    {
+      lock (syncLock)
+        return effects.Remove(baseEffect);
+    }
+
+    /// <summary>
+    /// Removes all effects from the effect list
+    /// </summary>
+    public void ClearEffects()
+    {
+      lock (syncLock)
+        effects.Clear();
     }
 
     /// <summary>
@@ -46,13 +136,15 @@ namespace HueApi.Entertainment.Models
 
         while (!cancellationToken.IsCancellationRequested)
         {
+          var activeEffects = Effects.Where(x => x.State != null).ToList();
+
           foreach (var light in this)
           {
             double? finalMultiplier = null;
             BaseEffect? finalEffect = null;
 
             //Only activate effect with strongest effect multiplier
-            foreach (var effect in Effects.Where(x => x.State != null).ToList())
+            foreach (var effect in activeEffects)
             {
               var effectMultiplier = effect.GetEffectStrengthMultiplier(light);
               if (effectMultiplier > finalMultiplier || !finalMultiplier.HasValue)
