@@ -12,5 +12,11 @@ namespace HueApi.Models
 
     [JsonPropertyName("source_id")]
     public string? SourceId { get; set; }
+
+    /// <summary>
+    /// Timestamp of the last channel change confirmation
+    /// </summary>
+    [JsonPropertyName("channel_confirmed")]
+    public DateTimeOffset? ChannelConfirmed { get; set; }
   }
 }

@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.ZigbeeDeviceDiscovery.GetAllAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      var req = new UpdateZigbeeDeviceDiscovery();
       var result = await localHueClient.ZigbeeDeviceDiscovery.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);

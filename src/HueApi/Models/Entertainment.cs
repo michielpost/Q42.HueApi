@@ -19,6 +19,12 @@ namespace HueApi.Models
     [JsonPropertyName("renderer_reference")]
     public ResourceIdentifier? RendererReference { get; set; }
 
+    /// <summary>
+    /// Indicates if a lamp can handle the equalization factor to dimming maximum brightness in a stream
+    /// </summary>
+    [JsonPropertyName("equalizer")]
+    public bool Equalizer { get; set; }
+
   }
 
   public class Segment

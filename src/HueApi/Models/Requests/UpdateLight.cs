@@ -17,6 +17,9 @@ namespace HueApi.Models.Requests
     [JsonPropertyName("dimming_delta")]
     public DimmingDelta? DimmingDelta { get; set; }
 
+    [JsonPropertyName("dimming_configuration")]
+    public DimmingConfiguration? DimmingConfiguration { get; set; }
+
     [JsonPropertyName("color_temperature")]
     public ColorTemperature? ColorTemperature { get; set; }
 

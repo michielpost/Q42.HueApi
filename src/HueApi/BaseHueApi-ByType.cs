@@ -51,7 +51,8 @@ namespace HueApi
       { "security_area_motion", typeof(HueResponse<SecurityAreaMotionResource>) },
       { "speaker", typeof(HueResponse<SpeakerResource>) },
       { "clip", typeof(HueResponse<ClipResource>) },
-      { "wifi_connectivity", typeof(HueResponse<WifiConnectivityResource>) }
+      { "wifi_connectivity", typeof(HueResponse<WifiConnectivityResource>) },
+      { "switch_input_configuration", typeof(HueResponse<SwitchInputConfigurationResource>) }
     };
 
 

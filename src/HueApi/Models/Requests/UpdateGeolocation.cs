@@ -8,12 +8,12 @@ namespace HueApi.Models.Requests
     /// minimum: -180 – maximum: 180
     /// </summary>
     [JsonPropertyName("longitude")]
-    public int Longitude { get; set; }
+    public double Longitude { get; set; }
 
     /// <summary>
     /// minimum: -90 – maximum: 90
     /// </summary>
     [JsonPropertyName("latitude")]
-    public int Latitude { get; set; }
+    public double Latitude { get; set; }
   }
 }

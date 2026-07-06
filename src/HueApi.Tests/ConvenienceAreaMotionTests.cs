@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.ConvenienceAreaMotion.GetAllAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      var req = new UpdateSensitivitySensorRequest();
       var result = await localHueClient.ConvenienceAreaMotion.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);

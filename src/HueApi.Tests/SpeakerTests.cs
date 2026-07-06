@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.Speaker.GetAllAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      var req = new UpdateSpeaker();
       var result = await localHueClient.Speaker.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);

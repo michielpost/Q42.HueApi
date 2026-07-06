@@ -56,6 +56,7 @@ namespace HueApi
     protected const string SpeakerUrl = $"{ResourceUrl}/speaker";
     protected const string ClipUrl = $"{ResourceUrl}/clip";
     protected const string WifiConnectivityUrl = $"{ResourceUrl}/wifi_connectivity";
+    protected const string SwitchInputConfigurationUrl = $"{ResourceUrl}/switch_input_configuration";
 
 
 

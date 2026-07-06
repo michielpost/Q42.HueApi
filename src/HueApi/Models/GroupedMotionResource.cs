@@ -19,10 +19,10 @@ namespace HueApi.Models
 
   public class MotionReport
   {
-    [JsonPropertyName("Changed")]
+    [JsonPropertyName("changed")]
     public DateTimeOffset changed { get; set; }
 
-    [JsonPropertyName("Motion")]
+    [JsonPropertyName("motion")]
     public bool motion { get; set; }
 
   }

@@ -11,7 +11,7 @@ namespace HueApi
     public ResourceEndpoint<HueResource> Resource { get; }
     public ReadEditEndpoint<Light, UpdateLight> Light { get; }
     public CrudEndpoint<Scene, CreateScene, UpdateScene> Scene { get; }
-    public CrudEndpoint<Room, BaseResourceRequest, BaseResourceRequest> Room { get; }
+    public CrudEndpoint<Room, CreateUpdateRoom, CreateUpdateRoom> Room { get; }
     public CrudEndpoint<Zone, CreateZone, UpdateZone> Zone { get; }
     public ReadOnlyEndpoint<BridgeHome> BridgeHome { get; }
     public ReadEditEndpoint<GroupedLight, UpdateGroupedLight> GroupedLight { get; }
@@ -19,9 +19,9 @@ namespace HueApi
     public ReadEditEndpoint<Bridge, BaseResourceRequest> Bridge { get; }
     public ReadEditEndpoint<DeviceSoftwareUpdate, BaseResourceRequest> DeviceSoftwareUpdate { get; }
     public ReadEditEndpoint<DevicePower, BaseResourceRequest> DevicePower { get; }
-    public ReadEditEndpoint<ZigbeeConnectivity, BaseResourceRequest> ZigbeeConnectivity { get; }
+    public ReadEditEndpoint<ZigbeeConnectivity, UpdateZigbeeConnectivity> ZigbeeConnectivity { get; }
     public ReadEditEndpoint<ZgpConnectivity, BaseResourceRequest> ZgpConnectivity { get; }
-    public ReadEditEndpoint<ZigbeeDeviceDiscovery, BaseResourceRequest> ZigbeeDeviceDiscovery { get; }
+    public ReadEditEndpoint<ZigbeeDeviceDiscovery, UpdateZigbeeDeviceDiscovery> ZigbeeDeviceDiscovery { get; }
     public ReadEditEndpoint<MotionResource, UpdateSensitivitySensorRequest> Motion { get; }
     public CrudEndpoint<ServiceGroupResource, CreateUpdateServiceGroup, CreateUpdateServiceGroup> ServiceGroup { get; }
     public ReadEditEndpoint<GroupedMotionResource, UpdateGroupedMotionRequest> GroupedMotion { get; }
@@ -38,7 +38,7 @@ namespace HueApi
     public ReadEditEndpoint<Geolocation, UpdateGeolocation> Geolocation { get; }
     public CrudEndpoint<EntertainmentConfiguration, UpdateEntertainmentConfiguration, UpdateEntertainmentConfiguration> EntertainmentConfiguration { get; }
     public ReadEditEndpoint<Entertainment, UpdateEntertainment> Entertainment { get; }
-    public ReadEditEndpoint<Homekit, BaseResourceRequest> Homekit { get; }
+    public ReadEditEndpoint<Homekit, UpdateHomekit> Homekit { get; }
     public ReadEditEndpoint<MatterItem, MatterItemUpdate> Matter { get; }
     public ReadDeleteEndpoint<MatterFabric> MatterFabric { get; }
     public CrudEndpoint<SmartScene, CreateSmartScene, UpdateSmartScene> SmartScene { get; }
@@ -46,11 +46,12 @@ namespace HueApi
     public ReadEditEndpoint<TamperSensor, BaseResourceRequest> Tamper { get; }
     public CrudEndpoint<MotionAreaConfigResource, CreateUpdateMotionAreaConfig, CreateUpdateMotionAreaConfig> MotionAreaConfiguration { get; }
     public ReadEditEndpoint<MotionAreaCandidateResource, BaseResourceRequest> MotionAreaCandidate { get; }
-    public ReadEditEndpoint<ConvenienceAreaMotionResource, BaseResourceRequest> ConvenienceAreaMotion { get; }
-    public ReadEditEndpoint<SecurityAreaMotionResource, BaseResourceRequest> SecurityAreaMotion { get; }
-    public ReadEditEndpoint<SpeakerResource, BaseResourceRequest> Speaker { get; }
+    public ReadEditEndpoint<ConvenienceAreaMotionResource, UpdateSensitivitySensorRequest> ConvenienceAreaMotion { get; }
+    public ReadEditEndpoint<SecurityAreaMotionResource, UpdateSensitivitySensorRequest> SecurityAreaMotion { get; }
+    public ReadEditEndpoint<SpeakerResource, UpdateSpeaker> Speaker { get; }
     public ReadEditEndpoint<ClipResource, BaseResourceRequest> Clip { get; }
     public ReadEditEndpoint<WifiConnectivityResource, BaseResourceRequest> WifiConnectivity { get; }
+    public ReadEditEndpoint<SwitchInputConfigurationResource, UpdateSwitchInputConfiguration> SwitchInputConfiguration { get; }
 
 
     protected BaseHueApi()
@@ -58,7 +59,7 @@ namespace HueApi
       Resource = new ResourceEndpoint<HueResource>(this);
       Light = new ReadEditEndpoint<Light, UpdateLight>(this, "light");
       Scene = new CrudEndpoint<Scene, CreateScene, UpdateScene>(this, "scene");
-      Room = new CrudEndpoint<Room, BaseResourceRequest, BaseResourceRequest>(this, "room");
+      Room = new CrudEndpoint<Room, CreateUpdateRoom, CreateUpdateRoom>(this, "room");
       Zone = new CrudEndpoint<Zone, CreateZone, UpdateZone>(this, "zone");
       BridgeHome = new ReadOnlyEndpoint<BridgeHome>(this, "bridge_home");
       GroupedLight = new ReadEditEndpoint<GroupedLight, UpdateGroupedLight>(this, "grouped_light");
@@ -66,9 +67,9 @@ namespace HueApi
       Bridge = new ReadEditEndpoint<Bridge, BaseResourceRequest>(this, "bridge");
       DeviceSoftwareUpdate = new ReadEditEndpoint<DeviceSoftwareUpdate, BaseResourceRequest>(this, "device_software_update");
       DevicePower = new ReadEditEndpoint<DevicePower, BaseResourceRequest>(this, "device_power");
-      ZigbeeConnectivity = new ReadEditEndpoint<ZigbeeConnectivity, BaseResourceRequest>(this, "zigbee_connectivity");
+      ZigbeeConnectivity = new ReadEditEndpoint<ZigbeeConnectivity, UpdateZigbeeConnectivity>(this, "zigbee_connectivity");
       ZgpConnectivity = new ReadEditEndpoint<ZgpConnectivity, BaseResourceRequest>(this, "zgp_connectivity");
-      ZigbeeDeviceDiscovery = new ReadEditEndpoint<ZigbeeDeviceDiscovery, BaseResourceRequest>(this, "zigbee_device_discovery");
+      ZigbeeDeviceDiscovery = new ReadEditEndpoint<ZigbeeDeviceDiscovery, UpdateZigbeeDeviceDiscovery>(this, "zigbee_device_discovery");
       Motion = new ReadEditEndpoint<MotionResource, UpdateSensitivitySensorRequest>(this, "motion");
       ServiceGroup = new CrudEndpoint<ServiceGroupResource, CreateUpdateServiceGroup, CreateUpdateServiceGroup>(this, "service_group");
       GroupedMotion = new ReadEditEndpoint<GroupedMotionResource, UpdateGroupedMotionRequest>(this, "grouped_motion");
@@ -85,7 +86,7 @@ namespace HueApi
       Geolocation = new ReadEditEndpoint<Geolocation, UpdateGeolocation>(this, "geolocation");
       EntertainmentConfiguration = new CrudEndpoint<EntertainmentConfiguration, UpdateEntertainmentConfiguration, UpdateEntertainmentConfiguration>(this, "entertainment_configuration");
       Entertainment = new ReadEditEndpoint<Entertainment, UpdateEntertainment>(this, "entertainment");
-      Homekit = new ReadEditEndpoint<Homekit, BaseResourceRequest>(this, "homekit");
+      Homekit = new ReadEditEndpoint<Homekit, UpdateHomekit>(this, "homekit");
       Matter = new ReadEditEndpoint<MatterItem, MatterItemUpdate>(this, "matter");
       MatterFabric = new ReadDeleteEndpoint<MatterFabric>(this, "matter_fabric");
       SmartScene = new CrudEndpoint<SmartScene, CreateSmartScene, UpdateSmartScene>(this, "smart_scene");
@@ -93,11 +94,12 @@ namespace HueApi
       Tamper = new ReadEditEndpoint<TamperSensor, BaseResourceRequest>(this, "tamper");
       MotionAreaConfiguration = new CrudEndpoint<MotionAreaConfigResource, CreateUpdateMotionAreaConfig, CreateUpdateMotionAreaConfig>(this, "motion_area_configuration");
       MotionAreaCandidate = new ReadEditEndpoint<MotionAreaCandidateResource, BaseResourceRequest>(this, "motion_area_candidate");
-      ConvenienceAreaMotion = new ReadEditEndpoint<ConvenienceAreaMotionResource, BaseResourceRequest>(this, "convenience_area_motion");
-      SecurityAreaMotion = new ReadEditEndpoint<SecurityAreaMotionResource, BaseResourceRequest>(this, "security_area_motion");
-      Speaker = new ReadEditEndpoint<SpeakerResource, BaseResourceRequest>(this, "speaker");
+      ConvenienceAreaMotion = new ReadEditEndpoint<ConvenienceAreaMotionResource, UpdateSensitivitySensorRequest>(this, "convenience_area_motion");
+      SecurityAreaMotion = new ReadEditEndpoint<SecurityAreaMotionResource, UpdateSensitivitySensorRequest>(this, "security_area_motion");
+      Speaker = new ReadEditEndpoint<SpeakerResource, UpdateSpeaker>(this, "speaker");
       Clip = new ReadEditEndpoint<ClipResource, BaseResourceRequest>(this, "clip");
       WifiConnectivity = new ReadEditEndpoint<WifiConnectivityResource, BaseResourceRequest>(this, "wifi_connectivity");
+      SwitchInputConfiguration = new ReadEditEndpoint<SwitchInputConfigurationResource, UpdateSwitchInputConfiguration>(this, "switch_input_configuration");
     }
 
 

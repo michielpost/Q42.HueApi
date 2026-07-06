@@ -10,8 +10,32 @@ namespace HueApi.Models
 
   public class RelativeRotary
   {
+    /// <summary>
+    /// Deprecated: renamed to rotary_report
+    /// </summary>
     [JsonPropertyName("last_event")]
     public RelativeRotaryLastEvent? LastEvent { get; set; }
+
+    [JsonPropertyName("rotary_report")]
+    public RelativeRotaryReport? RotaryReport { get; set; }
+  }
+
+  public class RelativeRotaryReport
+  {
+    /// <summary>
+    /// Last time the value of this property is updated.
+    /// </summary>
+    [JsonPropertyName("updated")]
+    public DateTimeOffset Updated { get; set; }
+
+    /// <summary>
+    /// Indicate which type of rotary event is received
+    /// </summary>
+    [JsonPropertyName("action")]
+    public RelativeRotaryLastEventAction? Action { get; set; }
+
+    [JsonPropertyName("rotation")]
+    public RelativeRotaryLastEventRotation? Rotation { get; set; }
   }
 
   public class RelativeRotaryLastEvent

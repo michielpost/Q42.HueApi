@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace HueApi.Models
 {
   [DebuggerDisplay("{Type} | {IdV1} | {Id}")]
-  public class MatterFabric : MatterItem
+  public class MatterFabric : HueResource
   {
     [JsonPropertyName("status")]
     public string Status { get; set; } = default!;

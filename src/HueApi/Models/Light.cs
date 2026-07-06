@@ -51,11 +51,42 @@ namespace HueApi.Models
     public PowerUp? PowerUp { get; set; }
 
     [JsonPropertyName("content_configuration")]
-    public PowerUp? ContentConfiguration { get; set; }
+    public ContentConfiguration? ContentConfiguration { get; set; }
 
     [JsonPropertyName("geometry")]
     public Geometry? Geometry { get; set; }
 
+    [JsonPropertyName("identify")]
+    public IdentifyFeature? Identify { get; set; }
+
+    /// <summary>
+    /// Service identification number. 0 indicates service of a single instance
+    /// </summary>
+    [JsonPropertyName("service_id")]
+    public int? ServiceId { get; set; }
+
+    [JsonPropertyName("dimming_configuration")]
+    public DimmingConfiguration? DimmingConfiguration { get; set; }
+
+  }
+
+  /// <summary>
+  /// Empty status object present on resources that support the identify action
+  /// </summary>
+  public class IdentifyFeature
+  {
+  }
+
+  public class DimmingConfiguration
+  {
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    /// <summary>
+    /// Brightness percentage. Value 0 is the lowest possible brightness. Maximum: 100
+    /// </summary>
+    [JsonPropertyName("min_level")]
+    public double? MinLevel { get; set; }
   }
 
   public class LightProductData
@@ -100,7 +131,7 @@ namespace HueApi.Models
     public DateTimeOffset? EstimatedEnd { get; set; }
 
     [JsonPropertyName("colors")]
-    public List<XyPosition>? Colors { get; set; }
+    public List<Color>? Colors { get; set; }
   }
 
   public class SignalingUpdate
@@ -251,6 +282,9 @@ namespace HueApi.Models
   {
     [JsonPropertyName("action")]
     public EffectAction Action { get; set; } = new();
+
+    [JsonPropertyName("status")]
+    public EffectsV2Status? Status { get; set; }
   }
 
 
@@ -262,6 +296,24 @@ namespace HueApi.Models
     [JsonPropertyName("parameters")]
     public EffectParams? Parameters { get; set; }
 
+    /// <summary>
+    /// Possible effect values you can set in a light.
+    /// </summary>
+    [JsonPropertyName("effect_values")]
+    public List<Effect>? EffectValues { get; set; }
+
+  }
+
+  public class EffectsV2Status
+  {
+    [JsonPropertyName("effect")]
+    public Effect Effect { get; set; } = new();
+
+    [JsonPropertyName("effect_values")]
+    public List<Effect>? EffectValues { get; set; }
+
+    [JsonPropertyName("parameters")]
+    public EffectParams? Parameters { get; set; }
   }
 
   public class EffectParams
@@ -318,14 +370,53 @@ namespace HueApi.Models
     public PowerUpOn? On { get; set; }
 
     [JsonPropertyName("dimming")]
-    public Dimming? Dimming { get; set; }
+    public PowerUpDimming? Dimming { get; set; }
 
     [JsonPropertyName("color")]
-    public Color? Color { get; set; }
+    public PowerUpColor? Color { get; set; }
 
     [JsonPropertyName("configured")]
     public bool? Configured { get; set; }
 
+  }
+
+  public class PowerUpDimming
+  {
+    /// <summary>
+    /// Dimming will set the brightness to the specified value after power up. When setting mode “dimming”, the dimming property must be included. Previous will set brightness to the state it was in before powering off.
+    /// </summary>
+    [JsonPropertyName("mode")]
+    public PowerUpDimmingMode Mode { get; set; }
+
+    [JsonPropertyName("dimming")]
+    public Dimming? Dimming { get; set; }
+  }
+
+  public class PowerUpColor
+  {
+    /// <summary>
+    /// State to activate after powerup. Availability of “color_temperature” and “color” modes depend on the capabilities of the lamp.
+    /// </summary>
+    [JsonPropertyName("mode")]
+    public PowerUpColorMode Mode { get; set; }
+
+    [JsonPropertyName("color_temperature")]
+    public ColorTemperature? ColorTemperature { get; set; }
+
+    [JsonPropertyName("color")]
+    public Color? Color { get; set; }
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum PowerUpDimmingMode
+  {
+    dimming, previous
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum PowerUpColorMode
+  {
+    color_temperature, color, previous
   }
 
   public class ContentConfiguration
@@ -335,6 +426,30 @@ namespace HueApi.Models
 
     [JsonPropertyName("order")]
     public ContentConfigurationOrder? Order { get; set; }
+
+    [JsonPropertyName("association")]
+    public ContentConfigurationAssociation? Association { get; set; }
+  }
+
+  public class ContentConfigurationAssociation
+  {
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("configurable")]
+    public bool? Configurable { get; set; }
+
+    /// <summary>
+    /// Defines what object the service is associated with. not_associated: Not associated – screen: Associated with a screen by placing it behind or around the screen following an arc
+    /// </summary>
+    [JsonPropertyName("association")]
+    public ContentAssociation Association { get; set; }
+  }
+
+  [JsonConverter(typeof(JsonStringEnumConverter))]
+  public enum ContentAssociation
+  {
+    not_associated, screen
   }
 
   public class ContentConfigurationOrientation

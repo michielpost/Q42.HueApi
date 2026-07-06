@@ -51,7 +51,7 @@ namespace HueApi.Tests
       var all = await localHueClient.Homekit.GetAllAsync();
       var id = all.Data.Last().Id;
 
-      BaseResourceRequest req = new BaseResourceRequest();
+      var req = new UpdateHomekit();
       var result = await localHueClient.Homekit.UpdateAsync(id, req);
 
       Assert.IsNotNull(result);
