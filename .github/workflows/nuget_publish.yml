@@ -7,11 +7,14 @@ jobs:
   publish:
     name: build, pack & publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # enable GitHub OIDC token issuance for NuGet trusted publishing
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
 
@@ -21,11 +24,18 @@ jobs:
       - name: Build
         run: dotnet build src/Q42.HueApi.sln --configuration Release
 
+      # Exchange the GitHub OIDC token for a short-lived nuget.org API key (valid 1 hour)
+      - name: NuGet login (trusted publishing)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: mailpost
+
       - name: Publish HueApi
-        run: dotnet nuget push src/HueApi/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src/HueApi/bin/Release/*.nupkg -k ${{ steps.login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish HueApi ColorConverters
-        run: dotnet nuget push src/HueApi.ColorConverters/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src/HueApi.ColorConverters/bin/Release/*.nupkg -k ${{ steps.login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish HueApi Entertainment
-        run: dotnet nuget push src/HueApi.Entertainment/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src/HueApi.Entertainment/bin/Release/*.nupkg -k ${{ steps.login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
