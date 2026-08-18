@@ -7,19 +7,22 @@ jobs:
   publish:
     name: build, pack & publish
     runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write # enable GitHub OIDC token issuance for NuGet trusted publishing
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
 
       - name: Setup MSBuild Path
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v3
 
       - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1
+        uses: NuGet/setup-nuget@v4
 
       - name: Restore NuGet Packages
         run: nuget restore src\Q42.HueApi.v1.deprecated.sln
@@ -27,11 +30,18 @@ jobs:
       - name: Build
         run: msbuild src\Q42.HueApi.v1.deprecated.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
+      # Exchange the GitHub OIDC token for a short-lived nuget.org API key (valid 1 hour)
+      - name: NuGet login (trusted publishing)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: mailpost
+
       - name: Publish Q42 HueApi
-        run: dotnet nuget push src\Q42.HueApi\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src\Q42.HueApi\bin\Release\*.nupkg -k ${{ steps.login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish Q42 HueApi ColorConverters
-        run: dotnet nuget push src\Q42.HueApi.ColorConverters\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src\Q42.HueApi.ColorConverters\bin\Release\*.nupkg -k ${{ steps.login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish Q42 HueApi Streaming
-        run: dotnet nuget push src\Q42.HueApi.Streaming\bin\Release\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push src\Q42.HueApi.Streaming\bin\Release\*.nupkg -k ${{ steps.login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
