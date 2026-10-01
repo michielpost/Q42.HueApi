@@ -34,6 +34,7 @@ namespace HueApi
       { "bell_button", typeof(HueResponse<BellButtonResource>) },
       { "relative_rotary", typeof(HueResponse<RelativeRotaryResource>) },
       { "behavior_script", typeof(HueResponse<BehaviorScript>) },
+      { "behavior_script_formula", typeof(HueResponse<BehaviorScriptFormula>) },
       { "behavior_instance", typeof(HueResponse<BehaviorInstance>) },
       { "geofence_client", typeof(HueResponse<GeofenceClient>) },
       { "geolocation", typeof(HueResponse<Geolocation>) },
@@ -52,7 +53,8 @@ namespace HueApi
       { "speaker", typeof(HueResponse<SpeakerResource>) },
       { "clip", typeof(HueResponse<ClipResource>) },
       { "wifi_connectivity", typeof(HueResponse<WifiConnectivityResource>) },
-      { "switch_input_configuration", typeof(HueResponse<SwitchInputConfigurationResource>) }
+      { "switch_input_configuration", typeof(HueResponse<SwitchInputConfigurationResource>) },
+      { "power_output_configuration", typeof(HueResponse<PowerOutputConfigurationResource>) }
     };
 
 

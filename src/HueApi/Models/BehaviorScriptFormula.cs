@@ -3,7 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace HueApi.Models
 {
-  public class BehaviorScript : HueResource
+  /// <summary>
+  /// User-authored HSL formula script. This endpoint is separate from behavior_script, which remains scoped to firmware-embedded scripts. Formula creation is currently restricted.
+  /// </summary>
+  public class BehaviorScriptFormula : HueResource
   {
     /// <summary>
     /// Short description of script.
@@ -29,14 +32,31 @@ namespace HueApi.Models
     [JsonPropertyName("state_schema")]
     public JsonElement? StateSchema { get; set; }
 
+    /// <summary>
+    /// Version of script.
+    /// </summary>
     [JsonPropertyName("version")]
     public string Version { get; set; } = default!;
 
+    /// <summary>
+    /// Features that the script supports.
+    /// </summary>
     [JsonPropertyName("supported_features")]
     public List<string>? SupportedFeatures { get; set; }
 
     [JsonPropertyName("max_number_instances")]
     public int? MaxNumberInstances { get; set; }
 
+    /// <summary>
+    /// Language of the formula content. Always "hsl".
+    /// </summary>
+    [JsonPropertyName("language")]
+    public string Language { get; set; } = default!;
+
+    /// <summary>
+    /// Formula source.
+    /// </summary>
+    [JsonPropertyName("content")]
+    public JsonElement Content { get; set; } = default!;
   }
 }

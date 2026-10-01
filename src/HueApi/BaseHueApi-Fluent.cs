@@ -33,6 +33,7 @@ namespace HueApi
     public ReadEditEndpoint<BellButtonResource, BaseResourceRequest> BellButton { get; }
     public ReadEditEndpoint<RelativeRotaryResource, BaseResourceRequest> RelativeRotary { get; }
     public ReadEditEndpoint<BehaviorScript, BaseResourceRequest> BehaviorScript { get; }
+    public ReadCreateDeleteEndpoint<BehaviorScriptFormula, CreateBehaviorScriptFormula> BehaviorScriptFormula { get; }
     public CrudEndpoint<BehaviorInstance, UpdateBehaviorInstance, UpdateBehaviorInstance> BehaviorInstance { get; }
     public CrudEndpoint<GeofenceClient, UpdateGeofenceClient, UpdateGeofenceClient> GeofenceClient { get; }
     public ReadEditEndpoint<Geolocation, UpdateGeolocation> Geolocation { get; }
@@ -52,6 +53,7 @@ namespace HueApi
     public ReadEditEndpoint<ClipResource, BaseResourceRequest> Clip { get; }
     public ReadEditEndpoint<WifiConnectivityResource, BaseResourceRequest> WifiConnectivity { get; }
     public ReadEditEndpoint<SwitchInputConfigurationResource, UpdateSwitchInputConfiguration> SwitchInputConfiguration { get; }
+    public ReadEditEndpoint<PowerOutputConfigurationResource, UpdatePowerOutputConfiguration> PowerOutputConfiguration { get; }
 
 
     protected BaseHueApi()
@@ -81,6 +83,7 @@ namespace HueApi
       BellButton = new ReadEditEndpoint<BellButtonResource, BaseResourceRequest>(this, "bell_button");
       RelativeRotary = new ReadEditEndpoint<RelativeRotaryResource, BaseResourceRequest>(this, "relative_rotary");
       BehaviorScript = new ReadEditEndpoint<BehaviorScript, BaseResourceRequest>(this, "behavior_script");
+      BehaviorScriptFormula = new ReadCreateDeleteEndpoint<BehaviorScriptFormula, CreateBehaviorScriptFormula>(this, "behavior_script_formula");
       BehaviorInstance = new CrudEndpoint<BehaviorInstance, UpdateBehaviorInstance, UpdateBehaviorInstance>(this, "behavior_instance");
       GeofenceClient = new CrudEndpoint<GeofenceClient, UpdateGeofenceClient, UpdateGeofenceClient>(this, "geofence_client");
       Geolocation = new ReadEditEndpoint<Geolocation, UpdateGeolocation>(this, "geolocation");
@@ -100,6 +103,7 @@ namespace HueApi
       Clip = new ReadEditEndpoint<ClipResource, BaseResourceRequest>(this, "clip");
       WifiConnectivity = new ReadEditEndpoint<WifiConnectivityResource, BaseResourceRequest>(this, "wifi_connectivity");
       SwitchInputConfiguration = new ReadEditEndpoint<SwitchInputConfigurationResource, UpdateSwitchInputConfiguration>(this, "switch_input_configuration");
+      PowerOutputConfiguration = new ReadEditEndpoint<PowerOutputConfigurationResource, UpdatePowerOutputConfiguration>(this, "power_output_configuration");
     }
 
 

@@ -37,6 +37,7 @@ namespace HueApi
     protected const string BellButtonUrl = $"{ResourceUrl}/bell_button";
     protected const string RelativeRotaryUrl = $"{ResourceUrl}/relative_rotary";
     protected const string BehaviorScriptUrl = $"{ResourceUrl}/behavior_script";
+    protected const string BehaviorScriptFormulaUrl = $"{ResourceUrl}/behavior_script_formula";
     protected const string BehaviorInstanceUrl = $"{ResourceUrl}/behavior_instance";
     protected const string GeofenceClientUrl = $"{ResourceUrl}/geofence_client";
     protected const string GeolocationUrl = $"{ResourceUrl}/geolocation";
@@ -57,6 +58,7 @@ namespace HueApi
     protected const string ClipUrl = $"{ResourceUrl}/clip";
     protected const string WifiConnectivityUrl = $"{ResourceUrl}/wifi_connectivity";
     protected const string SwitchInputConfigurationUrl = $"{ResourceUrl}/switch_input_configuration";
+    protected const string PowerOutputConfigurationUrl = $"{ResourceUrl}/power_output_configuration";
 
 
 

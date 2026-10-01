@@ -47,6 +47,17 @@ namespace HueApi.HueEndpoints
     public Task<HuePostResponse> CreateAsync(TPost data) => _hueApi.HuePostRequestAsync<TPost>(_hueApi.ResourceTypeIdUrl(_type), data);
   }
 
+  public class ReadCreateDeleteEndpoint<TGet, TPost>(BaseHueApi hueApi, string type) : ReadOnlyEndpoint<TGet>(hueApi, type),
+    IGetAllEndpoint<TGet>,
+    IGetByIdEndpoint<TGet>,
+    IPostEndpoint<TPost>,
+    IDeleteEndpoint
+    where TGet : HueResource
+  {
+    public Task<HuePostResponse> CreateAsync(TPost data) => _hueApi.HuePostRequestAsync<TPost>(_hueApi.ResourceTypeIdUrl(_type), data);
+    public Task<HueDeleteResponse> DeleteAsync(Guid id) => _hueApi.HueDeleteRequestAsync(_hueApi.ResourceTypeIdUrl(_type, id));
+  }
+
   public class ReadEditEndpoint<TGet, TPut>(BaseHueApi hueApi, string type) : ReadOnlyEndpoint<TGet>(hueApi, type),
     IGetAllEndpoint<TGet>,
     IGetByIdEndpoint<TGet>,
